@@ -1,0 +1,5 @@
+[general]
+ignore=body-is-missing, T3, T5
+
+[title-match-regex]
+regex=^(feat|fix|docs|style|refactor|perf|test|chore)(\([\w\-]+\))?: .+$
