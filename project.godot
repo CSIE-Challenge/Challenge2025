@@ -8,6 +8,11 @@
 
 config_version=5
 
+[GDScript_Formatter]
+
+line_length=100
+format_on_save=true
+
 [application]
 
 config/name="Challenge2025"
@@ -20,3 +25,7 @@ config/icon="res://icon.svg"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdscript_formatter/plugin.cfg")
