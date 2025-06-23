@@ -9,9 +9,5 @@ func _ready() -> void:
 	direction = Vector2(cos(rotation - PI / 2), sin(rotation - PI / 2))
 
 
-func _process(delta: float) -> void:
-	pass
-
-
 func _physics_process(delta: float) -> void:
 	position += delta * speed * direction
