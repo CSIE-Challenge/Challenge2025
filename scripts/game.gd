@@ -1,6 +1,8 @@
 extends Node2D
 
 @export var tower_scene: PackedScene
+@onready var money_label: Label = $CanvasLayer/money_display
+
 
 var preview_tower
 var money: int = 0
@@ -26,6 +28,8 @@ func _process(_delta):
 
 	var valid = can_place_tower(cell)
 	set_tower_color(preview_tower, valid)
+
+	money_label.text = "Money  :  $ " + str(money)
 	_money_timer += _delta
 	if _money_timer > 1.0 :
 		money += money_per_second
