@@ -55,3 +55,6 @@ func place_tower(cell: Vector2i):
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
 	towers_node.add_child(tower)
+
+func set_hit_point(damage: int):
+	hp_bar.value -= damage
