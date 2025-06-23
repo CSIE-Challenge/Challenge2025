@@ -3,10 +3,11 @@ extends Node2D
 @export var tower_scene: PackedScene
 
 var preview_tower
+var occupied_cells := {}
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
-
+@onready var UI: Control = $Control
 
 func _ready():
 	preview_tower = tower_scene.instantiate()
@@ -19,10 +20,9 @@ func _process(_delta):
 	var cell = tilemap.local_to_map(tilemap.to_local(mouse_pos))
 	var world_pos = tilemap.map_to_local(cell)
 	preview_tower.global_position = tilemap.to_global(world_pos)
-
+	
 	var valid = can_place_tower(cell)
 	set_tower_color(preview_tower, valid)
-
 
 func set_tower_color(tower: Node2D, is_valid: bool):
 	var color = Color(0, 1, 0, 0.5) if is_valid else Color(1, 0, 0, 0.5)
@@ -42,6 +42,8 @@ func can_place_tower(cell: Vector2i) -> bool:
 	var tile_data = tilemap.get_cell_tile_data(cell)
 	if tile_data == null:
 		return false
+	if occupied_cells.has(cell):
+		return false
 	return tile_data.get_custom_data("buildable") == true
 
 
@@ -49,4 +51,5 @@ func place_tower(cell: Vector2i):
 	var tower = tower_scene.instantiate()
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
+	occupied_cells[cell] = true
 	towers_node.add_child(tower)

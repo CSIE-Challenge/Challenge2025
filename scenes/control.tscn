@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1lsroohn1alg"]
+
+[ext_resource type="Script" uid="uid://2rxs7erdhn43" path="res://scripts/control.gd" id="1_5p55f"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(2.38822, 1.60174)
+script = ExtResource("1_5p55f")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 6.69956
+offset_top = 3.1216
+offset_right = 81.6996
+offset_bottom = 34.1216
+scale = Vector2(0.355331, 0.53857)
+text = "Upgrade"
+
+[node name="Button2" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 10.8868
+offset_top = 19.9783
+offset_right = 45.8868
+offset_bottom = 50.9782
+scale = Vector2(0.513588, 0.576636)
+text = "Sell"

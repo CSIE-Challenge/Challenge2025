@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=4 uid="uid://cc8cfvmqxjxvv"]
+[gd_scene load_steps=11 format=4 uid="uid://cc8cfvmqxjxvv"]
 
 [ext_resource type="Script" uid="uid://c72ov43b6lhkm" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_iywne"]
 [ext_resource type="Script" uid="uid://pq1pqh56u0k4" path="res://scripts/spawner.gd" id="2_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://bm7kfvbx4iola" path="res://assets/kenney_tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png" id="3_iywne"]
 [ext_resource type="PackedScene" uid="uid://cvn2rry4egsld" path="res://scenes/enemy.tscn" id="3_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://b1lsroohn1alg" path="res://scenes/control.tscn" id="6_p57ef"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_paxxb"]
 texture = ExtResource("3_iywne")
@@ -458,3 +459,5 @@ curve = SubResource("Curve2D_paxxb")
 [node name="Towers" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="Control" parent="." instance=ExtResource("6_p57ef")]

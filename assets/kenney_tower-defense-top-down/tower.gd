@@ -18,6 +18,7 @@ var is_preview := false
 func _ready():
 	if is_preview:
 		apply_preview_appearance()
+		$Button.visible = false
 	else:
 		enemy_detector.shape.radius = 0.5 * aim_range
 
@@ -42,7 +43,7 @@ func aim(delta: float) -> void:
 	var angle_diff = angle - turret.rotation - PI / 2
 	if angle_diff < -2 * PI:
 		angle_diff += 2 * PI
-	print(angle_diff)
+	#print(angle_diff)
 	if (angle_diff < PI and angle_diff > 0) or (angle_diff < -PI and angle_diff > -2 * PI):
 		turret.rotate(delta * deg_to_rad(rotation_speed))
 	else:
@@ -61,3 +62,4 @@ func _on_aim_range_body_entered(body: Node2D) -> void:
 
 func _on_aim_range_body_exited(body: Node2D) -> void:
 	enemies.erase(body.get_parent())
+	
