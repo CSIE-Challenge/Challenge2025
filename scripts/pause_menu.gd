@@ -4,7 +4,6 @@ extends Control
 func pause():
 	print("Game paused")
 	get_tree().paused = true
-	self.paused = false
 	self.visible = true
 
 
@@ -31,6 +30,7 @@ func _on_resume_pressed() -> void:
 
 
 func _on_restart_pressed() -> void:
+	get_tree().paused = false
 	get_tree().reload_current_scene()
 
 
