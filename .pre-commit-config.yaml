@@ -12,7 +12,7 @@ repos:
         description: "gdlint - linter for GDScript"
         entry: gdlint
         language: python
-        language_version: python3
+        language_version: python3.11
         require_serial: true
         types: [gdscript]
       - id: gdformat
@@ -20,6 +20,6 @@ repos:
         description: "gdformat - formatter for GDScript"
         entry: gdformat
         language: python
-        language_version: python3
+        language_version: python3.11
         require_serial: true
         types: [gdscript]
