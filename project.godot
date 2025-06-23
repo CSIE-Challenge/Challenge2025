@@ -29,3 +29,7 @@ window/stretch/mode="viewport"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gdscript_formatter/plugin.cfg")
+
+[dotnet]
+
+project/assembly_name="Challenge2025"

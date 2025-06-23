@@ -458,3 +458,26 @@ curve = SubResource("Curve2D_paxxb")
 [node name="Towers" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="money_display" type="Label" parent="CanvasLayer"]
+custom_minimum_size = Vector2(10, 10)
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "Money: $0"
+
+[node name="upgrade" type="Button" parent="CanvasLayer"]
+custom_minimum_size = Vector2(10, -50)
+offset_top = 50.0
+offset_right = 351.0
+offset_bottom = 108.0
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "cost $30 to upgrade"
+
+[connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
