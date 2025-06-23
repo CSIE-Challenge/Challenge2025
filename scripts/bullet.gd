@@ -6,12 +6,12 @@ var direction: Vector2 = Vector2(0, 1)
 
 
 func _ready() -> void:
-    pass
+	pass
 
 
 func _process(delta: float) -> void:
-    pass
+	pass
 
 
 func _physics_process(delta: float) -> void:
-    position += delta * speed * direction
+	position += delta * speed * direction
