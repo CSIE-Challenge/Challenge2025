@@ -3,15 +3,20 @@ extends Node2D
 @export var tower_scene: PackedScene
 
 var preview_tower
+var max_hp: int = 100
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
+@onready var hp_bar = $HitPoint
 
 
 func _ready():
 	preview_tower = tower_scene.instantiate()
 	preview_tower.is_preview = true
 	add_child(preview_tower)
+	
+	hp_bar.max_value = max_hp
+	hp_bar.value = max_hp
 
 
 func _process(_delta):

@@ -5,6 +5,7 @@ extends CharacterBody2D
 
 var health: int
 var path_follow: PathFollow2D
+var damage: int = 5
 
 @onready var health_bar := $HealthBar
 
