@@ -73,7 +73,7 @@ func shoot() -> void:
 
 
 func _on_aim_range_body_entered(body: Node2D) -> void:
-	if body == self:
+	if not body.is_in_group("enemy"):
 		return
 	enemies.append(body.get_parent())
 

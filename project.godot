@@ -28,4 +28,8 @@ window/stretch/mode="viewport"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdscript_formatter/plugin.cfg")
+enabled=PackedStringArray()
+
+[global_group]
+
+enemy="All enemies"
