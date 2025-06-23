@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=4 uid="uid://vxdpn05ifwug"]
+[gd_scene load_steps=10 format=4 uid="uid://bui5oijvncvxl"]
 
 [ext_resource type="Script" uid="uid://c72ov43b6lhkm" path="res://scripts/game.gd" id="1_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_iywne"]
 [ext_resource type="Script" uid="uid://pq1pqh56u0k4" path="res://scripts/spawner.gd" id="2_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://bm7kfvbx4iola" path="res://assets/kenney_tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png" id="3_iywne"]
 [ext_resource type="PackedScene" uid="uid://cam0es8m4cgoa" path="res://scenes/enemy.tscn" id="3_lbhrr"]
@@ -76,6 +77,7 @@ texture_region_size = Vector2i(64, 64)
 0:1/0/terrains_peering_bit/top_side = 0
 1:1/0 = 0
 1:1/0/terrain_set = 0
+1:1/0/custom_data_0 = true
 2:1/0 = 0
 2:1/0/terrain_set = 0
 2:1/0/terrain = 0
@@ -417,6 +419,8 @@ tile_size = Vector2i(64, 64)
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Road"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+custom_data_layer_0/name = "buildable"
+custom_data_layer_0/type = 1
 sources/1 = SubResource("TileSetAtlasSource_paxxb")
 
 [sub_resource type="Curve2D" id="Curve2D_4xfga"]
@@ -433,6 +437,7 @@ point_count = 10
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
+tower_scene = ExtResource("2_iywne")
 
 [node name="Spawner" type="Node2D" parent="."]
 script = ExtResource("2_lbhrr")
@@ -450,4 +455,6 @@ curve = SubResource("Curve2D_4xfga")
 [node name="ComputerPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_paxxb")
 
-[node name="Enemies" type="Node2D" parent="."]
+[node name="Towers" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

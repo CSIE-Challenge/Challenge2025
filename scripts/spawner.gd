@@ -8,12 +8,13 @@ var enemies_spawned := 0
 
 @onready var spawn_timer: Timer = $Timer
 @onready var path: Path2D = $"../ComputerPath"
-@onready var enemies_container: Node2D = $"../Enemies"
+
 
 func _ready():
 	spawn_timer.wait_time = spawn_interval
 	spawn_timer.timeout.connect(_on_spawn_timeout)
 	spawn_timer.start()
+
 
 func _on_spawn_timeout():
 	if enemies_spawned >= max_enemies:
@@ -25,6 +26,4 @@ func _on_spawn_timeout():
 	path.add_child(path_follow)
 	path_follow.progress_ratio = 0.0
 	path_follow.add_child(enemy)
-	
-	enemies_container.add_child(path_follow)
 	enemies_spawned += 1
