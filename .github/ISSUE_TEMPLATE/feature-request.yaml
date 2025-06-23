@@ -1,0 +1,20 @@
+name: Feature Request
+description: Request a new feature for the game
+title: "[Feature]: "
+labels: ["feature"]
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: Briefly summarize your feature request in one sentence.
+      placeholder: "Add support for (something?) in the game"
+  - type: textarea
+    id: description
+    attributes:
+      label: Detailed Description
+      description: Describe the proposed feature in detail. What should it do? How should it work?
+      placeholder: |
+        - Describe how the feature would work in the game
+        - Include specific UI elements, game mechanics, or interactions involved
+        - Describe any settings or customization options
