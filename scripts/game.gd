@@ -52,10 +52,15 @@ func can_place_tower(cell: Vector2i) -> bool:
 	var tile_data = tilemap.get_cell_tile_data(cell)
 	if tile_data == null:
 		return false
+
+	if money < TOWER_COST:
+		return false
+
 	return tile_data.get_custom_data("buildable") == true
 
 
 func place_tower(cell: Vector2i):
+	money -= TOWER_COST
 	var tower = tower_scene.instantiate()
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
