@@ -10,6 +10,7 @@ var money: int = 0
 var money_per_second: int = 1
 const TOWER_COST = 5
 var _money_timer := 0.0
+var cost = 30
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
@@ -20,7 +21,6 @@ func _ready():
 	preview_tower.is_preview = true
 	add_child(preview_tower)
 	
-	upgrade_button.text = "cost $30 upgrade"
 
 
 func _process(_delta):
@@ -32,6 +32,7 @@ func _process(_delta):
 	var valid = can_place_tower(cell)
 	set_tower_color(preview_tower, valid)
 
+	upgrade_button.text = "cost $%d to upgrade" % cost
 	money_label.text = "Money  :  $ " + str(money)
 	_money_timer += _delta
 	if _money_timer > 1.0 :
@@ -74,14 +75,10 @@ func place_tower(cell: Vector2i):
 	towers_node.add_child(tower)
 
 func upgrade_income() -> void:
-	var cost = money_per_second * 30
-	if money < cost:
-		print("didn't have enough money")
-	else :
+	if money >= cost:
 		money_per_second += 1
 		money -= cost
 		cost += 30
-		upgrade_button.text = "cost $%d upgrade" % cost
 
 
 func _on_upgrade_pressed() -> void:
