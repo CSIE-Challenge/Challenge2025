@@ -7,10 +7,11 @@
 radius = 7.0
 height = 39.0
 
-[node name="Bullet" type="StaticBody2D"]
+[node name="Bullet" type="Area2D"]
 script = ExtResource("1_y25gk")
 
 [node name="Body" type="Sprite2D" parent="."]
+rotation = 1.5708
 texture = ExtResource("1_mkf8s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

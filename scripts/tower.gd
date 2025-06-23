@@ -11,6 +11,9 @@ var current_shoot_turret: int = 0  # 0 for left, 1 for right
 
 var enemies: Array = []
 
+var target: Node2D = null
+var targets = []
+
 var built: bool = false
 var is_preview := false
 
@@ -27,6 +30,7 @@ func _ready():
 		enemy_detector.shape.radius = 0.5 * aim_range
 		reload_timer.wait_time = 60.0 / reload_speed
 		reload_timer.start()
+	reload_timer.timeout.connect(_on_reload_timer_timeout)
 
 
 func apply_preview_appearance():
@@ -57,19 +61,36 @@ func aim(delta: float) -> void:
 	else:
 		turret.rotate(-delta * deg_to_rad(rotation_speed))
 
+func _choose_target():
+	target = null
+	targets = $AimRange.get_overlapping_bodies()
+	if targets.size() == 0:
+		return
+
+	var closest_target = targets[0]
+	var closest_distance = position.distance_to(closest_target.position)
+	for i in range(1, targets.size()):
+		var distance = position.distance_to(targets[i].position)
+		if distance < closest_distance:
+			closest_target = targets[i]
+			closest_distance = distance
+
+	target = closest_target
 
 func shoot() -> void:
+	_choose_target()
+	if target == null:
+		return
+
 	var bullet = bullet_scene.instantiate()
+	bullet.global_position = $Turret.global_position
+
 	bullet.damage = damage
-	var spawn_pos
-	if current_shoot_turret == 0:
-		spawn_pos = $Turret/Left
-	else:
-		spawn_pos = $Turret/Right
-	bullet.rotation = turret.rotation
-	bullet.position = spawn_pos.position.rotated(turret.rotation)
-	self.add_child(bullet)
-	current_shoot_turret ^= 1
+	bullet.rotation = $Turret.rotation
+	bullet.target = target
+
+	get_tree().current_scene.add_child(bullet)
+	print("Bullet fired at target: ", target.name)
 
 
 func _on_aim_range_body_entered(body: Node2D) -> void:
