@@ -1,14 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://c8xtcx5gblp84"]
 
 [ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="1_ay4al"]
-[ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scenes/tower.gd" id="1_ktxwe"]
+[ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scripts/tower.gd" id="1_ktxwe"]
 [ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="2_ktxwe"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qrbg1"]
-radius = 31.1448
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
+size = Vector2(53, 52)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ktxwe"]
-radius = 366.935
 
 [node name="Tower" type="RigidBody2D"]
 gravity_scale = 0.0
@@ -24,9 +23,13 @@ offset = Vector2(0, -8.055)
 [node name="Flash" type="Marker2D" parent="Turret"]
 
 [node name="Body" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_qrbg1")
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_ktxwe")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="AimRange" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AimRange"]
 shape = SubResource("CircleShape2D_ktxwe")
+
+[connection signal="body_entered" from="AimRange" to="." method="_on_aim_range_body_entered"]
+[connection signal="body_exited" from="AimRange" to="." method="_on_aim_range_body_exited"]
