@@ -3,6 +3,10 @@ extends Node2D
 @export var tower_scene: PackedScene
 
 var preview_tower
+var money: int = 0
+var money_per_second: int = 1
+const TOWER_COST = 5
+var _money_timer := 0.0
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
@@ -22,6 +26,12 @@ func _process(_delta):
 
 	var valid = can_place_tower(cell)
 	set_tower_color(preview_tower, valid)
+	_money_timer += _delta
+	if _money_timer > 1.0 :
+		money += money_per_second
+		_money_timer = 0.0
+
+
 
 
 func set_tower_color(tower: Node2D, is_valid: bool):
