@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=4 uid="uid://bui5oijvncvxl"]
+[gd_scene load_steps=10 format=4 uid="uid://cc8cfvmqxjxvv"]
 
 [ext_resource type="Script" uid="uid://c72ov43b6lhkm" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_iywne"]
 [ext_resource type="Script" uid="uid://pq1pqh56u0k4" path="res://scripts/spawner.gd" id="2_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://bm7kfvbx4iola" path="res://assets/kenney_tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png" id="3_iywne"]
-[ext_resource type="PackedScene" uid="uid://cam0es8m4cgoa" path="res://scenes/enemy.tscn" id="3_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://cvn2rry4egsld" path="res://scenes/enemy.tscn" id="3_lbhrr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_paxxb"]
 texture = ExtResource("3_iywne")
