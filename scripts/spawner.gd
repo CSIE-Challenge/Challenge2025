@@ -24,6 +24,9 @@ func _on_spawn_timeout():
 	var enemy = enemy_scene.instantiate()
 	var path_follow = PathFollow2D.new()
 	path.add_child(path_follow)
+
 	path_follow.progress_ratio = 0.0
+	path_follow.loop = false
 	path_follow.add_child(enemy)
+
 	enemies_spawned += 1
