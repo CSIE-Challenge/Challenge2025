@@ -1,16 +1,17 @@
 extends Node2D
 
-@export var tower_scene: PackedScene
-@onready var money_label: Label = $CanvasLayer/money_display
-@onready var upgrade_button: Button = $CanvasLayer/upgrade
+const TOWER_COST = 5
 
+@export var tower_scene: PackedScene
 
 var preview_tower
 var money: int = 0
-var money_per_second: int = 1
-const TOWER_COST = 5
-var _money_timer := 0.0
+var money_per_second: int = 10
 var cost = 30
+var _money_timer := 0.0
+
+@onready var money_label: Label = $CanvasLayer/money_display
+@onready var upgrade_button: Button = $CanvasLayer/upgrade
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
@@ -20,7 +21,6 @@ func _ready():
 	preview_tower = tower_scene.instantiate()
 	preview_tower.is_preview = true
 	add_child(preview_tower)
-	
 
 
 func _process(_delta):
@@ -35,11 +35,9 @@ func _process(_delta):
 	upgrade_button.text = "cost $%d to upgrade" % cost
 	money_label.text = "Money  :  $ " + str(money)
 	_money_timer += _delta
-	if _money_timer > 1.0 :
+	if _money_timer > 1.0:
 		money += money_per_second
 		_money_timer = 0.0
-
-
 
 
 func set_tower_color(tower: Node2D, is_valid: bool):
@@ -73,6 +71,7 @@ func place_tower(cell: Vector2i):
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
 	towers_node.add_child(tower)
+
 
 func upgrade_income() -> void:
 	if money >= cost:
