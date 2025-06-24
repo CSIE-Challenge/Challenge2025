@@ -8,11 +8,6 @@
 
 config_version=5
 
-[GDScript_Formatter]
-
-line_length=100
-format_on_save=true
-
 [application]
 
 config/name="Challenge2025"
@@ -32,4 +27,4 @@ project/assembly_name="Challenge2025"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/gdscript_formatter/plugin.cfg")
+enabled=PackedStringArray()
