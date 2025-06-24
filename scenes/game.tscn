@@ -485,6 +485,14 @@ theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "cost $30 to upgrade"
 
+[node name="skill_slow" type="Button" parent="CanvasLayer"]
+offset_left = 370.0
+offset_top = 50.0
+offset_right = 690.0
+offset_bottom = 108.0
+theme_override_font_sizes/font_size = 36
+text = "slow down enemy"
+
 [node name="HitPoint" type="ProgressBar" parent="."]
 z_index = 1
 offset_left = 725.0
@@ -505,3 +513,4 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
+[connection signal="pressed" from="CanvasLayer/skill_slow" to="." method="_on_skill_slow_pressed"]

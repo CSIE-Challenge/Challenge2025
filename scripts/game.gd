@@ -1,6 +1,7 @@
 extends Node2D
 
 const TOWER_COST = 5
+const SKILL_SLOW = 0
 
 @export var tower_scene: PackedScene
 
@@ -11,6 +12,8 @@ var max_hp: int = 100
 var cost = 30
 var _money_timer := 0.0
 
+var cooldown: Array = [0.0]
+
 @onready var money_label: Label = $CanvasLayer/money_display
 @onready var upgrade_button: Button = $CanvasLayer/upgrade
 
@@ -20,6 +23,7 @@ var _money_timer := 0.0
 @onready var hp_bar = $HitPoint
 @onready var attack_ui: Control = $Attack
 
+@onready var slow_button: Button = $CanvasLayer/skill_slow
 
 func _ready():
 	preview_tower = tower_scene.instantiate()
@@ -46,6 +50,8 @@ func _process(_delta):
 	if _money_timer > 1.0:
 		money += money_per_second
 		_money_timer = 0.0
+
+	slow_button.text = "slow down enemy (CD: %.2f)" % maxf(0.0, cooldown[SKILL_SLOW] - Time.get_unix_time_from_system())
 
 
 func set_tower_color(tower: Node2D, is_valid: bool):
@@ -108,3 +114,27 @@ func handle_visibility_of_preview_tower():
 	):
 		return false
 	return true
+
+
+func start_cooldown(skill: int, cd: float):
+	cooldown[skill] = Time.get_unix_time_from_system() + cd	
+
+
+func is_on_cooldown(skill: int) -> bool:
+	return cooldown[skill] > Time.get_unix_time_from_system()
+
+
+func slow_down_enemy():
+	var cost: int = 50
+	var cd: float = 15.0
+	if money < cost or is_on_cooldown(SKILL_SLOW):
+		print("fail")
+		return
+	money -= cost
+	start_cooldown(SKILL_SLOW, cd)
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		enemy.slow_down()
+
+
+func _on_skill_slow_pressed() -> void:
+	slow_down_enemy()
