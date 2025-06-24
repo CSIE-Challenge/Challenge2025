@@ -25,5 +25,8 @@ jobs:
           pre-commit install --hook-type commit-msg
           pre-commit install-hooks
 
-      - name: Run pre-commit (pre-commit stage only)
-        run: pre-commit run --all-files --hook-stage pre-commit --show-diff-on-failure
+      - name: Run pre-commit
+        run: |
+          git log -1 --pretty=%B > .git/COMMIT_EDITMSG
+          pre-commit run --all-files --hook-stage pre-commit --show-diff-on-failure
+          pre-commit run --hook-stage commit-msg --show-diff-on-failure --commit-msg-filename .git/COMMIT_EDITMSG
