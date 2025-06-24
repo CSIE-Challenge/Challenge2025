@@ -44,21 +44,21 @@ func _physics_process(delta: float) -> void:
 		aim(delta)
 
 
+func move_toward_angle(from: float, to: float, max_delta: float) -> float:
+	var angle_diff = wrapf(to - from, -PI, PI)
+	angle_diff = clamp(angle_diff, -max_delta, max_delta)
+	return from + angle_diff
+
+
 func aim(delta: float) -> void:
-	var first_enemy = enemies[0]
-	var pos_diff: Vector2 = self.position - first_enemy.position
-	var angle: float = atan2(pos_diff.y, pos_diff.x)
-	var angle_diff = angle - turret.rotation - PI / 2
+	if enemies.is_empty():
+		return
 
-	if angle_diff < -2 * PI:
-		angle_diff += 2 * PI
-	if angle_diff > 2 * PI:
-		angle_diff -= 2 * PI
+	target = enemies[0]
+	var desired_angle = (target.global_position - turret.global_position).angle()
+	var max_rotation = deg_to_rad(rotation_speed) * delta
 
-	if (angle_diff < PI and angle_diff > 0) or (angle_diff < -PI and angle_diff > -2 * PI):
-		turret.rotate(delta * deg_to_rad(rotation_speed))
-	else:
-		turret.rotate(-delta * deg_to_rad(rotation_speed))
+	turret.rotation = move_toward_angle(turret.rotation, desired_angle, max_rotation)
 
 
 func _choose_target():
