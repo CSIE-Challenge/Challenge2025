@@ -41,7 +41,6 @@ func apply_preview_appearance():
 
 
 func _physics_process(delta: float) -> void:
-	#print(enemies)
 	if enemies.size() > 0 and built:
 		aim(delta)
 
@@ -51,15 +50,17 @@ func aim(delta: float) -> void:
 	var pos_diff: Vector2 = self.position - first_enemy.position
 	var angle: float = atan2(pos_diff.y, pos_diff.x)
 	var angle_diff = angle - turret.rotation - PI / 2
+
 	if angle_diff < -2 * PI:
 		angle_diff += 2 * PI
 	if angle_diff > 2 * PI:
 		angle_diff -= 2 * PI
-	#print(angle_diff)
+
 	if (angle_diff < PI and angle_diff > 0) or (angle_diff < -PI and angle_diff > -2 * PI):
 		turret.rotate(delta * deg_to_rad(rotation_speed))
 	else:
 		turret.rotate(-delta * deg_to_rad(rotation_speed))
+
 
 func _choose_target():
 	target = null
@@ -77,20 +78,27 @@ func _choose_target():
 
 	target = closest_target
 
+
 func shoot() -> void:
 	_choose_target()
 	if target == null:
 		return
 
 	var bullet = bullet_scene.instantiate()
-	bullet.global_position = $Turret.global_position
+
+	if current_shoot_turret == 0:
+		bullet.global_position = $Turret/Left.global_position
+		current_shoot_turret = 1
+	else:
+		bullet.global_position = $Turret/Right.global_position
+		current_shoot_turret = 0
 
 	bullet.damage = damage
 	bullet.rotation = $Turret.rotation
 	bullet.target = target
 
 	get_tree().current_scene.add_child(bullet)
-	print("Bullet fired at target: ", target.name)
+	# print("Bullet fired at target: ", target.name)
 
 
 func _on_aim_range_body_entered(body: Node2D) -> void:

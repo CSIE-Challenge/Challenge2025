@@ -12,6 +12,7 @@ size = Vector2(53, 52)
 radius = 734.063
 
 [node name="Tower" type="StaticBody2D"]
+z_index = 5
 collision_layer = 2
 script = ExtResource("1_ktxwe")
 bullet_scene = ExtResource("2_qrbg1")
@@ -19,22 +20,25 @@ bullet_scene = ExtResource("2_qrbg1")
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("1_ay4al")
 
-[node name="Turret" type="Sprite2D" parent="."]
-rotation = -4.8747
+[node name="Turret" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Turret"]
+rotation = 1.5708
 texture = ExtResource("2_ktxwe")
 offset = Vector2(0, -8.055)
 
 [node name="Left" type="Marker2D" parent="Turret"]
-position = Vector2(-5.94, -35.565)
+position = Vector2(32, -6)
 
 [node name="Right" type="Marker2D" parent="Turret"]
-position = Vector2(6.155, -35.645)
+position = Vector2(32, 6)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_ktxwe")
 
 [node name="AimRange" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AimRange"]
 shape = SubResource("CircleShape2D_ktxwe")
