@@ -30,7 +30,6 @@ func _ready():
 		enemy_detector.shape.radius = 0.5 * aim_range
 		reload_timer.wait_time = 60.0 / reload_speed
 		reload_timer.start()
-	reload_timer.timeout.connect(_on_reload_timer_timeout)
 
 
 func apply_preview_appearance():
