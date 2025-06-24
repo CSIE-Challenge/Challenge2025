@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://gkfjlrjp0wly"]
+
+[ext_resource type="Texture2D" uid="uid://ck2spqdqr8fbc" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile297.png" id="1_mkf8s"]
+[ext_resource type="Script" uid="uid://3jul3pah8jvl" path="res://scripts/bullet.gd" id="1_y25gk"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y25gk"]
+radius = 5.5
+height = 36.0
+
+[node name="Bullet" type="Area2D"]
+script = ExtResource("1_y25gk")
+
+[node name="Body" type="Sprite2D" parent="."]
+rotation = -1.5708
+texture = ExtResource("1_mkf8s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_y25gk")

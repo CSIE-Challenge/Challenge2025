@@ -1,0 +1,33 @@
+name: Pre-commit CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install Python dependencies
+        run: |
+          pip install pre-commit gitlint
+          pre-commit install
+          pre-commit install-hooks
+
+      - name: Run pre-commit
+        run: |
+          pre-commit run --all-files --hook-stage pre-commit --show-diff-on-failure
+
+      - name: Run gitlint
+        run: |
+          gitlint --debug

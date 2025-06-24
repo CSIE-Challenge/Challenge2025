@@ -1,18 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://c8xtcx5gblp84"]
+[gd_scene load_steps=7 format=3 uid="uid://c8xtcx5gblp84"]
 
 [ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="1_ay4al"]
 [ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://assets/kenney_tower-defense-top-down/tower.gd" id="1_ktxwe"]
 [ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="2_ktxwe"]
-[ext_resource type="PackedScene" uid="uid://b1lsroohn1alg" path="res://scenes/control.tscn" id="4_85u2j"]
-[ext_resource type="PackedScene" uid="uid://bbkgvgxwwtdob" path="res://scenes/button.tscn" id="5_xl0gn"]
-[ext_resource type="Script" uid="uid://djivwj07uyp35" path="res://scripts/button.gd" id="6_vqps3"]
+[ext_resource type="PackedScene" uid="uid://gkfjlrjp0wly" path="res://scenes/bullet.tscn" id="2_qrbg1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
 size = Vector2(53, 52)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ktxwe"]
+radius = 734.063
 
 [node name="Tower" type="StaticBody2D"]
+z_index = 5
+collision_layer = 2
 script = ExtResource("1_ktxwe")
 
 [node name="Button" parent="." instance=ExtResource("5_xl0gn")]
@@ -22,27 +23,39 @@ offset_right = 34.0
 offset_bottom = 34.0
 scale = Vector2(-6.58584, -6.52753)
 script = ExtResource("6_vqps3")
+bullet_scene = ExtResource("2_qrbg1")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("1_ay4al")
 
-[node name="Turret" type="Sprite2D" parent="."]
+[node name="Turret" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Turret"]
+rotation = 1.5708
 texture = ExtResource("2_ktxwe")
 offset = Vector2(0, -8.055)
 
-[node name="Flash" type="Marker2D" parent="Turret"]
+[node name="Left" type="Marker2D" parent="Turret"]
+position = Vector2(32, -6)
+
+[node name="Right" type="Marker2D" parent="Turret"]
+position = Vector2(32, 6)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_ktxwe")
 
 [node name="AimRange" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AimRange"]
 shape = SubResource("CircleShape2D_ktxwe")
+
+[node name="ReloadTimer" type="Timer" parent="."]
 
 [node name="Control" parent="." instance=ExtResource("4_85u2j")]
 
 [connection signal="pressed" from="Button" to="Control" method="_on_button_pressed"]
 [connection signal="body_entered" from="AimRange" to="." method="_on_aim_range_body_entered"]
 [connection signal="body_exited" from="AimRange" to="." method="_on_aim_range_body_exited"]
+[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]
