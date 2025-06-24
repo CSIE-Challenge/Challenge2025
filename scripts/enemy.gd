@@ -3,8 +3,8 @@ extends CharacterBody2D
 @export var speed := 300.0
 @export var max_health := 100
 
-var health: int
 var path_follow: PathFollow2D
+var health: int
 var damage: int = 5
 
 @onready var health_bar := $HealthBar
