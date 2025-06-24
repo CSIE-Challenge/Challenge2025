@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://cc8cfvmqxjxvv"]
+[gd_scene load_steps=11 format=4 uid="uid://cc8cfvmqxjxvv"]
 
 [ext_resource type="Script" uid="uid://c72ov43b6lhkm" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_iywne"]
@@ -435,11 +435,15 @@ _data = {
 }
 point_count = 10
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
+bg_color = Color(0.886275, 0.352941, 0.431373, 1)
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_lnu2h")
 tower_scene = ExtResource("2_iywne")
 
 [node name="Spawner" type="Node2D" parent="."]
+visible = false
 script = ExtResource("2_lbhrr")
 enemy_scene = ExtResource("3_lbhrr")
 
@@ -450,6 +454,7 @@ tile_map_data = PackedByteArray("AAD/////AQABAAEAAAD//wAAAQABAAEAAAD//wEAAQABAAE
 tile_set = SubResource("TileSet_gldc4")
 
 [node name="HumanPath" type="Path2D" parent="."]
+visible = false
 curve = SubResource("Curve2D_4xfga")
 
 [node name="ComputerPath" type="Path2D" parent="."]
@@ -479,5 +484,15 @@ offset_bottom = 108.0
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "cost $30 to upgrade"
+
+[node name="HitPoint" type="ProgressBar" parent="."]
+z_index = 1
+offset_left = 725.0
+offset_top = 39.0
+offset_right = 1198.0
+offset_bottom = 59.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_iywne")
+value = 60.0
+show_percentage = false
 
 [connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]

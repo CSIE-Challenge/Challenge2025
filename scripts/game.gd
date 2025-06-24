@@ -7,6 +7,7 @@ const TOWER_COST = 5
 var preview_tower
 var money: int = 0
 var money_per_second: int = 10
+var max_hp: int = 100
 var cost = 30
 var _money_timer := 0.0
 
@@ -15,12 +16,16 @@ var _money_timer := 0.0
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
+@onready var hp_bar = $HitPoint
 
 
 func _ready():
 	preview_tower = tower_scene.instantiate()
 	preview_tower.is_preview = true
 	add_child(preview_tower)
+
+	hp_bar.max_value = max_hp
+	hp_bar.value = max_hp
 
 
 func _process(_delta):
@@ -82,3 +87,7 @@ func upgrade_income() -> void:
 
 func _on_upgrade_pressed() -> void:
 	upgrade_income()
+
+
+func set_hit_point(damage: int):
+	hp_bar.value -= damage
