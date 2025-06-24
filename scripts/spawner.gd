@@ -22,7 +22,6 @@ func _ready():
 	spawn_timer.start()
 
 # Seperate the spawn function for system and opponent in case special needed later
-
 func spawn_enemy(ratio: float, path:Path2D, type: EnemySource):
 	var enemy = enemy_scene.instantiate()
 	var path_follow = PathFollow2D.new()

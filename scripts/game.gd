@@ -6,7 +6,7 @@ var preview_tower
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
-
+@onready var attack_UI: Control = $Attack
 
 func _ready():
 	preview_tower = tower_scene.instantiate()
@@ -19,6 +19,7 @@ func _process(_delta):
 	var cell = tilemap.local_to_map(tilemap.to_local(mouse_pos))
 	var world_pos = tilemap.map_to_local(cell)
 	preview_tower.global_position = tilemap.to_global(world_pos)
+	preview_tower.visible = handle_visibility_of_preview_tower()
 
 	var valid = can_place_tower(cell)
 	set_tower_color(preview_tower, valid)
@@ -50,3 +51,10 @@ func place_tower(cell: Vector2i):
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
 	towers_node.add_child(tower)
+
+func handle_visibility_of_preview_tower():
+	if attack_UI.panel.visible and attack_UI.panel.get_global_rect().has_point(get_global_mouse_position()):
+		return false
+	if attack_UI.open_button.visible and attack_UI.open_button.get_global_rect().has_point(get_global_mouse_position()):
+		return false
+	return true
