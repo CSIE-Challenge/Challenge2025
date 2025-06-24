@@ -4,15 +4,16 @@
 [ext_resource type="Script" uid="uid://3jul3pah8jvl" path="res://scripts/bullet.gd" id="1_y25gk"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y25gk"]
-radius = 7.0
-height = 39.0
+radius = 5.5
+height = 36.0
 
-[node name="Bullet" type="StaticBody2D"]
+[node name="Bullet" type="Area2D"]
 script = ExtResource("1_y25gk")
 
 [node name="Body" type="Sprite2D" parent="."]
+rotation = -1.5708
 texture = ExtResource("1_mkf8s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0.5)
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_y25gk")
