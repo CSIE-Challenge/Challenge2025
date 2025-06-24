@@ -5,6 +5,7 @@ extends CharacterBody2D
 
 var path_follow: PathFollow2D
 var health: int
+var damage: int = 5
 
 @onready var health_bar := $HealthBar
 
@@ -16,7 +17,8 @@ func _ready():
 
 func _process(delta):
 	path_follow.progress += speed * delta
-	if path_follow.progress_ratio >= 1.0:
+	if path_follow.progress_ratio >= 0.99:
+		$"../../../".set_hit_point(damage)
 		queue_free()
 
 	health_bar.rotation = -path_follow.rotation
