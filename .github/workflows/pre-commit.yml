@@ -20,13 +20,14 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install pre-commit
+          pip install pre-commit gitlint
           pre-commit install
-          pre-commit install --hook-type commit-msg
           pre-commit install-hooks
 
       - name: Run pre-commit
         run: |
-          git log -1 --pretty=%B > .git/COMMIT_EDITMSG
           pre-commit run --all-files --hook-stage pre-commit --show-diff-on-failure
-          pre-commit run --hook-stage commit-msg --show-diff-on-failure --commit-msg-filename .git/COMMIT_EDITMSG
+
+      - name: Run gitlint
+        run: |
+          gitlint --debug
