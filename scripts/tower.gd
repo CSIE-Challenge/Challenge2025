@@ -113,7 +113,3 @@ func _on_aim_range_body_exited(body: Node2D) -> void:
 func _on_reload_timer_timeout() -> void:
 	if enemies.size() > 0:
 		shoot()
-
-
-func _unhandled_input(event: InputEvent):
-	push_warning(event)
