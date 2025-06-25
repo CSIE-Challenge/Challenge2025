@@ -1,19 +1,12 @@
-<<<<<<< HEAD
-[gd_scene load_steps=12 format=4 uid="uid://cc8cfvmqxjxvv"]
-=======
-[gd_scene load_steps=11 format=4 uid="uid://cc8cfvmqxjxvv"]
->>>>>>> feat/pause-menu
+[gd_scene load_steps=13 format=4 uid="uid://cc8cfvmqxjxvv"]
 
 [ext_resource type="Script" uid="uid://c72ov43b6lhkm" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_iywne"]
 [ext_resource type="Script" uid="uid://pq1pqh56u0k4" path="res://scripts/spawner.gd" id="2_lbhrr"]
 [ext_resource type="Texture2D" uid="uid://bm7kfvbx4iola" path="res://assets/kenney_tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png" id="3_iywne"]
 [ext_resource type="PackedScene" uid="uid://cvn2rry4egsld" path="res://scenes/enemy.tscn" id="3_lbhrr"]
-<<<<<<< HEAD
 [ext_resource type="PackedScene" uid="uid://chu0uexmmqpr7" path="res://scenes/attack.tscn" id="6_p57ef"]
-=======
-[ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="6_p57ef"]
->>>>>>> feat/pause-menu
+[ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="6_u5sy4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_paxxb"]
 texture = ExtResource("3_iywne")
@@ -493,6 +486,11 @@ theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "cost $30 to upgrade"
 
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("6_u5sy4")]
+process_mode = 3
+offset_top = 50.0
+offset_bottom = 50.0
+
 [node name="HitPoint" type="ProgressBar" parent="."]
 z_index = 1
 offset_left = 725.0
@@ -511,8 +509,5 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 grow_horizontal = 1
 grow_vertical = 1
-
-[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("6_p57ef")]
-process_mode = 3
 
 [connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
