@@ -97,6 +97,7 @@ func set_hit_point(damage: int):
 
 
 func handle_visibility_of_preview_tower():
+	# Not visible on UI panel or button
 	if (
 		attack_ui.panel.visible
 		and attack_ui.panel.get_global_rect().has_point(get_global_mouse_position())
@@ -106,5 +107,14 @@ func handle_visibility_of_preview_tower():
 		attack_ui.open_button.visible
 		and attack_ui.open_button.get_global_rect().has_point(get_global_mouse_position())
 	):
+		return false
+	if (
+		upgrade_button.visible
+		and upgrade_button.get_global_rect().has_point(get_global_mouse_position())
+	):
+		return false
+
+	# Not visible if money is not enough
+	if money < TOWER_COST:
 		return false
 	return true
