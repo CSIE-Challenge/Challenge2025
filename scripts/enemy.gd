@@ -41,9 +41,11 @@ func take_damage(amount: int):
 func die():
 	queue_free()
 
+
 func slow_down():
 	speed_scale = 0.5
 	slow_timer.start(5.0)
 
-func _on_slow_timeout() :
+
+func _on_slow_timeout():
 	speed_scale = 1.0

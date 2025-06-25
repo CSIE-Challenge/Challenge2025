@@ -2,6 +2,7 @@ extends Node2D
 
 const TOWER_COST = 5
 const SKILL_SLOW = 0
+const SKILL_AOE = 1
 
 @export var tower_scene: PackedScene
 
@@ -10,9 +11,8 @@ var money: int = 0
 var money_per_second: int = 10
 var max_hp: int = 100
 var cost = 30
+var cooldown: Array = [0.0, 0.0]
 var _money_timer := 0.0
-
-var cooldown: Array = [0.0]
 
 @onready var money_label: Label = $CanvasLayer/money_display
 @onready var upgrade_button: Button = $CanvasLayer/upgrade
@@ -24,6 +24,8 @@ var cooldown: Array = [0.0]
 @onready var attack_ui: Control = $Attack
 
 @onready var slow_button: Button = $CanvasLayer/skill_slow
+@onready var aoe_button: Button = $CanvasLayer/aoe_damage
+
 
 func _ready():
 	preview_tower = tower_scene.instantiate()
@@ -51,7 +53,14 @@ func _process(_delta):
 		money += money_per_second
 		_money_timer = 0.0
 
-	slow_button.text = "slow down enemy (CD: %.2f)" % maxf(0.0, cooldown[SKILL_SLOW] - Time.get_unix_time_from_system())
+	slow_button.text = (
+		"slow down enemies (CD: %.2f)"
+		% maxf(0.0, cooldown[SKILL_SLOW] - Time.get_unix_time_from_system())
+	)
+	aoe_button.text = (
+		"damage on fastest 5 enemies (CD: %.2f)"
+		% maxf(0.0, cooldown[SKILL_AOE] - Time.get_unix_time_from_system())
+	)
 
 
 func set_tower_color(tower: Node2D, is_valid: bool):
@@ -117,7 +126,7 @@ func handle_visibility_of_preview_tower():
 
 
 func start_cooldown(skill: int, cd: float):
-	cooldown[skill] = Time.get_unix_time_from_system() + cd	
+	cooldown[skill] = Time.get_unix_time_from_system() + cd
 
 
 func is_on_cooldown(skill: int) -> bool:
@@ -125,12 +134,13 @@ func is_on_cooldown(skill: int) -> bool:
 
 
 func slow_down_enemy():
-	var cost: int = 50
+	var skill_cost: int = 50
 	var cd: float = 15.0
-	if money < cost or is_on_cooldown(SKILL_SLOW):
+	if money < skill_cost or is_on_cooldown(SKILL_SLOW):
 		print("fail")
 		return
-	money -= cost
+
+	money -= skill_cost
 	start_cooldown(SKILL_SLOW, cd)
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		enemy.slow_down()
@@ -138,3 +148,25 @@ func slow_down_enemy():
 
 func _on_skill_slow_pressed() -> void:
 	slow_down_enemy()
+
+
+func aoe_damage():
+	var skill_cost: int = 100
+	var cd: float = 60.0
+	if money < skill_cost or is_on_cooldown(SKILL_AOE):
+		print("fail")
+		return
+
+	money -= skill_cost
+	start_cooldown(SKILL_AOE, cd)
+	var enemies := get_tree().get_nodes_in_group("enemies")
+	print(enemies.size())
+	enemies.sort_custom(
+		func(a, b): return a.path_follow.progress_ratio > b.path_follow.progress_ratio
+	)
+	for i in range(min(enemies.size(), 5)):
+		enemies[i].take_damage(50)
+
+
+func _on_aoe_damage_pressed() -> void:
+	aoe_damage()
