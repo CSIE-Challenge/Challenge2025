@@ -17,8 +17,8 @@ var _money_timer := 0.0
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
 
-@onready var hp_bar = $HitPoint
-@onready var attack_ui: Control = $Attack
+@onready var hp_bar = $CanvasLayer/HitPoint
+@onready var attack_ui: Control = $CanvasLayer/Attack
 
 
 func _ready():
