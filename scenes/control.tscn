@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://2rxs7erdhn43" path="res://scripts/control.gd" id="1_5p55f"]
 
 [node name="Control" type="Control"]
+z_index = 1
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
