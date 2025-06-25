@@ -26,6 +26,7 @@ func _ready():
 	if is_preview:
 		apply_preview_appearance()
 	else:
+		AudioManager.tower_place.play()
 		built = true
 		enemy_detector.shape.radius = 0.5 * aim_range
 		reload_timer.wait_time = 60.0 / reload_speed

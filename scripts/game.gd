@@ -29,6 +29,8 @@ func _ready():
 	hp_bar.max_value = max_hp
 	hp_bar.value = max_hp
 
+	AudioManager.background_game.play()
+
 
 func _process(_delta):
 	var mouse_pos = get_global_mouse_position()
@@ -86,6 +88,7 @@ func upgrade_income() -> void:
 		money_per_second += 1
 		money -= cost
 		cost += 30
+		AudioManager.upgrade.play()
 
 
 func _on_upgrade_pressed() -> void:

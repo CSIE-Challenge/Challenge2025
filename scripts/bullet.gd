@@ -12,6 +12,7 @@ var start_position: Vector2
 func _ready() -> void:
 	start_position = global_position
 	body_entered.connect(Callable(self, "_on_body_entered"))
+	AudioManager.tower_shoot.play()
 
 
 func _process(delta):

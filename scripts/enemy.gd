@@ -14,11 +14,14 @@ func _ready():
 	path_follow = get_parent() as PathFollow2D
 	health = max_health
 
+	AudioManager.enemy_move.play()
+
 
 func _process(delta):
 	path_follow.progress += speed * delta
 	if path_follow.progress_ratio >= 0.99:
 		$"../../../".set_hit_point(damage)
+		AudioManager.enemy_attack.play()
 		queue_free()
 
 	health_bar.rotation = -path_follow.rotation
@@ -32,4 +35,5 @@ func take_damage(amount: int):
 
 
 func die():
+	AudioManager.enemy_die.play()
 	queue_free()
