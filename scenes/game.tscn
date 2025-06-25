@@ -485,7 +485,7 @@ theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "cost $30 to upgrade"
 
-[node name="HitPoint" type="ProgressBar" parent="."]
+[node name="HitPoint" type="ProgressBar" parent="CanvasLayer"]
 z_index = 1
 offset_left = 725.0
 offset_top = 39.0
@@ -495,7 +495,7 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_iywne")
 value = 60.0
 show_percentage = false
 
-[node name="Attack" parent="." instance=ExtResource("6_p57ef")]
+[node name="Attack" parent="CanvasLayer" instance=ExtResource("6_p57ef")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0

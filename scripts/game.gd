@@ -17,8 +17,8 @@ var _money_timer := 0.0
 @onready var tilemap: TileMapLayer = $TileMapLayer
 @onready var towers_node: Node2D = $Towers
 
-@onready var hp_bar = $HitPoint
-@onready var attack_ui: Control = $Attack
+@onready var hp_bar = $CanvasLayer/HitPoint
+@onready var attack_ui: Control = $CanvasLayer/Attack
 
 
 func _ready():
@@ -56,6 +56,7 @@ func set_tower_color(tower: Node2D, is_valid: bool):
 
 
 func _unhandled_input(event: InputEvent):
+	push_warning(event)
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var cell = tilemap.local_to_map(tilemap.to_local(get_global_mouse_position()))
 		if can_place_tower(cell):
