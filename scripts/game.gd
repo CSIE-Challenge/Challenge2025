@@ -8,7 +8,7 @@ var preview_tower
 var money: int = 0
 var money_per_second: int = 10
 var max_hp: int = 100
-var cost = 30
+var cost: int = 30
 var _money_timer := 0.0
 
 @onready var money_label: Label = $CanvasLayer/money_display
@@ -35,7 +35,7 @@ func _process(_delta):
 	var cell = tilemap.local_to_map(tilemap.to_local(mouse_pos))
 	var world_pos = tilemap.map_to_local(cell)
 	preview_tower.global_position = tilemap.to_global(world_pos)
-	preview_tower.visible = handle_visibility_of_preview_tower()
+	preview_tower.visible = _handle_visibility_of_preview_tower()
 
 	var valid = can_place_tower(cell)
 	set_tower_color(preview_tower, valid)
@@ -96,7 +96,7 @@ func set_hit_point(damage: int):
 	hp_bar.value -= damage
 
 
-func handle_visibility_of_preview_tower():
+func _handle_visibility_of_preview_tower():
 	if (
 		attack_ui.panel.visible
 		and attack_ui.panel.get_global_rect().has_point(get_global_mouse_position())
