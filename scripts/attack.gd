@@ -66,23 +66,24 @@ func _on_open_button_pressed():
 
 func _spawn_button(enemy: String):
 	var btn = Button.new()
-	#btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	#btn.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	btn.custom_minimum_size = Vector2(150, 175)
+	btn.custom_minimum_size = Vector2(150, 225)
 	btn.flat = true
 	btn.name = enemy
 
+	# For formatting
 	var vbox = VBoxContainer.new()
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
 
+	# Picture
 	var tex = TextureRect.new()
 	tex.texture = load(enemy_list[enemy].icon_path)
 	tex.stretch_mode = TextureRect.STRETCH_SCALE
 	tex.custom_minimum_size = Vector2(150, 150)
 	vbox.add_child(tex)
 
+	# Word Label
 	var cost_label = Label.new()
 	cost_label.text = "Cost: %d" % enemy_list[enemy].cost
 	cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
