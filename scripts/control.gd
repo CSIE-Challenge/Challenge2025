@@ -1,5 +1,6 @@
 extends Control
 
+
 func _ready():
 	visible = false
 
@@ -7,6 +8,7 @@ func _ready():
 func _on_button_pressed() -> void:
 	global_position = get_parent().global_position
 	visible = true
+
 
 func _input(event):
 	if not visible:

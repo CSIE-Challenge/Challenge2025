@@ -504,6 +504,6 @@ offset_bottom = 1080.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
-
 [node name="Control" parent="." instance=ExtResource("6_p57ef")]
+
+[connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
