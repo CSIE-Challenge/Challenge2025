@@ -82,10 +82,10 @@ func _poll() -> void:
 		if ws.get_ready_state() != WebSocketPeer.STATE_OPEN:
 			to_remove.append(ws)
 			continue
-		# var conn = auth_connection(ws)
-		# if conn != null:
-		# conn.connect_to_socket(ws)
-		# to_remove.append(ws)
+		var conn = auth_connection(ws)
+		if conn != null:
+			conn.connect_to_socket(ws)
+			to_remove.append(ws)
 	for ws: WebSocketPeer in to_remove:
 		authing_peers.erase(ws)
 
@@ -114,28 +114,32 @@ func _connect_pending(peer: PendingPeer) -> int:
 func _process(_delta: float) -> void:
 	_poll()
 
+
 #endregion
 
+
 #region Interface for registering/removing authorized connections
-# func register_connection() -> WebSocketConnection:
-# 	var conn = WebSocketConnection.new()
-# 	add_child(conn)
-# 	return conn
+func register_connection() -> WebSocketConnection:
+	var conn = WebSocketConnection.new()
+	add_child(conn)
+	return conn
 
-# func remove_connection(conn: WebSocketConnection) -> void:
-# 	conn.queue_free()
 
-# func auth_connection(ws: WebSocketPeer) -> WebSocketConnection:
-# 	if ws.get_available_packet_count() <= 0:
-# 		return null
-# 	var pkt: PackedByteArray = ws.get_packet()
-# 	if ws.was_string_packet():
-# 		var token = pkt.get_string_from_utf8()
-# 		var connections = get_children()
-# 		for conn: WebSocketConnection in connections:
-# 			if conn.authenticate(token):
-# 				ws.send_text("authentication OK")
-# 				return conn
-# 	ws.send_text("authentication FAIL")
-# 	return null
+func remove_connection(conn: WebSocketConnection) -> void:
+	conn.queue_free()
+
+
+func auth_connection(ws: WebSocketPeer) -> WebSocketConnection:
+	if ws.get_available_packet_count() <= 0:
+		return null
+	var pkt: PackedByteArray = ws.get_packet()
+	if ws.was_string_packet():
+		var token = pkt.get_string_from_utf8()
+		var connections = get_children()
+		for conn: WebSocketConnection in connections:
+			if conn.authenticate(token):
+				ws.send_text("authentication OK")
+				return conn
+	ws.send_text("authentication FAIL")
+	return null
 #endregion
