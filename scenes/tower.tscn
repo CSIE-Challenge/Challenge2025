@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://c8xtcx5gblp84"]
+[gd_scene load_steps=10 format=3 uid="uid://c8xtcx5gblp84"]
 
 [ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="1_ay4al"]
-[ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://assets/kenney_tower-defense-top-down/tower.gd" id="1_ktxwe"]
+[ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scripts/tower.gd" id="1_ktxwe"]
 [ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="2_ktxwe"]
+[ext_resource type="PackedScene" uid="uid://gkfjlrjp0wly" path="res://scenes/bullet.tscn" id="2_xl0gn"]
 [ext_resource type="PackedScene" uid="uid://b1lsroohn1alg" path="res://scenes/control.tscn" id="4_85u2j"]
 [ext_resource type="PackedScene" uid="uid://bbkgvgxwwtdob" path="res://scenes/button.tscn" id="5_xl0gn"]
 [ext_resource type="Script" uid="uid://djivwj07uyp35" path="res://scripts/button.gd" id="6_vqps3"]
@@ -17,6 +18,7 @@ radius = 734.063
 z_index = 5
 collision_layer = 2
 script = ExtResource("1_ktxwe")
+bullet_scene = ExtResource("2_xl0gn")
 
 [node name="Button" parent="." instance=ExtResource("5_xl0gn")]
 offset_left = 26.0
