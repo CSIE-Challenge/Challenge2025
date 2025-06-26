@@ -2,10 +2,11 @@ class_name WebSocketConnection
 extends Node
 
 signal received_text(msg: String)
+signal received_bytes(pkt: PackedByteArray)
 signal client_connected
 signal client_disconnected
 
-const TOKEN_LEN: int = 4
+const TOKEN_LEN: int = 16
 static var connection_id_counter = 101
 
 var id: int
@@ -50,6 +51,12 @@ func send_text(msg: String) -> Error:
 	return _socket.send_text(msg)
 
 
+func send_bytes(pkt: PackedByteArray) -> Error:
+	if _socket == null:
+		return ERR_UNAVAILABLE
+	return _socket.send(pkt)
+
+
 func _get_message() -> Variant:
 	if !_has_message():
 		return null
@@ -74,6 +81,8 @@ func _poll() -> void:
 		var recv = _get_message()
 		if typeof(recv) == TYPE_STRING:
 			received_text.emit(recv)
+		elif typeof(recv) == TYPE_PACKED_BYTE_ARRAY:
+			received_bytes.emit(recv)
 		else:
 			print("Error: unknown msg type")
 
