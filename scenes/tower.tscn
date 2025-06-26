@@ -12,7 +12,7 @@ size = Vector2(53, 52)
 radius = 734.063
 
 [node name="Tower" type="StaticBody2D"]
-z_index = 5
+z_index = 8
 collision_layer = 2
 script = ExtResource("1_ktxwe")
 bullet_scene = ExtResource("2_qrbg1")
