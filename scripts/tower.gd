@@ -1,5 +1,7 @@
 extends StaticBody2D
 
+signal tower_selected
+
 @export var bullet_scene: PackedScene
 
 var damage: int = 2
@@ -31,6 +33,7 @@ func _ready():
 		enemy_detector.shape.radius = 0.5 * aim_range
 		reload_timer.wait_time = 60.0 / reload_speed
 		reload_timer.start()
+		$Button.connect("pressed", self._on_button_pressed)
 
 
 func apply_preview_appearance():
@@ -114,3 +117,7 @@ func _on_aim_range_body_exited(body: Node2D) -> void:
 func _on_reload_timer_timeout() -> void:
 	if enemies.size() > 0:
 		shoot()
+
+
+func _on_button_pressed():
+	emit_signal("tower_selected", self)

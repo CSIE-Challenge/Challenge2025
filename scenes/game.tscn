@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://cc8cfvmqxjxvv"]
+[gd_scene load_steps=14 format=4 uid="uid://cc8cfvmqxjxvv"]
 
 [ext_resource type="Script" uid="uid://c72ov43b6lhkm" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_iywne"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://bm7kfvbx4iola" path="res://assets/kenney_tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png" id="3_iywne"]
 [ext_resource type="PackedScene" uid="uid://cvn2rry4egsld" path="res://scenes/enemy.tscn" id="3_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://chu0uexmmqpr7" path="res://scenes/attack.tscn" id="6_p57ef"]
+[ext_resource type="PackedScene" uid="uid://dn0pas1ennupu" path="res://scenes/tower_ui.tscn" id="7_gee14"]
+[ext_resource type="Script" uid="uid://cqdgiw4bsxdkv" path="res://scripts/tower_ui.gd" id="8_0tnpc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_paxxb"]
 texture = ExtResource("3_iywne")
@@ -505,5 +507,10 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="Control" parent="." instance=ExtResource("6_p57ef")]
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="TowerUI" parent="CanvasLayer2" instance=ExtResource("7_gee14")]
+script = ExtResource("8_0tnpc")
 
 [connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
