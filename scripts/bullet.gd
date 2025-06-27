@@ -10,18 +10,20 @@ extends Area2D
 @export var pid_ki := 1.0
 @export var pid_kd := 2.0
 
+var target: Node2D = null
+var start_position: Vector2
+
 # --- Internal PID state ---
 var _pid_error_sum := 0.0
 var _pid_last_error := 0.0
 
-var target: Node2D = null
-var start_position: Vector2
 
 func _ready() -> void:
 	start_position = global_position
 	_pid_error_sum = 0.0
 	_pid_last_error = 0.0
 	body_entered.connect(Callable(self, "_on_body_entered"))
+
 
 func _process(delta):
 	# check if the target is still valid
@@ -35,12 +37,13 @@ func _process(delta):
 	var traverse_distance = global_position.distance_to(start_position)
 
 	# The bullet must be above the tower after it is fired
-	if traverse_distance >= 10.0: # 10 pixels
+	if traverse_distance >= 10.0:  # 10 pixels
 		self.z_index = 20
 
 	# Check if the bullet has traveled beyond the maximum distance
 	if traverse_distance >= max_distance:
 		queue_free()
+
 
 func _process_bullet_movement(delta: float) -> void:
 	# 1. Compute current heading error
@@ -62,6 +65,7 @@ func _process_bullet_movement(delta: float) -> void:
 
 	# 4. Move forward in the new heading
 	position += Vector2.RIGHT.rotated(rotation) * speed * delta
+
 
 func _on_body_entered(body: Node2D) -> void:
 	body.take_damage(damage)
