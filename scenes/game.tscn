@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://cc8cfvmqxjxvv"]
+[gd_scene load_steps=14 format=4 uid="uid://cc8cfvmqxjxvv"]
 
 [ext_resource type="Script" uid="uid://c72ov43b6lhkm" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_iywne"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cvn2rry4egsld" path="res://scenes/enemy.tscn" id="3_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://chu0uexmmqpr7" path="res://scenes/attack.tscn" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="6_u5sy4"]
+[ext_resource type="Script" uid="uid://c7cpk53lm0010" path="res://scripts/bullet_manager.gd" id="8_gee14"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_paxxb"]
 texture = ExtResource("3_iywne")
@@ -461,7 +462,7 @@ curve = SubResource("Curve2D_4xfga")
 [node name="SystemPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_paxxb")
 
-[node name="Towers" type="Node2D" parent="."]
+[node name="TowerManager" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
@@ -523,6 +524,9 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 grow_horizontal = 1
 grow_vertical = 1
+
+[node name="BulletManager" type="Node2D" parent="."]
+script = ExtResource("8_gee14")
 
 [connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
 [connection signal="pressed" from="CanvasLayer/skill_slow" to="." method="_on_skill_slow_pressed"]

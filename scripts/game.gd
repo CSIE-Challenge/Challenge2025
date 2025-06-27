@@ -18,7 +18,7 @@ var _money_timer := 0.0
 @onready var upgrade_button: Button = $CanvasLayer/upgrade
 
 @onready var tilemap: TileMapLayer = $TileMapLayer
-@onready var towers_node: Node2D = $Towers
+@onready var tower_manager: Node2D = $TowerManager
 
 @onready var hp_bar = $CanvasLayer/HitPoint
 @onready var attack_ui: Control = $CanvasLayer/Attack
@@ -93,7 +93,7 @@ func place_tower(cell: Vector2i):
 	var tower = tower_scene.instantiate()
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
-	towers_node.add_child(tower)
+	tower_manager.add_child(tower)
 
 
 func upgrade_income() -> void:

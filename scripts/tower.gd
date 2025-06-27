@@ -83,20 +83,18 @@ func shoot() -> void:
 	if target == null:
 		return
 
-	var bullet = bullet_scene.instantiate()
+	var origin
+	var orientation = $Turret.rotation
 
+	origin = Vector2(0, 0)
 	if current_shoot_turret == 0:
-		bullet.global_position = $Turret/Left.global_position
+		origin = $Turret/Left.global_position
 		current_shoot_turret = 1
 	else:
-		bullet.global_position = $Turret/Right.global_position
+		origin = $Turret/Right.global_position
 		current_shoot_turret = 0
 
-	bullet.damage = damage
-	bullet.rotation = $Turret.rotation
-	bullet.target = target
-
-	get_tree().current_scene.add_child(bullet)
+	SignalBus.create_bullet.emit(origin, orientation, target)
 	# print("Bullet fired at target: ", target.name)
 
 
