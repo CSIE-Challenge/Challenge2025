@@ -506,8 +506,6 @@ offset_bottom = 1080.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="Control" parent="." instance=ExtResource("6_p57ef")]
-
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
 
 [node name="TowerUI" parent="CanvasLayer2" instance=ExtResource("7_gee14")]
