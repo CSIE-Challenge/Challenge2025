@@ -486,6 +486,25 @@ theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "cost $30 to upgrade"
 
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("6_u5sy4")]
+process_mode = 3
+offset_top = 50.0
+offset_bottom = 50.0
+
+[node name="skill_slow" type="Button" parent="CanvasLayer"]
+offset_top = 100.0
+offset_right = 320.0
+offset_bottom = 158.0
+theme_override_font_sizes/font_size = 36
+text = "slow down enemy"
+
+[node name="aoe_damage" type="Button" parent="CanvasLayer"]
+offset_top = 150.0
+offset_right = 115.0
+offset_bottom = 181.0
+theme_override_font_sizes/font_size = 36
+text = "AOE damages"
+
 [node name="HitPoint" type="ProgressBar" parent="CanvasLayer"]
 z_index = 1
 offset_left = 725.0
@@ -508,3 +527,5 @@ grow_vertical = 1
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource("6_u5sy4")]
 
 [connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
+[connection signal="pressed" from="CanvasLayer/skill_slow" to="." method="_on_skill_slow_pressed"]
+[connection signal="pressed" from="CanvasLayer/aoe_damage" to="." method="_on_aoe_damage_pressed"]
