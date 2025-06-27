@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bm7kfvbx4iola" path="res://assets/kenney_tower-defense-top-down/Tilesheet/towerDefense_tilesheet.png" id="3_iywne"]
 [ext_resource type="PackedScene" uid="uid://cvn2rry4egsld" path="res://scenes/enemy.tscn" id="3_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://chu0uexmmqpr7" path="res://scenes/attack.tscn" id="6_p57ef"]
-[ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="6_u5sy4"]
+[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="6_u5sy4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_paxxb"]
 texture = ExtResource("3_iywne")
