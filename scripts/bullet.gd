@@ -5,14 +5,28 @@ extends Area2D
 @export var max_distance := 800.0
 @export var damage := 3
 
+# --- PID gains (tune these!) ---
+@export var pid_kp := 2.5
+@export var pid_ki := 1.0
+@export var pid_kd := 2.0
+
+# --- Internal PID state ---
+var _pid_error_sum := 0.0
+var _pid_last_error := 0.0
+
 var target: Node2D = null
 var start_position: Vector2
 
+# --- Timing variables ---
+var _start_time := 0.0
+var _hit_time := 0.0
 
 func _ready() -> void:
 	start_position = global_position
+	_pid_error_sum = 0.0
+	_pid_last_error = 0.0
 	body_entered.connect(Callable(self, "_on_body_entered"))
-
+	_start_time = Time.get_ticks_msec() / 1000.0  # Record start time in seconds
 
 func _process(delta):
 	# check if the target is still valid
@@ -22,7 +36,6 @@ func _process(delta):
 
 	# main logic for bullet movement
 	_process_bullet_movement(delta)
-
 
 	var traverse_distance = global_position.distance_to(start_position)
 
@@ -35,13 +48,29 @@ func _process(delta):
 		queue_free()
 
 func _process_bullet_movement(delta: float) -> void:
+	# 1. Compute current heading error
 	var dir = (target.global_position - global_position).normalized()
 	var desired_angle = dir.angle()
+	# wrap error to [-PI,PI]
+	var error = wrapf(desired_angle - rotation, -PI, PI)
 
-	rotation = lerp_angle(rotation, desired_angle, rotation_speed * delta)
+	# 2. PID terms
+	_pid_error_sum += error * delta
+	var derivative = (error - _pid_last_error) / delta
+	_pid_last_error = error
+
+	var control = pid_kp * error + pid_ki * _pid_error_sum + pid_kd * derivative
+	control = clamp(control, -rotation_speed, rotation_speed)  # Limit control to rotation speed
+
+	# 3. Apply steering (rotation rate limited by control)
+	rotation += control * delta
+
+	# 4. Move forward in the new heading
 	position += Vector2.RIGHT.rotated(rotation) * speed * delta
 
 func _on_body_entered(body: Node2D) -> void:
+	_hit_time = Time.get_ticks_msec() / 1000.0  # Record hit time in seconds
+	var elapsed = _hit_time - _start_time
+	print("Bullet travel time: %.3f seconds" % elapsed)
 	body.take_damage(damage)
-	# print("Bullet Hit: ", body.name)
 	queue_free()
