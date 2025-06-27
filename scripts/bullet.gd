@@ -17,16 +17,11 @@ var _pid_last_error := 0.0
 var target: Node2D = null
 var start_position: Vector2
 
-# --- Timing variables ---
-var _start_time := 0.0
-var _hit_time := 0.0
-
 func _ready() -> void:
 	start_position = global_position
 	_pid_error_sum = 0.0
 	_pid_last_error = 0.0
 	body_entered.connect(Callable(self, "_on_body_entered"))
-	_start_time = Time.get_ticks_msec() / 1000.0  # Record start time in seconds
 
 func _process(delta):
 	# check if the target is still valid
@@ -69,8 +64,5 @@ func _process_bullet_movement(delta: float) -> void:
 	position += Vector2.RIGHT.rotated(rotation) * speed * delta
 
 func _on_body_entered(body: Node2D) -> void:
-	_hit_time = Time.get_ticks_msec() / 1000.0  # Record hit time in seconds
-	var elapsed = _hit_time - _start_time
-	print("Bullet travel time: %.3f seconds" % elapsed)
 	body.take_damage(damage)
 	queue_free()
