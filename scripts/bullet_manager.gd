@@ -21,8 +21,7 @@ var bullet_texture = preload(
 )
 var shape = preload("res://assets/collision/bullet.tres")
 
-# Dictionary[RID, Bullet]
-var bullets: Dictionary = {}
+var bullets: Dictionary[RID, Bullet] = {}
 
 
 func _init_bullet(origin: Vector2, orientation: float, target: Node2D):
