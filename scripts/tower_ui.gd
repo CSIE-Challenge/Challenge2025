@@ -1,7 +1,7 @@
 extends Control
 
-signal upgrade_button_pressed;
-signal sell_button_pressed;
+signal upgrade_button_pressed
+signal sell_button_pressed
 
 var selected_tower: Tower = null
 
