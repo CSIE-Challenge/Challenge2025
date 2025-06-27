@@ -16,7 +16,7 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="tower_upgrade_button" type="Button" parent="Panel"]
+[node name="TowerUpgradeButton" type="Button" parent="Panel"]
 layout_mode = 0
 offset_left = 6.57424
 offset_right = 81.5742
@@ -24,7 +24,7 @@ offset_bottom = 31.0
 scale = Vector2(0.359761, 0.635866)
 text = "Upgrade"
 
-[node name="sell_button" type="Button" parent="Panel"]
+[node name="SellButton" type="Button" parent="Panel"]
 layout_mode = 0
 offset_left = 12.5224
 offset_top = 20.1211
@@ -33,5 +33,5 @@ offset_bottom = 51.1211
 scale = Vector2(0.409065, 0.645008)
 text = "Sell"
 
-[connection signal="pressed" from="Panel/tower_upgrade_button" to="." method="_on_tower_upgrade_button_pressed"]
-[connection signal="pressed" from="Panel/sell_button" to="." method="_on_sell_button_pressed"]
+[connection signal="pressed" from="Panel/TowerUpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="pressed" from="Panel/SellButton" to="." method="_on_sell_button_pressed"]

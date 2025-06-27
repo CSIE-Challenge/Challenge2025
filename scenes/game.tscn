@@ -532,3 +532,5 @@ grow_vertical = 1
 [connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
 [connection signal="pressed" from="CanvasLayer/skill_slow" to="." method="_on_skill_slow_pressed"]
 [connection signal="pressed" from="CanvasLayer/aoe_damage" to="." method="_on_aoe_damage_pressed"]
+[connection signal="sell_button_pressed" from="CanvasLayer2/TowerUI" to="." method="_on_tower_sold"]
+[connection signal="upgrade_button_pressed" from="CanvasLayer2/TowerUI" to="." method="_on_tower_upgraded"]
