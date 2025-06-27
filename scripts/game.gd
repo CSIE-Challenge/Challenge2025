@@ -16,16 +16,16 @@ var cooldown: Array = [0.0, 0.0]
 var _money_timer := 0.0
 
 @onready var hp_bar = $HitPoint
-@onready var money_label: Label = $money_display
-@onready var score_label: Label = $score_display
+@onready var money_label: Label = $MoneyDisplay
+@onready var score_label: Label = $ScoreDisplay
 
 @onready var tilemap: TileMapLayer = $SubViewportContainer/SubViewport/TileMapLayer
 @onready var towers_node: Node2D = $Towers
 @onready var attack_ui: Control = $CanvasLayer/Shop
 
-@onready var upgrade_button: Button = $CanvasLayer/upgrade
-@onready var slow_button: Button = $CanvasLayer/skill_slow
-@onready var aoe_button: Button = $CanvasLayer/aoe_damage
+@onready var upgrade_button: Button = $CanvasLayer/Upgrade
+@onready var slow_button: Button = $CanvasLayer/SkillSlow
+@onready var aoe_button: Button = $CanvasLayer/AoeDamage
 
 
 func _ready():
@@ -161,6 +161,8 @@ func slow_down_enemy():
 
 	money -= skill_cost
 	start_cooldown(SKILL_SLOW, cd)
+
+	# traverse over enemies on selfside
 	for path_follow in $OpponentPath.get_children():
 		for enemy in path_follow.get_children():
 			enemy.slow_down()
@@ -168,9 +170,6 @@ func slow_down_enemy():
 	for path_follow in $SystemPath.get_children():
 		for enemy in path_follow.get_children():
 			enemy.slow_down()
-
-	# for enemy in get_tree().get_nodes_in_group("enemies"):
-	# 	enemy.slow_down()
 
 
 func _on_skill_slow_pressed() -> void:

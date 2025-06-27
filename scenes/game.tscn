@@ -473,7 +473,7 @@ curve = SubResource("Curve2D_u5sy4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
-[node name="money_display" type="Label" parent="."]
+[node name="MoneyDisplay" type="Label" parent="."]
 custom_minimum_size = Vector2(10, 10)
 offset_left = 200.0
 offset_top = 1000.0
@@ -485,7 +485,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "Money: $0"
 
-[node name="score_display" type="Label" parent="."]
+[node name="ScoreDisplay" type="Label" parent="."]
 custom_minimum_size = Vector2(10, 10)
 offset_left = 500.0
 offset_top = 1000.0
@@ -509,7 +509,7 @@ show_percentage = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="upgrade" type="Button" parent="CanvasLayer"]
+[node name="Upgrade" type="Button" parent="CanvasLayer"]
 custom_minimum_size = Vector2(10, -50)
 offset_left = 750.0
 offset_top = 840.0
@@ -519,7 +519,7 @@ theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "cost $30 to upgrade"
 
-[node name="skill_slow" type="Button" parent="CanvasLayer"]
+[node name="SkillSlow" type="Button" parent="CanvasLayer"]
 offset_left = 750.0
 offset_top = 920.0
 offset_right = 1170.0
@@ -527,7 +527,7 @@ offset_bottom = 980.0
 theme_override_font_sizes/font_size = 36
 text = "slow down enemy"
 
-[node name="aoe_damage" type="Button" parent="CanvasLayer"]
+[node name="AoeDamage" type="Button" parent="CanvasLayer"]
 offset_left = 750.0
 offset_top = 1000.0
 offset_right = 1170.0
@@ -537,6 +537,6 @@ text = "AOE damages"
 
 [node name="Shop" parent="CanvasLayer" instance=ExtResource("6_p57ef")]
 
-[connection signal="pressed" from="CanvasLayer/upgrade" to="." method="_on_upgrade_pressed"]
-[connection signal="pressed" from="CanvasLayer/skill_slow" to="." method="_on_skill_slow_pressed"]
-[connection signal="pressed" from="CanvasLayer/aoe_damage" to="." method="_on_aoe_damage_pressed"]
+[connection signal="pressed" from="CanvasLayer/Upgrade" to="." method="_on_upgrade_pressed"]
+[connection signal="pressed" from="CanvasLayer/SkillSlow" to="." method="_on_skill_slow_pressed"]
+[connection signal="pressed" from="CanvasLayer/AoeDamage" to="." method="_on_aoe_damage_pressed"]

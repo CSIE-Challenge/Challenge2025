@@ -1,7 +1,7 @@
 extends Node2D
 
-@onready var chat_input = $chat_input
-@onready var message_box = $message_box
+@onready var chat_input = $ChatInput
+@onready var message_box = $MessageBox
 
 
 func _on_send_button_pressed() -> void:

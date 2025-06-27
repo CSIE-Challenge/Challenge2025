@@ -15,9 +15,13 @@ process_mode = 3
 offset_top = 50.0
 offset_bottom = 50.0
 
-[node name="left_player" parent="." instance=ExtResource("3_wm3ai")]
+[node name="LeftPlayer" parent="." instance=ExtResource("3_wm3ai")]
 
-[node name="chat_input" type="LineEdit" parent="."]
+[node name="RightPlayer" parent="." instance=ExtResource("3_wm3ai")]
+position = Vector2(1170, 0)
+is_ai = true
+
+[node name="ChatInput" type="LineEdit" parent="."]
 offset_left = 752.0
 offset_top = 685.0
 offset_right = 1102.0
@@ -25,7 +29,7 @@ offset_bottom = 735.0
 theme_override_font_sizes/font_size = 30
 placeholder_text = "message"
 
-[node name="message_label" type="Label" parent="."]
+[node name="MessageLabel" type="Label" parent="."]
 offset_left = 750.0
 offset_right = 1170.0
 offset_bottom = 137.0
@@ -35,7 +39,7 @@ text = "Message"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="message_box" type="TextEdit" parent="."]
+[node name="MessageBox" type="TextEdit" parent="."]
 offset_left = 750.0
 offset_top = 150.0
 offset_right = 1170.0
@@ -46,7 +50,7 @@ text = "
 "
 wrap_mode = 1
 
-[node name="send_button" type="Button" parent="."]
+[node name="SendButton" type="Button" parent="."]
 offset_left = 1105.0
 offset_top = 685.0
 offset_right = 1170.0
@@ -54,8 +58,4 @@ offset_bottom = 735.0
 theme_override_font_sizes/font_size = 20
 text = "Send"
 
-[node name="right_player" parent="." instance=ExtResource("3_wm3ai")]
-position = Vector2(1170, 0)
-is_ai = true
-
-[connection signal="pressed" from="send_button" to="." method="_on_send_button_pressed"]
+[connection signal="pressed" from="SendButton" to="." method="_on_send_button_pressed"]
