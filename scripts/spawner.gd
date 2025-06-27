@@ -37,11 +37,11 @@ func spawn_enemy(ratio: float, path: Path2D, type: EnemySource):
 			opponent_enemy_spawned += 1
 
 
-func spawn_system_enemy():
+func _spawn_system_enemy():
 	spawn_enemy(0.0, system_path, EnemySource.SYSTEM)
 
 
-func spawn_opponent_enemy():
+func _spawn_opponent_enemy():
 	spawn_enemy(0.0, opponent_path, EnemySource.OPPONENT)
 
 
@@ -50,6 +50,6 @@ func _on_spawn_timeout():
 		spawn_timer.stop()
 		return
 	if system_enemy_spawned < max_system_enemy:
-		spawn_system_enemy()
+		_spawn_system_enemy()
 	if opponent_enemy_spawned < max_opponent_enemy:
-		spawn_opponent_enemy()
+		_spawn_opponent_enemy()
