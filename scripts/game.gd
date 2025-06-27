@@ -12,6 +12,7 @@ var money_per_second: int = 10
 var max_hp: int = 100
 var cost = 30
 var cooldown: Array = [0.0, 0.0]
+var cell_to_tower: Dictionary = {}
 var _money_timer := 0.0
 
 @onready var money_label: Label = $CanvasLayer/money_display
@@ -76,6 +77,17 @@ func _unhandled_input(event: InputEvent):
 		if can_place_tower(cell):
 			place_tower(cell)
 
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+		var cell = tilemap.local_to_map(tilemap.to_local(get_global_mouse_position()))
+		var tower: Tower = cell_to_tower.get(cell, null)
+		if tower == null:
+			return
+
+		var upgrade_cost: int = tower.level * 10
+		if money >= upgrade_cost:
+			money -= upgrade_cost
+			tower.upgrade()
+
 
 func can_place_tower(cell: Vector2i) -> bool:
 	var tile_data = tilemap.get_cell_tile_data(cell)
@@ -83,6 +95,9 @@ func can_place_tower(cell: Vector2i) -> bool:
 		return false
 
 	if money < TOWER_COST:
+		return false
+
+	if cell_to_tower.has(cell):
 		return false
 
 	return tile_data.get_custom_data("buildable") == true
@@ -94,6 +109,7 @@ func place_tower(cell: Vector2i):
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
 	towers_node.add_child(tower)
+	cell_to_tower[cell] = tower
 
 
 func upgrade_income() -> void:

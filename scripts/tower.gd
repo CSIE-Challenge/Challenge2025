@@ -1,3 +1,4 @@
+class_name Tower
 extends StaticBody2D
 
 @export var bullet_scene: PackedScene
@@ -30,6 +31,8 @@ func _ready():
 		enemy_detector.shape.radius = 0.5 * aim_range
 		reload_timer.wait_time = 60.0 / reload_speed
 		reload_timer.start()
+
+	add_to_group("towers")
 
 
 func apply_preview_appearance():
@@ -113,3 +116,13 @@ func _on_aim_range_body_exited(body: Node2D) -> void:
 func _on_reload_timer_timeout() -> void:
 	if enemies.size() > 0:
 		shoot()
+
+
+func upgrade() -> void:
+	level += 1
+	damage += 1
+	aim_range += 100
+	reload_speed += 60
+	rotation_speed += 20
+	enemy_detector.shape.radius = 0.5 * aim_range
+	reload_timer.wait_time = 60.0 / reload_speed
