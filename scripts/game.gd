@@ -38,11 +38,12 @@ func _process(_delta):
 	var cell = tilemap.local_to_map(tilemap.to_local(mouse_pos))
 	var world_pos = tilemap.map_to_local(cell)
 
-	preview_tower.global_position = tilemap.to_global(world_pos)
-	preview_tower.visible = handle_visibility_of_preview_tower()
+	if not tower_ui.visible:
+		preview_tower.global_position = tilemap.to_global(world_pos)
+		preview_tower.visible = handle_visibility_of_preview_tower()
 
-	var valid = can_place_tower(cell)
-	set_tower_color(preview_tower, valid)
+		var valid = can_place_tower(cell)
+		set_tower_color(preview_tower, valid)
 
 	upgrade_button.text = "cost $%d to upgrade" % cost
 	money_label.text = "Money  :  $ " + str(money)
