@@ -5,6 +5,7 @@ const SKILL_SLOW = 0
 const SKILL_AOE = 1
 
 @export var tower_scene: PackedScene
+@export var is_ai: bool
 
 var preview_tower
 var money: int = 0
@@ -14,15 +15,15 @@ var cost = 30
 var cooldown: Array = [0.0, 0.0]
 var _money_timer := 0.0
 
-@onready var money_label: Label = $CanvasLayer/money_display
-@onready var upgrade_button: Button = $CanvasLayer/upgrade
+@onready var hp_bar = $HitPoint
+@onready var money_label: Label = $money_display
+@onready var score_label: Label = $score_display
 
-@onready var tilemap: TileMapLayer = $TileMapLayer
+@onready var tilemap: TileMapLayer = $SubViewportContainer/SubViewport/TileMapLayer
 @onready var towers_node: Node2D = $Towers
+@onready var attack_ui: Control = $CanvasLayer/Shop
 
-@onready var hp_bar = $CanvasLayer/HitPoint
-@onready var attack_ui: Control = $CanvasLayer/Attack
-
+@onready var upgrade_button: Button = $CanvasLayer/upgrade
 @onready var slow_button: Button = $CanvasLayer/skill_slow
 @onready var aoe_button: Button = $CanvasLayer/aoe_damage
 
@@ -30,21 +31,24 @@ var _money_timer := 0.0
 func _ready():
 	preview_tower = tower_scene.instantiate()
 	preview_tower.is_preview = true
-	add_child(preview_tower)
+	$SubViewportContainer/SubViewport.add_child(preview_tower)
 
 	hp_bar.max_value = max_hp
 	hp_bar.value = max_hp
+	if is_ai:
+		$CanvasLayer.visible = false
 
 
 func _process(_delta):
-	var mouse_pos = get_global_mouse_position()
-	var cell = tilemap.local_to_map(tilemap.to_local(mouse_pos))
-	var world_pos = tilemap.map_to_local(cell)
-	preview_tower.global_position = tilemap.to_global(world_pos)
-	preview_tower.visible = handle_visibility_of_preview_tower()
+	if not is_ai:
+		var mouse_pos = get_global_mouse_position()
+		var cell = tilemap.local_to_map(tilemap.to_local(mouse_pos))
+		var world_pos = tilemap.map_to_local(cell)
+		preview_tower.global_position = tilemap.to_global(world_pos)
+		preview_tower.visible = handle_visibility_of_preview_tower()
 
-	var valid = can_place_tower(cell)
-	set_tower_color(preview_tower, valid)
+		var valid = can_place_tower(cell)
+		set_tower_color(preview_tower, valid)
 
 	upgrade_button.text = "cost $%d to upgrade" % cost
 	money_label.text = "Money  :  $ " + str(money)
@@ -71,10 +75,15 @@ func set_tower_color(tower: Node2D, is_valid: bool):
 
 
 func _unhandled_input(event: InputEvent):
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		var cell = tilemap.local_to_map(tilemap.to_local(get_global_mouse_position()))
-		if can_place_tower(cell):
-			place_tower(cell)
+	if not is_ai:
+		if (
+			event is InputEventMouseButton
+			and event.pressed
+			and event.button_index == MOUSE_BUTTON_LEFT
+		):
+			var cell = tilemap.local_to_map(tilemap.to_local(get_global_mouse_position()))
+			if can_place_tower(cell):
+				place_tower(cell)
 
 
 func can_place_tower(cell: Vector2i) -> bool:

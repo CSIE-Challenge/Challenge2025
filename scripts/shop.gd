@@ -17,10 +17,10 @@ var enemy_list = [
 	}
 ]
 
-@onready var enemy_grid = $AttackPanel/VBoxContainer/MarginContainer/EnemyList
-@onready var panel = $AttackPanel
+@onready var enemy_grid = $ShopPanel/VBoxContainer/MarginContainer/EnemyList
+@onready var panel = $ShopPanel
 @onready var open_button = $OpenButton
-@onready var close_button = $AttackPanel/VBoxContainer/MarginContainer2/CloseButton
+@onready var close_button = $ShopPanel/VBoxContainer/MarginContainer2/CloseButton
 
 
 func switch_panel_mode():
