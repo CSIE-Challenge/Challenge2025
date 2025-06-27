@@ -15,25 +15,31 @@ func _ready() -> void:
 
 
 func _process(delta):
+	# check if the target is still valid
 	if target == null or not is_instance_valid(target):
 		queue_free()
 		return
 
+	# main logic for bullet movement
+	_process_bullet_movement(delta)
+
+
+	var traverse_distance = global_position.distance_to(start_position)
+
+	# The bullet must be above the tower after it is fired
+	if traverse_distance >= 10.0: # 10 pixels
+		self.z_index = 20
+
+	# Check if the bullet has traveled beyond the maximum distance
+	if traverse_distance >= max_distance:
+		queue_free()
+
+func _process_bullet_movement(delta: float) -> void:
 	var dir = (target.global_position - global_position).normalized()
 	var desired_angle = dir.angle()
 
 	rotation = lerp_angle(rotation, desired_angle, rotation_speed * delta)
 	position += Vector2.RIGHT.rotated(rotation) * speed * delta
-
-	var traverse_distance = global_position.distance_to(start_position)
-
-	# The bullet must be above the tower after it is fired
-	if traverse_distance >= 10.0:
-		self.z_index = 20
-
-	if traverse_distance >= max_distance:
-		queue_free()
-
 
 func _on_body_entered(body: Node2D) -> void:
 	body.take_damage(damage)
