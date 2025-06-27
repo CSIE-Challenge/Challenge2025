@@ -34,3 +34,4 @@ scale = Vector2(0.409065, 0.645008)
 text = "Sell"
 
 [connection signal="pressed" from="Panel/tower_upgrade_button" to="." method="_on_tower_upgrade_button_pressed"]
+[connection signal="pressed" from="Panel/sell_button" to="." method="_on_sell_button_pressed"]

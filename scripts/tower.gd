@@ -124,7 +124,6 @@ func _on_reload_timer_timeout() -> void:
 
 
 func upgrade() -> void:
-	print("a")
 	level += 1
 	damage += 1
 	aim_range += 100

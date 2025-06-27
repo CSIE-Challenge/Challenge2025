@@ -7,7 +7,6 @@ const SKILL_AOE = 1
 
 @export var tower_scene: PackedScene
 
-var occupied_cells := {}
 var preview_tower
 var money: int = 0
 var money_per_second: int = 10
@@ -106,7 +105,7 @@ func can_place_tower(cell: Vector2i) -> bool:
 	if money < TOWER_COST:
 		return false
 
-	if occupied_cells.has(cell):
+	if cell_to_tower.has(cell):
 		return false
 
 	return tile_data.get_custom_data("buildable") == true
@@ -118,7 +117,6 @@ func place_tower(cell: Vector2i):
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
 	tower.connect("tower_selected", self._on_tower_selected)
-	occupied_cells[cell] = true
 	towers_node.add_child(tower)
 	cell_to_tower[cell] = tower
 
