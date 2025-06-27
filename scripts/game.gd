@@ -161,8 +161,16 @@ func slow_down_enemy():
 
 	money -= skill_cost
 	start_cooldown(SKILL_SLOW, cd)
-	for enemy in get_tree().get_nodes_in_group("enemies"):
-		enemy.slow_down()
+	for path_follow in $OpponentPath.get_children():
+		for enemy in path_follow.get_children():
+			enemy.slow_down()
+
+	for path_follow in $SystemPath.get_children():
+		for enemy in path_follow.get_children():
+			enemy.slow_down()
+
+	# for enemy in get_tree().get_nodes_in_group("enemies"):
+	# 	enemy.slow_down()
 
 
 func _on_skill_slow_pressed() -> void:
