@@ -58,4 +58,5 @@ offset_bottom = 735.0
 theme_override_font_sizes/font_size = 20
 text = "Send"
 
+[connection signal="text_submitted" from="ChatInput" to="." method="_on_chat_input_text_submitted"]
 [connection signal="pressed" from="SendButton" to="." method="_on_send_button_pressed"]
