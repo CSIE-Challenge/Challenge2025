@@ -6,7 +6,7 @@ repos:
         stages: [commit-msg]
 
   - repo: https://github.com/Scony/godot-gdscript-toolkit
-    rev: 4.2.2
+    rev: 4.3.3
     hooks:
       - id: gdlint
         name: gdlint
