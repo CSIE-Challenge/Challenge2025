@@ -12,7 +12,9 @@ var money_per_second: int = 10
 var max_hp: int = 100
 var cost = 30
 var cooldown: Array = [0.0, 0.0]
+
 var cell_to_tower: Dictionary = {}
+
 var _money_timer := 0.0
 
 @onready var money_label: Label = $CanvasLayer/money_display
