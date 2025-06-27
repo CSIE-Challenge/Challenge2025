@@ -1,3 +1,4 @@
+class_name Game
 extends Node2D
 
 const TOWER_COST = 5
@@ -6,13 +7,15 @@ const SKILL_AOE = 1
 
 @export var tower_scene: PackedScene
 
-var occupied_cells := {}
 var preview_tower
 var money: int = 0
 var money_per_second: int = 10
 var max_hp: int = 100
 var cost: int = 30
 var cooldown: Array = [0.0, 0.0]
+
+var cell_to_tower: Dictionary = {}
+
 var _money_timer := 0.0
 
 @onready var money_label: Label = $CanvasLayer/money_display
@@ -27,7 +30,7 @@ var _money_timer := 0.0
 @onready var slow_button: Button = $CanvasLayer/skill_slow
 @onready var aoe_button: Button = $CanvasLayer/aoe_damage
 
-@onready var tower_ui := $CanvasLayer2/TowerUI
+@onready var tower_ui := $CanvasLayer/TowerUI
 
 
 func _ready():
@@ -81,6 +84,17 @@ func _unhandled_input(event: InputEvent):
 		if can_place_tower(cell):
 			place_tower(cell)
 
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+		var cell = tilemap.local_to_map(tilemap.to_local(get_global_mouse_position()))
+		var tower: Tower = cell_to_tower.get(cell, null)
+		if tower == null:
+			return
+
+		var upgrade_cost: int = tower.level * 10
+		if money >= upgrade_cost:
+			money -= upgrade_cost
+			tower.upgrade()
+
 
 func can_place_tower(cell: Vector2i) -> bool:
 	var tile_data = tilemap.get_cell_tile_data(cell)
@@ -90,7 +104,7 @@ func can_place_tower(cell: Vector2i) -> bool:
 	if money < TOWER_COST:
 		return false
 
-	if occupied_cells.has(cell):
+	if cell_to_tower.has(cell):
 		return false
 
 	return tile_data.get_custom_data("buildable") == true
@@ -101,9 +115,26 @@ func place_tower(cell: Vector2i):
 	var tower = tower_scene.instantiate()
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
-	tower.connect("tower_selected", self._on_tower_selected)
-	occupied_cells[cell] = true
+	tower.connect("tower_selected", tower_ui.on_tower_selected)
 	towers_node.add_child(tower)
+	cell_to_tower[cell] = tower
+
+
+func _on_tower_upgraded(tower: Tower):
+	var levelup_cost: int = tower.level * 10
+	if money >= levelup_cost:
+		money -= levelup_cost
+		tower.upgrade()
+
+
+func _on_tower_sold(tower: Tower):
+	if tower == null:
+		return
+	var cell := tilemap.local_to_map(tilemap.to_local(tower.global_position))
+	var refund := tower.level * 10
+	money += refund
+	tower.queue_free()
+	cell_to_tower.erase(cell)
 
 
 func upgrade_income() -> void:
@@ -189,8 +220,3 @@ func aoe_damage():
 
 func _on_aoe_damage_pressed() -> void:
 	aoe_damage()
-
-
-func _on_tower_selected(tower):
-	tower_ui.global_position = tower.global_position
-	tower_ui.visible = true
