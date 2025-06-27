@@ -2,6 +2,8 @@ class_name Tower
 
 extends StaticBody2D
 
+signal tower_selected
+
 @export var bullet_scene: PackedScene
 
 var damage: int = 2
@@ -27,11 +29,13 @@ var is_preview := false
 func _ready():
 	if is_preview:
 		apply_preview_appearance()
+		$Button.visible = false
 	else:
 		built = true
 		enemy_detector.shape.radius = 0.5 * aim_range
 		reload_timer.wait_time = 60.0 / reload_speed
 		reload_timer.start()
+		$Button.connect("pressed", self._on_button_pressed)
 
 	add_to_group("towers")
 
@@ -120,6 +124,7 @@ func _on_reload_timer_timeout() -> void:
 
 
 func upgrade() -> void:
+	print("a")
 	level += 1
 	damage += 1
 	aim_range += 100
@@ -127,3 +132,7 @@ func upgrade() -> void:
 	rotation_speed += 20
 	enemy_detector.shape.radius = 0.5 * aim_range
 	reload_timer.wait_time = 60.0 / reload_speed
+
+
+func _on_button_pressed():
+	emit_signal("tower_selected", self)

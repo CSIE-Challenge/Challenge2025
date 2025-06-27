@@ -1,3 +1,4 @@
+class_name Game
 extends Node2D
 
 const TOWER_COST = 5
@@ -6,11 +7,12 @@ const SKILL_AOE = 1
 
 @export var tower_scene: PackedScene
 
+var occupied_cells := {}
 var preview_tower
 var money: int = 0
 var money_per_second: int = 10
 var max_hp: int = 100
-var cost = 30
+var cost: int = 30
 var cooldown: Array = [0.0, 0.0]
 
 var cell_to_tower: Dictionary = {}
@@ -29,6 +31,8 @@ var _money_timer := 0.0
 @onready var slow_button: Button = $CanvasLayer/skill_slow
 @onready var aoe_button: Button = $CanvasLayer/aoe_damage
 
+@onready var tower_ui := $CanvasLayer2/TowerUI
+
 
 func _ready():
 	preview_tower = tower_scene.instantiate()
@@ -37,17 +41,20 @@ func _ready():
 
 	hp_bar.max_value = max_hp
 	hp_bar.value = max_hp
+	tower_ui.game = self
 
 
 func _process(_delta):
 	var mouse_pos = get_global_mouse_position()
 	var cell = tilemap.local_to_map(tilemap.to_local(mouse_pos))
 	var world_pos = tilemap.map_to_local(cell)
-	preview_tower.global_position = tilemap.to_global(world_pos)
-	preview_tower.visible = handle_visibility_of_preview_tower()
 
-	var valid = can_place_tower(cell)
-	set_tower_color(preview_tower, valid)
+	if not tower_ui.visible:
+		preview_tower.global_position = tilemap.to_global(world_pos)
+		preview_tower.visible = _handle_visibility_of_preview_tower()
+
+		var valid = can_place_tower(cell)
+		set_tower_color(preview_tower, valid)
 
 	upgrade_button.text = "cost $%d to upgrade" % cost
 	money_label.text = "Money  :  $ " + str(money)
@@ -99,7 +106,7 @@ func can_place_tower(cell: Vector2i) -> bool:
 	if money < TOWER_COST:
 		return false
 
-	if cell_to_tower.has(cell):
+	if occupied_cells.has(cell):
 		return false
 
 	return tile_data.get_custom_data("buildable") == true
@@ -110,6 +117,8 @@ func place_tower(cell: Vector2i):
 	var tower = tower_scene.instantiate()
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
+	tower.connect("tower_selected", self._on_tower_selected)
+	occupied_cells[cell] = true
 	towers_node.add_child(tower)
 	cell_to_tower[cell] = tower
 
@@ -129,8 +138,7 @@ func set_hit_point(damage: int):
 	hp_bar.value -= damage
 
 
-func handle_visibility_of_preview_tower():
-	# Not visible on UI panel or button
+func _handle_visibility_of_preview_tower():
 	if (
 		attack_ui.panel.visible
 		and attack_ui.panel.get_global_rect().has_point(get_global_mouse_position())
@@ -198,3 +206,9 @@ func aoe_damage():
 
 func _on_aoe_damage_pressed() -> void:
 	aoe_damage()
+
+
+func _on_tower_selected(tower):
+	tower_ui.global_position = tower.global_position
+	tower_ui.selected_tower = tower
+	tower_ui.visible = true
