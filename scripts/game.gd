@@ -30,7 +30,7 @@ var _money_timer := 0.0
 @onready var slow_button: Button = $CanvasLayer/skill_slow
 @onready var aoe_button: Button = $CanvasLayer/aoe_damage
 
-@onready var tower_ui := $CanvasLayer2/TowerUI
+@onready var tower_ui := $CanvasLayer/TowerUI
 
 
 func _ready():
