@@ -2,7 +2,7 @@ extends Area2D
 
 @export var speed := 400.0
 @export var rotation_speed := 3.0
-@export var time_to_live := 5.0 # seconds
+@export var time_to_live := 5.0  # seconds
 @export var damage := 3
 
 var target: Node2D = null
@@ -18,7 +18,8 @@ func _ready() -> void:
 
 func _elapsed_time() -> float:
 	return Time.get_ticks_msec() / 1000.0 - _start_time
-	
+
+
 func _process(delta):
 	if target == null or not is_instance_valid(target):
 		queue_free()
