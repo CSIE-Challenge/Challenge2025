@@ -62,8 +62,7 @@ func _on_bullet_body_entered(bullet_area_rid: RID, status: int, instance_id: int
 	if status != PhysicsServer2D.AREA_BODY_ADDED:
 		return
 	var object = instance_from_id(instance_id)
-	# I hate this, but it is probably the only way unless Enemy is an identifiable object type
-	if object.scene_file_path != "res://scenes/enemy.tscn":
+	if not (object is Node2D and object.is_in_group("EnemyGroup")):
 		return
 	object.take_damage(damage)
 	_destroy_bullet(bullets[bullet_area_rid])

@@ -33,6 +33,10 @@ project/assembly_name="Challenge2025"
 
 enabled=PackedStringArray()
 
+[global_group]
+
+EnemyGroup=""
+
 [input]
 
 Pause={
