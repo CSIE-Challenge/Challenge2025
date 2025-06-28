@@ -28,7 +28,7 @@ var enemy_list = {
 @onready var panel = $ShopPanel
 @onready var open_button = $OpenButton
 @onready var close_button = $ShopPanel/VBoxContainer/MarginContainer2/CloseButton
-@onready var game = get_tree().current_scene
+@onready var game = $"../.."  # Game scene
 
 
 func switch_panel_mode():
