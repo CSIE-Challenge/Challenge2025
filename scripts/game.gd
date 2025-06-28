@@ -14,6 +14,31 @@ var money_per_second: int = 10
 var max_hp: int = 100
 var cost: int = 30
 var cooldown: Array = [0.0, 0.0]
+
+var enemy_list = {
+	"plane":
+	{
+		icon_path =
+		"res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile270.png",
+		cost = 100,
+		income = 1
+	},
+	"tank":
+	{
+		icon_path =
+		"res://assets/kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile204.png",
+		cost = 200,
+		income = 5
+	},
+	"robot":
+	{
+		icon_path =
+		"res://.godot/imported/towerDefense_tile245.png-a634484bb16333c0b20a93f4d77d94ba.ctex",
+		cost = 300,
+		income = 10
+	}
+}
+
 var _money_timer := 0.0
 
 @onready var hp_bar = $HitPoint
@@ -55,6 +80,9 @@ func _process(_delta):
 		_money_timer = 0.0
 
 
+# place tower
+
+
 func set_tower_color(tower: Node2D, is_valid: bool):
 	var color = Color(0, 1, 0, 0.5) if is_valid else Color(1, 0, 0, 0.5)
 	for child in tower.get_children():
@@ -88,6 +116,13 @@ func can_place_tower(cell: Vector2i) -> bool:
 	return tile_data.get_custom_data("buildable") == true
 
 
+func _handle_visibility_of_preview_tower():
+	# Not visible if money is not enough
+	if money < TOWER_COST:
+		return false
+	return true
+
+
 func place_tower(cell: Vector2i):
 	money -= TOWER_COST
 	var tower = tower_scene.instantiate()
@@ -96,6 +131,9 @@ func place_tower(cell: Vector2i):
 	tower.connect("tower_selected", self._on_tower_selected)
 	occupied_cells[cell] = true
 	towers_node.add_child(tower)
+
+
+# update values
 
 
 func upgrade_income() -> void:
@@ -109,11 +147,7 @@ func set_hit_point(damage: int):
 	hp_bar.value -= damage
 
 
-func _handle_visibility_of_preview_tower():
-	# Not visible if money is not enough
-	if money < TOWER_COST:
-		return false
-	return true
+# skills
 
 
 func start_cooldown(skill: int, cd: float):
@@ -160,6 +194,17 @@ func aoe_damage():
 	)
 	for i in range(min(enemies.size(), 5)):
 		enemies[i].take_damage(50)
+
+
+func enemy_selected(enemy: String):
+	if money < enemy_list[enemy].cost:
+		return
+	money -= enemy_list[enemy].cost
+	money_per_second += enemy_list[enemy].income
+	print("Enemy selected:", enemy)
+
+
+# TowerUI
 
 
 func _on_tower_selected(tower):

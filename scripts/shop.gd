@@ -1,34 +1,11 @@
 extends Control
 
-var enemy_list = {
-	"plane":
-	{
-		icon_path =
-		"res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile270.png",
-		cost = 100,
-		income = 1
-	},
-	"tank":
-	{
-		icon_path =
-		"res://assets/kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile204.png",
-		cost = 200,
-		income = 5
-	},
-	"robot":
-	{
-		icon_path =
-		"res://.godot/imported/towerDefense_tile245.png-a634484bb16333c0b20a93f4d77d94ba.ctex",
-		cost = 300,
-		income = 10
-	}
-}
-
 @onready var enemy_grid = $ShopPanel/VBoxContainer/MarginContainer/EnemyList
 @onready var panel = $ShopPanel
 @onready var open_button = $OpenButton
 @onready var close_button = $ShopPanel/VBoxContainer/MarginContainer2/CloseButton
 @onready var game = $"../../LeftPlayer"  # Game scene
+@onready var enemy_list = game.enemy_list
 
 
 func switch_panel_mode():
@@ -49,11 +26,7 @@ func _ready():
 
 
 func _on_enemy_pressed(enemy: String):
-	if game.money < enemy_list[enemy].cost:
-		return
-	game.money -= enemy_list[enemy].cost
-	game.money_per_second += enemy_list[enemy].income
-	print("Avatar selected:", enemy)
+	game.enemy_selected(enemy)
 
 
 func _on_close_button_pressed():
