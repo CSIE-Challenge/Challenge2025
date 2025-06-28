@@ -9,16 +9,26 @@ enum EnemySource { SYSTEM, OPPONENT }
 
 var opponent_enemy_spawned := 0
 var system_enemy_spawned := 0
+var system_path
+var opponent_path
 
 @onready var spawn_timer: Timer = $Timer
-@onready var system_path: Path2D = $"../SystemPath"
-@onready var opponent_path: Path2D = $"../OpponentPath"
+@onready var system_paths := [$"../SystemPath", $"../SystemPath2"]
+@onready var opponent_paths := [$"../OpponentPath", $"../OpponentPath2"]
 
 
 func _ready():
+	get_parent().connect("selected_map_index", _on_map_selected)
+
 	spawn_timer.wait_time = spawn_interval
 	spawn_timer.timeout.connect(_on_spawn_timeout)
 	spawn_timer.start()
+
+
+func _on_map_selected(index):
+	print(index)
+	system_path = system_paths[index]
+	opponent_path = opponent_paths[index]
 
 
 # Seperate the spawn function for system and opponent in case special needed later

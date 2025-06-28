@@ -1,11 +1,14 @@
 extends Node2D
 
+signal selected_map_index(index: int)
+
 const TOWER_COST = 5
 const SKILL_SLOW = 0
 const SKILL_AOE = 1
 
 @export var tower_scene: PackedScene
 
+var tilemap
 var occupied_cells := {}
 var preview_tower
 var money: int = 0
@@ -18,7 +21,7 @@ var _money_timer := 0.0
 @onready var money_label: Label = $CanvasLayer/money_display
 @onready var upgrade_button: Button = $CanvasLayer/upgrade
 
-@onready var tilemap: TileMapLayer = $TileMapLayer
+@onready var tilemaps := [$TileMapLayer, $TileMapLayer2]
 @onready var towers_node: Node2D = $Towers
 
 @onready var hp_bar = $CanvasLayer/HitPoint
@@ -31,12 +34,21 @@ var _money_timer := 0.0
 
 
 func _ready():
+	_show_random_map()
 	preview_tower = tower_scene.instantiate()
 	preview_tower.is_preview = true
 	add_child(preview_tower)
 
 	hp_bar.max_value = max_hp
 	hp_bar.value = max_hp
+
+
+func _show_random_map():
+	var index = randi() % tilemaps.size()
+	emit_signal("selected_map_index", index)
+	for i in tilemaps.size():
+		tilemaps[i].visible = (i == index)
+	tilemap = tilemaps[index]
 
 
 func _process(_delta):
