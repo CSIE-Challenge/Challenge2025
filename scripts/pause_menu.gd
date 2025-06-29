@@ -2,13 +2,11 @@ extends Control
 
 
 func pause():
-	print("Game paused")
 	get_tree().paused = true
 	self.visible = true
 
 
 func resume():
-	print("Game resumed")
 	get_tree().paused = false
 	self.visible = false
 
