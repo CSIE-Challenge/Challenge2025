@@ -23,6 +23,8 @@ var shape = preload("res://assets/collision/bullet.tres")
 
 var bullets: Dictionary[RID, Bullet] = {}
 
+@onready var my_player = get_parent()
+
 
 func _init_bullet(origin: Vector2, orientation: float, target: Node2D):
 	var bullet := Bullet.new()
@@ -49,7 +51,9 @@ func _init_bullet(origin: Vector2, orientation: float, target: Node2D):
 	bullets[bullet.area_rid] = bullet
 
 
-func _on_create_bullet(origin: Vector2, orientation: float, target: Node2D):
+func _on_create_bullet(origin: Vector2, orientation: float, target: Node2D, player: Node2D):
+	if player != my_player:
+		return
 	_init_bullet(origin, orientation, target)
 
 

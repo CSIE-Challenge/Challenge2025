@@ -18,6 +18,7 @@ var targets = []
 
 var built: bool = false
 var is_preview := false
+@onready var player = get_parent().get_parent()
 
 @onready var turret = $Turret
 @onready var enemy_detector = $AimRange/CollisionShape2D
@@ -98,7 +99,7 @@ func shoot() -> void:
 		origin = $Turret/Right.global_position
 		current_shoot_turret = 0
 
-	SignalBus.create_bullet.emit(origin, orientation, target)
+	SignalBus.create_bullet.emit(origin, orientation, target, player)
 	# print("Bullet fired at target: ", target.name)
 
 
