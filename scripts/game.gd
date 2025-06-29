@@ -21,7 +21,7 @@ var _money_timer := 0.0
 @onready var money_label: Label = $CanvasLayer/money_display
 @onready var upgrade_button: Button = $CanvasLayer/upgrade
 
-@onready var tilemaps := [$TileMapLayer, $TileMapLayer2]
+@onready var tilemaps := $Maps
 @onready var towers_node: Node2D = $Towers
 
 @onready var hp_bar = $CanvasLayer/HitPoint
@@ -44,11 +44,12 @@ func _ready():
 
 
 func _show_random_map():
-	var index = randi() % tilemaps.size()
+	var children = tilemaps.get_children()
+	var index = randi() % children.size()
 	emit_signal("selected_map_index", index)
-	for i in tilemaps.size():
-		tilemaps[i].visible = (i == index)
-	tilemap = tilemaps[index]
+	for i in children.size():
+		children[i].visible = (i == index)
+	tilemap = children[index]
 
 
 func _process(_delta):

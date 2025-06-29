@@ -13,8 +13,8 @@ var system_path
 var opponent_path
 
 @onready var spawn_timer: Timer = $Timer
-@onready var system_paths := [$"../SystemPath", $"../SystemPath2"]
-@onready var opponent_paths := [$"../OpponentPath", $"../OpponentPath2"]
+@onready var system_paths = $"../SystemPaths"
+@onready var opponent_paths = $"../OpponentPaths"
 
 
 func _ready():
@@ -27,8 +27,10 @@ func _ready():
 
 func _on_map_selected(index):
 	print(index)
-	system_path = system_paths[index]
-	opponent_path = opponent_paths[index]
+	var system_path_children = system_paths.get_children()
+	var opponent_path_children = opponent_paths.get_children()
+	system_path = system_path_children[index]
+	opponent_path = opponent_path_children[index]
 
 
 # Seperate the spawn function for system and opponent in case special needed later

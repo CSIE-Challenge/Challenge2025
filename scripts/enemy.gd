@@ -25,7 +25,7 @@ func _ready():
 func _process(delta):
 	path_follow.progress += speed * delta * speed_scale
 	if path_follow.progress_ratio >= 0.99:
-		$"../../../".set_hit_point(damage)
+		$"../../../../".set_hit_point(damage)
 		queue_free()
 
 	health_bar.rotation = -path_follow.rotation
