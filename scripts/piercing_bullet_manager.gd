@@ -5,6 +5,7 @@ extends Node2D
 @export var max_distance := 1200.0
 @export var damage := 3
 
+
 class Bullet:
 	var target: Node2D = null
 	var origin: Vector2
@@ -82,7 +83,9 @@ func _physics_process(delta: float) -> void:
 		if !is_instance_valid(bullet.target):
 			removal.push_back(bullet.area_rid)
 			continue
-		bullet.orientation = lerp_angle(bullet.orientation, bullet.desired_angle, rotation_speed * delta)
+		bullet.orientation = lerp_angle(
+			bullet.orientation, bullet.desired_angle, rotation_speed * delta
+		)
 		bullet.position += Vector2.RIGHT.rotated(bullet.orientation) * speed * delta
 
 		var traverse_distance = bullet.position.distance_to(bullet.origin)
