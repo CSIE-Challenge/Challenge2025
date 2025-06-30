@@ -1,25 +1,25 @@
 [gd_scene load_steps=7 format=3 uid="uid://06a5ftby2hhl"]
 
-[ext_resource type="Script" uid="uid://b45mi4xr810qx" path="res://scripts/ui.gd" id="1_yev5y"]
-[ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="2_gdt2y"]
-[ext_resource type="PackedScene" uid="uid://cc8cfvmqxjxvv" path="res://scenes/game.tscn" id="3_wm3ai"]
-[ext_resource type="Script" uid="uid://d32bqko5ns673" path="res://scripts/player_buttons.gd" id="4_8dubc"]
-[ext_resource type="PackedScene" uid="uid://chu0uexmmqpr7" path="res://scenes/shop.tscn" id="4_gdt2y"]
-[ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="5_wm3ai"]
+[ext_resource type="Script" uid="uid://b45mi4xr810qx" path="res://scripts/match.gd" id="1_mv342"]
+[ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="2_6dstc"]
+[ext_resource type="PackedScene" uid="uid://cc8cfvmqxjxvv" path="res://scenes/game.tscn" id="3_et4mf"]
+[ext_resource type="Script" uid="uid://d32bqko5ns673" path="res://scripts/player_buttons.gd" id="4_4bnf7"]
+[ext_resource type="PackedScene" uid="uid://chu0uexmmqpr7" path="res://scenes/shop.tscn" id="5_d32o3"]
+[ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="6_mlbdm"]
 
-[node name="UI" type="Node2D"]
-script = ExtResource("1_yev5y")
+[node name="Match" type="Node2D"]
+script = ExtResource("1_mv342")
 
 [node name="PauseMenuCanvas" type="CanvasLayer" parent="."]
 
-[node name="PauseMenu" parent="PauseMenuCanvas" instance=ExtResource("2_gdt2y")]
+[node name="PauseMenu" parent="PauseMenuCanvas" instance=ExtResource("2_6dstc")]
 process_mode = 3
 offset_top = 50.0
 offset_bottom = 50.0
 
-[node name="LeftPlayer" parent="." instance=ExtResource("3_wm3ai")]
+[node name="LeftPlayer" parent="." instance=ExtResource("3_et4mf")]
 
-[node name="RightPlayer" parent="." instance=ExtResource("3_wm3ai")]
+[node name="RightPlayer" parent="." instance=ExtResource("3_et4mf")]
 position = Vector2(1170, 0)
 is_ai = true
 
@@ -71,7 +71,7 @@ theme_override_font_sizes/font_size = 20
 text = "Send"
 
 [node name="PlayerButtons" type="CanvasLayer" parent="."]
-script = ExtResource("4_8dubc")
+script = ExtResource("4_4bnf7")
 
 [node name="Upgrade" type="Button" parent="PlayerButtons"]
 custom_minimum_size = Vector2(10, -50)
@@ -99,8 +99,8 @@ offset_bottom = 1060.0
 theme_override_font_sizes/font_size = 36
 text = "AOE damages"
 
-[node name="Shop" parent="PlayerButtons" instance=ExtResource("4_gdt2y")]
-script = ExtResource("5_wm3ai")
+[node name="Shop" parent="PlayerButtons" instance=ExtResource("5_d32o3")]
+script = ExtResource("6_mlbdm")
 
 [connection signal="text_submitted" from="Message/ChatInput" to="." method="_on_chat_input_text_submitted"]
 [connection signal="pressed" from="Message/SendButton" to="." method="_on_send_button_pressed"]
