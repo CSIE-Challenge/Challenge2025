@@ -2,6 +2,12 @@ class_name WebAgent
 extends Agent
 
 enum CommandType { BUILD, SELL, UPGRADE, USE_SKILL, GET_MAP, GET_PLAYER_STATE, GET_OPPONENT_STATE }
+enum CommandReturnCode {
+	OK,
+	ERR_ILLFORMED_COMMAND,
+	ERR_DOES_NOT_EXIST,
+	ERR_ILLEGAL_ARG_TYPES,
+}
 
 
 class CommandHandler:
@@ -28,14 +34,8 @@ class CommandHandler:
 		return _handler.callv(args)
 
 
-enum CommandReturnCode {
-	OK,
-	ERR_ILLFORMED_COMMAND,
-	ERR_DOES_NOT_EXIST,
-	ERR_ILLEGAL_ARG_TYPES,
-}
-
 const MIN_COMMAND_INTERVAL_MSEC = 5
+@export var port: int = 13842
 var _ws: WebSocketConnection = null
 var _last_command: float = -1
 var _command_handlers: Dictionary = {}  # command id -> command handler
