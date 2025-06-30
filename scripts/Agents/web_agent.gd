@@ -35,10 +35,11 @@ class CommandHandler:
 
 
 const MIN_COMMAND_INTERVAL_MSEC = 5
-@export var port: int = 13842
 var _ws: WebSocketConnection = null
 var _last_command: float = -1
 var _command_handlers: Dictionary = {}  # command id -> command handler
+
+@onready var api_server = $APIServer
 
 
 func _register_command_handlers() -> void:

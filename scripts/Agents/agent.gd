@@ -3,19 +3,23 @@ extends Node
 
 enum TowerType { BASIC }
 enum SkillType { SLOW_DOWN, DAMAGE }
+@onready var game = self.get_parent()
 
 
-func build(_position: Array[int], _type: TowerType) -> bool:
+func build(position: Vector2i, _type: TowerType) -> bool:
+	if not game.can_build_tower(position):
+		print("[Agent] Cannot Build Tower at ", position)
+		return false
+	print("[Agent] Can Build Tower at ", position)
+	return true
+
+
+func sell(_position: Vector2i) -> bool:
 	# TODO
 	return true
 
 
-func sell(_position: Array[int]) -> bool:
-	# TODO
-	return true
-
-
-func upgrade(_position: Array[int]) -> bool:
+func upgrade(_position: Vector2i) -> bool:
 	# TODO
 	return true
 

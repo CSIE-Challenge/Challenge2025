@@ -6,6 +6,7 @@ const SKILL_AOE = 1
 
 @export var tower_scene: PackedScene
 @export var is_ai: bool
+@export var agent_scene: PackedScene
 
 var occupied_cells := {}
 var preview_tower
@@ -55,6 +56,7 @@ func _ready():
 	preview_tower = tower_scene.instantiate()
 	preview_tower.is_preview = true
 	$SubViewportContainer/SubViewport.add_child(preview_tower)
+	self.add_child(agent_scene.instantiate())
 
 	hp_bar.max_value = max_hp
 	hp_bar.value = max_hp
