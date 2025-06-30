@@ -26,7 +26,6 @@ func _ready():
 
 
 func _on_map_selected(index):
-	print(index)
 	var system_path_children = system_paths.get_children()
 	var opponent_path_children = opponent_paths.get_children()
 	system_path = system_path_children[index]
