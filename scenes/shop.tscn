@@ -1,24 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://chu0uexmmqpr7"]
+[gd_scene load_steps=0 format=3 uid="uid://chu0uexmmqpr7"]
 
-[ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/attack.gd" id="1_nursx"]
-
-[node name="Attack" type="Control"]
+[node name="Shop" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_nursx")
 
 [node name="OpenButton" type="Button" parent="."]
 layout_mode = 2
 offset_left = 1770.0
 offset_right = 1920.0
 offset_bottom = 50.0
-text = "Attack"
+text = "Shop"
 
-[node name="AttackPanel" type="PanelContainer" parent="."]
+[node name="ShopPanel" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -28,26 +25,26 @@ offset_left = -300.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="AttackPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ShopPanel"]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="Label" type="Label" parent="AttackPanel/VBoxContainer"]
+[node name="Label" type="Label" parent="ShopPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_font_sizes/font_size = 65
-text = "Attack"
+text = "Shop"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="AttackPanel/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ShopPanel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="EnemyList" type="GridContainer" parent="AttackPanel/VBoxContainer/MarginContainer"]
+[node name="EnemyList" type="GridContainer" parent="ShopPanel/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(150, 100)
 layout_mode = 2
 size_flags_vertical = 0
@@ -55,13 +52,13 @@ theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 20
 columns = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="AttackPanel/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="ShopPanel/VBoxContainer"]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_right = 100
 
-[node name="CloseButton" type="Button" parent="AttackPanel/VBoxContainer/MarginContainer2"]
+[node name="CloseButton" type="Button" parent="ShopPanel/VBoxContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_vertical = 8
 text = "Close"

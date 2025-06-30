@@ -1,0 +1,31 @@
+[gd_scene load_steps=0 format=3 uid="uid://dn0pas1ennupu"]
+
+[node name="TowerUI" type="Control"]
+z_index = 1
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(3.19429, 1.59037)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 6.57424
+offset_right = 81.5742
+offset_bottom = 31.0
+scale = Vector2(0.359761, 0.635866)
+text = "Upgrade"
+
+[node name="Button2" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 12.5224
+offset_top = 20.1211
+offset_right = 47.5224
+offset_bottom = 51.1211
+scale = Vector2(0.409065, 0.645008)
+text = "Sell"

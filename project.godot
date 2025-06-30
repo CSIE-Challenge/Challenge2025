@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Challenge2025"
-run/main_scene="uid://cc8cfvmqxjxvv"
+run/main_scene="uid://cdex8rnl6lny2"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SignalBus="*res://scripts/signal_bus.gd"
 
 [display]
 
@@ -28,6 +32,10 @@ project/assembly_name="Challenge2025"
 [editor_plugins]
 
 enabled=PackedStringArray()
+
+[global_group]
+
+EnemyGroup=""
 
 [input]
 
