@@ -53,6 +53,38 @@ shape = SubResource("CircleShape2D_ktxwe")
 
 [node name="ReloadTimer" type="Timer" parent="."]
 
+[node name="TowerUI" type="Control" parent="."]
+z_index = 1
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(3.19429, 1.59037)
+
+[node name="Panel" type="Panel" parent="TowerUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TowerUpgradeButton" type="Button" parent="TowerUI/Panel"]
+layout_mode = 0
+offset_left = 6.57424
+offset_right = 81.5742
+offset_bottom = 31.0
+scale = Vector2(0.359761, 0.635866)
+text = "Upgrade"
+
+[node name="TowerSellButton" type="Button" parent="TowerUI/Panel"]
+layout_mode = 0
+offset_left = 12.5224
+offset_top = 20.1211
+offset_right = 47.5224
+offset_bottom = 51.1211
+scale = Vector2(0.409065, 0.645008)
+text = "Sell"
+
 [connection signal="body_entered" from="AimRange" to="." method="_on_aim_range_body_entered"]
 [connection signal="body_exited" from="AimRange" to="." method="_on_aim_range_body_exited"]
 [connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]
+[connection signal="pressed" from="TowerUI/Panel/TowerUpgradeButton" to="." method="_on_tower_upgrade_button_pressed"]
+[connection signal="pressed" from="TowerUI/Panel/TowerSellButton" to="." method="_on_tower_sell_button_pressed"]
