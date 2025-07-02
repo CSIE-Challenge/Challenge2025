@@ -1,8 +1,11 @@
 class_name Agent
 extends Node
 
+enum AgentType { HUMAN, AI, NIL }
 enum TowerType { BASIC }
 enum SkillType { SLOW_DOWN, DAMAGE }
+var type: AgentType = AgentType.NIL
+
 @onready var game = self.get_parent()
 
 

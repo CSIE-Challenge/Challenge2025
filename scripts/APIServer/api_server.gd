@@ -2,6 +2,7 @@ class_name APIServer
 extends Node
 
 enum { CONNECT_FAILED, CONNECT_PENDING, CONNECT_OK }
+
 static var _instance: APIServer = null
 @export var handshake_timeout_msec: int = 3000
 @export var port: int = 7749
@@ -9,8 +10,9 @@ var tcp_server: TCPServer = TCPServer.new()
 var pending_peers: Array[PendingPeer] = []
 var authing_peers: Array[WebSocketPeer] = []
 
-
 #region Server singleton
+
+
 static func get_instance() -> APIServer:
 	return _instance
 
@@ -18,7 +20,7 @@ static func get_instance() -> APIServer:
 func _ready() -> void:
 	_instance = self
 	assert(listen() == OK)
-	print("Started server on port " + str(port))
+	print("[API Server] Listening to port: ", port)
 
 
 #endregion

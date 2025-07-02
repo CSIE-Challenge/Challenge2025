@@ -39,12 +39,10 @@ var _ws: WebSocketConnection = null
 var _last_command: float = -1
 var _command_handlers: Dictionary = {}  # command id -> command handler
 
-@onready var api_server = $APIServer
-
 
 func _register_command_handlers() -> void:
 	var handlers: Array[CommandHandler] = [
-		CommandHandler.new(CommandType.BUILD, [TYPE_ARRAY, TYPE_INT], build),
+		CommandHandler.new(CommandType.BUILD, [TYPE_VECTOR2I, TYPE_INT], build),
 		# TODO
 	]
 	for handler in handlers:
@@ -54,6 +52,7 @@ func _register_command_handlers() -> void:
 
 
 func _init() -> void:
+	type = AgentType.AI
 	_register_command_handlers()
 
 
