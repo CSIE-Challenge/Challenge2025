@@ -38,12 +38,17 @@ func collision_callback(
 	self.pending_removal = true
 
 
-# `init` allocates and initalized all properties except for collision shape and canvas texture.
-func init(p_origin: Vector2, p_orientation: float, p_target: Node2D, canvas: RID, space: RID):
+# Method `set_params` initalizes properties and parameters.
+# The bullet is not ready yet.
+func set_params(p_origin: Vector2, p_orientation: float, p_target: Node2D):
 	self.target = p_target
 	self.origin = p_origin
 	self.position = self.origin
 	self.orientation = p_orientation
+
+
+# Method `init_context` allocate all RIDs and resources according to the context.
+func init_context(canvas: RID, space: RID):
 	self.register_physics_object(space)
 	self.register_canvas_object(canvas)
 	self.assign_rid()
@@ -59,9 +64,11 @@ func register_physics_object(space):
 	# Don't make bullets collidable to improve performance
 	PhysicsServer2D.area_set_collision_layer(self.area_rid, 0)
 
-	var callback = func(status, area_rid, instance_id, body_shape_idx, self_shape_idx):
+	var callback = func(status, other_area_rid, instance_id, body_shape_idx, self_shape_idx):
 		if !self.pending_removal:
-			self.collision_callback(status, area_rid, instance_id, body_shape_idx, self_shape_idx)
+			self.collision_callback(
+				status, other_area_rid, instance_id, body_shape_idx, self_shape_idx
+			)
 
 	PhysicsServer2D.area_set_monitor_callback(self.area_rid, callback)
 	self.register_shape()

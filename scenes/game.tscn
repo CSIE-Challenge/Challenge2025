@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://cc8cfvmqxjxvv"]
+[gd_scene load_steps=15 format=4 uid="uid://cc8cfvmqxjxvv"]
 
 [ext_resource type="Script" uid="uid://c72ov43b6lhkm" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_iywne"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dn0pas1ennupu" path="res://scenes/tower_ui.tscn" id="7_gee14"]
 [ext_resource type="Script" uid="uid://cqdgiw4bsxdkv" path="res://scripts/tower_ui.gd" id="8_0tnpc"]
 [ext_resource type="Script" uid="uid://c7cpk53lm0010" path="res://scripts/bullet_manager.gd" id="8_gee14"]
+[ext_resource type="Script" uid="uid://dwjf7tnmwhhfn" path="res://scripts/signal_bus.gd" id="9_0tnpc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_paxxb"]
 texture = ExtResource("3_iywne")
@@ -514,5 +515,10 @@ show_percentage = false
 [node name="TowerUI" parent="CanvasLayer2" instance=ExtResource("7_gee14")]
 script = ExtResource("8_0tnpc")
 
-[node name="BulletManager" type="Node2D" parent="."]
+[node name="BulletManager" type="Node2D" parent="." node_paths=PackedStringArray("signal_bus")]
 script = ExtResource("8_gee14")
+signal_bus = NodePath("../SignalBus")
+
+[node name="SignalBus" type="Node2D" parent="."]
+script = ExtResource("9_0tnpc")
+metadata/_custom_type_script = "uid://dwjf7tnmwhhfn"

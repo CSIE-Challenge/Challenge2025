@@ -4,7 +4,7 @@ extends Node2D
 @export var rotation_speed := 3.0
 @export var max_distance := 800.0
 @export var damage := 3
-
+@export var signal_bus: SignalBus
 # class Bullet:
 # 	var target: Node2D = null
 # 	var origin: Vector2
@@ -23,17 +23,10 @@ var shape = preload("res://assets/collision/bullet.tres")
 var bullets: Dictionary[RID, Bullet] = {}
 
 
-func _init_bullet(origin: Vector2, orientation: float, target: Node2D):
-	var bullet := Bullet.new()
-	# RenderingServer.canvas_item_set_parent(self.ci_rid, get_canvas_item())
-	# self.area_rid = PhysicsServer2D.area_create()
-	# PhysicsServer2D.area_set_space(self.area_rid, get_world_2d().get_space())
-	bullet.init(origin, orientation, target, get_canvas_item(), get_world_2d().get_space())
+func _on_create_bullet(bullet: Bullet):
+	bullet.init_context(get_canvas_item(), get_world_2d().get_space())
 	bullets[bullet.id] = bullet
-
-
-func _on_create_bullet(origin: Vector2, orientation: float, target: Node2D):
-	_init_bullet(origin, orientation, target)
+	# _init_bullet(origin, orientation, target)
 
 
 func _destroy_bullet(bullet: Bullet):
@@ -53,9 +46,9 @@ func _physics_process(delta: float) -> void:
 		if bullet.pending_removal:
 			removal.push_back(bullet.id)
 
-	for rid in removal:
-		_destroy_bullet(bullets[rid])
-		bullets.erase(rid)
+	for id in removal:
+		_destroy_bullet(bullets[id])
+		bullets.erase(id)
 
 
 func _process(_delta: float) -> void:
@@ -64,7 +57,7 @@ func _process(_delta: float) -> void:
 
 
 func _ready():
-	SignalBus.create_bullet.connect(_on_create_bullet)
+	signal_bus.create_bullet.connect(_on_create_bullet)
 
 
 func _exit_tree() -> void:

@@ -2,7 +2,7 @@ extends StaticBody2D
 
 signal tower_selected
 
-@export var bullet_scene: PackedScene
+@export var signal_bus: SignalBus
 
 var damage: int = 2
 var rotation_speed: float = 90.0  # degree per second
@@ -98,8 +98,9 @@ func shoot() -> void:
 		origin = $Turret/Right.global_position
 		current_shoot_turret = 0
 
-	SignalBus.create_bullet.emit(origin, orientation, target)
-	# print("Bullet fired at target: ", target.name)
+	var bullet := Bullet.new()
+	bullet.set_params(origin, orientation, target)
+	signal_bus.create_bullet.emit(bullet)
 
 
 func _on_aim_range_body_entered(body: Node2D) -> void:
