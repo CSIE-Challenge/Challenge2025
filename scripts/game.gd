@@ -129,6 +129,7 @@ func place_tower(cell: Vector2i):
 	var tower = tower_scene.instantiate()
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
+	tower.signal_bus = $SignalBus
 	tower.connect("tower_selected", self._on_tower_selected)
 	occupied_cells[cell] = true
 	tower_manager.add_child(tower)
