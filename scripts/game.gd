@@ -55,7 +55,7 @@ func _ready():
 	preview_tower = tower_scene.instantiate()
 	preview_tower.is_preview = true
 	$SubViewportContainer/SubViewport.add_child(preview_tower)
-
+	preview_tower.hide()
 	hp_bar.max_value = max_hp
 	hp_bar.value = max_hp
 
