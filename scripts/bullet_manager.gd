@@ -2,8 +2,8 @@ extends Node2D
 
 @export var speed := 400.0
 @export var rotation_speed := 3.0
-@export var max_distance := 800.0
 @export var damage := 3
+@export var bullet_lifetime: float = 5.0
 
 
 class Bullet:
@@ -13,6 +13,7 @@ class Bullet:
 	var orientation := 0.0
 	var area_rid: RID
 	var ci_rid: RID
+	var end_time: float
 
 
 # RenderingServer expects references to be kept around
@@ -32,6 +33,7 @@ func _init_bullet(origin: Vector2, orientation: float, target: Node2D):
 	bullet.orientation = orientation
 	bullet.area_rid = PhysicsServer2D.area_create()
 	bullet.ci_rid = RenderingServer.canvas_item_create()
+	bullet.end_time = bullet_lifetime + Time.get_ticks_msec() / 1000.0
 	PhysicsServer2D.area_set_space(bullet.area_rid, get_world_2d().get_space())
 	PhysicsServer2D.area_add_shape(bullet.area_rid, shape)
 	# Don't make bullets collidable to improve performance.
@@ -82,11 +84,11 @@ func _physics_process(delta: float) -> void:
 		bullet.orientation = lerp_angle(bullet.orientation, desired_angle, rotation_speed * delta)
 		bullet.position += Vector2.RIGHT.rotated(bullet.orientation) * speed * delta
 
-		var traverse_distance = bullet.position.distance_to(bullet.origin)
-
-		if traverse_distance >= max_distance:
+		if bullet.end_time < Time.get_ticks_msec() / 1000.0:
 			removal.push_back(bullet.area_rid)
 			continue
+
+		var traverse_distance = bullet.position.distance_to(bullet.origin)
 
 		transform2d.origin = bullet.position
 		var xform = Transform2D().rotated(bullet.orientation).translated(bullet.position)
