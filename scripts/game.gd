@@ -56,7 +56,10 @@ func _ready():
 	preview_tower = tower_scene.instantiate()
 	preview_tower.is_preview = true
 	$SubViewportContainer/SubViewport.add_child(preview_tower)
-	self.add_child(agent_scene.instantiate())
+	var ws = APIServer.get_instance().register_connection()
+	var agent = agent_scene.instantiate()
+	agent.link(ws)
+	self.add_child(agent)
 
 	hp_bar.max_value = max_hp
 	hp_bar.value = max_hp
