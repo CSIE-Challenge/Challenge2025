@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8xtcx5gblp84"]
+[gd_scene load_steps=6 format=3 uid="uid://c8xtcx5gblp84"]
 
 [ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="1_ay4al"]
 [ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scripts/tower.gd" id="1_ktxwe"]
 [ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="2_ktxwe"]
-[ext_resource type="PackedScene" uid="uid://gkfjlrjp0wly" path="res://scenes/bullet.tscn" id="2_xl0gn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
 size = Vector2(53, 52)
@@ -16,7 +15,6 @@ z_index = 8
 scale = Vector2(0.5, 0.5)
 collision_layer = 2
 script = ExtResource("1_ktxwe")
-bullet_scene = ExtResource("2_xl0gn")
 
 [node name="Button" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -54,6 +52,38 @@ shape = SubResource("CircleShape2D_ktxwe")
 
 [node name="ReloadTimer" type="Timer" parent="."]
 
+[node name="TowerUI" type="Control" parent="."]
+z_index = 1
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(3.19429, 1.59037)
+
+[node name="Panel" type="Panel" parent="TowerUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TowerUpgradeButton" type="Button" parent="TowerUI/Panel"]
+layout_mode = 0
+offset_left = 6.57424
+offset_right = 81.5742
+offset_bottom = 31.0
+scale = Vector2(0.359761, 0.635866)
+text = "Upgrade"
+
+[node name="TowerSellButton" type="Button" parent="TowerUI/Panel"]
+layout_mode = 0
+offset_left = 12.5224
+offset_top = 20.1211
+offset_right = 47.5224
+offset_bottom = 51.1211
+scale = Vector2(0.409065, 0.645008)
+text = "Sell"
+
 [connection signal="body_entered" from="AimRange" to="." method="_on_aim_range_body_entered"]
 [connection signal="body_exited" from="AimRange" to="." method="_on_aim_range_body_exited"]
 [connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]
+[connection signal="pressed" from="TowerUI/Panel/TowerUpgradeButton" to="." method="_on_tower_upgrade_button_pressed"]
+[connection signal="pressed" from="TowerUI/Panel/TowerSellButton" to="." method="_on_tower_sell_button_pressed"]

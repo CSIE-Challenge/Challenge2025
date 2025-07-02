@@ -1,4 +1,3 @@
-class_name Game
 extends Node2D
 
 const TOWER_COST = 5
@@ -8,7 +7,7 @@ const SKILL_AOE = 1
 @export var tower_scene: PackedScene
 @export var is_ai: bool
 
-var occupied_cells: Dictionary = {}
+var occupied_cells := {}
 var preview_tower
 var money: int = 0
 var money_per_second: int = 10
@@ -40,6 +39,8 @@ var enemy_list = {
 	}
 }
 
+var _money_timer := 0.0
+
 @onready var hp_bar = $HitPoint
 @onready var money_label: Label = $MoneyDisplay
 @onready var score_label: Label = $ScoreDisplay
@@ -47,7 +48,7 @@ var enemy_list = {
 @onready var tilemap: TileMapLayer = $SubViewportContainer/SubViewport/TileMapLayer
 @onready var tower_manager: Node2D = $TowerManager
 
-@onready var tower_ui := $CanvasLayer/TowerUI
+@onready var tower_ui := $CanvasLayer2/TowerUI
 
 
 func _ready():
@@ -73,6 +74,15 @@ func _process(_delta):
 		var valid = can_place_tower(cell)
 		set_tower_color(preview_tower, valid)
 
+	money_label.text = "Money  :  $ " + str(money)
+	_money_timer += _delta
+	if _money_timer > 1.0:
+		money += money_per_second
+		_money_timer = 0.0
+
+
+# place tower
+
 
 func set_tower_color(tower: Node2D, is_valid: bool):
 	var color = Color(0, 1, 0, 0.5) if is_valid else Color(1, 0, 0, 0.5)
@@ -91,17 +101,6 @@ func _unhandled_input(event: InputEvent):
 			var cell = tilemap.local_to_map(tilemap.to_local(get_global_mouse_position()))
 			if can_place_tower(cell):
 				place_tower(cell)
-
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
-		var cell = tilemap.local_to_map(tilemap.to_local(get_global_mouse_position()))
-		var tower: Tower = occupied_cells.get(cell, null)
-		if tower == null:
-			return
-
-		var upgrade_cost: int = tower.level * 10
-		if money >= upgrade_cost:
-			money -= upgrade_cost
-			tower.upgrade()
 
 
 func can_place_tower(cell: Vector2i) -> bool:
@@ -130,27 +129,13 @@ func place_tower(cell: Vector2i):
 	var tower = tower_scene.instantiate()
 	var world_pos = tilemap.map_to_local(cell)
 	tower.global_position = tilemap.to_global(world_pos)
-
 	tower.signal_bus = $SignalBus
 	tower.connect("tower_selected", self._on_tower_selected)
 	occupied_cells[cell] = true
+	tower_manager.add_child(tower)
 
 
-func _on_tower_upgraded(tower: Tower):
-	var levelup_cost: int = tower.level * 10
-	if money >= levelup_cost:
-		money -= levelup_cost
-		tower.upgrade()
-
-
-func _on_tower_sold(tower: Tower):
-	if tower == null:
-		return
-	var cell := tilemap.local_to_map(tilemap.to_local(tower.global_position))
-	var refund := tower.level * 10
-	money += refund
-	tower.queue_free()
-	occupied_cells.erase(cell)
+# update values
 
 
 func upgrade_income() -> void:
@@ -224,7 +209,3 @@ func enemy_selected(enemy: String):
 func _on_tower_selected(tower):
 	tower_ui.global_position = tower.global_position
 	tower_ui.visible = true
-
-
-func _on_aoe_damage_pressed() -> void:
-	aoe_damage()

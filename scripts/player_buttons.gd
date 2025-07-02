@@ -3,7 +3,6 @@ extends CanvasLayer
 @onready var upgrade_button: Button = $Upgrade
 @onready var slow_button: Button = $SkillSlow
 @onready var aoe_button: Button = $AoeDamage
-@onready var shop: Control = $Shop
 @onready var game: Node2D = $"../LeftPlayer"
 
 

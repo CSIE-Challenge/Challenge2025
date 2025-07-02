@@ -1,6 +1,9 @@
+class_name Tower
+
 extends StaticBody2D
 
-signal tower_selected
+signal tower_upgraded
+signal tower_sold
 
 @export var signal_bus: SignalBus
 
@@ -22,6 +25,7 @@ var is_preview := false
 @onready var turret = $Turret
 @onready var enemy_detector = $AimRange/CollisionShape2D
 @onready var reload_timer = $ReloadTimer
+@onready var tower_ui = $TowerUI
 
 
 func _ready():
@@ -34,6 +38,9 @@ func _ready():
 		reload_timer.wait_time = 60.0 / reload_speed
 		reload_timer.start()
 		$Button.connect("pressed", self._on_button_pressed)
+
+	tower_ui.visible = false
+	add_to_group("towers")
 
 
 func apply_preview_appearance():
@@ -118,5 +125,32 @@ func _on_reload_timer_timeout() -> void:
 		shoot()
 
 
+func upgrade() -> void:
+	level += 1
+	damage += 1
+	aim_range += 100
+	reload_speed += 60
+	rotation_speed += 20
+	enemy_detector.shape.radius = 0.5 * aim_range
+	reload_timer.wait_time = 60.0 / reload_speed
+
+
+func _unhandled_input(event):
+	if not tower_ui.visible:
+		return
+	if event is InputEventMouseButton and event.pressed:
+		if not tower_ui.get_rect().has_point(get_local_mouse_position()):
+			tower_ui.visible = false
+			get_viewport().set_input_as_handled()
+
+
 func _on_button_pressed():
-	emit_signal("tower_selected", self)
+	tower_ui.visible = true
+
+
+func _on_tower_sell_button_pressed():
+	tower_sold.emit()
+
+
+func _on_tower_upgrade_button_pressed():
+	tower_upgraded.emit()
