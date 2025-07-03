@@ -12,7 +12,7 @@ enum EnemySource { SYSTEM, OPPONENT }
 # todo: move tower parameters into the tower classes
 const tower_scene := preload("res://scenes/tower.tscn")
 const tower_cost = 5
-const enemy_scene := preload("res://scenes/enemy.tscn")
+const enemy_scene := preload("res://scenes/enemies/enemy.tscn")
 const tower_ui_scene := preload("res://scenes/tower_ui.tscn")
 
 
@@ -106,26 +106,14 @@ func _on_constant_income_timer_timeout() -> void:
 
 #region Enemies
 
-func _on_enemy_killed(enemy: Enemy) -> void:
-	print("enemy killed: ", enemy)
-	enemy.queue_free()
-
-
-func _on_enemy_reached(enemy: Enemy) -> void:
-	print("enemy reached: ", enemy)
-	damage_taken.emit(enemy.damage)
-	enemy.queue_free()
-
-
 func summon_enemy(enemy: Enemy) -> void:
+	enemy.game = self
 	var path: Path2D
 	match enemy.source:
 		EnemySource.SYSTEM:
 			path = _map.system_path
 		EnemySource.OPPONENT:
 			path = _map.opponent_path
-	enemy.killed.connect(self._on_enemy_killed.bind(enemy))
-	enemy.reached.connect(self._on_enemy_reached.bind(enemy))
 	path.add_child(enemy.path_follow)
 
 #endregion
