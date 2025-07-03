@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 # This signal passes a bullet with parameters set (`set_params`) called,
 # but not yet allocated all related objects. This is because the context
