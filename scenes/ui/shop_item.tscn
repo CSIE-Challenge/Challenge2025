@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjjb87yltl2v0"]
+
+[ext_resource type="Texture2D" uid="uid://cwyeegq5g6qsa" path="res://assets/kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile088.png" id="1_obnp4"]
+[ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_jol1k"]
+
+[node name="ShopItem" type="TextureButton"]
+offset_right = 119.0
+offset_bottom = 112.0
+texture_normal = ExtResource("1_obnp4")
+
+[node name="Cost" type="Label" parent="."]
+z_index = 20
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -45.5
+offset_top = -45.0
+offset_right = 45.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "$10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Tower" parent="CenterContainer/Control" instance=ExtResource("2_jol1k")]
+scale = Vector2(1.5, 1.5)
