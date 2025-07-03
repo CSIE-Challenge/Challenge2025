@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=7 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
+[ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
 [ext_resource type="PackedScene" uid="uid://cbxbq3tqvvn8j" path="res://scenes/map.tscn" id="2_xi36r"]
 [ext_resource type="PackedScene" uid="uid://cjjb87yltl2v0" path="res://scenes/ui/shop_item.tscn" id="3_hawlh"]
 [ext_resource type="PackedScene" uid="uid://2l5wr8yxuun7" path="res://scenes/ui/text_box.tscn" id="4_3gnes"]
+[ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://wave/spawner.gd" id="6_b1bvr"]
 
 [node name="Round" type="Control"]
 layout_mode = 3
@@ -13,8 +15,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_vfk7k")
+script = ExtResource("2_b0w8h")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Screen" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -23,15 +26,15 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Top" type="HBoxContainer" parent="Screen"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 
-[node name="Status1P" type="Panel" parent="VBoxContainer/HBoxContainer"]
+[node name="Status1P" type="Panel" parent="Screen/Top"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Status1P"]
+[node name="Label" type="Label" parent="Screen/Top/Status1P"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,12 +45,12 @@ text = "1P Status"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Score" type="Panel" parent="VBoxContainer/HBoxContainer"]
+[node name="Score" type="Panel" parent="Screen/Top"]
 custom_minimum_size = Vector2(1000, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Score"]
+[node name="Label" type="Label" parent="Screen/Top/Score"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,11 +61,11 @@ text = "Score Diff"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Status2P" type="Panel" parent="VBoxContainer/HBoxContainer"]
+[node name="Status2P" type="Panel" parent="Screen/Top"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/Status2P"]
+[node name="Label" type="Label" parent="Screen/Top/Status2P"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -73,26 +76,26 @@ text = "2P Status"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Bottom" type="HBoxContainer" parent="Screen"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LeftGame" type="Control" parent="VBoxContainer/HBoxContainer2"]
+[node name="LeftGame" type="Control" parent="Screen/Bottom"]
 clip_contents = true
 custom_minimum_size = Vector2(750, 1000)
 layout_mode = 2
 
-[node name="Map" parent="VBoxContainer/HBoxContainer2/LeftGame" instance=ExtResource("2_xi36r")]
+[node name="Map" parent="Screen/Bottom/LeftGame" instance=ExtResource("2_xi36r")]
 
-[node name="Mid" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+[node name="Mid" type="VBoxContainer" parent="Screen/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="GameStatus" type="Panel" parent="VBoxContainer/HBoxContainer2/Mid"]
+[node name="GameStatus" type="Panel" parent="Screen/Bottom/Mid"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/GameStatus"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Screen/Bottom/Mid/GameStatus"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -101,7 +104,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="Countdown" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/GameStatus/VBoxContainer"]
+[node name="Countdown" type="Label" parent="Screen/Bottom/Mid/GameStatus/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 70
@@ -109,7 +112,7 @@ text = "03:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WaveInfo" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/GameStatus/VBoxContainer"]
+[node name="WaveInfo" type="Label" parent="Screen/Bottom/Mid/GameStatus/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 24
@@ -117,11 +120,11 @@ text = "Wave 10          00:24"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ShopAndChat" type="Control" parent="VBoxContainer/HBoxContainer2/Mid"]
+[node name="ShopAndChat" type="Control" parent="Screen/Bottom/Mid"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TabContainer" type="TabContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat"]
+[node name="TabContainer" type="TabContainer" parent="Screen/Bottom/Mid/ShopAndChat"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -131,11 +134,11 @@ grow_vertical = 2
 tab_alignment = 1
 current_tab = 0
 
-[node name="Shop" type="TabBar" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer"]
+[node name="Shop" type="TabBar" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop"]
+[node name="MarginContainer" type="MarginContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -147,23 +150,23 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer"]
 layout_mode = 2
 vertical_scroll_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Towers" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="Towers" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers"]
+[node name="Label" type="Label" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers"]
 layout_mode = 2
 text = "Towers"
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers"]
+[node name="GridContainer" type="GridContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -171,35 +174,35 @@ theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 columns = 3
 
-[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem2" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem3" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem4" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem4" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem5" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem5" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem6" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem6" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem7" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem7" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="Units" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="Units" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units"]
+[node name="Label" type="Label" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units"]
 layout_mode = 2
 text = "Units"
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units"]
+[node name="GridContainer" type="GridContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -207,29 +210,29 @@ theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 columns = 3
 
-[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem2" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem3" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem4" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem4" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem5" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem5" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="Spells" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="Spells" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells"]
+[node name="Label" type="Label" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells"]
 layout_mode = 2
 text = "Spells"
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells"]
+[node name="GridContainer" type="GridContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -237,21 +240,21 @@ theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 columns = 3
 
-[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem2" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem3" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="Chat" type="TabBar" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer"]
+[node name="Chat" type="TabBar" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat"]
+[node name="MarginContainer" type="MarginContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -263,52 +266,58 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer"]
 layout_mode = 2
 vertical_scroll_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="TextBox" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox2" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox3" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox4" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox4" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox5" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox5" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox6" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox6" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox7" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox7" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox8" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox8" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox9" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox9" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox10" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox10" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox11" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+[node name="TextBox11" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="RightGame" type="Control" parent="VBoxContainer/HBoxContainer2"]
+[node name="RightGame" type="Control" parent="Screen/Bottom"]
 clip_contents = true
 custom_minimum_size = Vector2(750, 1000)
 layout_mode = 2
 
-[node name="Map" parent="VBoxContainer/HBoxContainer2/RightGame" instance=ExtResource("2_xi36r")]
+[node name="Map" parent="Screen/Bottom/RightGame" instance=ExtResource("2_xi36r")]
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("wave_info_label")]
+script = ExtResource("6_b1bvr")
+wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/VBoxContainer/WaveInfo")

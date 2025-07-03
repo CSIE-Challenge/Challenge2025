@@ -1,0 +1,65 @@
+{
+  "goomba": {
+    "scene_path": "res://Units/Goomba.tscn",
+    "stats": {
+      "health": 10,
+      "speed": 50,
+      "damage": 5,
+      "flying": false
+    }
+  },
+  "koopa_paratroopa": {
+    "scene_path": "res://Units/KoopaParatroopa.tscn",
+    "stats": {
+      "health": 15,
+      "speed": 80,
+      "damage": 7,
+      "flying": true
+    }
+  },
+  "spiny_shell": {
+    "scene_path": "res://Units/SpinyShell.tscn",
+    "stats": {
+      "health": 20,
+      "speed": 120,
+      "damage": 10,
+      "flying": true
+    }
+  },
+  "buzzy_beetle": {
+    "scene_path": "res://Units/BuzzyBeetle.tscn",
+    "stats": {
+      "health": 25,
+      "speed": 75,
+      "damage": 8,
+      "flying": false
+    }
+  },
+  "wiggler": {
+    "scene_path": "res://Units/Wiggler.tscn",
+    "stats": {
+      "health": 60,
+      "speed": 60,
+      "damage": 12,
+      "flying": false
+    }
+  },
+  "koopa_jr": {
+    "scene_path": "res://Units/KoopaJr.tscn",
+    "stats": {
+      "health": 40,
+      "speed": 70,
+      "damage": 25,
+      "flying": true
+    }
+  },
+  "koopa": {
+    "scene_path": "res://Units/Koopa.tscn",
+    "stats": {
+      "health": 100,
+      "speed": 20,
+      "damage": 60,
+      "flying": false
+    }
+  }
+}
