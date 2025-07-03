@@ -12,6 +12,8 @@ enum PreviewMode {
 }
 
 
+var _previewed_node: Node
+
 # this is called every frame for updating the color of previewed object
 # function signature should be `(Vector2) -> PreviewMode` when _snap_to_cells is false,
 # or `(Vector2i) -> PreviewMode` when _snap_to_cells is true
@@ -40,10 +42,11 @@ func _get_selected_position() -> Vector2:
 
 
 func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cells: bool) -> void:
-	self.add_child(previewed_node)
+	_previewed_node = previewed_node
 	_mode_callback = mode_callback
 	_map = map
 	_snap_to_cells = snap_to_cells
+	self.add_child(previewed_node)
 
 
 # the previewed object intercepts input events before GUI, so that (for example)
@@ -60,6 +63,7 @@ func _input(event: InputEvent) -> void:
 		if _map.get_local_terrain(mouse_pos) == Map.CellTerrain.OUT_OF_BOUNDS:
 			selected.emit(null)
 		else:
+			self.remove_child(_previewed_node)
 			selected.emit(mouse_pos)
 		get_viewport().set_input_as_handled()
 		self.queue_free()

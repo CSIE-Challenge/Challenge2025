@@ -1,4 +1,8 @@
+class_name Enemy
 extends CharacterBody2D
+
+signal killed()
+signal reached()
 
 @export var speed := 300.0
 @export var max_health := 100
@@ -8,14 +12,22 @@ var health: int
 var damage: int = 5
 var speed_scale: float = 1.0
 var slow_timer := Timer.new()
+var source: Game.EnemySource
 
 @onready var health_bar := $HealthBar
 
 
-func _ready():
-	path_follow = get_parent() as PathFollow2D
-	health = max_health
+# _init not overridden because PackedScene.instantiate() does not accept arguments
+func init(_source: Game.EnemySource) -> void:
+	source = _source
+	path_follow = PathFollow2D.new()
+	path_follow.loop = false
+	path_follow.add_child(self)
 
+
+func _ready():
+	health = max_health
+	path_follow.progress_ratio = 0
 	add_to_group("enemies")
 	slow_timer.one_shot = true
 	slow_timer.connect("timeout", Callable(self, "_on_slow_timeout"))
@@ -25,21 +37,20 @@ func _ready():
 func _process(delta):
 	path_follow.progress += speed * delta * speed_scale
 	if path_follow.progress_ratio >= 0.99:
-		$"../../../".set_hit_point(damage)
-		queue_free()
+		reached.emit()
 
 	health_bar.rotation = -path_follow.rotation
 	health_bar.value = health / float(max_health) * 100.0
 
 
+func _exit_tree() -> void:
+	path_follow.queue_free()
+
+
 func take_damage(amount: int):
 	health -= amount
 	if health <= 0:
-		die()
-
-
-func die():
-	queue_free()
+		killed.emit()
 
 
 func slow_down():

@@ -2,10 +2,10 @@ class_name Tower
 
 extends StaticBody2D
 
-signal tower_upgraded
-signal tower_sold
+signal upgraded
+signal sold
 
-@export var signal_bus: SignalBus
+var signal_bus: SignalBus
 
 var damage: int = 2
 var rotation_speed: float = 90.0  # degree per second
@@ -26,6 +26,12 @@ var is_preview := false
 @onready var enemy_detector = $AimRange/CollisionShape2D
 @onready var reload_timer = $ReloadTimer
 @onready var tower_ui = $TowerUI
+
+
+# _init not overridden because PackedScene.instantiate() does not accept arguments
+func init(_global_position: Vector2, _signal_bus: SignalBus) -> void:
+	global_position = _global_position
+	signal_bus = _signal_bus
 
 
 func _ready():
@@ -149,8 +155,8 @@ func _on_button_pressed():
 
 
 func _on_tower_sell_button_pressed():
-	tower_sold.emit()
+	sold.emit()
 
 
 func _on_tower_upgrade_button_pressed():
-	tower_upgraded.emit()
+	upgraded.emit()

@@ -4,7 +4,7 @@ extends Node2D
 @export var rotation_speed := 3.0
 @export var max_distance := 800.0
 @export var damage := 3
-@export var signal_bus: SignalBus
+@onready var signal_bus: SignalBus = $"../SignalBus"
 
 var bullet_texture = preload(
 	"res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile297.png"
