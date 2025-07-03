@@ -135,101 +135,101 @@ theme_override_constants/margin_bottom = 16
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer"]
 layout_mode = 2
+vertical_scroll_mode = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="ShopSection" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="Towers" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers"]
 layout_mode = 2
 text = "Towers"
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
 columns = 3
 
-[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem4" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem4" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem5" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem5" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem6" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem6" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem7" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem7" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Towers/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem8" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="Units" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ShopItem9" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection/GridContainer" instance=ExtResource("3_hawlh")]
-layout_mode = 2
-
-[node name="ShopSection2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection2"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units"]
 layout_mode = 2
 text = "Units"
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection2"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
 columns = 3
 
-[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection2/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection2/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection2/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem4" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection2/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem4" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem5" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection2/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem5" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Units/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem6" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection2/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="Spells" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="ShopSection3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection3"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells"]
 layout_mode = 2
 text = "Spells"
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection3"]
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
 columns = 3
 
-[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection3/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection3/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
-[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/ShopSection3/GridContainer" instance=ExtResource("3_hawlh")]
+[node name="ShopItem3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
 layout_mode = 2
 
 [node name="Chat" type="TabBar" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer"]
@@ -251,6 +251,7 @@ theme_override_constants/margin_bottom = 16
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer"]
 layout_mode = 2
+vertical_scroll_mode = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer"]
 layout_mode = 2
