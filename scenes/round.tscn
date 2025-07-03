@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://btrp4i8bdbd3y"]
+[gd_scene load_steps=3 format=3 uid="uid://btrp4i8bdbd3y"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
+[ext_resource type="PackedScene" uid="uid://cbxbq3tqvvn8j" path="res://scenes/map.tscn" id="2_xi36r"]
 
 [node name="Round" type="Control"]
 layout_mode = 3
@@ -75,8 +76,11 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="LeftGame" type="Control" parent="VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(750, 0)
+clip_contents = true
+custom_minimum_size = Vector2(750, 1000)
 layout_mode = 2
+
+[node name="Map" parent="VBoxContainer/HBoxContainer2/LeftGame" instance=ExtResource("2_xi36r")]
 
 [node name="Mid" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
@@ -113,5 +117,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="RightGame" type="Control" parent="VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(750, 0)
+clip_contents = true
+custom_minimum_size = Vector2(750, 1000)
 layout_mode = 2
+
+[node name="Map" parent="VBoxContainer/HBoxContainer2/RightGame" instance=ExtResource("2_xi36r")]
