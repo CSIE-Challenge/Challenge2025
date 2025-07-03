@@ -1,14 +1,25 @@
+class_name TowerUi
 extends Control
 
 
-func _ready():
-	visible = false
+signal upgraded()
+signal sold()
 
 
-func _unhandled_input(event):
-	if not visible:
-		return
-	if event is InputEventMouseButton and event.pressed:
-		if not get_rect().has_point(get_local_mouse_position()):
-			visible = false
-			get_viewport().set_input_as_handled()
+# the tower's UI intercepts input events before GUI for the same reason as the previewer
+func _input(event):
+	if (
+		event is InputEventMouseButton
+		and event.pressed
+		and not get_global_rect().has_point(get_global_mouse_position())
+	):
+		queue_free()
+		get_viewport().set_input_as_handled()
+
+
+func _on_sell_button_pressed() -> void:
+	sold.emit()
+
+
+func _on_upgrade_button_pressed() -> void:
+	upgraded.emit()

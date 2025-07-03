@@ -2,9 +2,6 @@ class_name Tower
 
 extends StaticBody2D
 
-signal upgraded
-signal sold
-
 var signal_bus: SignalBus
 
 var damage: int = 2
@@ -25,7 +22,6 @@ var is_preview := false
 @onready var turret = $Turret
 @onready var enemy_detector = $AimRange/CollisionShape2D
 @onready var reload_timer = $ReloadTimer
-@onready var tower_ui = $TowerUI
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments
@@ -43,9 +39,6 @@ func _ready():
 		enemy_detector.shape.radius = 0.5 * aim_range
 		reload_timer.wait_time = 60.0 / reload_speed
 		reload_timer.start()
-		$Button.connect("pressed", self._on_button_pressed)
-
-	tower_ui.visible = false
 	add_to_group("towers")
 
 
@@ -139,24 +132,3 @@ func upgrade() -> void:
 	rotation_speed += 20
 	enemy_detector.shape.radius = 0.5 * aim_range
 	reload_timer.wait_time = 60.0 / reload_speed
-
-
-func _unhandled_input(event):
-	if not tower_ui.visible:
-		return
-	if event is InputEventMouseButton and event.pressed:
-		if not tower_ui.get_rect().has_point(get_local_mouse_position()):
-			tower_ui.visible = false
-			get_viewport().set_input_as_handled()
-
-
-func _on_button_pressed():
-	tower_ui.visible = true
-
-
-func _on_tower_sell_button_pressed():
-	sold.emit()
-
-
-func _on_tower_upgrade_button_pressed():
-	upgraded.emit()

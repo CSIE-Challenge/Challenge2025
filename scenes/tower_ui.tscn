@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dn0pas1ennupu"]
+[gd_scene load_steps=2 format=3 uid="uid://dn0pas1ennupu"]
+
+[ext_resource type="Script" uid="uid://bmi6xloxalyfa" path="res://scripts/tower_ui.gd" id="1_gxmcb"]
 
 [node name="TowerUI" type="Control"]
 z_index = 1
@@ -7,13 +9,14 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 scale = Vector2(3.19429, 1.59037)
+script = ExtResource("1_gxmcb")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Button" type="Button" parent="Panel"]
+[node name="UpgradeButton" type="Button" parent="Panel"]
 layout_mode = 0
 offset_left = 6.57424
 offset_right = 81.5742
@@ -21,7 +24,7 @@ offset_bottom = 31.0
 scale = Vector2(0.359761, 0.635866)
 text = "Upgrade"
 
-[node name="Button2" type="Button" parent="Panel"]
+[node name="SellButton" type="Button" parent="Panel"]
 layout_mode = 0
 offset_left = 12.5224
 offset_top = 20.1211
@@ -29,3 +32,6 @@ offset_right = 47.5224
 offset_bottom = 51.1211
 scale = Vector2(0.409065, 0.645008)
 text = "Sell"
+
+[connection signal="pressed" from="Panel/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="pressed" from="Panel/SellButton" to="." method="_on_sell_button_pressed"]

@@ -16,6 +16,7 @@ offset_right = -1170.0
 offset_bottom = -80.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_yqjtg")
 
 [node name="Map" parent="." instance=ExtResource("1_uwrxv")]

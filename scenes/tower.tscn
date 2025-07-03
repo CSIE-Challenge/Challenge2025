@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8xtcx5gblp84"]
+[gd_scene load_steps=6 format=3 uid="uid://c8xtcx5gblp84"]
 
 [ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="1_ay4al"]
 [ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scripts/tower.gd" id="1_ktxwe"]
 [ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="2_ktxwe"]
-[ext_resource type="PackedScene" uid="uid://dn0pas1ennupu" path="res://scenes/tower_ui.tscn" id="4_qrbg1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
 size = Vector2(53, 52)
@@ -12,17 +11,9 @@ size = Vector2(53, 52)
 radius = 734.063
 
 [node name="Tower" type="StaticBody2D"]
-z_index = 8
 scale = Vector2(0.781, 0.781)
 collision_layer = 2
 script = ExtResource("1_ktxwe")
-
-[node name="Button" type="Button" parent="."]
-modulate = Color(1, 1, 1, 0)
-offset_left = -32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = 32.0
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("1_ay4al")
@@ -52,9 +43,6 @@ visible = false
 shape = SubResource("CircleShape2D_ktxwe")
 
 [node name="ReloadTimer" type="Timer" parent="."]
-
-[node name="TowerUI" parent="." instance=ExtResource("4_qrbg1")]
-visible = false
 
 [connection signal="body_entered" from="AimRange" to="." method="_on_aim_range_body_entered"]
 [connection signal="body_exited" from="AimRange" to="." method="_on_aim_range_body_exited"]
