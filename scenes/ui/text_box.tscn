@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=3 uid="uid://2l5wr8yxuun7"]
+
+[ext_resource type="Texture2D" uid="uid://56j0tl4unmim" path="res://assets/kenney_ui-pack-pixel-adventure/Tiles/Large tiles/Thick outline/tile_0007.png" id="1_btfno"]
+
+[node name="TextBox" type="MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
+offset_right = 21.0
+offset_bottom = 43.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_btfno")
+region_rect = Rect2(0, 0, 32, 32)
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 20
+text = "PixelCat is so cute <3 hahaha this is a test message"
+fit_content = true
+vertical_alignment = 1

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=5 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="PackedScene" uid="uid://cbxbq3tqvvn8j" path="res://scenes/map.tscn" id="2_xi36r"]
 [ext_resource type="PackedScene" uid="uid://cjjb87yltl2v0" path="res://scenes/ui/shop_item.tscn" id="3_hawlh"]
+[ext_resource type="PackedScene" uid="uid://2l5wr8yxuun7" path="res://scenes/ui/text_box.tscn" id="4_3gnes"]
 
 [node name="Round" type="Control"]
 layout_mode = 3
@@ -127,10 +128,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Shop/MarginContainer"]
 layout_mode = 2
@@ -235,6 +236,60 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="TextBox" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox2" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox3" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox4" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox5" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox6" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox7" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox8" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox9" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox10" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
+
+[node name="TextBox11" parent="VBoxContainer/HBoxContainer2/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
+layout_mode = 2
 
 [node name="RightGame" type="Control" parent="VBoxContainer/HBoxContainer2"]
 clip_contents = true
