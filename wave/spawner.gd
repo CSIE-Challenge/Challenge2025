@@ -4,7 +4,7 @@ extends Node
 @export var wave_info_label: Label
 
 var wave_spawn_timer: Timer
-var wave_delay_timer: Timer
+var next_wave_timer: Timer
 
 var wave_data_path: String = "res://data/waves.json"
 var wave_data_list: Array
@@ -42,11 +42,22 @@ func _ready():
 	add_child(wave_spawn_timer)
 	wave_spawn_timer.connect("timeout", _on_wave_spawn_timer_timeout)
 
-	wave_delay_timer = Timer.new()
-	add_child(wave_delay_timer)
-	wave_delay_timer.connect("timeout", _on_wave_delay_timer_timeout)
+	next_wave_timer = Timer.new()
+	add_child(next_wave_timer)
+	next_wave_timer.connect("timeout", _on_next_wave_timer_timeout)
 
 	start_next_wave()
+
+
+func _process(_delta: float):
+	wave_info_label.text = _get_wave_info()
+
+
+func _get_wave_info() -> String:
+	var time_left = next_wave_timer.time_left
+	var seconds = int(time_left) % 60
+	var milliseconds = int((time_left - int(time_left)) * 10)
+	return "Wave %d         %02d.%1d" % [current_wave_data.wave_number, seconds, milliseconds]
 
 
 func _prepare_unit_queue():
@@ -88,6 +99,10 @@ func start_next_wave():
 	wave_spawn_timer.wait_time = current_wave_data.delay
 	wave_spawn_timer.start()
 
+	next_wave_timer.wait_time = unit_queue.size() * current_wave_data.delay + delay_between_waves
+	next_wave_timer.one_shot = true
+	next_wave_timer.start()
+
 
 func _on_wave_spawn_timer_timeout():
 	# spawn a unit from the queue
@@ -99,19 +114,8 @@ func _on_wave_spawn_timer_timeout():
 	print("Spawning unit: ", unit_data)
 
 	if unit_queue.size() == 0:
-		start_wave_delay_timer()
-		return
-
-	wave_spawn_timer.start()
+		wave_spawn_timer.stop()
 
 
-func start_wave_delay_timer():
-	wave_spawn_timer.stop()
-	wave_delay_timer.wait_time = delay_between_waves
-	wave_delay_timer.one_shot = true
-	wave_delay_timer.start()
-	print("Wave completed, waiting %d seconds before next wave." % delay_between_waves)
-
-
-func _on_wave_delay_timer_timeout():
+func _on_next_wave_timer_timeout():
 	start_next_wave()
