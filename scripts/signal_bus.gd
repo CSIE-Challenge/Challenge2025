@@ -1,4 +1,3 @@
-class_name SignalBus
 extends Node2D
 
 # This signal passes a bullet with parameters set (`set_params`) called,
