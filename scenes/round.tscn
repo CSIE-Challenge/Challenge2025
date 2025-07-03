@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=8 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cjjb87yltl2v0" path="res://scenes/ui/shop_item.tscn" id="3_hawlh"]
 [ext_resource type="PackedScene" uid="uid://2l5wr8yxuun7" path="res://scenes/ui/text_box.tscn" id="4_3gnes"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://wave/spawner.gd" id="6_b1bvr"]
+[ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
 
 [node name="Round" type="Control"]
 layout_mode = 3
@@ -321,3 +322,7 @@ layout_mode = 2
 [node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("wave_info_label")]
 script = ExtResource("6_b1bvr")
 wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/VBoxContainer/WaveInfo")
+
+[node name="PauseMenu" parent="." instance=ExtResource("7_unjed")]
+visible = false
+layout_mode = 1
