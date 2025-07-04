@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=12 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
 [ext_resource type="PackedScene" uid="uid://cbxbq3tqvvn8j" path="res://scenes/map.tscn" id="2_xi36r"]
-[ext_resource type="PackedScene" uid="uid://cjjb87yltl2v0" path="res://scenes/ui/shop_item.tscn" id="3_hawlh"]
 [ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
 [ext_resource type="PackedScene" uid="uid://2l5wr8yxuun7" path="res://scenes/ui/text_box.tscn" id="4_3gnes"]
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
@@ -175,30 +174,6 @@ vertical_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Spells" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells"]
-layout_mode = 2
-text = "Spells"
-
-[node name="GridContainer" type="GridContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
-columns = 3
-
-[node name="ShopItem" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
-layout_mode = 2
-
-[node name="ShopItem2" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
-layout_mode = 2
-
-[node name="ShopItem3" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer/VBoxContainer/Spells/GridContainer" instance=ExtResource("3_hawlh")]
-layout_mode = 2
 
 [node name="Chat" type="TabBar" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
 visible = false

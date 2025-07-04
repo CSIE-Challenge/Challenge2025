@@ -18,6 +18,7 @@ const SHOP_ITEM_SCENE := preload("res://scenes/ui/shop_item.tscn")
 func _ready() -> void:
 	_create_tower_options()
 	_create_unit_options()
+	_create_spell_options()
 
 
 func _create_section(title: String) -> GridContainer:
@@ -39,6 +40,7 @@ func _create_tower_options() -> void:
 	for scene in TOWER_SCENES:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
 		shop_item.callback = func(): building_game.buy_tower.emit(scene)
+		shop_item.display_scene = scene
 		grid.add_child(shop_item)
 
 
@@ -47,5 +49,18 @@ func _create_unit_options() -> void:
 	var grid := _create_section("Units")
 	for unit in unit_data.unit_data_list:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
-		shop_item.callback = func(): opposing_game.summon_enemy.emit(unit_data.unit_data_list[unit])
+		var data = unit_data.unit_data_list[unit]
+		var scene = load(data.get("scene_path"))
+		shop_item.callback = func(): opposing_game.summon_enemy.emit(data)
+		shop_item.display_scene = scene
+		grid.add_child(shop_item)
+
+
+func _create_spell_options() -> void:
+	# TODO: load and add actual spells
+	var grid := _create_section("Spells")
+	for spell in ["Placeholder A", "Placeholder B", "Placeholder C"]:
+		var shop_item := SHOP_ITEM_SCENE.instantiate()
+		shop_item.callback = func(): building_game.deploy_spell.emit(spell)
+		shop_item.display_scene = load("res://scenes/towers/twin_turret.tscn")
 		grid.add_child(shop_item)

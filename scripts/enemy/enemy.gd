@@ -58,7 +58,8 @@ func init(_source: Game.EnemySource) -> void:
 
 func _ready():
 	health = max_health
-	path_follow.progress_ratio = 0
+	if path_follow != null:
+		path_follow.progress_ratio = 0
 	add_to_group("enemies")
 
 

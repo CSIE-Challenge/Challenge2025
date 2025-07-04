@@ -4,6 +4,7 @@ extends Control
 signal damage_taken(damage: int)
 signal buy_tower(tower_scene: PackedScene)
 signal summon_enemy(unit_data: Dictionary)
+signal deploy_spell(spell_data)
 
 enum EnemySource { SYSTEM, OPPONENT }
 
@@ -25,8 +26,9 @@ var _enemy_scene_cache = {}
 
 func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
-	spawner.spawn_enemy.connect(_on_spawn_enemy)
-	summon_enemy.connect(_on_summon_enemy)
+	spawner.spawn_enemy.connect(_on_enemy_spawn)
+	summon_enemy.connect(_on_enemy_summon)
+	deploy_spell.connect(_on_spell_deploy)
 
 
 #region Towers
@@ -130,11 +132,11 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	return enemy
 
 
-func _on_spawn_enemy(unit_data: Dictionary) -> void:
+func _on_enemy_spawn(unit_data: Dictionary) -> void:
 	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.SYSTEM)
 
 
-func _on_summon_enemy(unit_data: Dictionary) -> void:
+func _on_enemy_summon(unit_data: Dictionary) -> void:
 	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.OPPONENT)
 
 
@@ -148,6 +150,15 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 		EnemySource.OPPONENT:
 			path = _map.opponent_path
 	path.add_child(enemy.path_follow)
+
+
+#endregion
+
+#region Spells
+
+
+func _on_spell_deploy(spell_data) -> void:
+	print("Spell ", spell_data, " unhandled")
 
 
 #endregion
