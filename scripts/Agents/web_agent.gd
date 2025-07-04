@@ -1,12 +1,29 @@
 class_name WebAgent
 extends Agent
 
-enum CommandType { BUILD, SELL, UPGRADE, USE_SKILL, GET_MAP, GET_PLAYER_STATE, GET_OPPONENT_STATE }
-enum CommandReturnCode {
-	OK,
-	ERR_ILLFORMED_COMMAND,
-	ERR_DOES_NOT_EXIST,
-	ERR_ILLEGAL_ARG_TYPES,
+enum CommandType {
+	GET_ALL_TERRAIN = 1,
+	GET_SCORES = 2,
+	GET_CURRENT_WAVE = 3,
+	GET_REMAIN_TIME = 4,
+	GET_TIME_UNTIL_NEXT_WAVE = 5,
+	GET_MONEY = 6,
+	GET_INCOME = 7,
+	PLACE_TOWER = 101,
+	GET_ALL_TOWERS = 102,
+	GET_TOWER = 103,
+	SPAWN_ENEMY = 201,
+	GET_ENEMY_COOLDOWN = 202,
+	GET_ALL_ENEMY_INFO = 203,
+	GET_AVAILABLE_ENEMIES = 204,
+	GET_CLOSEST_ENEMIES = 205,
+	GET_ENEMIES_IN_RANGE = 206,
+	CAST_SPELL = 301,
+	GET_SPELL_COOLDOWN = 302,
+	GET_ALL_SPELL_COST = 303,
+	GET_EFFECTIVE_SPELLS = 304,
+	SEND_CHAT = 401,
+	GET_CHAT_HISTORY = 402
 }
 
 
@@ -34,7 +51,7 @@ class CommandHandler:
 		return _handler.callv(args)
 
 
-const MIN_COMMAND_INTERVAL_MSEC = 5
+const MIN_COMMAND_INTERVAL_MSEC = 10
 var _ws: WebSocketConnection = null
 var _last_command: float = -1
 var _command_handlers: Dictionary = {}  # command id -> command handler
@@ -42,7 +59,7 @@ var _command_handlers: Dictionary = {}  # command id -> command handler
 
 func _register_command_handlers() -> void:
 	var handlers: Array[CommandHandler] = [
-		CommandHandler.new(CommandType.BUILD, [TYPE_VECTOR2I, TYPE_INT], build),
+		CommandHandler.new(CommandType.GET_ALL_TERRAIN, [TYPE_VECTOR2I, TYPE_INT], build),
 		# TODO
 	]
 	for handler in handlers:
@@ -69,23 +86,22 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 	_last_command = this_command
 
 	# handle command
-	var ret_code: Variant
-	var ret_value: Variant = null
+	var response: Array
 	var command = bytes_to_var(command_bytes)
-	if typeof(command) != TYPE_ARRAY or command.size() < 1 or typeof(command[0]) != TYPE_INT:
-		ret_code = CommandReturnCode.ERR_ILLFORMED_COMMAND
+	if (
+		typeof(command) != TYPE_ARRAY
+		or command.size() < 2
+		or typeof(command[0]) != TYPE_PACKED_BYTE_ARRAY
+		or typeof(command[1]) != TYPE_INT
+	):
+		response.push_back(StatusCode.ILLFORMED_COMMAND)
 	else:
 		var command_id: int = command.pop_front()
 		if not _command_handlers.has(command_id):
-			ret_code = CommandReturnCode.ERR_DOES_NOT_EXIST
+			response.push_back(StatusCode.NOT_FOUND)
 		elif not _command_handlers[command_id].check_argument_types(command):
-			ret_code = CommandReturnCode.ERR_ILLEGAL_ARG_TYPES
+			response.push_back(StatusCode.ILLEGAL_ARGUMENT)
 		else:
-			ret_code = CommandReturnCode.OK
-			ret_value = _command_handlers[command_id].handle(command)
+			response = _command_handlers[command_id].handle(command)
 
-	# write return values back to websocket
-	if typeof(ret_value) != TYPE_ARRAY:
-		ret_value = [ret_value]
-	ret_value.push_front(ret_code)
-	_ws.send_bytes(var_to_bytes(ret_value))
+	_ws.send_bytes(var_to_bytes(response))
