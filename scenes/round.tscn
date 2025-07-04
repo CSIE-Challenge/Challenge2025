@@ -1,9 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=10 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
 [ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
-[ext_resource type="PackedScene" uid="uid://2l5wr8yxuun7" path="res://scenes/ui/text_box.tscn" id="4_3gnes"]
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
 [ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scenes/chat.gd" id="5_vxv1r"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
@@ -143,10 +142,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 tab_alignment = 1
-current_tab = 1
+current_tab = 0
 
 [node name="Shop" type="TabBar" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer" node_paths=PackedStringArray("options_container", "building_game", "opposing_game")]
-visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("4_snxki")
@@ -177,6 +175,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Chat" type="TabBar" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("5_vxv1r")
 metadata/_tab_index = 1
@@ -212,21 +211,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
-
-[node name="TextBox" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox2" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox3" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox4" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox5" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
 
 [node name="RightGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
