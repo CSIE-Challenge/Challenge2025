@@ -2,17 +2,20 @@ class_name Tower
 extends Area2D
 
 
-var damage: int = 2
-var rotation_speed: float = 90.0  # degree per second
-var aim_range: float = 450.0
-var reload_speed: float = 240  # per minute
-var level: int = 1
+@export var level: int = 1
+@export var auto_aim: bool = true
+@export var anti_air: bool = false
+@export var bullet_scene: PackedScene
+@export var bullet_number: int = 1
+@export var reload_seconds: float = 0.25
+@export var aim_range: float = 450
+@export var damage: int = 2
+@export var rotation_speed: float = 90.0  # degree per second
+
+
 var current_shoot_turret: int = 0  # 0 for left, 1 for right
 
-var enemies: Array = []
-
 var target: Node2D = null
-var targets = []
 
 var built: bool = false
 var is_preview := false
@@ -20,8 +23,6 @@ var is_preview := false
 @onready var turret = $Turret
 @onready var enemy_detector = $AimRange/CollisionShape2D
 @onready var reload_timer = $ReloadTimer
-
-const bullet_scene = preload("res://scenes/bullet.tscn")
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments
@@ -36,7 +37,7 @@ func _ready():
 	else:
 		built = true
 		enemy_detector.shape.radius = 0.5 * aim_range
-		reload_timer.wait_time = 60.0 / reload_speed
+		reload_timer.wait_time = reload_seconds
 		reload_timer.start()
 	add_to_group("towers")
 
@@ -49,8 +50,12 @@ func apply_preview_appearance():
 
 
 func _physics_process(delta: float) -> void:
-	if enemies.size() > 0 and built:
-		aim(delta)
+	_refresh_target()
+	# take aim
+	if target != null:
+		var desired_angle = (target.global_position - turret.global_position).angle()
+		var max_rotation = deg_to_rad(rotation_speed) * delta
+		turret.rotation = move_toward_angle(turret.rotation, desired_angle, max_rotation)
 
 
 func move_toward_angle(from: float, to: float, max_delta: float) -> float:
@@ -59,36 +64,24 @@ func move_toward_angle(from: float, to: float, max_delta: float) -> float:
 	return from + angle_diff
 
 
-func aim(delta: float) -> void:
-	if enemies.is_empty():
+func _refresh_target():
+	if target != null and is_instance_valid(target):
 		return
-
-	target = enemies[0]
-	var desired_angle = (target.global_position - turret.global_position).angle()
-	var max_rotation = deg_to_rad(rotation_speed) * delta
-
-	turret.rotation = move_toward_angle(turret.rotation, desired_angle, max_rotation)
-
-
-func _choose_target():
 	target = null
-	targets = $AimRange.get_overlapping_areas()
-	if targets.size() == 0:
+	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
+	if enemies.size() == 0:
 		return
-
-	var closest_target = targets[0]
-	var closest_distance = position.distance_to(closest_target.position)
-	for i in range(1, targets.size()):
-		var distance = position.distance_to(targets[i].position)
+	target = enemies[0]
+	var closest_distance = position.distance_to(target.position)
+	for i in range(1, enemies.size()):
+		var distance = position.distance_to(enemies[i].position)
 		if distance < closest_distance:
-			closest_target = targets[i]
+			target = enemies[i]
 			closest_distance = distance
-
-	target = closest_target
 
 
 func shoot() -> void:
-	_choose_target()
+	_refresh_target()
 	if target == null:
 		return
 
@@ -108,24 +101,10 @@ func shoot() -> void:
 	bullet.init(origin, orientation, target)
 
 
-func _on_aim_range_area_entered(area: Area2D) -> void:
-	enemies.append(area)
-
-
-func _on_aim_range_area_exited(area: Area2D) -> void:
-	enemies.erase(area)
-
-
-func _on_reload_timer_timeout() -> void:
-	if enemies.size() > 0:
-		shoot()
-
-
 func upgrade() -> void:
-	level += 1
 	damage += 1
 	aim_range += 100
-	reload_speed += 60
+	reload_seconds = 60.0 / (60.0 / reload_seconds + 60)
 	rotation_speed += 20
 	enemy_detector.shape.radius = 0.5 * aim_range
-	reload_timer.wait_time = 60.0 / reload_speed
+	reload_timer.wait_time = reload_seconds

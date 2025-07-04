@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8xtcx5gblp84"]
+[gd_scene load_steps=7 format=3 uid="uid://c8xtcx5gblp84"]
 
 [ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="1_ay4al"]
 [ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scripts/tower.gd" id="1_ktxwe"]
 [ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="2_ktxwe"]
+[ext_resource type="PackedScene" uid="uid://gkfjlrjp0wly" path="res://scenes/bullets/bullet.tscn" id="2_qrbg1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
 size = Vector2(53, 52)
@@ -15,6 +16,7 @@ scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_ktxwe")
+bullet_scene = ExtResource("2_qrbg1")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("1_ay4al")
@@ -49,4 +51,4 @@ shape = SubResource("CircleShape2D_ktxwe")
 
 [connection signal="area_entered" from="AimRange" to="." method="_on_aim_range_area_entered"]
 [connection signal="area_exited" from="AimRange" to="." method="_on_aim_range_area_exited"]
-[connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]
+[connection signal="timeout" from="ReloadTimer" to="." method="shoot"]
