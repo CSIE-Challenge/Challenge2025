@@ -1,215 +1,135 @@
-extends Node2D
+class_name Game
+extends Control
 
-const TOWER_COST = 5
-const SKILL_SLOW = 0
-const SKILL_AOE = 1
+signal damage_taken(damage: int)
 
-@export var tower_scene: PackedScene
-@export var is_ai: bool
-@export var agent_scene: PackedScene
+enum EnemySource { SYSTEM, OPPONENT }
 
-var occupied_cells := {}
-var preview_tower
-var money: int = 0
-var money_per_second: int = 10
-var max_hp: int = 100
-var cost: int = 30
-var cooldown: Array = [0.0, 0.0]
+# todo: move tower parameters into the tower classes
+const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
+const ENEMY_SCENE := preload("res://scenes/enemies/enemy.tscn")
+const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
-var enemy_list = {
-	"plane":
-	{
-		icon_path =
-		"res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile270.png",
-		cost = 100,
-		income = 1
-	},
-	"tank":
-	{
-		icon_path =
-		"res://assets/kenney_tower-defense-top-down/PNG/Retina/towerDefense_tile204.png",
-		cost = 200,
-		income = 5
-	},
-	"robot":
-	{
-		icon_path =
-		"res://.godot/imported/towerDefense_tile245.png-a634484bb16333c0b20a93f4d77d94ba.ctex",
-		cost = 300,
-		income = 10
-	}
-}
+var money: int = 100
+var income_per_second = 10
+var built_towers: Dictionary = {}
 
-var _money_timer := 0.0
+@onready var _map: Map = $Map
 
-@onready var hp_bar = $HitPoint
-@onready var money_label: Label = $MoneyDisplay
-@onready var score_label: Label = $ScoreDisplay
-
-@onready var tilemap: TileMapLayer = $SubViewportContainer/SubViewport/TileMapLayer
-@onready var tower_manager: Node2D = $TowerManager
-
-@onready var tower_ui := $CanvasLayer2/TowerUI
+#region Towers
 
 
-func _ready():
-	preview_tower = tower_scene.instantiate()
-	preview_tower.is_preview = true
-	$SubViewportContainer/SubViewport.add_child(preview_tower)
-	var ws = APIServer.get_instance().register_connection()
-	var agent = agent_scene.instantiate()
-	agent.link(ws)
-	self.add_child(agent)
-
-	hp_bar.max_value = max_hp
-	hp_bar.value = max_hp
-
-
-func _process(_delta):
-	# preview tower
-	if not is_ai:
-		var mouse_pos = get_global_mouse_position()
-		var cell = tilemap.local_to_map(tilemap.to_local(mouse_pos))
-		var world_pos = tilemap.map_to_local(cell)
-
-		if not tower_ui.visible:
-			preview_tower.global_position = tilemap.to_global(world_pos)
-			preview_tower.visible = _handle_visibility_of_preview_tower()
-
-		var valid = can_place_tower(cell)
-		set_tower_color(preview_tower, valid)
-
-	money_label.text = "Money  :  $ " + str(money)
-	_money_timer += _delta
-	if _money_timer > 1.0:
-		money += money_per_second
-		_money_timer = 0.0
-
-
-# place tower
-
-
-func set_tower_color(tower: Node2D, is_valid: bool):
-	var color = Color(0, 1, 0, 0.5) if is_valid else Color(1, 0, 0, 0.5)
-	for child in tower.get_children():
-		if child is CanvasItem:
-			child.modulate = color
-
-
-func _unhandled_input(event: InputEvent):
-	if not is_ai:
-		if (
-			event is InputEventMouseButton
-			and event.pressed
-			and event.button_index == MOUSE_BUTTON_LEFT
-		):
-			var cell = tilemap.local_to_map(tilemap.to_local(get_global_mouse_position()))
-			if can_place_tower(cell):
-				place_tower(cell)
-
-
-func can_place_tower(cell: Vector2i) -> bool:
-	var tile_data = tilemap.get_cell_tile_data(cell)
-	if tile_data == null:
+func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
+	if built_towers.has(cell_pos):
 		return false
-
-	if money < TOWER_COST:
+	if money < tower.building_cost:
 		return false
-
-	if occupied_cells.has(cell):
-		return false
-
-	return tile_data.get_custom_data("buildable") == true
+	return _map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
-func _handle_visibility_of_preview_tower():
-	# Not visible if money is not enough
-	if money < TOWER_COST:
-		return false
-	return true
+func _on_tower_upgraded(tower: Tower):
+	var levelup_cost: int = tower.upgrade_cost
+	if money >= levelup_cost:
+		money -= levelup_cost
+		tower.upgrade()
 
 
-func place_tower(cell: Vector2i):
-	money -= TOWER_COST
-	var tower = tower_scene.instantiate()
-	var world_pos = tilemap.map_to_local(cell)
-	tower.global_position = tilemap.to_global(world_pos)
-	tower.connect("tower_selected", self._on_tower_selected)
-	occupied_cells[cell] = true
-	tower_manager.add_child(tower)
+func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
+	var refund := tower.upgrade_cost
+	money += refund
+	tower.queue_free()
+	tower_ui.queue_free()
+	var cell_pos = _map.global_to_cell(tower.global_position)
+	built_towers.erase(cell_pos)
 
 
-# update values
-
-
-func upgrade_income() -> void:
-	if money >= cost:
-		money_per_second += 1
-		money -= cost
-		cost += 30
-
-
-func set_hit_point(damage: int):
-	hp_bar.value -= damage
-
-
-# skills
-
-
-func start_cooldown(skill: int, cd: float):
-	cooldown[skill] = Time.get_unix_time_from_system() + cd
-
-
-func is_on_cooldown(skill: int) -> bool:
-	return cooldown[skill] > Time.get_unix_time_from_system()
-
-
-func slow_down_enemy():
-	var skill_cost: int = 50
-	var cd: float = 15.0
-	if money < skill_cost or is_on_cooldown(SKILL_SLOW):
+func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
+	if not _is_buildable(tower, cell_pos):
 		return
+	var global_pos = _map.cell_to_global(cell_pos)
 
-	money -= skill_cost
-	start_cooldown(SKILL_SLOW, cd)
+	self.add_child(tower)
+	tower.enable(global_pos)
 
-	# traverse over enemies on selfside
-	for path_follow in $OpponentPath.get_children():
-		for enemy in path_follow.get_children():
-			enemy.slow_down()
-
-	for path_follow in $SystemPath.get_children():
-		for enemy in path_follow.get_children():
-			enemy.slow_down()
+	money -= tower.building_cost
+	built_towers[cell_pos] = tower
 
 
-func aoe_damage():
-	var skill_cost: int = 100
-	var cd: float = 60.0
-	if money < skill_cost or is_on_cooldown(SKILL_AOE):
-		return
+func buy_tower(tower: Tower):
+	var preview_color_callback = func(cell_pos: Vector2i) -> Previewer.PreviewMode:
+		if _is_buildable(tower, cell_pos):
+			return Previewer.PreviewMode.SUCCESS
+		return Previewer.PreviewMode.FAIL
 
-	money -= skill_cost
-	start_cooldown(SKILL_AOE, cd)
-	var enemies := get_tree().get_nodes_in_group("enemies")
-	enemies.sort_custom(
-		func(a, b): return a.path_follow.progress_ratio > b.path_follow.progress_ratio
-	)
-	for i in range(min(enemies.size(), 5)):
-		enemies[i].take_damage(50)
+	var previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	previewer.selected.connect(self._place_tower.bind(tower))
+	self.add_child(previewer)
 
 
-func enemy_selected(enemy: String):
-	if money < enemy_list[enemy].cost:
-		return
-	money -= enemy_list[enemy].cost
-	money_per_second += enemy_list[enemy].income
-	print("Enemy selected:", enemy)
-
-
-# TowerUI
-
-
-func _on_tower_selected(tower):
+func _select_tower(tower: Tower):
+	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
+	self.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
-	tower_ui.visible = true
+	tower_ui.upgraded.connect(self._on_tower_upgraded.bind(tower))
+	tower_ui.sold.connect(self._on_tower_sold.bind(tower, tower_ui))
+
+
+func _handle_tower_selection(event: InputEvent) -> void:
+	if not (
+		event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed
+	):
+		return
+	var clicked_cell = _map.global_to_cell(get_global_mouse_position())
+	if built_towers.has(clicked_cell):
+		_select_tower(built_towers[clicked_cell])
+		get_viewport().set_input_as_handled()
+
+
+#endregion
+
+#region Income
+
+
+func _on_constant_income_timer_timeout() -> void:
+	money += income_per_second
+
+
+#endregion
+
+#region Enemies
+
+
+func summon_enemy(enemy: Enemy) -> void:
+	enemy.game = self
+	var path: Path2D
+	match enemy.source:
+		EnemySource.SYSTEM:
+			path = _map.system_path
+		EnemySource.OPPONENT:
+			path = _map.opponent_path
+	path.add_child(enemy.path_follow)
+
+
+#endregion
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	_handle_tower_selection(event)
+
+	if event is InputEventKey and event.pressed and (event.keycode == KEY_T):
+		buy_tower(TOWER_SCENE.instantiate())
+		get_viewport().set_input_as_handled()
+	if (
+		event is InputEventKey
+		and event.pressed
+		and (event.keycode == KEY_E or event.keycode == KEY_S)
+	):
+		var source
+		if event.keycode == KEY_E:
+			source = EnemySource.OPPONENT
+		else:
+			source = EnemySource.SYSTEM
+		var enemy := ENEMY_SCENE.instantiate()
+		enemy.init(source)
+		summon_enemy(enemy)
+		get_viewport().set_input_as_handled()
