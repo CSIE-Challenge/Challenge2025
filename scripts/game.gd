@@ -185,17 +185,3 @@ func _unhandled_input(event: InputEvent) -> void:
 	):
 		previewer.free()
 	_handle_tower_selection(event)
-
-	if (
-		event is InputEventKey
-		and event.pressed
-		and (event.keycode == KEY_E or event.keycode == KEY_S)
-	):
-		var source
-		if event.keycode == KEY_E:
-			source = EnemySource.OPPONENT
-		else:
-			source = EnemySource.SYSTEM
-		var enemy := ENEMY_SCENE.instantiate()
-		_deploy_enemy(enemy, source)
-		get_viewport().set_input_as_handled()
