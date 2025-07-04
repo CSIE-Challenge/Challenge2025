@@ -1,5 +1,5 @@
 class_name Enemy
-extends CharacterBody2D
+extends Area2D
 
 
 @export var max_health: int = 100
@@ -39,6 +39,14 @@ func take_damage(amount: int):
 	health -= amount
 	if health <= 0:
 		_on_killed()
+
+
+func _on_area_entered(bullet: Bullet) -> void:
+	if not bullet.alive:
+		return
+	bullet.alive = false
+	take_damage(bullet.damage)
+	bullet.queue_free()
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments

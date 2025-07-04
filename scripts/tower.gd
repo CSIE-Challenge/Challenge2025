@@ -1,6 +1,6 @@
 class_name Tower
+extends Area2D
 
-extends StaticBody2D
 
 var damage: int = 2
 var rotation_speed: float = 90.0  # degree per second
@@ -20,6 +20,8 @@ var is_preview := false
 @onready var turret = $Turret
 @onready var enemy_detector = $AimRange/CollisionShape2D
 @onready var reload_timer = $ReloadTimer
+
+const bullet_scene = preload("res://scenes/bullet.tscn")
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments
@@ -70,7 +72,7 @@ func aim(delta: float) -> void:
 
 func _choose_target():
 	target = null
-	targets = $AimRange.get_overlapping_bodies()
+	targets = $AimRange.get_overlapping_areas()
 	if targets.size() == 0:
 		return
 
@@ -90,7 +92,7 @@ func shoot() -> void:
 	if target == null:
 		return
 
-	var origin
+	var origin: Vector2
 	var orientation = $Turret.rotation
 
 	origin = Vector2(0, 0)
@@ -101,19 +103,17 @@ func shoot() -> void:
 		origin = $Turret/Right.global_position
 		current_shoot_turret = 0
 
-	# var bullet := Bullet.new()
-	# bullet.set_params(origin, orientation, target)
-	# signal_bus.create_bullet.emit(bullet)
+	var bullet := bullet_scene.instantiate()
+	self.get_parent().add_child(bullet)
+	bullet.init(origin, orientation, target)
 
 
-func _on_aim_range_body_entered(body: Node2D) -> void:
-	if body == self:
-		return
-	enemies.append(body.get_parent())
+func _on_aim_range_area_entered(area: Area2D) -> void:
+	enemies.append(area)
 
 
-func _on_aim_range_body_exited(body: Node2D) -> void:
-	enemies.erase(body.get_parent())
+func _on_aim_range_area_exited(area: Area2D) -> void:
+	enemies.erase(area)
 
 
 func _on_reload_timer_timeout() -> void:

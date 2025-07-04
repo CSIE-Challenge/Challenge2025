@@ -10,9 +10,10 @@ size = Vector2(53, 52)
 [sub_resource type="CircleShape2D" id="CircleShape2D_ktxwe"]
 radius = 734.063
 
-[node name="Tower" type="StaticBody2D"]
+[node name="Tower" type="Area2D"]
 scale = Vector2(0.781, 0.781)
-collision_layer = 2
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_ktxwe")
 
 [node name="Base" type="Sprite2D" parent="."]
@@ -38,12 +39,14 @@ shape = SubResource("RectangleShape2D_ktxwe")
 
 [node name="AimRange" type="Area2D" parent="."]
 visible = false
+light_mask = 0
+collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AimRange"]
 shape = SubResource("CircleShape2D_ktxwe")
 
 [node name="ReloadTimer" type="Timer" parent="."]
 
-[connection signal="body_entered" from="AimRange" to="." method="_on_aim_range_body_entered"]
-[connection signal="body_exited" from="AimRange" to="." method="_on_aim_range_body_exited"]
+[connection signal="area_entered" from="AimRange" to="." method="_on_aim_range_area_entered"]
+[connection signal="area_exited" from="AimRange" to="." method="_on_aim_range_area_exited"]
 [connection signal="timeout" from="ReloadTimer" to="." method="_on_reload_timer_timeout"]

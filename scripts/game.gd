@@ -59,8 +59,8 @@ func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
 
+	self.add_child(tower)
 	tower.init(global_pos)
-	$AbsPositionedContainer.add_child(tower)
 
 	_money -= tower_cost
 	_built_towers[cell_pos] = tower
@@ -79,10 +79,10 @@ func buy_tower(tower: Tower):
 
 func _select_tower(tower: Tower):
 	var tower_ui: TowerUi = tower_ui_scene.instantiate()
+	self.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
 	tower_ui.upgraded.connect(self._on_tower_upgraded.bind(tower))
 	tower_ui.sold.connect(self._on_tower_sold.bind(tower, tower_ui))
-	$AbsPositionedContainer.add_child(tower_ui)
 
 
 func _handle_tower_selection(event: InputEvent) -> void:

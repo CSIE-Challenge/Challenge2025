@@ -5,7 +5,8 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_55jtl"]
 
-[node name="Enemy" type="CharacterBody2D" groups=["EnemyGroup"]]
+[node name="Enemy" type="Area2D" groups=["EnemyGroup"]]
+collision_mask = 2
 script = ExtResource("1_8e3ao")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -29,3 +30,5 @@ grow_vertical = 2
 pivot_offset = Vector2(24, 32)
 value = 32.46
 show_percentage = false
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
