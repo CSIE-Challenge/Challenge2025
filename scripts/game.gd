@@ -2,7 +2,6 @@ class_name Game
 extends Control
 
 
-signal money_updated(money: int)
 signal damage_taken(damage: int)
 
 
@@ -18,40 +17,35 @@ const tower_ui_scene := preload("res://scenes/tower_ui.tscn")
 
 @onready var _map: Map = $Map
 
-var _money: int = 100:
-	get:
-		return _money
-	set(value):
-		money_updated.emit(value)
-		_money = value
-var _income_per_second = 10
-var _built_towers: Dictionary = {}
+var money: int = 100
+var income_per_second = 10
+var built_towers: Dictionary = {}
 
 
 #region Towers
 
 func _is_buildable(cell_pos: Vector2i) -> bool:
-	if _built_towers.has(cell_pos):
+	if built_towers.has(cell_pos):
 		return false
-	if _money < tower_cost:
+	if money < tower_cost:
 		return false
 	return _map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
 func _on_tower_upgraded(tower: Tower):
 	var levelup_cost: int = tower.level * 10
-	if _money >= levelup_cost:
-		_money -= levelup_cost
+	if money >= levelup_cost:
+		money -= levelup_cost
 		tower.upgrade()
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
 	var refund := tower.level * 10
-	_money += refund
+	money += refund
 	tower.queue_free()
 	tower_ui.queue_free()
 	var cell_pos = _map.global_to_cell(tower.global_position)
-	_built_towers.erase(cell_pos)
+	built_towers.erase(cell_pos)
 
 
 func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
@@ -62,8 +56,8 @@ func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	self.add_child(tower)
 	tower.init(global_pos)
 
-	_money -= tower_cost
-	_built_towers[cell_pos] = tower
+	money -= tower_cost
+	built_towers[cell_pos] = tower
 
 
 func buy_tower(tower: Tower):
@@ -89,8 +83,8 @@ func _handle_tower_selection(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton and event.pressed):
 		return
 	var clicked_cell = _map.global_to_cell(get_global_mouse_position())
-	if _built_towers.has(clicked_cell):
-		_select_tower(_built_towers[clicked_cell])
+	if built_towers.has(clicked_cell):
+		_select_tower(built_towers[clicked_cell])
 		get_viewport().set_input_as_handled()
 
 #endregion
@@ -99,7 +93,7 @@ func _handle_tower_selection(event: InputEvent) -> void:
 #region Income
 
 func _on_constant_income_timer_timeout() -> void:
-	_money += _income_per_second
+	money += income_per_second
 
 #endregion
 
