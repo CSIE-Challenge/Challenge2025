@@ -37,7 +37,7 @@ func _ready():
 
 
 func _refresh_target():
-	if target != null and is_instance_valid(target):
+	if target != null and is_instance_valid(target) and self.overlaps_area(target):
 		return
 	target = null
 	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
