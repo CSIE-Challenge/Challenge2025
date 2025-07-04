@@ -54,6 +54,7 @@ func init(_source: Game.EnemySource) -> void:
 	path_follow = PathFollow2D.new()
 	path_follow.loop = false
 	path_follow.add_child(self)
+	$HealthBar.visible = true
 
 
 func _ready():
