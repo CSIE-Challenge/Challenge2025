@@ -2,6 +2,7 @@ class_name APIServer
 extends Node
 
 enum { CONNECT_FAILED, CONNECT_PENDING, CONNECT_OK }
+enum StatusCode { OK = 200, AUTH_FAIL = 401, INTERNAL_ERR = 500 }
 
 static var _instance: APIServer = null
 @export var handshake_timeout_msec: int = 3000
@@ -140,8 +141,8 @@ func auth_connection(ws: WebSocketPeer) -> WebSocketConnection:
 		var connections = get_children()
 		for conn: WebSocketConnection in connections:
 			if conn.authenticate(token):
-				ws.send_text("authentication OK")
+				ws.send_bytes(var_to_bytes([StatusCode.OK]))
 				return conn
-	ws.send_text("authentication FAIL")
+	ws.send_bytes(var_to_bytes([StatusCode.AUTH_FAIL]))
 	return null
 #endregion

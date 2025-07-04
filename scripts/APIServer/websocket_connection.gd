@@ -92,7 +92,7 @@ func _process(_delta: float) -> void:
 
 
 func _generate_token() -> String:
-	const CHARACTERS: String = "abcdefghijklmnopqrstuvwxyz"
+	const CHARACTERS: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	var tok: String = ""
 	for i in range(TOKEN_LEN):
 		tok += CHARACTERS[randi_range(0, CHARACTERS.length() - 1)]
