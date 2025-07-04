@@ -1,18 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=9 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
+[ext_resource type="PackedScene" uid="uid://c2q3w8rb1e31l" path="res://scenes/score.tscn" id="3_snxki"]
 [ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
 [ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scripts/chat.gd" id="5_vxv1r"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_unjed"]
-bg_color = Color(0.560105, 0.614527, 0.911107, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxv1r"]
-bg_color = Color(0.679833, 0.353052, 0.323024, 1)
 
 [node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar")]
 layout_mode = 3
@@ -25,7 +20,7 @@ mouse_filter = 2
 theme = ExtResource("1_vfk7k")
 script = ExtResource("2_b0w8h")
 game_timer_label = NodePath("Screen/Bottom/Mid/GameStatus/VBoxContainer/Countdown")
-score_bar = NodePath("Screen/Top/MarginContainer/ProgressBar")
+score_bar = NodePath("Screen/Top/Score")
 
 [node name="Screen" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -56,21 +51,8 @@ text = "1P Status"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Screen/Top"]
-custom_minimum_size = Vector2(1000, 0)
+[node name="Score" parent="Screen/Top" instance=ExtResource("3_snxki")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 15
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 15
-
-[node name="ProgressBar" type="ProgressBar" parent="Screen/Top/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_unjed")
-theme_override_styles/fill = SubResource("StyleBoxFlat_vxv1r")
-show_percentage = false
 
 [node name="Status2P" type="Panel" parent="Screen/Top"]
 layout_mode = 2

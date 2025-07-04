@@ -3,7 +3,7 @@ extends Control
 const GAME_DURATION = 180.0
 
 @export var game_timer_label: Label
-@export var score_bar: ProgressBar
+@export var score_bar: ScoreBar
 
 
 func _ready() -> void:
@@ -20,10 +20,9 @@ func get_formatted_time() -> String:
 
 
 func _update_score_bar() -> void:
-	var p1_score = 1000
-	var p2_score = 800
-	var score = p1_score + p2_score
-	score_bar.value = float(p1_score) / score * 100.0
+	# TODO: actually calculate the score
+	score_bar.left_score += randi_range(10, 100)
+	score_bar.right_score += randi_range(10, 100)
 
 
 func _process(_delta: float) -> void:
