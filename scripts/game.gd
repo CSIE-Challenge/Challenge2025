@@ -54,7 +54,7 @@ func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	var global_pos = _map.cell_to_global(cell_pos)
 
 	self.add_child(tower)
-	tower.init(global_pos)
+	tower.enable(global_pos)
 
 	money -= tower_cost
 	built_towers[cell_pos] = tower

@@ -13,55 +13,27 @@ extends Area2D
 @export var rotation_speed: float = 90.0  # degree per second
 
 
+var target: Node2D = null
+var enabled: bool = false
 var current_shoot_turret: int = 0  # 0 for left, 1 for right
 
-var target: Node2D = null
-
-var built: bool = false
-var is_preview := false
 
 @onready var turret = $Turret
 @onready var enemy_detector = $AimRange/CollisionShape2D
 @onready var reload_timer = $ReloadTimer
 
 
-# _init not overridden because PackedScene.instantiate() does not accept arguments
-func init(_global_position: Vector2) -> void:
+func enable(_global_position: Vector2) -> void:
+	enabled = true
 	global_position = _global_position
+	reload_timer.start()
 
 
 func _ready():
-	if is_preview:
-		apply_preview_appearance()
-		$Button.visible = false
-	else:
-		built = true
-		enemy_detector.shape.radius = 0.5 * aim_range
-		reload_timer.wait_time = reload_seconds
-		reload_timer.start()
+	enabled = false
+	enemy_detector.shape.radius = 0.5 * aim_range
+	reload_timer.wait_time = reload_seconds
 	add_to_group("towers")
-
-
-func apply_preview_appearance():
-	for child in get_children():
-		if child is CanvasItem:
-			child.modulate = Color(1, 1, 1, 0.5)
-	set_process(false)
-
-
-func _physics_process(delta: float) -> void:
-	_refresh_target()
-	# take aim
-	if target != null:
-		var desired_angle = (target.global_position - turret.global_position).angle()
-		var max_rotation = deg_to_rad(rotation_speed) * delta
-		turret.rotation = move_toward_angle(turret.rotation, desired_angle, max_rotation)
-
-
-func move_toward_angle(from: float, to: float, max_delta: float) -> float:
-	var angle_diff = wrapf(to - from, -PI, PI)
-	angle_diff = clamp(angle_diff, -max_delta, max_delta)
-	return from + angle_diff
 
 
 func _refresh_target():
@@ -78,6 +50,23 @@ func _refresh_target():
 		if distance < closest_distance:
 			target = enemies[i]
 			closest_distance = distance
+
+
+func move_toward_angle(from: float, to: float, max_delta: float) -> float:
+	var angle_diff = wrapf(to - from, -PI, PI)
+	angle_diff = clamp(angle_diff, -max_delta, max_delta)
+	return from + angle_diff
+
+
+func _physics_process(delta: float) -> void:
+	if not enabled:
+		return
+	_refresh_target()
+	# take aim
+	if target != null:
+		var desired_angle = (target.global_position - turret.global_position).angle()
+		var max_rotation = deg_to_rad(rotation_speed) * delta
+		turret.rotation = move_toward_angle(turret.rotation, desired_angle, max_rotation)
 
 
 func shoot() -> void:
