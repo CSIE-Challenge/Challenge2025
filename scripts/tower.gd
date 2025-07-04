@@ -2,8 +2,6 @@ class_name Tower
 
 extends StaticBody2D
 
-var signal_bus: SignalBus
-
 var damage: int = 2
 var rotation_speed: float = 90.0  # degree per second
 var aim_range: float = 450.0
@@ -25,9 +23,8 @@ var is_preview := false
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments
-func init(_global_position: Vector2, _signal_bus: SignalBus) -> void:
+func init(_global_position: Vector2) -> void:
 	global_position = _global_position
-	signal_bus = _signal_bus
 
 
 func _ready():
@@ -104,9 +101,9 @@ func shoot() -> void:
 		origin = $Turret/Right.global_position
 		current_shoot_turret = 0
 
-	var bullet := Bullet.new()
-	bullet.set_params(origin, orientation, target)
-	signal_bus.create_bullet.emit(bullet)
+	# var bullet := Bullet.new()
+	# bullet.set_params(origin, orientation, target)
+	# signal_bus.create_bullet.emit(bullet)
 
 
 func _on_aim_range_body_entered(body: Node2D) -> void:

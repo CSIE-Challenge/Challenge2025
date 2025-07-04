@@ -59,7 +59,7 @@ func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
 
-	tower.init(global_pos, $SignalBus)
+	tower.init(global_pos)
 	$AbsPositionedContainer.add_child(tower)
 
 	_money -= tower_cost
