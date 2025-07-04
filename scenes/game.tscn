@@ -27,7 +27,7 @@ script = ExtResource("9_0tnpc")
 [node name="BulletManager" type="Node2D" parent="."]
 script = ExtResource("4_lbhrr")
 
-[node name="TowerContainer" type="Node" parent="."]
+[node name="AbsPositionedContainer" type="Node" parent="."]
 
 [node name="ConstantIncomeTimer" type="Timer" parent="."]
 autostart = true
