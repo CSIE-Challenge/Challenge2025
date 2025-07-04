@@ -1,8 +1,10 @@
 class_name ShopItem
 extends AspectRatioContainer
 
-@export var callback: Callable
-@export var display_scene: PackedScene
+var callback: Callable
+var display_scene: PackedScene
+var display_cost: int = 10
+
 @onready var container = $CenterContainer/Control
 
 
@@ -10,7 +12,8 @@ func _ready():
 	await get_tree().process_frame
 	custom_minimum_size = Vector2(size.x, size.x)
 	self.gui_input.connect(_on_gui_input)
-	self.container.add_child(display_scene.instantiate())
+	$CenterContainer/Control.add_child(display_scene.instantiate())
+	$Cost.text = "$%d" % display_cost
 
 
 func _on_gui_input(event: InputEvent) -> void:

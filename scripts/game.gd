@@ -14,6 +14,7 @@ const ENEMY_SCENE := preload("res://scenes/enemies/enemy.tscn")
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
 @export var spawner: Spawner
+@export var status_panel: Panel
 
 var money: int = 100
 var income_per_second = 10
@@ -29,6 +30,13 @@ func _ready() -> void:
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
 	deploy_spell.connect(_on_spell_deploy)
+
+
+func spend(cost: int) -> bool:
+	if money >= cost:
+		money -= cost
+		return true
+	return false
 
 
 #region Towers
@@ -59,21 +67,19 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
 
 
 func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
-	if not _is_buildable(tower, cell_pos):
+	if not (_is_buildable(tower, cell_pos) and spend(tower.building_cost)):
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
 
 	self.add_child(tower)
 	tower.enable(global_pos)
-
-	money -= tower.building_cost
 	built_towers[cell_pos] = tower
 
 
 func _on_buy_tower(tower_scene: PackedScene):
 	var tower = tower_scene.instantiate() as Tower
-	var preview_color_callback = func(cell_pos: Vector2i) -> Previewer.PreviewMode:
-		if _is_buildable(tower, cell_pos):
+	var preview_color_callback = func(tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
+		if money >= tower.building_cost and _is_buildable(tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
@@ -127,8 +133,10 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 
 	var enemy: Enemy = _enemy_scene_cache[scene_path].instantiate()
 	var stats: Dictionary = unit_data.get("stats", {})
-	for key in stats:
-		enemy.set(key, stats[key])
+	enemy.max_health = stats.max_health
+	enemy.max_speed = stats.max_speed
+	enemy.damage = stats.damage
+	enemy.flying = stats.flying
 	return enemy
 
 
@@ -162,6 +170,10 @@ func _on_spell_deploy(spell_data) -> void:
 
 
 #endregion
+
+
+func _process(_delta) -> void:
+	status_panel.get_child(0).text = "$%d" % money
 
 
 func _unhandled_input(event: InputEvent) -> void:

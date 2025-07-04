@@ -1,13 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=10 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
-[ext_resource type="PackedScene" uid="uid://cbxbq3tqvvn8j" path="res://scenes/map.tscn" id="2_xi36r"]
 [ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
 [ext_resource type="PackedScene" uid="uid://2l5wr8yxuun7" path="res://scenes/ui/text_box.tscn" id="4_3gnes"]
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
-[ext_resource type="Script" uid="uid://b488pqxmi1nd" path="res://scripts/game.gd" id="7_eri0w"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_unjed"]
@@ -93,9 +91,10 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(0, 1000)
 layout_mode = 2
 
-[node name="LeftGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner") instance=ExtResource("3_vxv1r")]
+[node name="LeftGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
 spawner = NodePath("../../../Spawner")
+status_panel = NodePath("../../Top/Status1P")
 
 [node name="Mid" type="VBoxContainer" parent="Screen/Bottom"]
 layout_mode = 2
@@ -235,17 +234,10 @@ layout_mode = 2
 [node name="TextBox11" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="RightGame" type="Control" parent="Screen/Bottom" node_paths=PackedStringArray("spawner")]
-clip_contents = true
-custom_minimum_size = Vector2(750, 1000)
+[node name="RightGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
-script = ExtResource("7_eri0w")
 spawner = NodePath("../../../Spawner")
-
-[node name="Map" parent="Screen/Bottom/RightGame" instance=ExtResource("2_xi36r")]
-layout_mode = 0
-offset_right = 750.0
-offset_bottom = 1000.0
+status_panel = NodePath("../../Top/Status2P")
 
 [node name="GameTimer" type="Timer" parent="."]
 

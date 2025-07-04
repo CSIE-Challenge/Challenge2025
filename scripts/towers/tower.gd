@@ -1,7 +1,7 @@
 class_name Tower
 extends Area2D
 
-@export var building_cost: int = 5
+@export var building_cost: int = 50
 @export var upgrade_cost: int = 10
 @export var level: int = 1
 @export var auto_aim: bool = true
