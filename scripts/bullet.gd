@@ -1,7 +1,6 @@
 class_name Bullet
 extends Area2D
 
-
 @export var is_tracking: bool = false
 @export var is_anti_air: bool = false
 @export var is_penetrating: bool = false
@@ -10,7 +9,6 @@ extends Area2D
 @export var rotation_speed := 3.0
 @export var damage := 3
 @export var lifespan_seconds := 5
-
 
 var target: Node2D = null
 var start_position: Vector2

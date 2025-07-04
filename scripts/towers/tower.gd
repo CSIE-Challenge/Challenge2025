@@ -1,7 +1,6 @@
 class_name Tower
 extends Area2D
 
-
 @export var building_cost: int = 5
 @export var upgrade_cost: int = 10
 @export var level: int = 1
@@ -13,7 +12,6 @@ extends Area2D
 @export var aim_range: float = 450
 @export var damage: int = 2
 @export var rotation_speed: float = 90.0  # degree per second
-
 
 var target: Node2D = null
 var enabled: bool = false

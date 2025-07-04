@@ -1,16 +1,13 @@
 class_name Previewer
 extends Node2D
 
-
 signal selected(position: Vector2)
-
 
 enum PreviewMode {
 	DEFAULT,
 	SUCCESS,
 	FAIL,
 }
-
 
 var _previewed_node: Node
 
@@ -37,8 +34,7 @@ func _get_selected_position() -> Vector2:
 	var mouse_pos = _get_global_mouse_snapped()
 	if _snap_to_cells:
 		return _map.global_to_cell(mouse_pos)
-	else:
-		return _map.global_to_local(mouse_pos)
+	return _map.global_to_local(mouse_pos)
 
 
 func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cells: bool) -> void:
@@ -54,11 +50,7 @@ func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cell
 # before the next interaction with the GUI
 func _input(event: InputEvent) -> void:
 	# left-clicked: select the current mouse position, or cancel if it is out of bounds
-	if (
-			event is InputEventMouseButton
-			and event.pressed
-			and event.button_index == MOUSE_BUTTON_LEFT
-	):
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mouse_pos: Vector2 = _get_selected_position()
 		if _map.get_local_terrain(mouse_pos) == Map.CellTerrain.OUT_OF_BOUNDS:
 			selected.emit(null)
@@ -68,11 +60,7 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		self.queue_free()
 	# ESC pressed: preview cancelled
-	if (
-			event is InputEventKey
-			and event.pressed
-			and event.keycode == KEY_ESCAPE
-	):
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		selected.emit(null)
 		get_viewport().set_input_as_handled()
 		self.queue_free()
@@ -89,4 +77,3 @@ func _process(_delta: float) -> void:
 			modulate = Color(0, 1, 0, 0.5)
 		PreviewMode.FAIL:
 			modulate = Color(1, 0, 0, 0.5)
-

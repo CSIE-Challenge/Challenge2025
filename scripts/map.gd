@@ -1,14 +1,12 @@
 class_name Map
 extends Control
 
-
 enum CellTerrain {
 	OUT_OF_BOUNDS,
 	EMPTY = 1,
 	ROAD = 2,
 	OBSTACLE = 3,
 }
-
 
 @onready var terrain: TileMapLayer = $Terrain
 @onready var opponent_path: Path2D = $OpponentPath

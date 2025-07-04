@@ -1,9 +1,8 @@
 class_name TowerUi
 extends Control
 
-
-signal upgraded()
-signal sold()
+signal upgraded
+signal sold
 
 
 # the tower's UI intercepts input events before GUI for the same reason as the previewer

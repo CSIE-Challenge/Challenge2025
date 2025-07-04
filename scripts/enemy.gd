@@ -1,7 +1,6 @@
 class_name Enemy
 extends Area2D
 
-
 @export var max_health: int = 100
 @export var max_speed: int = 50
 @export var flying: bool = false
@@ -11,8 +10,6 @@ extends Area2D
 @export var knockback_resist: bool = false
 @export var kill_reward: int = 0
 @export var income_impact: int = 0
-
-@onready var health_bar := $HealthBar
 
 var game: Game
 var path_follow: PathFollow2D
@@ -24,6 +21,8 @@ var health: int:
 		health = value
 		if health_bar != null:
 			health_bar.value = health / float(max_health) * 100.0
+
+@onready var health_bar := $HealthBar
 
 
 func _on_killed() -> void:

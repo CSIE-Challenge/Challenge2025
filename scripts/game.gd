@@ -1,27 +1,23 @@
 class_name Game
 extends Control
 
-
 signal damage_taken(damage: int)
-
 
 enum EnemySource { SYSTEM, OPPONENT }
 
-
 # todo: move tower parameters into the tower classes
-const tower_scene := preload("res://scenes/towers/twin_turret.tscn")
-const enemy_scene := preload("res://scenes/enemies/enemy.tscn")
-const tower_ui_scene := preload("res://scenes/tower_ui.tscn")
-
-
-@onready var _map: Map = $Map
+const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
+const ENEMY_SCENE := preload("res://scenes/enemies/enemy.tscn")
+const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
 var money: int = 100
 var income_per_second = 10
 var built_towers: Dictionary = {}
 
+@onready var _map: Map = $Map
 
 #region Towers
+
 
 func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 	if built_towers.has(cell_pos):
@@ -71,7 +67,7 @@ func buy_tower(tower: Tower):
 
 
 func _select_tower(tower: Tower):
-	var tower_ui: TowerUi = tower_ui_scene.instantiate()
+	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
 	self.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
 	tower_ui.upgraded.connect(self._on_tower_upgraded.bind(tower))
@@ -80,9 +76,7 @@ func _select_tower(tower: Tower):
 
 func _handle_tower_selection(event: InputEvent) -> void:
 	if not (
-		event is InputEventMouseButton
-		and event.button_index == MOUSE_BUTTON_LEFT
-		and event.pressed
+		event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed
 	):
 		return
 	var clicked_cell = _map.global_to_cell(get_global_mouse_position())
@@ -90,18 +84,20 @@ func _handle_tower_selection(event: InputEvent) -> void:
 		_select_tower(built_towers[clicked_cell])
 		get_viewport().set_input_as_handled()
 
+
 #endregion
 
-
 #region Income
+
 
 func _on_constant_income_timer_timeout() -> void:
 	money += income_per_second
 
+
 #endregion
 
-
 #region Enemies
+
 
 func summon_enemy(enemy: Enemy) -> void:
 	enemy.game = self
@@ -113,30 +109,27 @@ func summon_enemy(enemy: Enemy) -> void:
 			path = _map.opponent_path
 	path.add_child(enemy.path_follow)
 
+
 #endregion
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	_handle_tower_selection(event)
 
-	if (
-			event is InputEventKey
-			and event.pressed
-			and (event.keycode == KEY_T)
-	):
-		buy_tower(tower_scene.instantiate())
+	if event is InputEventKey and event.pressed and (event.keycode == KEY_T):
+		buy_tower(TOWER_SCENE.instantiate())
 		get_viewport().set_input_as_handled()
 	if (
-			event is InputEventKey
-			and event.pressed
-			and (event.keycode == KEY_E or event.keycode == KEY_S)
+		event is InputEventKey
+		and event.pressed
+		and (event.keycode == KEY_E or event.keycode == KEY_S)
 	):
 		var source
 		if event.keycode == KEY_E:
 			source = EnemySource.OPPONENT
 		else:
 			source = EnemySource.SYSTEM
-		var enemy := enemy_scene.instantiate()
+		var enemy := ENEMY_SCENE.instantiate()
 		enemy.init(source)
 		summon_enemy(enemy)
 		get_viewport().set_input_as_handled()

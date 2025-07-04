@@ -1,9 +1,7 @@
 class_name TwinTurret
 extends Tower
 
-
 var current_shoot_turret: int = 0  # 0 for left, 1 for right
-
 
 @onready var turret = $Turret
 @onready var enemy_detector = $AimRange/CollisionShape2D
