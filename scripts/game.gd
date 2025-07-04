@@ -9,8 +9,7 @@ enum EnemySource { SYSTEM, OPPONENT }
 
 
 # todo: move tower parameters into the tower classes
-const tower_scene := preload("res://scenes/tower.tscn")
-const tower_cost = 5
+const tower_scene := preload("res://scenes/towers/twin_turret.tscn")
 const enemy_scene := preload("res://scenes/enemies/enemy.tscn")
 const tower_ui_scene := preload("res://scenes/tower_ui.tscn")
 
@@ -24,23 +23,23 @@ var built_towers: Dictionary = {}
 
 #region Towers
 
-func _is_buildable(cell_pos: Vector2i) -> bool:
+func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 	if built_towers.has(cell_pos):
 		return false
-	if money < tower_cost:
+	if money < tower.building_cost:
 		return false
 	return _map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
 func _on_tower_upgraded(tower: Tower):
-	var levelup_cost: int = tower.level * 10
+	var levelup_cost: int = tower.upgrade_cost
 	if money >= levelup_cost:
 		money -= levelup_cost
 		tower.upgrade()
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
-	var refund := tower.level * 10
+	var refund := tower.upgrade_cost
 	money += refund
 	tower.queue_free()
 	tower_ui.queue_free()
@@ -49,20 +48,20 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
 
 
 func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
-	if not _is_buildable(cell_pos):
+	if not _is_buildable(tower, cell_pos):
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
 
 	self.add_child(tower)
 	tower.enable(global_pos)
 
-	money -= tower_cost
+	money -= tower.building_cost
 	built_towers[cell_pos] = tower
 
 
 func buy_tower(tower: Tower):
 	var preview_color_callback = func(cell_pos: Vector2i) -> Previewer.PreviewMode:
-		if _is_buildable(cell_pos):
+		if _is_buildable(tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
