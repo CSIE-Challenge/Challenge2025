@@ -26,6 +26,7 @@ var _enemy_scene_cache = {}
 func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
 	spawner.spawn_enemy.connect(_on_spawn_enemy)
+	summon_enemy.connect(_on_summon_enemy)
 
 
 #region Towers

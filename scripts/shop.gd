@@ -12,10 +12,12 @@ const SHOP_ITEM_SCENE := preload("res://scenes/ui/shop_item.tscn")
 
 @export var options_container: VBoxContainer
 @export var building_game: Game
+@export var opposing_game: Game
 
 
 func _ready() -> void:
 	_create_tower_options()
+	_create_unit_options()
 
 
 func _create_section(title: String) -> GridContainer:
@@ -38,4 +40,12 @@ func _create_tower_options() -> void:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
 		shop_item.callback = func(): building_game.buy_tower.emit(scene)
 		grid.add_child(shop_item)
-		print("what")
+
+
+func _create_unit_options() -> void:
+	var unit_data = EnemyData.new()
+	var grid := _create_section("Units")
+	for unit in unit_data.unit_data_list:
+		var shop_item := SHOP_ITEM_SCENE.instantiate()
+		shop_item.callback = func(): opposing_game.summon_enemy.emit(unit_data.unit_data_list[unit])
+		grid.add_child(shop_item)
