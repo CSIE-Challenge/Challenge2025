@@ -2,6 +2,7 @@ class_name Game
 extends Control
 
 signal damage_taken(damage: int)
+signal buy_tower(tower_scene: PackedScene)
 
 enum EnemySource { SYSTEM, OPPONENT }
 
@@ -13,8 +14,13 @@ const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 var money: int = 100
 var income_per_second = 10
 var built_towers: Dictionary = {}
-
+var previewer: Previewer = null
 @onready var _map: Map = $Map
+
+
+func _ready() -> void:
+	buy_tower.connect(_on_buy_tower)
+
 
 #region Towers
 
@@ -55,13 +61,16 @@ func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	built_towers[cell_pos] = tower
 
 
-func buy_tower(tower: Tower):
+func _on_buy_tower(tower_scene: PackedScene):
+	var tower = tower_scene.instantiate() as Tower
 	var preview_color_callback = func(cell_pos: Vector2i) -> Previewer.PreviewMode:
 		if _is_buildable(tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
-	var previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	if previewer != null:
+		previewer.free()
+	previewer = Previewer.new(tower, preview_color_callback, _map, true)
 	previewer.selected.connect(self._place_tower.bind(tower))
 	self.add_child(previewer)
 
@@ -114,11 +123,15 @@ func summon_enemy(enemy: Enemy) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_RIGHT
+		and event.pressed
+		and previewer != null
+	):
+		previewer.free()
 	_handle_tower_selection(event)
 
-	if event is InputEventKey and event.pressed and (event.keycode == KEY_T):
-		buy_tower(TOWER_SCENE.instantiate())
-		get_viewport().set_input_as_handled()
 	if (
 		event is InputEventKey
 		and event.pressed

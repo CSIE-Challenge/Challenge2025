@@ -1,75 +1,41 @@
-extends Control
+extends TabBar
 
-@onready var enemy_grid = $ShopPanel/VBoxContainer/MarginContainer/EnemyList
-@onready var panel = $ShopPanel
-@onready var open_button = $OpenButton
-@onready var close_button = $ShopPanel/VBoxContainer/MarginContainer2/CloseButton
-@onready var game = $"../../LeftPlayer"  # Game scene
-@onready var enemy_list = game.enemy_list
+# gdlint: disable=duplicated-load
+# temporarily disable for testing purposes
+const TOWER_SCENES := [
+	preload("res://scenes/towers/twin_turret.tscn"),
+	preload("res://scenes/towers/twin_turret.tscn"),
+	preload("res://scenes/towers/twin_turret.tscn"),
+	preload("res://scenes/towers/twin_turret.tscn")
+]
+const SHOP_ITEM_SCENE := preload("res://scenes/ui/shop_item.tscn")
 
-
-func switch_panel_mode():
-	panel.visible = !panel.visible
-	panel.mouse_filter = Control.MOUSE_FILTER_STOP if panel.visible else Control.MOUSE_FILTER_IGNORE
-	open_button.visible = !open_button.visible
-
-
-func _ready():
-	enemy_grid.custom_minimum_size = Vector2(300, 900)
-	for enemy in enemy_list:
-		_spawn_button(enemy)
-
-	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	panel.visible = false
-	open_button.pressed.connect(_on_open_button_pressed)
-	close_button.pressed.connect(_on_close_button_pressed)
+@export var options_container: VBoxContainer
+@export var building_game: Game
 
 
-func _on_enemy_pressed(enemy: String):
-	game.enemy_selected(enemy)
+func _ready() -> void:
+	_create_tower_options()
 
 
-func _on_close_button_pressed():
-	switch_panel_mode()
+func _create_section(title: String) -> GridContainer:
+	var tower_submenu := VBoxContainer.new()
+	var tower_label := Label.new()
+	var tower_grid := GridContainer.new()
+	tower_label.text = title
+	tower_grid.columns = 3
+	tower_grid.add_theme_constant_override("h_separation", 16)
+	tower_grid.add_theme_constant_override("v_separation", 16)
+	tower_submenu.add_child(tower_label)
+	tower_submenu.add_child(tower_grid)
+	options_container.add_child(tower_submenu)
+	return tower_grid
 
 
-func _on_open_button_pressed():
-	switch_panel_mode()
-
-
-func _spawn_button(enemy: String):
-	var btn = Button.new()
-	btn.custom_minimum_size = Vector2(150, 225)
-	btn.flat = true
-	btn.name = enemy
-
-	# For formatting
-	var vbox = VBoxContainer.new()
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
-
-	# Picture
-	var tex = TextureRect.new()
-	tex.texture = load(enemy_list[enemy].icon_path)
-	tex.stretch_mode = TextureRect.STRETCH_SCALE
-	tex.custom_minimum_size = Vector2(150, 150)
-	vbox.add_child(tex)
-
-	# Word Label
-	var cost_label = Label.new()
-	cost_label.text = "Cost: %d" % enemy_list[enemy].cost
-	cost_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	cost_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	vbox.add_child(cost_label)
-
-	var income_label = Label.new()
-	income_label.text = "Income: %d" % enemy_list[enemy].income
-	income_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	income_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	vbox.add_child(income_label)
-
-	btn.add_child(vbox)
-
-	btn.pressed.connect(_on_enemy_pressed.bind(enemy))
-	enemy_grid.add_child(btn)
+func _create_tower_options() -> void:
+	var grid := _create_section("Towers")
+	for scene in TOWER_SCENES:
+		var shop_item := SHOP_ITEM_SCENE.instantiate()
+		shop_item.callback = func(): building_game.buy_tower.emit(scene)
+		grid.add_child(shop_item)
+		print("what")

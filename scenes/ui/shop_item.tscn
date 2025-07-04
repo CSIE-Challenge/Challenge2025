@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bw1dweveahglx" path="res://ui/shop_item.gd" id="1_jol1k"]
 [ext_resource type="Texture2D" uid="uid://b3nq5ngja18na" path="res://assets/kenney_ui-pack-pixel-adventure/Tiles/Large tiles/Thick outline/tile_0000.png" id="1_obnp4"]
-[ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/tower.tscn" id="2_jol1k"]
+[ext_resource type="PackedScene" uid="uid://c8xtcx5gblp84" path="res://scenes/towers/twin_turret.tscn" id="2_jol1k"]
 
 [node name="ShopItem" type="AspectRatioContainer"]
 anchors_preset = -1
