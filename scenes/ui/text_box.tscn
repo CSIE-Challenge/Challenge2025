@@ -1,11 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://2l5wr8yxuun7"]
+[gd_scene load_steps=3 format=3 uid="uid://2l5wr8yxuun7"]
 
 [ext_resource type="Texture2D" uid="uid://56j0tl4unmim" path="res://assets/kenney_ui-pack-pixel-adventure/Tiles/Large tiles/Thick outline/tile_0007.png" id="1_btfno"]
+[ext_resource type="Script" uid="uid://ct6bdifu86mih" path="res://ui/text_box.gd" id="1_ci4ni"]
 
 [node name="TextBox" type="MarginContainer"]
 custom_minimum_size = Vector2(200, 0)
 offset_right = 21.0
 offset_bottom = 43.0
+script = ExtResource("1_ci4ni")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 layout_mode = 2

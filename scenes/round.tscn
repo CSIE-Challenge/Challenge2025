@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=11 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
 [ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
 [ext_resource type="PackedScene" uid="uid://2l5wr8yxuun7" path="res://scenes/ui/text_box.tscn" id="4_3gnes"]
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
+[ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scenes/chat.gd" id="5_vxv1r"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
 
@@ -142,9 +143,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 
 [node name="Shop" type="TabBar" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer" node_paths=PackedStringArray("options_container", "building_game", "opposing_game")]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("4_snxki")
@@ -175,15 +177,25 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Chat" type="TabBar" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
-visible = false
 layout_mode = 2
+script = ExtResource("5_vxv1r")
 metadata/_tab_index = 1
+
+[node name="LineEdit" type="LineEdit" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+layout_mode = 2
+offset_left = 16.0
+offset_top = 740.0
+offset_right = 404.0
+offset_bottom = 787.0
+placeholder_text = "Enter Text Here"
+max_length = 128
 
 [node name="MarginContainer" type="MarginContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -75.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 16
@@ -216,24 +228,6 @@ layout_mode = 2
 [node name="TextBox5" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
 layout_mode = 2
 
-[node name="TextBox6" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox7" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox8" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox9" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox10" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
-[node name="TextBox11" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("4_3gnes")]
-layout_mode = 2
-
 [node name="RightGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
 spawner = NodePath("../../../Spawner")
@@ -248,3 +242,5 @@ wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/VBoxContainer/WaveIn
 [node name="PauseMenu" parent="." instance=ExtResource("7_unjed")]
 visible = false
 layout_mode = 1
+
+[connection signal="text_submitted" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/LineEdit" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_line_edit_text_submitted"]
