@@ -54,11 +54,13 @@ func init(_source: Game.EnemySource) -> void:
 	path_follow = PathFollow2D.new()
 	path_follow.loop = false
 	path_follow.add_child(self)
+	$HealthBar.visible = true
 
 
 func _ready():
 	health = max_health
-	path_follow.progress_ratio = 0
+	if path_follow != null:
+		path_follow.progress_ratio = 0
 	add_to_group("enemies")
 
 

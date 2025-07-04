@@ -2,6 +2,9 @@ class_name Game
 extends Control
 
 signal damage_taken(damage: int)
+signal buy_tower(tower_scene: PackedScene)
+signal summon_enemy(unit_data: Dictionary)
+signal deploy_spell(spell_data)
 
 enum EnemySource { SYSTEM, OPPONENT }
 
@@ -10,11 +13,31 @@ const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
 const ENEMY_SCENE := preload("res://scenes/enemies/enemy.tscn")
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
+@export var spawner: Spawner
+@export var status_panel: Panel
+
 var money: int = 100
 var income_per_second = 10
 var built_towers: Dictionary = {}
+var previewer: Previewer = null
+var _enemy_scene_cache = {}
 
 @onready var _map: Map = $Map
+
+
+func _ready() -> void:
+	buy_tower.connect(_on_buy_tower)
+	spawner.spawn_enemy.connect(_on_enemy_spawn)
+	summon_enemy.connect(_on_enemy_summon)
+	deploy_spell.connect(_on_spell_deploy)
+
+
+func spend(cost: int) -> bool:
+	if money >= cost:
+		money -= cost
+		return true
+	return false
+
 
 #region Towers
 
@@ -44,24 +67,25 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
 
 
 func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
-	if not _is_buildable(tower, cell_pos):
+	if not (_is_buildable(tower, cell_pos) and spend(tower.building_cost)):
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
 
 	self.add_child(tower)
 	tower.enable(global_pos)
-
-	money -= tower.building_cost
 	built_towers[cell_pos] = tower
 
 
-func buy_tower(tower: Tower):
-	var preview_color_callback = func(cell_pos: Vector2i) -> Previewer.PreviewMode:
-		if _is_buildable(tower, cell_pos):
+func _on_buy_tower(tower_scene: PackedScene):
+	var tower = tower_scene.instantiate() as Tower
+	var preview_color_callback = func(tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
+		if money >= tower.building_cost and _is_buildable(tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
-	var previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	if previewer != null:
+		previewer.free()
+	previewer = Previewer.new(tower, preview_color_callback, _map, true)
 	previewer.selected.connect(self._place_tower.bind(tower))
 	self.add_child(previewer)
 
@@ -99,10 +123,36 @@ func _on_constant_income_timer_timeout() -> void:
 #region Enemies
 
 
-func summon_enemy(enemy: Enemy) -> void:
+func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
+	var scene_path = unit_data.get("scene_path")
+	if scene_path == null or !ResourceLoader.exists(scene_path):
+		print("Attempted to initialize Invalid Enemy Scene (%s)" % scene_path)
+		return
+	if !_enemy_scene_cache.has(scene_path):
+		_enemy_scene_cache[scene_path] = load(scene_path)
+
+	var enemy: Enemy = _enemy_scene_cache[scene_path].instantiate()
+	var stats: Dictionary = unit_data.get("stats", {})
+	enemy.max_health = stats.max_health
+	enemy.max_speed = stats.max_speed
+	enemy.damage = stats.damage
+	enemy.flying = stats.flying
+	return enemy
+
+
+func _on_enemy_spawn(unit_data: Dictionary) -> void:
+	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.SYSTEM)
+
+
+func _on_enemy_summon(unit_data: Dictionary) -> void:
+	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.OPPONENT)
+
+
+func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	enemy.game = self
+	enemy.init(source)
 	var path: Path2D
-	match enemy.source:
+	match source:
 		EnemySource.SYSTEM:
 			path = _map.system_path
 		EnemySource.OPPONENT:
@@ -112,24 +162,26 @@ func summon_enemy(enemy: Enemy) -> void:
 
 #endregion
 
+#region Spells
+
+
+func _on_spell_deploy(spell_data) -> void:
+	print("Spell ", spell_data, " unhandled")
+
+
+#endregion
+
+
+func _process(_delta) -> void:
+	status_panel.get_child(0).text = "$%d" % money
+
 
 func _unhandled_input(event: InputEvent) -> void:
-	_handle_tower_selection(event)
-
-	if event is InputEventKey and event.pressed and (event.keycode == KEY_T):
-		buy_tower(TOWER_SCENE.instantiate())
-		get_viewport().set_input_as_handled()
 	if (
-		event is InputEventKey
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_RIGHT
 		and event.pressed
-		and (event.keycode == KEY_E or event.keycode == KEY_S)
+		and previewer != null
 	):
-		var source
-		if event.keycode == KEY_E:
-			source = EnemySource.OPPONENT
-		else:
-			source = EnemySource.SYSTEM
-		var enemy := ENEMY_SCENE.instantiate()
-		enemy.init(source)
-		summon_enemy(enemy)
-		get_viewport().set_input_as_handled()
+		previewer.free()
+	_handle_tower_selection(event)

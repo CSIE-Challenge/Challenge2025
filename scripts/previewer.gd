@@ -69,7 +69,7 @@ func _input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
 	var mouse_pos = _get_global_mouse_snapped()
 	self.global_position = mouse_pos
-	var mode: PreviewMode = _mode_callback.call(_get_selected_position())
+	var mode: PreviewMode = _mode_callback.call(_previewed_node, _get_selected_position())
 	match mode:
 		PreviewMode.DEFAULT:
 			modulate = Color(1, 1, 1, 0.5)

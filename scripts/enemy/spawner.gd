@@ -1,4 +1,7 @@
+class_name Spawner
 extends Node
+
+signal spawn_enemy(unit_data: Dictionary)
 
 @export var delay_between_waves: float = 5.0
 @export var wave_info_label: Label
@@ -6,11 +9,7 @@ extends Node
 var wave_spawn_timer: Timer
 var next_wave_timer: Timer
 
-var wave_data_path: String = "res://data/waves.json"
-var wave_data_list: Array
-
-var unit_data_path: String = "res://data/units.json"
-var unit_data_list: Dictionary
+var wave_data := EnemyData.new()
 
 var current_wave_index: int = -1
 var current_wave_data: Dictionary
@@ -35,9 +34,6 @@ func load_json(file_path: String):
 
 
 func _ready():
-	wave_data_list = load_json(wave_data_path)
-	unit_data_list = load_json(unit_data_path)
-
 	wave_spawn_timer = Timer.new()
 	add_child(wave_spawn_timer)
 	wave_spawn_timer.connect("timeout", _on_wave_spawn_timer_timeout)
@@ -86,11 +82,11 @@ func _prepare_unit_queue():
 
 func start_next_wave():
 	current_wave_index += 1
-	if current_wave_index >= wave_data_list.size():
+	if current_wave_index >= wave_data.wave_data_list.size():
 		printerr("All waves completed ?!")
 		return
 
-	current_wave_data = wave_data_list[current_wave_index]
+	current_wave_data = wave_data.wave_data_list[current_wave_index]
 	print("Starting Wave ", current_wave_data.wave_number)
 
 	_prepare_unit_queue()
@@ -108,10 +104,9 @@ func _on_wave_spawn_timer_timeout():
 	# spawn a unit from the queue
 	var unit_name = unit_queue.pop_front()
 
-	# TODO: instantiate the unit scene, set its properties,
-	#       and give it to the game
-	var unit_data = unit_data_list[unit_name]
+	var unit_data = wave_data.unit_data_list[unit_name]
 	print("Spawning unit: ", unit_data)
+	spawn_enemy.emit(unit_data)
 
 	if unit_queue.size() == 0:
 		wave_spawn_timer.stop()
