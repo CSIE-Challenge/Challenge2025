@@ -1,4 +1,7 @@
+class_name Spawner
 extends Node
+
+signal spawn_enemy(unit_data: Dictionary)
 
 @export var delay_between_waves: float = 5.0
 @export var wave_info_label: Label
@@ -112,6 +115,7 @@ func _on_wave_spawn_timer_timeout():
 	#       and give it to the game
 	var unit_data = unit_data_list[unit_name]
 	print("Spawning unit: ", unit_data)
+	spawn_enemy.emit(unit_data)
 
 	if unit_queue.size() == 0:
 		wave_spawn_timer.stop()

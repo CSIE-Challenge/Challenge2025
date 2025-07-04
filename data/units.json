@@ -1,65 +1,65 @@
 {
   "goomba": {
-    "scene_path": "res://Units/Goomba.tscn",
-    "stats": {
-      "health": 10,
-      "speed": 50,
-      "damage": 5,
-      "flying": false
-    }
+	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"stats": {
+	  "max_health": 10,
+	  "max_speed": 50,
+	  "damage": 5,
+	  "flying": false
+	}
   },
   "koopa_paratroopa": {
-    "scene_path": "res://Units/KoopaParatroopa.tscn",
-    "stats": {
-      "health": 15,
-      "speed": 80,
-      "damage": 7,
-      "flying": true
-    }
+	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"stats": {
+	  "max_health": 15,
+	  "max_speed": 80,
+	  "damage": 7,
+	  "flying": true
+	}
   },
   "spiny_shell": {
-    "scene_path": "res://Units/SpinyShell.tscn",
-    "stats": {
-      "health": 20,
-      "speed": 120,
-      "damage": 10,
-      "flying": true
-    }
+	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"stats": {
+	  "max_health": 20,
+	  "max_speed": 120,
+	  "damage": 10,
+	  "flying": true
+	}
   },
   "buzzy_beetle": {
-    "scene_path": "res://Units/BuzzyBeetle.tscn",
-    "stats": {
-      "health": 25,
-      "speed": 75,
-      "damage": 8,
-      "flying": false
-    }
+	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"stats": {
+	  "max_health": 25,
+	  "max_speed": 75,
+	  "damage": 8,
+	  "flying": false
+	}
   },
   "wiggler": {
-    "scene_path": "res://Units/Wiggler.tscn",
-    "stats": {
-      "health": 60,
-      "speed": 60,
-      "damage": 12,
-      "flying": false
-    }
+	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"stats": {
+	  "max_health": 60,
+	  "max_speed": 60,
+	  "damage": 12,
+	  "flying": false
+	}
   },
   "koopa_jr": {
-    "scene_path": "res://Units/KoopaJr.tscn",
-    "stats": {
-      "health": 40,
-      "speed": 70,
-      "damage": 25,
-      "flying": true
-    }
+	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"stats": {
+	  "max_health": 40,
+	  "max_speed": 70,
+	  "damage": 25,
+	  "flying": true
+	}
   },
   "koopa": {
-    "scene_path": "res://Units/Koopa.tscn",
-    "stats": {
-      "health": 100,
-      "speed": 20,
-      "damage": 60,
-      "flying": false
-    }
+	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"stats": {
+	  "max_health": 100,
+	  "max_speed": 20,
+	  "damage": 60,
+	  "flying": false
+	}
   }
 }

@@ -3,6 +3,7 @@ extends Control
 
 signal damage_taken(damage: int)
 signal buy_tower(tower_scene: PackedScene)
+signal summon_enemy(unit_data: Dictionary)
 
 enum EnemySource { SYSTEM, OPPONENT }
 
@@ -11,15 +12,20 @@ const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
 const ENEMY_SCENE := preload("res://scenes/enemies/enemy.tscn")
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
+@export var spawner: Spawner
+
 var money: int = 100
 var income_per_second = 10
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
+var _enemy_scene_cache = {}
+
 @onready var _map: Map = $Map
 
 
 func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
+	spawner.spawn_enemy.connect(_on_spawn_enemy)
 
 
 #region Towers
@@ -108,10 +114,34 @@ func _on_constant_income_timer_timeout() -> void:
 #region Enemies
 
 
-func summon_enemy(enemy: Enemy) -> void:
+func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
+	var scene_path = unit_data.get("scene_path")
+	if scene_path == null or !ResourceLoader.exists(scene_path):
+		print("Attempted to initialize Invalid Enemy Scene (%s)" % scene_path)
+		return
+	if !_enemy_scene_cache.has(scene_path):
+		_enemy_scene_cache[scene_path] = load(scene_path)
+
+	var enemy: Enemy = _enemy_scene_cache[scene_path].instantiate()
+	var stats: Dictionary = unit_data.get("stats", {})
+	for key in stats:
+		enemy.set(key, stats[key])
+	return enemy
+
+
+func _on_spawn_enemy(unit_data: Dictionary) -> void:
+	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.SYSTEM)
+
+
+func _on_summon_enemy(unit_data: Dictionary) -> void:
+	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.OPPONENT)
+
+
+func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	enemy.game = self
+	enemy.init(source)
 	var path: Path2D
-	match enemy.source:
+	match source:
 		EnemySource.SYSTEM:
 			path = _map.system_path
 		EnemySource.OPPONENT:
@@ -143,6 +173,5 @@ func _unhandled_input(event: InputEvent) -> void:
 		else:
 			source = EnemySource.SYSTEM
 		var enemy := ENEMY_SCENE.instantiate()
-		enemy.init(source)
-		summon_enemy(enemy)
+		_deploy_enemy(enemy, source)
 		get_viewport().set_input_as_handled()

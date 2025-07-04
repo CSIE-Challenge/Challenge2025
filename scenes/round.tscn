@@ -93,8 +93,9 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(0, 1000)
 layout_mode = 2
 
-[node name="LeftGame" parent="Screen/Bottom" instance=ExtResource("3_vxv1r")]
+[node name="LeftGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
+spawner = NodePath("../../../Spawner")
 
 [node name="Mid" type="VBoxContainer" parent="Screen/Bottom"]
 layout_mode = 2
