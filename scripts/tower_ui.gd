@@ -10,6 +10,7 @@ signal sold()
 func _input(event):
 	if (
 		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
 		and event.pressed
 		and not get_global_rect().has_point(get_global_mouse_position())
 	):

@@ -80,7 +80,11 @@ func _select_tower(tower: Tower):
 
 
 func _handle_tower_selection(event: InputEvent) -> void:
-	if not (event is InputEventMouseButton and event.pressed):
+	if not (
+		event is InputEventMouseButton
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and event.pressed
+	):
 		return
 	var clicked_cell = _map.global_to_cell(get_global_mouse_position())
 	if built_towers.has(clicked_cell):
