@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=11 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
 [ext_resource type="PackedScene" uid="uid://cbxbq3tqvvn8j" path="res://scenes/map.tscn" id="2_xi36r"]
 [ext_resource type="PackedScene" uid="uid://cjjb87yltl2v0" path="res://scenes/ui/shop_item.tscn" id="3_hawlh"]
+[ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
 [ext_resource type="PackedScene" uid="uid://2l5wr8yxuun7" path="res://scenes/ui/text_box.tscn" id="4_3gnes"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://wave/spawner.gd" id="6_b1bvr"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
@@ -90,15 +91,8 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(0, 1000)
 layout_mode = 2
 
-[node name="LeftGame" type="Control" parent="Screen/Bottom"]
-clip_contents = true
-custom_minimum_size = Vector2(750, 1000)
+[node name="LeftGame" parent="Screen/Bottom" instance=ExtResource("3_vxv1r")]
 layout_mode = 2
-
-[node name="Map" parent="Screen/Bottom/LeftGame" instance=ExtResource("2_xi36r")]
-layout_mode = 0
-offset_right = 750.0
-offset_bottom = 1000.0
 
 [node name="Mid" type="VBoxContainer" parent="Screen/Bottom"]
 layout_mode = 2
