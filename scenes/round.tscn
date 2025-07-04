@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=10 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
@@ -8,7 +8,13 @@
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://wave/spawner.gd" id="6_b1bvr"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
 
-[node name="Round" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_unjed"]
+bg_color = Color(0.560105, 0.614527, 0.911107, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxv1r"]
+bg_color = Color(0.679833, 0.353052, 0.323024, 1)
+
+[node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,12 +23,15 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_vfk7k")
 script = ExtResource("2_b0w8h")
+game_timer_label = NodePath("Screen/Bottom/Mid/GameStatus/VBoxContainer/Countdown")
+score_bar = NodePath("Screen/Top/MarginContainer/ProgressBar")
 
 [node name="Screen" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
@@ -46,21 +55,21 @@ text = "1P Status"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Score" type="Panel" parent="Screen/Top"]
+[node name="MarginContainer" type="MarginContainer" parent="Screen/Top"]
 custom_minimum_size = Vector2(1000, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
-[node name="Label" type="Label" parent="Screen/Top/Score"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Score Diff"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="ProgressBar" type="ProgressBar" parent="Screen/Top/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_unjed")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vxv1r")
+show_percentage = false
 
 [node name="Status2P" type="Panel" parent="Screen/Top"]
 layout_mode = 2
@@ -78,8 +87,8 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Bottom" type="HBoxContainer" parent="Screen"]
+custom_minimum_size = Vector2(0, 1000)
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="LeftGame" type="Control" parent="Screen/Bottom"]
 clip_contents = true
@@ -87,6 +96,9 @@ custom_minimum_size = Vector2(750, 1000)
 layout_mode = 2
 
 [node name="Map" parent="Screen/Bottom/LeftGame" instance=ExtResource("2_xi36r")]
+layout_mode = 0
+offset_right = 750.0
+offset_bottom = 1000.0
 
 [node name="Mid" type="VBoxContainer" parent="Screen/Bottom"]
 layout_mode = 2
@@ -108,7 +120,7 @@ theme_override_constants/separation = 0
 [node name="Countdown" type="Label" parent="Screen/Bottom/Mid/GameStatus/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 62
 text = "03:00"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -316,6 +328,9 @@ custom_minimum_size = Vector2(750, 1000)
 layout_mode = 2
 
 [node name="Map" parent="Screen/Bottom/RightGame" instance=ExtResource("2_xi36r")]
+layout_mode = 0
+offset_right = 750.0
+offset_bottom = 1000.0
 
 [node name="GameTimer" type="Timer" parent="."]
 
