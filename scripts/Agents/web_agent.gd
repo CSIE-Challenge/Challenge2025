@@ -59,8 +59,13 @@ var _command_handlers: Dictionary = {}  # command id -> command handler
 
 func _register_command_handlers() -> void:
 	var handlers: Array[CommandHandler] = [
-		CommandHandler.new(CommandType.GET_ALL_TERRAIN, [TYPE_VECTOR2I, TYPE_INT], build),
-		# TODO
+		CommandHandler.new(CommandType.GET_ALL_TERRAIN, [], _get_all_terrain),
+		CommandHandler.new(CommandType.GET_SCORES, [TYPE_BOOL], _get_scores),
+		CommandHandler.new(CommandType.GET_CURRENT_WAVE, [], _get_current_wave),
+		CommandHandler.new(CommandType.GET_REMAIN_TIME, [], _get_remain_time),
+		CommandHandler.new(CommandType.GET_TIME_UNTIL_NEXT_WAVE, [], _get_time_until_next_wave),
+		CommandHandler.new(CommandType.GET_MONEY, [TYPE_BOOL], _get_money),
+		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income)
 	]
 	for handler in handlers:
 		if _command_handlers.has(handler.id):
@@ -96,11 +101,17 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 	):
 		response.push_back(StatusCode.ILLFORMED_COMMAND)
 	else:
+		var token = command.pop_front().get_string_from_ascii()
+		if not _ws.authenticate(token):
+			response = [StatusCode.AUTH_FAIL, "[Receive Command] Error: invalid token"]
 		var command_id: int = command.pop_front()
 		if not _command_handlers.has(command_id):
-			response.push_back(StatusCode.NOT_FOUND)
+			response = [
+				StatusCode.NOT_FOUND,
+				"[Receive Command] Error: cannot find command: %d" % command_id
+			]
 		elif not _command_handlers[command_id].check_argument_types(command):
-			response.push_back(StatusCode.ILLEGAL_ARGUMENT)
+			response = [StatusCode.ILLEGAL_ARGUMENT, "[Receive Command] Error: illegal argument"]
 		else:
 			response = _command_handlers[command_id].handle(command)
 
