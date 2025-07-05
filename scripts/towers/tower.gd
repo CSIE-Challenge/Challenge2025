@@ -1,9 +1,11 @@
 class_name Tower
 extends Area2D
 
-@export var building_cost: int = 50
+enum TargetStrategy { FIRST, LAST, CLOSE }
+
+@export var building_cost: int = 5
 @export var upgrade_cost: int = 10
-@export var level: int = 1
+#@export var level: int = 1
 @export var auto_aim: bool = true
 @export var anti_air: bool = false
 @export var bullet_scene: PackedScene
@@ -11,8 +13,9 @@ extends Area2D
 @export var reload_seconds: float = 0.25
 @export var aim_range: float = 450
 @export var damage: int = 2
-@export var rotation_speed: float = 90.0  # degree per second
-
+#@export var rotation_speed: float = 90.0  # degree per second
+# Should be a variable controlled otherwise later
+@export var strategy: TargetStrategy = TargetStrategy.CLOSE
 var target: Node2D = null
 var enabled: bool = false
 var reload_timer: Timer
@@ -38,21 +41,39 @@ func _refresh_target():
 		return
 	target = null
 	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
-	if enemies.size() == 0:
+
+	# Deal with empty list and flying enemy
+	for enemy in enemies:
+		if anti_air or not enemy.flying:
+			target = enemy
+			break
+	if target == null:
 		return
-	target = enemies[0]
-	var closest_distance = position.distance_to(target.position)
-	for i in range(1, enemies.size()):
-		var distance = position.distance_to(enemies[i].position)
-		if distance < closest_distance:
-			target = enemies[i]
-			closest_distance = distance
+
+	match strategy:
+		# TODO: finish other strategy
+		TargetStrategy.CLOSE:
+			var closest_distance = position.distance_to(target.position)
+			for i in range(1, enemies.size()):
+				var distance = position.distance_to(enemies[i].position)
+				if distance < closest_distance:
+					target = enemies[i]
+					closest_distance = distance
 
 
+# For default tower only (can be deleted later)
 func _move_toward_angle(from: float, to: float, max_delta: float) -> float:
 	var angle_diff = wrapf(to - from, -PI, PI)
 	angle_diff = clamp(angle_diff, -max_delta, max_delta)
 	return from + angle_diff
+
+
+# The sprite face either left or write
+func _flip_sprite(angle: float) -> float:
+	angle = wrapf(angle, -PI, PI)
+	if angle <= PI / 2 and angle >= -PI / 2:
+		return 0
+	return PI
 
 
 func _physics_process(_delta: float) -> void:
