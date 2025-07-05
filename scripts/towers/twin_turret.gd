@@ -13,15 +13,11 @@ func _ready():
 
 
 # take aim when enabled
-func _physics_process(_delta: float) -> void:
-	if not enabled:
-		return
-	_refresh_target()
+func _flip_sprite() -> void:
 	if target != null:
 		var desired_angle = (target.global_position - turret.global_position).angle()
-		#var max_rotation = deg_to_rad(rotation_speed) * delta
-		#turret.rotation = _move_toward_angle(turret.rotation, desired_angle, max_rotation)
-		turret.rotation = _flip_sprite(desired_angle)
+		turret.rotation = _move_toward_angle(turret.rotation, desired_angle)
+	return
 
 
 func _on_reload_timer_timeout() -> void:
@@ -43,13 +39,3 @@ func _on_reload_timer_timeout() -> void:
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)
 	bullet.init(origin, orientation, target)
-
-
-func upgrade() -> void:
-	upgrade_cost += 10
-	damage += 1
-	aim_range += 100
-	reload_seconds = 60.0 / (60.0 / reload_seconds + 60)
-	#rotation_speed += 20
-	enemy_detector.shape.radius = 0.5 * aim_range
-	reload_timer.wait_time = reload_seconds
