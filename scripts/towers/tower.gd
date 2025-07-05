@@ -36,7 +36,7 @@ func enable(_global_position: Vector2) -> void:
 	AudioManager.tower_place.play()
 
 
-func _refresh_target():
+func _refresh_target() -> void:
 	if target != null and is_instance_valid(target) and self.overlaps_area(target):
 		return
 	target = null
@@ -62,14 +62,18 @@ func _refresh_target():
 
 
 # For default tower only (can be deleted later)
-func _move_toward_angle(from: float, to: float, max_delta: float) -> float:
+func _move_toward_angle(from: float, to: float, max_delta: float = PI / 15) -> float:
 	var angle_diff = wrapf(to - from, -PI, PI)
 	angle_diff = clamp(angle_diff, -max_delta, max_delta)
 	return from + angle_diff
 
 
-# The sprite face either left or write
-func _flip_sprite(angle: float) -> float:
+# Inherited class can make the sprites to face either left or right
+func _flip_sprite() -> void:
+	return
+
+
+func _get_sprite_direction(angle: float) -> float:
 	angle = wrapf(angle, -PI, PI)
 	if angle <= PI / 2 and angle >= -PI / 2:
 		return 0
@@ -80,6 +84,7 @@ func _physics_process(_delta: float) -> void:
 	if not enabled:
 		return
 	_refresh_target()
+	_flip_sprite()
 
 
 func _on_reload_timer_timeout() -> void:
@@ -91,3 +96,8 @@ func _on_reload_timer_timeout() -> void:
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)
 	bullet.init(origin, direction, target)
+
+
+# Depricated
+func upgrade() -> void:
+	return

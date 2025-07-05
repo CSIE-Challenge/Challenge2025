@@ -69,7 +69,6 @@ func transport(op_game):
 
 #endregion
 
-
 # _init not overridden because PackedScene.instantiate() does not accept arguments
 func init(_source: Game.EnemySource) -> void:
 	source = _source
