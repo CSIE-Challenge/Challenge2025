@@ -65,7 +65,30 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_REMAIN_TIME, [], _get_remain_time),
 		CommandHandler.new(CommandType.GET_TIME_UNTIL_NEXT_WAVE, [], _get_time_until_next_wave),
 		CommandHandler.new(CommandType.GET_MONEY, [TYPE_BOOL], _get_money),
-		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income)
+		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income),
+		CommandHandler.new(CommandType.PLACE_TOWER, [TYPE_INT, TYPE_VECTOR2I], _place_tower),
+		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
+		CommandHandler.new(CommandType.GET_TOWER, [TYPE_VECTOR2I], _get_tower),
+		CommandHandler.new(CommandType.SPAWN_ENEMY, [TYPE_INT], _spawn_enemy),
+		CommandHandler.new(
+			CommandType.GET_ENEMY_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_enemy_cooldown
+		),
+		CommandHandler.new(CommandType.GET_ALL_ENEMY_INFO, [], _get_all_enemy_info),
+		CommandHandler.new(CommandType.GET_AVAILABLE_ENEMIES, [], _get_available_enemies),
+		CommandHandler.new(
+			CommandType.GET_CLOSEST_ENEMIES, [TYPE_VECTOR2I, TYPE_INT], _get_closest_enemies
+		),
+		CommandHandler.new(
+			CommandType.GET_ENEMIES_IN_RANGE, [TYPE_VECTOR2I, TYPE_FLOAT], _get_enemies_in_range
+		),
+		CommandHandler.new(CommandType.CAST_SPELL, [TYPE_INT, TYPE_VECTOR2I], _cast_spell),
+		CommandHandler.new(
+			CommandType.GET_SPELL_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_spell_cooldown
+		),
+		CommandHandler.new(CommandType.GET_ALL_SPELL_COST, [], _get_all_spell_cost),
+		CommandHandler.new(CommandType.GET_EFFECTIVE_SPELLS, [TYPE_BOOL], _get_effective_spells),
+		CommandHandler.new(CommandType.SEND_CHAT, [TYPE_STRING], _send_chat),
+		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history)
 	]
 	for handler in handlers:
 		if _command_handlers.has(handler.id):
