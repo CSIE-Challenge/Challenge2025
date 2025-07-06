@@ -66,8 +66,14 @@ func _process(delta):
 		self.z_index = 20
 
 
+func _on_hit() -> void:
+	if not is_penetrating:
+		timer.stop()
+		self.alive = false
+		self.call_deferred("destroy")
+
+
 func destroy() -> void:
-	timer.stop()
 	if aoe_scale == 1:  # Normal bullet
 		self.queue_free()
 	elif aoe_scale == 0:  # Generate a shockwave

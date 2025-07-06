@@ -44,10 +44,7 @@ func _on_area_entered(bullet: Bullet) -> void:
 	if not bullet.alive:
 		return
 	take_damage(bullet.damage)
-	#bullet.queue_free()
-	if not bullet.is_penetrating:
-		bullet.alive = false
-		bullet.call_deferred("destroy")
+	bullet.call_deferred("_on_hit")
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments
