@@ -47,13 +47,6 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 	return _map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
-func _on_tower_upgraded(tower: Tower):
-	var levelup_cost: int = tower.upgrade_cost
-	if money >= levelup_cost:
-		money -= levelup_cost
-		tower.upgrade()
-
-
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
 	var refund := tower.upgrade_cost
 	money += refund
@@ -91,7 +84,6 @@ func _select_tower(tower: Tower):
 	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
 	self.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
-	tower_ui.upgraded.connect(self._on_tower_upgraded.bind(tower))
 	tower_ui.sold.connect(self._on_tower_sold.bind(tower, tower_ui))
 
 

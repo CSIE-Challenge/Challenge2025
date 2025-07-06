@@ -42,13 +42,3 @@ func _on_reload_timer_timeout() -> void:
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)
 	bullet.init(origin, orientation, target)
-
-
-func upgrade() -> void:
-	upgrade_cost += 10
-	damage += 1
-	aim_range += 100
-	reload_seconds = 60.0 / (60.0 / reload_seconds + 60)
-	rotation_speed += 20
-	enemy_detector.shape.radius = 0.5 * aim_range
-	reload_timer.wait_time = reload_seconds

@@ -5,16 +5,11 @@
 [node name="TowerUI" type="VBoxContainer"]
 z_index = 1
 offset_right = 75.0
-offset_bottom = 66.0
+offset_bottom = 31.0
 script = ExtResource("1_gxmcb")
-
-[node name="UpgradeButton" type="Button" parent="."]
-layout_mode = 2
-text = "Upgrade"
 
 [node name="SellButton" type="Button" parent="."]
 layout_mode = 2
 text = "Sell"
 
-[connection signal="pressed" from="UpgradeButton" to="." method="_on_upgrade_button_pressed"]
 [connection signal="pressed" from="SellButton" to="." method="_on_sell_button_pressed"]

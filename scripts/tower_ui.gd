@@ -1,7 +1,6 @@
 class_name TowerUi
 extends Control
 
-signal upgraded
 signal sold
 
 
@@ -19,7 +18,3 @@ func _input(event):
 
 func _on_sell_button_pressed() -> void:
 	sold.emit()
-
-
-func _on_upgrade_button_pressed() -> void:
-	upgraded.emit()
