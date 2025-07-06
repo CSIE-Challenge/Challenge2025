@@ -21,7 +21,7 @@ var money: int
 var score: int
 
 @onready var game = self.get_parent()
-@onready var round = game.get_parent()
+@onready var round = game.get_parent().get_parent().get_parent()
 
 #region MapInfo
 
@@ -54,7 +54,11 @@ func _get_scores(_owned: bool) -> Array:
 
 func _get_current_wave() -> Array:
 	print("[GetCurrentWave] Get request")
-	return [StatusCode.OK]
+	var wave = round.get_node("Spawner")
+	if not wave:
+		return [StatusCode.INTERNAL_ERR, "[GetCurrentWave] Error: cannot find wave"]
+	var wave_num: int = wave.current_wave_data.wave_number
+	return [StatusCode.OK, wave_num]
 
 
 func _get_remain_time() -> Array:
