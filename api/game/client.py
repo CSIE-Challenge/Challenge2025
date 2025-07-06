@@ -49,34 +49,34 @@ class GameClient:
         self.retry_interval_msec = retry_interval_msec
         self.retry_count = retry_count
         self.server_url = f"ws://{self.server_domain}:{self.port}"
-        asyncio.run(self._ws_connect())
+        asyncio.run(self.__ws_connect())
         print(f"[API] Info: connected to {self.server_url}")
 
-    async def _ws_connect(self) -> None:
+    async def __ws_connect(self) -> None:
         self.ws = await connect(self.server_url)
-        authed = await self._ws_authenticate()
+        authed = await self.__ws_authenticate()
         if not authed:
             print("[API] Error: failed authenticating. Is the provided token correct?")
             raise ConnectionError()
         # no need to disconnect by ws.close(); the socket is automatically disconnected on program exit
 
-    async def _ws_authenticate(self) -> bool:
+    async def __ws_authenticate(self) -> bool:
         try:
-            await self._ws_send(self.token)
-            response = await self._ws_recv()
+            await self.__ws_send(self.token)
+            response = await self.__ws_recv()
         except Exception as e:
             print("[API] Error: connection error during authentication")
             raise e
         return response == "Connection OK. Have Fun!"  # magic string from game server
 
-    async def _ws_send(self, msg: str | bytes) -> None:
+    async def __ws_send(self, msg: str | bytes) -> None:
         try:
             await asyncio.wait_for(self.ws.send(msg), timeout=(self.retry_interval_msec / 1000))
         except asyncio.TimeoutError:
             print("[API] Error: sending message timed out")
             raise TimeoutError()
 
-    async def _ws_recv(self) -> str | bytes:
+    async def __ws_recv(self) -> str | bytes:
         received = False
         msg = ""  # surpass unbound type checking
         for _ in range(self.retry_count):
@@ -90,16 +90,16 @@ class GameClient:
             raise TimeoutError()
         return msg
 
-    async def _ws_send_gdvars(self, deserialized: Any) -> None:
+    async def __ws_send_gdvars(self, deserialized: Any) -> None:
         try:
             serialized = binaryapi.serialize(deserialized)
         except Exception as e:
             print("[API] Error: failed serializing an object into byte sequence")
             raise e
-        await self._ws_send(serialized)
+        await self.__ws_send(serialized)
 
-    async def _ws_recv_gdvars(self) -> Any:
-        recved = await self._ws_recv()
+    async def __ws_recv_gdvars(self) -> Any:
+        recved = await self.__ws_recv()
         enforce_type('serialized byte sequence received', recved, bytes)
         serialized: bytes = cast(bytes, recved)
         try:
