@@ -1,9 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b8l0ptdbhgx3j"]
+[gd_scene load_steps=7 format=3 uid="uid://bp5vhlplilltu"]
 
-[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_throwing_bullet.gd" id="1_gis4d"]
-[ext_resource type="PackedScene" uid="uid://cu2kdmwoylw42" path="res://scenes/bullets/fireball_l2a.tscn" id="2_gis4d"]
-[ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="3_g8nom"]
-[ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="4_6kcin"]
+[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_throwing_bullet.gd" id="1_eqtww"]
+[ext_resource type="PackedScene" uid="uid://yrhbq15od20f" path="res://scenes/bullets/fireball_3b.tscn" id="2_ulhc5"]
+[ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="3_bbptl"]
+[ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="4_8vlwu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
 size = Vector2(53, 52)
@@ -15,18 +15,17 @@ radius = 734.063
 scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
-script = ExtResource("1_gis4d")
-anti_air = true
-bullet_scene = ExtResource("2_gis4d")
+script = ExtResource("1_eqtww")
+bullet_scene = ExtResource("2_ulhc5")
 
 [node name="Base" type="Sprite2D" parent="."]
-texture = ExtResource("3_g8nom")
+texture = ExtResource("3_bbptl")
 
 [node name="Turret" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite2D" parent="Turret"]
 rotation = 1.5708
-texture = ExtResource("4_6kcin")
+texture = ExtResource("4_8vlwu")
 offset = Vector2(0, -8.055)
 
 [node name="Left" type="Marker2D" parent="Turret"]
@@ -44,7 +43,6 @@ shape = SubResource("RectangleShape2D_ktxwe")
 visible = false
 light_mask = 0
 collision_layer = 0
-collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AimRange"]
 shape = SubResource("CircleShape2D_ktxwe")
