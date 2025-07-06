@@ -22,6 +22,7 @@ var income_rate: float = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var player_selection: IndividualPlayerSelection = null
+var spell_dict: Dictionary
 var _enemy_scene_cache = {}
 
 @onready var _map: Map = $Map
@@ -168,8 +169,6 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 #endregion
 
 #region Spells
-
-var spell_dict: Dictionary
 
 
 func init_spells() -> void:
