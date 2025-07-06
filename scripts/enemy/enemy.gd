@@ -53,7 +53,7 @@ func _on_area_entered(bullet: Bullet) -> void:
 	if not bullet.alive:
 		return
 	take_damage(bullet.damage)
-	bullet.call_deferred("destroy")
+	bullet.call_deferred("_on_hit")
 
 
 #region Spells
