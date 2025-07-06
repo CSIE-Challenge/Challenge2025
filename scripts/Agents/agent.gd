@@ -15,6 +15,7 @@ enum StatusCode {
 	INTERNAL_ERR = 500
 }
 
+const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
 var type: AgentType = AgentType.NIL
 var money: int
 var score: int
@@ -86,6 +87,19 @@ func _get_income(_owned: bool) -> Array:
 
 func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
+	var map = game.get_node("Map")
+	if not map:
+		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
+	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
+		return [
+			StatusCode.INTERNAL_ERR, "[PlaceTower] Error: invalid coordinate for building tower"
+		]
+	if game.built_towers.has(_coord):
+		# TODO: check whether existing tower is upgrade-able
+		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: can't upgrade tower"]
+
+	# TODO: handle different type of tower
+	game.place_tower(_coord, TOWER_SCENE.instantiate())
 	return [StatusCode.OK]
 
 
