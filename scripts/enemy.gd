@@ -62,6 +62,7 @@ func _ready():
 	health = max_health
 	path_follow.progress_ratio = 0
 	add_to_group("enemies")
+	self.z_index = 10  # For effect to be on the ground
 
 
 func _process(delta):
