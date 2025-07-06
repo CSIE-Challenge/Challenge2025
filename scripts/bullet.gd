@@ -13,6 +13,7 @@ const RANGE_ATTACK_ANIMATION_TIME := 0.075
 @export var rotation_speed := 8.0
 @export var damage := 3
 @export var lifespan_seconds := 5
+@export var penetrating_time := 1
 @export var effect: Effect = Effect.NONE
 @export var effect_damage := 2
 @export var effect_duration := 3
@@ -25,6 +26,7 @@ var timer = Timer.new()
 var effect_timer = Timer.new()
 var respawn_effect_timer = Timer.new()
 var exploding: bool = false  # bullet explode after time_out if AOE > 0
+var penetrating: bool = false
 
 @onready var collider := $CollisionShape2D
 
@@ -74,6 +76,10 @@ func _on_hit() -> void:
 		timer.stop()
 		self.alive = false
 		self.call_deferred("destroy")
+	elif not penetrating:
+		penetrating = true
+		timer.stop()
+		timer.start(penetrating_time)
 
 
 func destroy() -> void:

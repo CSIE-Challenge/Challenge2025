@@ -6,7 +6,7 @@
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
 load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
 
-[node name="Iceball_3b" type="Area2D"]
+[node name="Deep_freeze" type="Area2D"]
 collision_layer = 10
 collision_mask = 0
 script = ExtResource("1_uvkrg")
