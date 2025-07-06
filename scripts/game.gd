@@ -8,9 +8,6 @@ signal deploy_spell(spell_data)
 
 enum EnemySource { SYSTEM, OPPONENT }
 
-# todo: move tower parameters into the tower classes
-const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
-const ENEMY_SCENE := preload("res://scenes/enemies/enemy.tscn")
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
 @export var spawner: Spawner
