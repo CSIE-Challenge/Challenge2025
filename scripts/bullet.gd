@@ -1,6 +1,7 @@
 class_name Bullet
 extends Area2D
 
+enum Effect { NONE, FIRE, HELLFIRE, FREEZE, DEEP_FREEZE, KNOCKBACK, FAR_KNOCKBACK }
 const RANGE_ATTACK_ANIMATION_TIME := 0.075
 
 @export var is_tracking: bool = true
@@ -12,6 +13,7 @@ const RANGE_ATTACK_ANIMATION_TIME := 0.075
 @export var rotation_speed := 8.0
 @export var damage := 3
 @export var lifespan_seconds := 5
+@export var effect: Effect = Effect.NONE
 @export var effect_damage := 2
 @export var effect_duration := 3
 @export var effect_interval := 0.5
