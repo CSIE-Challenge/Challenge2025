@@ -71,7 +71,13 @@ func _get_remain_time() -> Array:
 
 func _get_time_until_next_wave() -> Array:
 	print("[GetTimeUntilNextWave] Get request")
-	return [StatusCode.OK]
+	var time_left = round.get_node("Spawner").next_wave_timer.time_left
+	if time_left == null:
+		return [
+			StatusCode.INTERNAL_ERR,
+			"[GetTimeUntilNextWave] Error: cannot find timeleft till next wave"
+		]
+	return [StatusCode.OK, time_left]
 
 
 func _get_money(_owned: bool) -> Array:
