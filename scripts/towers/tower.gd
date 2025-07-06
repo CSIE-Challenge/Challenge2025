@@ -27,6 +27,7 @@ func _ready():
 	reload_timer = Timer.new()
 	self.add_child(reload_timer)
 	reload_timer.timeout.connect(self._on_reload_timer_timeout)
+	self.z_index = 10  # For effect to be on the ground
 
 
 func enable(_global_position: Vector2) -> void:

@@ -84,7 +84,7 @@ func _ready():
 		path_follow.progress_ratio = 0
 	add_to_group("enemies")
 	$AnimatedSprite2D.play("default")
-
+	self.z_index = 10  # For effect to be on the ground
 
 func _process(delta):
 	path_follow.progress += max_speed * delta
