@@ -6,7 +6,7 @@
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
 load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
 
-[node name="BulletEffect" type="Area2D"]
+[node name="Hellfire" type="Area2D"]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_338pr")
@@ -16,6 +16,7 @@ aoe_scale = 10.0
 movement_speed = 0.0
 damage = 4
 lifespan_seconds = 0
+effect = 2
 
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708

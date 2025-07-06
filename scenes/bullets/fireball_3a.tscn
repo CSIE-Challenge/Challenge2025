@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ck2spqdqr8fbc" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile297.png" id="2_gymfg"]
 [ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="3_fulln"]
 
-[node name="Fireball" type="Area2D"]
+[node name="Fireball_3a" type="Area2D"]
 collision_layer = 10
 collision_mask = 0
 script = ExtResource("1_p76kf")
