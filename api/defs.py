@@ -61,11 +61,9 @@ class TypeCode(IntEnum):
     NULL_TYPE = 0
     BOOL_TYPE = 1
     INT_TYPE = 2
-    # FLOAT_TYPE = 3
     STRING_TYPE = 4
-    # VECTOR2_TYPE = 5
-    # VECTOR2I_TYPE = 6
-    # OBJECT_TYPE = 24
+    VECTOR2I_TYPE = 6
+    DICTIONARY_TYPE = 27
     LIST_TYPE = 28
 
 
