@@ -2,7 +2,6 @@ from typing import Any
 from enum import IntEnum
 
 from .defs import *
-from .vector import Vector2
 
 # Byte 0: `Variant::Type`, byte 1: unused, bytes 2 and 3: additional data.
 HEADER_TYPE_MASK = 0xFF
@@ -110,7 +109,7 @@ def bytes_to_var(serialized: bytes) -> Any:
         if len(serialized) - idx < length:
             raise ValueError(
                 f"[GdType] Unable to deserialize: insufficient data in sequence")
-        value = serialized[idx : idx + length].decode("utf-8")
+        value = serialized[idx: idx + length].decode("utf-8")
         if length % 4 != 0:
             length += 4 - length % 4
         idx += length
@@ -151,15 +150,17 @@ def bytes_to_var(serialized: bytes) -> Any:
 
             case TypeCode.STRING_TYPE:
                 return popString()
-            
+
             case TypeCode.VECTOR2I_TYPE:
                 x = popInt32()
                 y = popInt32()
                 return Vector2(x, y)
 
             case TypeCode.DICTIONARY_TYPE:
-                key_type_kind = ContainerTypeKind((header & HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_MASK) >> HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_SHIFT)
-                value_type_kind = ContainerTypeKind((header & HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_MASK) >> HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_SHIFT)
+                key_type_kind = ContainerTypeKind(
+                    (header & HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_MASK) >> HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_SHIFT)
+                value_type_kind = ContainerTypeKind(
+                    (header & HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_MASK) >> HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_SHIFT)
                 popContainerType(key_type_kind)
                 popContainerType(value_type_kind)
                 count = popInt32() & 0x7FFFFFFF
@@ -171,7 +172,8 @@ def bytes_to_var(serialized: bytes) -> Any:
                 return result
 
             case TypeCode.LIST_TYPE:
-                type_kind = ContainerTypeKind((header & HEADER_DATA_FIELD_TYPED_ARRAY_MASK) >> HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT)
+                type_kind = ContainerTypeKind(
+                    (header & HEADER_DATA_FIELD_TYPED_ARRAY_MASK) >> HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT)
                 popContainerType(type_kind)
                 length = popInt32() & 0x7FFFFFFF
                 result = [_bytes_to_var() for _ in range(length)]

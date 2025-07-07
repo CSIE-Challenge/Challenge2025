@@ -1,40 +1,14 @@
 from asyncio import TimeoutError, get_event_loop, wait_for
 import re
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, Callable, cast
 
 from api.defs import *
 from api.serialization import *
+from api.utils import *
 from websockets.asyncio.client import connect
 
 
-def enforce_type(name, obj, *args):
-    if not isinstance(obj, args):
-        types = " | ".join(list(map(lambda x: x.__name__, args)))
-        raise TypeError(f"[API Server] Error: {name} must be type {types}")
-
-
-def enforce_condition(condition_str, var, condition_fn):
-    if not condition_fn(var):
-        raise ValueError(
-            f"[API Server] Error: condition violated: {condition_str}")
-
-
-# declare TypeVar to avoid forward referencing
-GameClientType = TypeVar("GameClientType", bound="GameClient")
-
-# decorator for command handlers
-# the decorated function itself is just a dummy function that never gets called
-
-
-def game_command(command_id: CommandType, arg_types: list[type], inner_ret_type: type | None) -> Callable:
-    def decorator(_: Callable) -> Callable:
-        def wrapped(client: GameClientType, *args) -> Any:
-            return client.await_send_command(command_id, list(args), arg_types, inner_ret_type)
-        return wrapped
-    return decorator
-
-
-class GameClient:
+class GameClientBase:
 
     def __init__(
             self,
@@ -205,10 +179,12 @@ class GameClient:
             return e
         return value
 
-    @game_command(CommandType.GET_ALL_TERRAIN, [], TerrainType)
-    def get_all_terrain(self) -> list[list[TerrainType]]:
-        raise NotImplementedError
 
-    @game_command(CommandType.GET_SCORES, [bool], int)
-    def get_scores(self, owned: bool) -> int:
-        raise NotImplementedError
+# decorator for command handlers
+# the decorated function itself is just a dummy function that never gets called
+def game_command(command_id: CommandType, arg_types: list[type], inner_ret_type: type | None) -> Callable:
+    def decorator(_: Callable) -> Callable:
+        def wrapped(client: GameClientBase, *args) -> Any:
+            return client.await_send_command(command_id, list(args), arg_types, inner_ret_type)
+        return wrapped
+    return decorator

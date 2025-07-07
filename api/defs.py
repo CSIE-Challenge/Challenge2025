@@ -67,6 +67,15 @@ class TypeCode(IntEnum):
     LIST_TYPE = 28
 
 
+class Vector2:
+    def __init__(self, _x: int | None, _y: int | None) -> None:
+        self.x = _x if _x is not None else 0
+        self.y = _y if _y is not None else 0
+
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y})"
+
+
 class ApiException(Exception):
     def __init__(self, source_fn: CommandType, code: StatusCode, what: str) -> None:
         super().__init__(

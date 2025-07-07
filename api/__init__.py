@@ -1,2 +1,2 @@
-from .defs import TowerType, EnemyType, SpellType, StatusCode
-from .client import GameClient
+from .defs import *
+from .game_client import GameClient
