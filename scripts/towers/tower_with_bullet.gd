@@ -14,5 +14,5 @@ func _ready():
 func _flip_sprite() -> void:
 	if target != null:
 		var desired_angle = (target.global_position - tower_body.global_position).angle()
-		tower_body.rotation = _move_toward_angle(tower_body.rotation, desired_angle)
+		tower_body.rotation = _get_sprite_direction(desired_angle)
 	return

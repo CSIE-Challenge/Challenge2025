@@ -13,7 +13,7 @@ const RANGE_ATTACK_ANIMATION_TIME := 0.075
 @export var rotation_speed := 8.0
 @export var damage := 3
 @export var lifespan_seconds := 5
-@export var penetrating_time := 1
+@export var penetrating_time := 15
 @export var effect: Effect = Effect.NONE
 @export var effect_damage := 2
 @export var effect_duration := 3
@@ -36,7 +36,10 @@ func init(origin, orientation, _target) -> void:
 	global_position = origin
 	start_position = origin
 	rotation = orientation
-	target = _target
+	if is_instance_valid(_target):
+		target = _target
+	else:
+		target = null
 
 	# Shockwave damage only when explosion done
 	if lifespan_seconds == 0:
@@ -79,7 +82,7 @@ func _on_hit() -> void:
 	elif not penetrating:
 		penetrating = true
 		timer.stop()
-		timer.start(penetrating_time)
+		timer.start(max(penetrating_time, effect_duration))  # Take maximum to prevent incorrect setting
 
 
 func destroy() -> void:

@@ -7,7 +7,7 @@
 load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
 
 [node name="Donkey_attack_2a" type="Area2D"]
-collision_layer = 10
+collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_bxmyc")
 is_tracking = false
