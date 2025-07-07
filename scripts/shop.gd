@@ -64,7 +64,7 @@ func _create_spell_options() -> void:
 	var grid := _create_section("Spells")
 	for spell in [PoisonSpell, DoubleIncomeSpell, TeleportSpell]:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
-		shop_item.callback = func(): building_game.deploy_spell.emit(spell)
+		shop_item.callback = func(): building_game.buy_spell.emit(spell)
 		shop_item.display_cost = spell.metadata["stats"]["cost"]
 		shop_item.display_scene = load(spell.metadata["scene_path"])
 		grid.add_child(shop_item)

@@ -1,18 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://fvm1tsrcr7ci"]
+[gd_scene load_steps=5 format=3 uid="uid://fvm1tsrcr7ci"]
 
 [ext_resource type="Script" uid="uid://cyn3wo4mw2nl2" path="res://scripts/spells/poison.gd" id="1_rw6d2"]
-[ext_resource type="Texture2D" uid="uid://bop4f2f2f25bk" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile245.png" id="2_8t2vn"]
+[ext_resource type="Texture2D" uid="uid://ftaevdr2sdej" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile251.png" id="2_2mcrc"]
+[ext_resource type="Script" uid="uid://b6vds3w2nrxvq" path="res://scripts/spells/range_indicator.gd" id="3_2mcrc"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_55jtl"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_rw6d2"]
 
-[node name="Poison" type="Area2D" groups=["EnemyGroup"]]
-collision_mask = 2
+[node name="Poison" type="Node2D"]
 script = ExtResource("1_rw6d2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_8t2vn")
+texture = ExtResource("2_2mcrc")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_55jtl")
+[node name="Range" type="Area2D" parent="."]
+visible = false
+script = ExtResource("3_2mcrc")
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_rw6d2")
