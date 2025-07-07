@@ -3,22 +3,18 @@ extends Node
 
 enum { CONNECT_FAILED, CONNECT_PENDING, CONNECT_OK }
 
-static var _instance: APIServer = null
 @export var handshake_timeout_msec: int = 3000
 @export var port: int = 7749
 var tcp_server: TCPServer = TCPServer.new()
 var pending_peers: Array[PendingPeer] = []
 var authing_peers: Array[WebSocketPeer] = []
+var used_token: Dictionary[String, WebSocketConnection] = {}
+var token_rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 #region Server singleton
 
 
-static func get_instance() -> APIServer:
-	return _instance
-
-
 func _ready() -> void:
-	_instance = self
 	assert(listen() == OK)
 	print("[API Server] Listening to port: ", port)
 
@@ -122,8 +118,14 @@ func _process(_delta: float) -> void:
 
 #region Interface for registering/removing authorized connections
 func register_connection() -> WebSocketConnection:
-	var conn = WebSocketConnection.new()
+	var token: String
+	while true:
+		token = "%08x" % token_rng.randi()
+		if not used_token.has(token):
+			break
+	var conn = WebSocketConnection.new(token)
 	add_child(conn)
+	used_token[token] = conn
 	return conn
 
 
@@ -137,11 +139,11 @@ func auth_connection(ws: WebSocketPeer) -> WebSocketConnection:
 	var pkt: PackedByteArray = ws.get_packet()
 	if ws.was_string_packet():
 		var token = pkt.get_string_from_utf8()
-		var connections = get_children()
-		for conn: WebSocketConnection in connections:
-			if conn.authenticate(token):
-				ws.send_bytes(var_to_bytes([ws.StatusCode.OK]))
+		if used_token.has(token):
+			var conn = used_token[token]
+			if is_instance_valid(conn):
+				ws.send_text("Connection OK. Have Fun!")
 				return conn
-	ws.send_bytes(var_to_bytes([ws.StatusCode.AUTH_FAIL]))
+	ws.send_text("Authentication failed.")
 	return null
 #endregion

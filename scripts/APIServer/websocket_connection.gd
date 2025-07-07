@@ -6,24 +6,15 @@ signal received_bytes(pkt: PackedByteArray)
 signal client_connected
 signal client_disconnected
 
-const TOKEN_LEN: int = 16
-static var connection_id_counter = 101
-
 var id: int
 var _socket: WebSocketPeer
 var _token: String
 
 
-func _init() -> void:
-	id = connection_id_counter
-	connection_id_counter += 1
-	_token = _generate_token()
+func _init(token: String) -> void:
+	_token = token
 	_socket = null
 	add_to_group("websocket_connections")
-
-
-func authenticate(token: String) -> bool:
-	return token == _token
 
 
 func connect_to_socket(socket: WebSocketPeer) -> void:
@@ -89,11 +80,3 @@ func _poll() -> void:
 
 func _process(_delta: float) -> void:
 	_poll()
-
-
-func _generate_token() -> String:
-	const CHARACTERS: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	var tok: String = ""
-	for i in range(TOKEN_LEN):
-		tok += CHARACTERS[randi_range(0, CHARACTERS.length() - 1)]
-	return tok

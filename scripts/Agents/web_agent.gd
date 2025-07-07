@@ -28,12 +28,12 @@ enum CommandType {
 
 
 class CommandHandler:
-	var id: CommandType
+	var command_id: CommandType
 	var _arg_types: Array[Variant.Type]
 	var _handler: Callable
 
-	func _init(command_id: int, arg_types: Array[Variant.Type], handler: Callable) -> void:
-		id = command_id
+	func _init(_command_id: CommandType, arg_types: Array[Variant.Type], handler: Callable) -> void:
+		command_id = _command_id
 		_arg_types = arg_types
 		_handler = handler
 
@@ -91,19 +91,24 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history)
 	]
 	for handler in handlers:
-		if _command_handlers.has(handler.id):
+		if _command_handlers.has(handler.command_id):
 			pass  # error: duplicated handler id
-		_command_handlers[handler.id] = handler
+		_command_handlers[handler.command_id] = handler
 
 
 func _init() -> void:
 	type = AgentType.AI
 	_register_command_handlers()
-
-
-func link(ws: WebSocketConnection) -> void:
-	_ws = ws
+	_ws = ApiServer.register_connection()
 	_ws.received_bytes.connect(_on_received_command)
+	_ws.client_connected.connect(func(): print("[API Server] Remote agent %s connected" % name))
+	_ws.client_disconnected.connect(
+		func(): print("[API Server] Remote agent %s disconnected" % name)
+	)
+
+
+func _exit_tree() -> void:
+	ApiServer.remove_connection(_ws)
 
 
 func _on_received_command(command_bytes: PackedByteArray) -> void:
@@ -116,17 +121,9 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 	# handle command
 	var response: Array
 	var command = bytes_to_var(command_bytes)
-	if (
-		typeof(command) != TYPE_ARRAY
-		or command.size() < 2
-		or typeof(command[0]) != TYPE_PACKED_BYTE_ARRAY
-		or typeof(command[1]) != TYPE_INT
-	):
+	if typeof(command) != TYPE_ARRAY or command.size() < 1 or typeof(command[0]) != TYPE_INT:
 		response.push_back(StatusCode.ILLFORMED_COMMAND)
 	else:
-		var token = command.pop_front().get_string_from_ascii()
-		if not _ws.authenticate(token):
-			response = [StatusCode.AUTH_FAIL, "[Receive Command] Error: invalid token"]
 		var command_id: int = command.pop_front()
 		if not _command_handlers.has(command_id):
 			response = [
