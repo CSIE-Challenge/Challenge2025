@@ -2,31 +2,34 @@ class_name Bullet
 extends Area2D
 
 enum Effect { NONE, FIRE, HELLFIRE, FREEZE, DEEP_FREEZE, KNOCKBACK, FAR_KNOCKBACK }
+# The time that the effect/shockwave grow into its full size
 const RANGE_ATTACK_ANIMATION_TIME := 0.075
 
 @export var is_tracking: bool = true
 @export var is_anti_air: bool = false
 @export var is_penetrating: bool = false
 @export var aoe_scale: float = 1
-@export var shockwave_scene: PackedScene
+@export var shockwave_scene: PackedScene  # The scene of generated effect/shockwave
 @export var movement_speed := 400.0
 @export var rotation_speed := 8.0
 @export var damage := 3
 @export var lifespan_seconds := 5
 @export var penetrating_time := 15
+
 @export var effect: Effect = Effect.NONE
 @export var effect_damage := 2
-@export var effect_duration := 3
-@export var effect_interval := 0.5
+@export var effect_duration := 3  # The period of (burning) effect
+@export var effect_interval := 0.5  # The inverse of (burning) effect frequency
 
 var target: Node2D = null
 var start_position: Vector2
-var alive: bool = true  # make sure each bullet deals damage once
+var alive: bool = true
 var timer = Timer.new()
 var effect_timer = Timer.new()
-var respawn_effect_timer = Timer.new()
-var exploding: bool = false  # bullet explode after time_out if AOE > 0
-var penetrating: bool = false
+var respawn_effect_timer = Timer.new()  # Half of the period of (burning) effect
+# Whether the bullet is exploding/penetrating
+var exploding: bool = false  # Effect explode after time_out (actually 0 for all cases) if AOE > 0
+var penetrating: bool = false  # For bullet to disappear at certain time after its first hit
 
 @onready var collider := $CollisionShape2D
 
@@ -40,7 +43,6 @@ func init(origin, orientation, _target) -> void:
 	else:
 		target = null
 
-	# Shockwave damage only when explosion done
 	if lifespan_seconds == 0:
 		_explode()
 	self.add_child(timer)
@@ -67,8 +69,6 @@ func _process(delta):
 	position += Vector2.RIGHT.rotated(rotation) * movement_speed * delta
 
 	var traverse_distance = global_position.distance_to(start_position)
-
-	# The bullet must be above the tower after it is fired
 	if traverse_distance >= 10.0 and not exploding:
 		self.z_index = 20
 
