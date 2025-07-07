@@ -62,3 +62,11 @@ class TypeCode(IntEnum):
     BOOL_TYPE = 1
     INT_TYPE = 2
     LIST_TYPE = 28
+
+
+class ApiException(Exception):
+    def __init__(self, source_fn: CommandType, code: StatusCode, what: str) -> None:
+        super().__init__(f"API call {source_fn} fails with status code {code}: {what}")
+        self.source_fn = source_fn
+        self.code = code
+        self.what = what

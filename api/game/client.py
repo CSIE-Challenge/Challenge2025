@@ -21,13 +21,12 @@ def enforce_condition(condition_str, var, condition_fn):
 # declare TypeVar to avoid forward referencing
 GameClientType = TypeVar("GameClientType", bound="GameClient")
 
-def game_command(command_id: int, arg_types: list[type]) -> Callable:
-    def decorator(func: Callable) -> Callable:
+# decorator for command handlers
+# the decorated function itself is just a dummy function that never gets called
+def game_command(command_id: CommandType, arg_types: list[type], inner_ret_type: type | None) -> Callable:
+    def decorator(_: Callable) -> Callable:
         def wrapped(client: GameClientType, *args) -> Any:
-            if client.check_arg_types(func.__name__, arg_types, list(args)):
-                fut = client.send_command(command_id, args)
-                return get_event_loop().run_until_complete(fut)
-            return [StatusCode.ILLEGAL_ARGUMENT]
+            return client.await_send_command(command_id, list(args), arg_types, inner_ret_type)
         return wrapped
     return decorator
 
@@ -118,38 +117,87 @@ class GameClient:
         enforce_type('serialized byte sequence received', recved, bytes)
         serialized: bytes = cast(bytes, recved)
         try:
-            print([int.from_bytes(serialized[i:i+4], "little") for i in range(0, len(serialized), 4)])
             deserialized = bytes_to_var(serialized)
-            print(deserialized)
         except Exception as e:
             print(
                 "[API] Error: failed deserializing recieved byte sequence into an object")
             raise e
         return deserialized
 
-    async def send_command(self, command_id, args) -> Any:
+    async def __send_command(self, command_id, args) -> Any:
         args = [int(command_id), *args]
         await self.__ws_send_gdvars(args)
         return await self.__ws_recv_gdvars()
     
-    def check_arg_types(self, fn_name: str, arg_types: list[type], args: list[Any]) -> bool:
+    def __check_arg_types(self, source_fn: CommandType, arg_types: list[type], args: list[Any]) -> bool:
         matched = True
         if len(arg_types) != len(args):
             matched = False
-            print(f"[API] Error: {fn_name} expected {len(arg_types)} arguments, got {len(args)}")
+            print(f"[API] Error: {source_fn} expected {len(arg_types)} arguments, got {len(args)}")
             raise RuntimeError
         else:
             for i in range(len(arg_types)):
                 if not isinstance(args[i], arg_types[i]):
                     matched = False
-                    print(f"[API] Error: type mismatch at argument {i} of {fn_name}")
+                    print(f"[API] Error: type mismatch at argument {i} of {source_fn}")
                     raise TypeError
         return matched
+    
+    def __check_status_code(self, source_fn: CommandType, ret: Any) -> Any:
+        if not isinstance(ret, list):
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"object received from the game was not an array")
+        if len(ret) < 1:
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"did not receive a status code")
+        statuscode = ret[0]
+        if statuscode not in StatusCode:
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"unknown status code {statuscode} from the server")
+        statuscode = StatusCode(statuscode)
+        if statuscode != StatusCode.OK:
+            if len(ret) == 2 and isinstance(ret[1], str) and len(ret[1]) != 0:
+                raise ApiException(source_fn, statuscode, ret[1])
+            raise ApiException(source_fn, statuscode, f"(empty or corrupted error message)")
+        match len(ret):
+            case 1:
+                return None
+            case 2:
+                return ret[1]
+            case _:
+                return ret[1:]
 
-    @game_command(CommandType.GET_ALL_TERRAIN, [])
+    def __cast_return_type(self, source_fn: CommandType, inner_ret_type: type | None, ret: Any) -> Any:
+        if inner_ret_type is None:
+            if ret is None:
+                return ret
+            else:
+                raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"unexpected return value")
+        if isinstance(ret, list):
+            for i in range(len(ret)):
+                ret[i] = self.__cast_return_type(source_fn, inner_ret_type, ret[i])
+            return ret
+        elif isinstance(ret, inner_ret_type):
+            return ret
+        try:
+            return inner_ret_type(ret)
+        except:
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"failed to cast return type from {type(ret)} to {inner_ret_type}")
+
+    
+    def await_send_command(self, command_id: CommandType, args: list[Any], arg_types: list[type], inner_ret_type: type | None) -> Any:
+        try:
+            if not self.__check_arg_types(command_id, arg_types, list(args)):
+                return [StatusCode.ILLEGAL_ARGUMENT]
+            fut = self.__send_command(command_id, args)
+            ret = get_event_loop().run_until_complete(fut)
+            value = self.__check_status_code(command_id, ret)
+            value = self.__cast_return_type(command_id, inner_ret_type, value)
+        except ApiException as e:
+            return e
+        return value
+
+    @game_command(CommandType.GET_ALL_TERRAIN, [], TerrainType)
     def get_all_terrain(self) -> list[list[TerrainType]]:
         raise NotImplementedError
 
-    @game_command(CommandType.GET_SCORES, [bool])
+    @game_command(CommandType.GET_SCORES, [bool], int)
     def get_scores(self, owned: bool) -> int:
         raise NotImplementedError
