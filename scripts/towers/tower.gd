@@ -5,7 +5,6 @@ enum TargetStrategy { FIRST, LAST, CLOSE }
 
 @export var building_cost: int = 5
 @export var upgrade_cost: int = 10
-#@export var level: int = 1
 @export var auto_aim: bool = true
 @export var anti_air: bool = false
 @export var bullet_scene: PackedScene
@@ -13,9 +12,8 @@ enum TargetStrategy { FIRST, LAST, CLOSE }
 @export var reload_seconds: float = 0.25
 @export var aim_range: float = 450
 @export var damage: int = 2
-#@export var rotation_speed: float = 90.0  # degree per second
 # Should be a variable controlled otherwise later
-@export var strategy: TargetStrategy = TargetStrategy.CLOSE
+@export var strategy: TargetStrategy = TargetStrategy.FIRST
 var target: Node2D = null
 var enabled: bool = false
 var reload_timer: Timer
@@ -30,6 +28,7 @@ func _ready():
 	self.z_index = 10  # For effect to be on the ground
 
 
+# Take in the map so the the fort can decide which direction to face
 func enable(_global_position: Vector2, _map: Map) -> void:
 	enabled = true
 	global_position = _global_position
@@ -43,16 +42,11 @@ func _refresh_target() -> void:
 	target = null
 	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
 
-	# Deal with empty list and flying enemy
-	for enemy in enemies:
-		if anti_air or not enemy.flying:
-			target = enemy
-			break
-	if target == null:
+	if enemies.is_empty():
 		return
+	target = enemies[0]
 
 	match strategy:
-		# TODO: finish other strategy
 		TargetStrategy.CLOSE:
 			var closest_distance = position.distance_to(target.position)
 			for i in range(1, enemies.size()):
@@ -60,6 +54,20 @@ func _refresh_target() -> void:
 				if distance < closest_distance:
 					target = enemies[i]
 					closest_distance = distance
+		TargetStrategy.FIRST:
+			var largest_progress = target.path_follow.progress_ratio
+			for i in range(1, enemies.size()):
+				var progress = enemies[i].path_follow.progress_ratio
+				if progress > largest_progress:
+					target = enemies[i]
+					largest_progress = progress
+		TargetStrategy.LAST:
+			var smallest_progress = target.path_follow.progress_ratio
+			for i in range(1, enemies.size()):
+				var progress = enemies[i].path_follow.progress_ratio
+				if progress < smallest_progress:
+					target = enemies[i]
+					smallest_progress = progress
 
 
 # For default tower only (can be deleted later)
@@ -97,8 +105,3 @@ func _on_reload_timer_timeout() -> void:
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)
 	bullet.init(origin, direction, target)
-
-
-# Depricated
-func upgrade() -> void:
-	return
