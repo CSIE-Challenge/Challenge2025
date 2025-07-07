@@ -100,6 +100,7 @@ func _on_reload_timer_timeout() -> void:
 	_refresh_target()
 	if target == null:
 		return
+	# TODO: add animation
 	var origin: Vector2 = self.global_position
 	var direction: float = (target.global_position - origin).angle()
 	var bullet := bullet_scene.instantiate()

@@ -54,6 +54,7 @@ func spend(cost: int) -> bool:
 
 func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 	if built_towers.has(cell_pos):
+		# TODO: Should replace current tower
 		return false
 	if money < tower.building_cost:
 		return false
