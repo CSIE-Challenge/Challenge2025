@@ -29,11 +29,23 @@ def var_to_bytes(obj: Any) -> bytes:
             serialized.append(x & 255)
             x //= 255
 
+    def pushString(value: str) -> None:
+        nonlocal serialized
+        encoded = bytearray(value.encode("utf-8"))
+        length = len(encoded)
+        while length % 4 == 0:
+            encoded.append(0)
+            length += 1
+        pushInt32(length)
+        serialized += encoded
+
     if obj is None:
         pushInt32(0)
+
     elif isinstance(obj, bool):
         pushInt32(TypeCode.BOOL_TYPE)
         pushInt32(int(obj))
+
     elif isinstance(obj, int):
         # setting ENCODE_FLAG_64 (adding 2 ** 16) sends obj as int64
         # todo: send obj as int32 instead of int64 whenever possible
@@ -41,11 +53,17 @@ def var_to_bytes(obj: Any) -> bytes:
         obj = obj if obj >= 0 else (obj + 2 ** 63)
         pushInt32(obj % (2 ** 32))
         pushInt32(obj // (2 ** 32))
+
+    elif isinstance(obj, str):
+        pushInt32(TypeCode.STRING_TYPE)
+        pushString(obj)
+
     elif isinstance(obj, list):
         pushInt32(TypeCode.LIST_TYPE)
         pushInt32(len(obj))
         for i in obj:
             serialized += var_to_bytes(i)
+
     else:
         raise ValueError(
             f"[GdType] Unable to serialize variables of type '{type(obj)}'")
@@ -70,6 +88,15 @@ def bytes_to_var(serialized: bytes) -> Any:
         idx += 4
         return result
 
+    def popString() -> str:
+        nonlocal idx
+        length = popInt32()
+        value = serialized[idx : idx + length].decode("utf-8")
+        if length % 4 != 0:
+            length += 4 - length % 4
+        idx += length
+        return value
+
     def _bytes_to_var() -> Any:
         nonlocal serialized, idx
         header = popInt32()
@@ -91,6 +118,9 @@ def bytes_to_var(serialized: bytes) -> Any:
                 else:
                     lo = lo if lo < (2 ** 31) else (lo - 2 ** 31)
                 return lo
+
+            case TypeCode.STRING_TYPE:
+                return popString()
 
             case TypeCode.LIST_TYPE:
                 type_kind = (
