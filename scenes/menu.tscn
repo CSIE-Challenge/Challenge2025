@@ -1,65 +1,54 @@
-[gd_scene load_steps=3 format=3 uid="uid://cdex8rnl6lny2"]
+[gd_scene load_steps=4 format=3 uid="uid://cdex8rnl6lny2"]
 
+[ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_con2f"]
 [ext_resource type="Script" uid="uid://d3i2acqjv2ffm" path="res://scripts/menu.gd" id="1_yqeox"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_4h3mk"]
-font_size = 50
+[ext_resource type="Texture2D" uid="uid://kpvbltopk254" path="res://assets/ui/background.png" id="2_vjb58"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -25.0
-offset_top = -15.0
-offset_right = -25.0
-offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_con2f")
 script = ExtResource("1_yqeox")
 
-[node name="title" type="Label" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -155.0
-offset_top = 330.0
-offset_right = 160.0
-offset_bottom = 399.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-text = "Title"
-label_settings = SubResource("LabelSettings_4h3mk")
-horizontal_alignment = 1
+grow_vertical = 2
+texture = ExtResource("2_vjb58")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -27.5
-offset_top = -33.0
-offset_right = 27.5
-offset_bottom = 33.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Start" type="Button" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Start" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 text = "Start"
 
-[node name="About" type="Button" parent="VBoxContainer"]
+[node name="About" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "About"
 
-[node name="Quit" type="Button" parent="VBoxContainer"]
+[node name="Quit" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Start")
 text = "Quit"
 
-[connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="VBoxContainer/About" to="." method="_on_about_pressed"]
-[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/About" to="." method="_on_about_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
