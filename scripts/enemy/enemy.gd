@@ -27,6 +27,7 @@ var health: int:
 
 
 func _on_killed() -> void:
+	game.income_per_second += kill_reward  # or game.money
 	path_follow.queue_free()
 
 
@@ -48,9 +49,12 @@ func take_damage(amount: int):
 func _on_area_entered(bullet: Bullet) -> void:
 	if not bullet.alive:
 		return
-	bullet.alive = false
 	take_damage(bullet.damage)
+	var effect = bullet.effect
 	bullet.call_deferred("destroy")
+
+
+# TODO: interact with bullet effects and spells
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments
@@ -74,6 +78,7 @@ func _process(delta):
 	path_follow.progress += max_speed * delta
 	if path_follow.progress_ratio >= 0.99:
 		_on_reached()
+
 	self.rotation = -path_follow.rotation
 	if cos(path_follow.rotation) > 0:
 		sprite.flip_h = true
