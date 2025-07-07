@@ -85,6 +85,10 @@ func _on_hit() -> void:
 		timer.start(max(penetrating_time, effect_duration))  # Take maximum to prevent incorrect setting
 
 
+# Explode or spawn a descending effect
+# It may be better to seperate "effect" into another class,
+# since the logic is quite different
+# (especially about the layer, respawning effect and penetrating effect.)
 func destroy() -> void:
 	if aoe_scale == 1:  # Normal bullet
 		self.queue_free()
@@ -97,6 +101,7 @@ func destroy() -> void:
 		_explode()
 
 
+# Increase size (explode), may become a lasting effect later
 func _explode() -> void:
 	exploding = true
 	self.z_index = 0
@@ -107,22 +112,22 @@ func _explode() -> void:
 	tween.tween_property(self, "scale", Vector2(aoe_scale, aoe_scale), RANGE_ATTACK_ANIMATION_TIME)
 
 
+# Start the duration of effect
 func _on_exploded() -> void:
 	if effect_duration == 0:
 		_on_effect_end()
 	collider.disabled = true
-	print("on_exploded")
 	damage = effect_damage
 	respawn_effect_timer.start(effect_interval / 2.0)
 	effect_timer.start(effect_duration)
 
 
+# Repeating effect
 func _on_respawn() -> void:
-	print("on_respawn")
 	collider.disabled = !collider.disabled
 
 
+# End of the whole effect
 func _on_effect_end() -> void:
 	respawn_effect_timer.stop()
-	print("on_effect_end")
 	self.queue_free()

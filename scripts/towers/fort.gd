@@ -12,7 +12,7 @@ func enable(_global_position: Vector2, map: Map) -> void:
 	enabled = true
 	global_position = _global_position
 	_map = map
-	target_direction = _get_fort_direction(global_position)
+	target_direction = _get_fort_direction()
 	tower_body.rotation = _get_sprite_direction(target_direction)
 	reload_timer.start(reload_seconds)
 
@@ -35,7 +35,7 @@ func _on_reload_timer_timeout() -> void:
 	bullet.init(origin, direction, target)
 
 
-func _get_fort_direction(global_position) -> float:
+func _get_fort_direction() -> float:
 	var direction = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 	var best_direction = PI
 	var best_count = 0
