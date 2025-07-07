@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://ciotquik86l1x"]
+
+[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_bullet.gd" id="1_3phi0"]
+[ext_resource type="PackedScene" uid="uid://djnpt2h2ebj70" path="res://scenes/bullets/knife_3b.tscn" id="2_3phi0"]
+[ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="3_eut8s"]
+[ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="4_40np8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
+size = Vector2(53, 52)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ktxwe"]
+radius = 734.063
+
+[node name="Tower" type="Area2D"]
+scale = Vector2(0.781, 0.781)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_3phi0")
+anti_air = true
+bullet_scene = ExtResource("2_3phi0")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("3_eut8s")
+
+[node name="Turret" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Turret"]
+rotation = 1.5708
+texture = ExtResource("4_40np8")
+offset = Vector2(0, -8.055)
+
+[node name="Left" type="Marker2D" parent="Turret"]
+position = Vector2(32, -6)
+
+[node name="Right" type="Marker2D" parent="Turret"]
+position = Vector2(32, 6)
+
+[node name="Body" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_ktxwe")
+
+[node name="AimRange" type="Area2D" parent="."]
+visible = false
+light_mask = 0
+collision_layer = 0
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AimRange"]
+shape = SubResource("CircleShape2D_ktxwe")
+
+[connection signal="area_entered" from="AimRange" to="." method="_on_aim_range_area_entered"]
+[connection signal="area_exited" from="AimRange" to="." method="_on_aim_range_area_exited"]
