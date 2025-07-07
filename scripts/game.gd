@@ -163,6 +163,7 @@ func _on_spell_deploy(spell_data) -> void:
 
 func _process(_delta) -> void:
 	status_panel.find_child("Money").text = "%d" % money
+	status_panel.find_child("Income").text = "+%d" % income_per_second
 
 
 func _unhandled_input(event: InputEvent) -> void:
