@@ -11,7 +11,7 @@ enum EnemySource { SYSTEM, OPPONENT }
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
 @export var spawner: Spawner
-@export var status_panel: Panel
+@export var status_panel: TextureRect
 
 var money: int = 100
 var income_per_second = 10
@@ -162,7 +162,7 @@ func _on_spell_deploy(spell_data) -> void:
 
 
 func _process(_delta) -> void:
-	status_panel.get_child(0).text = "$%d" % money
+	status_panel.find_child("Money").text = "%d" % money
 
 
 func _unhandled_input(event: InputEvent) -> void:
