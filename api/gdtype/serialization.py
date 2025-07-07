@@ -1,6 +1,22 @@
 from typing import Any
+from enum import IntEnum
 
 from .defs import *
+
+# Byte 0: `Variant::Type`, byte 1: unused, bytes 2 and 3: additional data.
+HEADER_TYPE_MASK = 0xFF
+# For `Variant::INT`, `Variant::FLOAT` and other math types.
+HEADER_DATA_FLAG_64 = (1 << 16)
+# For `Variant::ARRAY`.
+HEADER_DATA_FIELD_TYPED_ARRAY_MASK = (0b11 << 16)
+HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT = 16
+
+
+class ContainerTypeKind(IntEnum):
+    NONE = 0b00
+    BUILTIN = 0b01
+    CLASS_NAME = 0b10
+    SCRIPT = 0b11
 
 
 def var_to_bytes(obj: Any) -> bytes:
@@ -53,30 +69,39 @@ def bytes_to_var(serialized: bytes) -> Any:
 
     def _bytes_to_var() -> Any:
         nonlocal serialized, idx
+        header = popInt32()
+        typecode = header & HEADER_TYPE_MASK
         
-        typecode = popInt32()
-        flags = typecode >> 16
-        typecode = typecode & 0xFFFF
-        print(flags, typecode)
-
         match typecode:
             case TypeCode.NULL_TYPE:
                 return None
+            
             case TypeCode.BOOL_TYPE:
                 return popInt32() == 1
+            
             case TypeCode.INT_TYPE:
                 lo = popInt32()
-                if flags & 1 == 1:
+                if header & HEADER_DATA_FLAG_64 != 0:
                     hi = popInt32()
                     lo = hi * (2 ** 32) + lo
                     lo = lo if lo < (2 ** 63) else (lo - 2 ** 63)
                 else:
                     lo = lo if lo < (2 ** 31) else (lo - 2 ** 31)
                 return lo
+
             case TypeCode.LIST_TYPE:
+                type_kind = (header & HEADER_DATA_FIELD_TYPED_ARRAY_MASK) >> HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT
+                match type_kind:
+                    case ContainerTypeKind.NONE:
+                        pass
+                    case ContainerTypeKind.BUILTIN:
+                        popInt32()  # the contained type of typed arrays, but we don't need this in python
+                    case _:
+                        raise ValueError(f"[GdType] Unable to deserialize: unsupported array type {type_kind} at {idx - 4}")
                 length = popInt32()
                 result = [_bytes_to_var() for _ in range(length)]
                 return result
+            
             case _:
                 raise ValueError(f"[GdType] Unable to deserialize: unknown type code {typecode} at {idx - 4}")
     
