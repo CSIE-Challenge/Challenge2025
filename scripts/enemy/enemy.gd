@@ -22,6 +22,7 @@ var health: int:
 		if health_bar != null:
 			health_bar.value = health / float(max_health) * 100.0
 
+@onready var sprite = $AnimatedSprite2D
 @onready var health_bar := $HealthBar
 
 
@@ -62,11 +63,15 @@ func _ready():
 	if path_follow != null:
 		path_follow.progress_ratio = 0
 	add_to_group("enemies")
+	$AnimatedSprite2D.play("default")
 
 
 func _process(delta):
 	path_follow.progress += max_speed * delta
 	if path_follow.progress_ratio >= 0.99:
 		_on_reached()
-	if health_bar != null:
-		health_bar.rotation = -path_follow.rotation
+	self.rotation = -path_follow.rotation
+	if cos(path_follow.rotation)>0:
+		sprite.flip_h = true
+	if cos(path_follow.rotation)<0:
+		sprite.flip_h = false

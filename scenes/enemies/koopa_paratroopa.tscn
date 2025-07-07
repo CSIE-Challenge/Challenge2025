@@ -1,24 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://cro5g1ccmnen5"]
+[gd_scene load_steps=6 format=3 uid="uid://dc62ygf03o6fc"]
 
-[ext_resource type="Script" uid="uid://bmfv7333bad4c" path="res://scripts/enemy/enemy.gd" id="1_emeqt"]
-[ext_resource type="Texture2D" uid="uid://odi2kfqpy5to" path="res://pixel_art/enemy/Goomba1.png" id="2_x58c2"]
-[ext_resource type="Texture2D" uid="uid://dor7dhapr1v7l" path="res://pixel_art/enemy/Goomba2.png" id="3_rpxlf"]
-[ext_resource type="Texture2D" uid="uid://dk74hqvi1s2hq" path="res://pixel_art/enemy/Goomba3.png" id="4_6tru5"]
+[ext_resource type="Script" uid="uid://bmfv7333bad4c" path="res://scripts/enemy/enemy.gd" id="1_vlomg"]
+[ext_resource type="Texture2D" uid="uid://c6o8nybrveb52" path="res://pixel_art/enemy/KoopaTroopa2.png" id="2_eb5cn"]
+[ext_resource type="Texture2D" uid="uid://ct2n3gm774bqc" path="res://pixel_art/enemy/KoopaTroopa1.png" id="3_vlomg"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_772r1"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_x58c2")
+"texture": ExtResource("2_eb5cn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_rpxlf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_x58c2")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_6tru5")
+"texture": ExtResource("3_vlomg")
 }],
 "loop": true,
 "name": &"default",
@@ -26,18 +19,18 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_55jtl"]
-radius = 15.0333
+radius = 17.0294
 
 [node name="Enemy" type="Area2D" groups=["EnemyGroup"]]
 collision_mask = 2
-script = ExtResource("1_emeqt")
+script = ExtResource("1_vlomg")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_772r1")
-frame = 3
-frame_progress = 1.0
+frame_progress = 0.714216
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -10)
 shape = SubResource("CircleShape2D_55jtl")
 
 [node name="HealthBar" type="ProgressBar" parent="."]

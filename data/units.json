@@ -10,7 +10,7 @@
 	}
   },
   "koopa_paratroopa": {
-	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"scene_path": "res://scenes/enemies/koopa_paratroopa.tscn",
 	"stats": {
 		"deploy_cost": 20,
 		"max_health": 15,
@@ -20,7 +20,7 @@
 	}
   },
   "spiny_shell": {
-	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"scene_path": "res://scenes/enemies/spiny_shell.tscn",
 	"stats": {
 		"deploy_cost": 30,
 		"max_health": 20,
@@ -30,7 +30,7 @@
 	}
   },
   "buzzy_beetle": {
-	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"scene_path": "res://scenes/enemies/buzzy_beetle.tscn",
 	"stats": {
 		"deploy_cost": 40,
 		"max_health": 25,
@@ -40,7 +40,7 @@
 	}
   },
   "wiggler": {
-	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"scene_path": "res://scenes/enemies/wiggler.tscn",
 	"stats": {
 		"deploy_cost": 50,
 		"max_health": 60,
@@ -50,7 +50,7 @@
 	}
   },
   "koopa_jr": {
-	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"scene_path": "res://scenes/enemies/koopa_jr.tscn",
 	"stats": {
 		"deploy_cost": 60,
 		"max_health": 40,
@@ -60,7 +60,7 @@
 	}
   },
   "koopa": {
-	"scene_path": "res://scenes/enemies/goomba.tscn",
+	"scene_path": "res://scenes/enemies/koopa.tscn",
 	"stats": {
 		"deploy_cost": 70,
 		"max_health": 100,

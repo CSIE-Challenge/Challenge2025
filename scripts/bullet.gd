@@ -43,3 +43,9 @@ func _process(delta):
 	# The bullet must be above the tower after it is fired
 	if traverse_distance >= 10.0:
 		self.z_index = 20
+
+
+# to be substituted when merging
+func destroy():
+	self.alive = false
+	self.queue_free()

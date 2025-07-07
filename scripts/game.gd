@@ -6,6 +6,7 @@ signal buy_tower(tower_scene: PackedScene)
 signal summon_enemy(unit_data: Dictionary)
 signal deploy_spell(spell_data)
 
+# TODO: add flying path for system and opponent to map
 enum EnemySource { SYSTEM, OPPONENT }
 
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
