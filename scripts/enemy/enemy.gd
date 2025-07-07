@@ -36,7 +36,11 @@ func _on_reached() -> void:
 
 
 func take_damage(amount: int):
-	health -= amount
+	if shield == 0:
+		health -= amount * max(0.2, (20.0 - armor) / 20.0)
+	else:
+		shield -= min(amount, shield)
+
 	if health <= 0:
 		_on_killed()
 
@@ -46,7 +50,7 @@ func _on_area_entered(bullet: Bullet) -> void:
 		return
 	bullet.alive = false
 	take_damage(bullet.damage)
-	bullet.queue_free()
+	bullet.call_deferred("destroy")
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments
@@ -71,7 +75,7 @@ func _process(delta):
 	if path_follow.progress_ratio >= 0.99:
 		_on_reached()
 	self.rotation = -path_follow.rotation
-	if cos(path_follow.rotation)>0:
+	if cos(path_follow.rotation) > 0:
 		sprite.flip_h = true
-	if cos(path_follow.rotation)<0:
+	if cos(path_follow.rotation) < 0:
 		sprite.flip_h = false
