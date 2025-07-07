@@ -121,17 +121,9 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 	# handle command
 	var response: Array
 	var command = bytes_to_var(command_bytes)
-	if (
-		typeof(command) != TYPE_ARRAY
-		or command.size() < 2
-		or typeof(command[0]) != TYPE_PACKED_BYTE_ARRAY
-		or typeof(command[1]) != TYPE_INT
-	):
+	if typeof(command) != TYPE_ARRAY or command.size() < 1 or typeof(command[0]) != TYPE_INT:
 		response.push_back(StatusCode.ILLFORMED_COMMAND)
 	else:
-		var token = command.pop_front().get_string_from_ascii()
-		if not _ws.authenticate(token):
-			response = [StatusCode.AUTH_FAIL, "[Receive Command] Error: invalid token"]
 		var command_id: int = command.pop_front()
 		if not _command_handlers.has(command_id):
 			response = [

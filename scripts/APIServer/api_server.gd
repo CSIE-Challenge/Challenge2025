@@ -120,7 +120,7 @@ func _process(_delta: float) -> void:
 func register_connection() -> WebSocketConnection:
 	var token: String
 	while true:
-		token = "%x" % token_rng.randi()
+		token = "%08x" % token_rng.randi()
 		if not used_token.has(token):
 			break
 	var conn = WebSocketConnection.new(token)
