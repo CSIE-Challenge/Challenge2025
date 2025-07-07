@@ -55,7 +55,7 @@ class StatusCode(IntEnum):
     COMMAND_ERR = 403
     NOT_FOUND = 404
     INTERNAL_ERR = 500
-    
+
 
 class TypeCode(IntEnum):
     NULL_TYPE = 0
@@ -66,7 +66,8 @@ class TypeCode(IntEnum):
 
 class ApiException(Exception):
     def __init__(self, source_fn: CommandType, code: StatusCode, what: str) -> None:
-        super().__init__(f"API call {source_fn} fails with status code {code}: {what}")
+        super().__init__(
+            f"API call {source_fn} fails with status code {code}: {what}")
         self.source_fn = source_fn
         self.code = code
         self.what = what

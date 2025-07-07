@@ -47,20 +47,23 @@ def var_to_bytes(obj: Any) -> bytes:
         for i in obj:
             serialized += var_to_bytes(i)
     else:
-        raise ValueError(f"[GdType] Unable to serialize variables of type '{type(obj)}'")
-    
+        raise ValueError(
+            f"[GdType] Unable to serialize variables of type '{type(obj)}'")
+
     return bytes(serialized)
 
 
 def bytes_to_var(serialized: bytes) -> Any:
     if len(serialized) % 4 != 0 or len(serialized) < 4:
-        raise ValueError(f"[GdType] Unable to deserialize: sequence length {len(serialized)} is not multiple of 4")
+        raise ValueError(
+            f"[GdType] Unable to deserialize: sequence length {len(serialized)} is not multiple of 4")
     idx = 0
 
     def popInt32() -> int:
         nonlocal idx
         if len(serialized) - idx < 4:
-            raise ValueError(f"[GdType] Unable to deserialize: not enough data in sequence")
+            raise ValueError(
+                f"[GdType] Unable to deserialize: not enough data in sequence")
         result = 0
         for i in range(4):
             result = result * 256 + serialized[idx + 3 - i]
@@ -71,14 +74,14 @@ def bytes_to_var(serialized: bytes) -> Any:
         nonlocal serialized, idx
         header = popInt32()
         typecode = header & HEADER_TYPE_MASK
-        
+
         match typecode:
             case TypeCode.NULL_TYPE:
                 return None
-            
+
             case TypeCode.BOOL_TYPE:
                 return popInt32() == 1
-            
+
             case TypeCode.INT_TYPE:
                 lo = popInt32()
                 if header & HEADER_DATA_FLAG_64 != 0:
@@ -90,20 +93,22 @@ def bytes_to_var(serialized: bytes) -> Any:
                 return lo
 
             case TypeCode.LIST_TYPE:
-                type_kind = (header & HEADER_DATA_FIELD_TYPED_ARRAY_MASK) >> HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT
+                type_kind = (
+                    header & HEADER_DATA_FIELD_TYPED_ARRAY_MASK) >> HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT
                 match type_kind:
                     case ContainerTypeKind.NONE:
                         pass
                     case ContainerTypeKind.BUILTIN:
                         popInt32()  # the contained type of typed arrays, but we don't need this in python
                     case _:
-                        raise ValueError(f"[GdType] Unable to deserialize: unsupported array type {type_kind} at {idx - 4}")
+                        raise ValueError(
+                            f"[GdType] Unable to deserialize: unsupported array type {type_kind} at {idx - 4}")
                 length = popInt32()
                 result = [_bytes_to_var() for _ in range(length)]
                 return result
-            
-            case _:
-                raise ValueError(f"[GdType] Unable to deserialize: unknown type code {typecode} at {idx - 4}")
-    
-    return _bytes_to_var()
 
+            case _:
+                raise ValueError(
+                    f"[GdType] Unable to deserialize: unknown type code {typecode} at {idx - 4}")
+
+    return _bytes_to_var()

@@ -2,8 +2,8 @@ from asyncio import TimeoutError, get_event_loop, wait_for
 import re
 from typing import Any, Callable, TypeVar, cast
 
-from api.gdtype.defs import *
-from api.gdtype.serialization import *
+from api.defs import *
+from api.serialization import *
 from websockets.asyncio.client import connect
 
 
@@ -15,7 +15,8 @@ def enforce_type(name, obj, *args):
 
 def enforce_condition(condition_str, var, condition_fn):
     if not condition_fn(var):
-        raise ValueError(f"[API Server] Error: condition violated: {condition_str}")
+        raise ValueError(
+            f"[API Server] Error: condition violated: {condition_str}")
 
 
 # declare TypeVar to avoid forward referencing
@@ -23,6 +24,8 @@ GameClientType = TypeVar("GameClientType", bound="GameClient")
 
 # decorator for command handlers
 # the decorated function itself is just a dummy function that never gets called
+
+
 def game_command(command_id: CommandType, arg_types: list[type], inner_ret_type: type | None) -> Callable:
     def decorator(_: Callable) -> Callable:
         def wrapped(client: GameClientType, *args) -> Any:
@@ -128,34 +131,40 @@ class GameClient:
         args = [int(command_id), *args]
         await self.__ws_send_gdvars(args)
         return await self.__ws_recv_gdvars()
-    
+
     def __check_arg_types(self, source_fn: CommandType, arg_types: list[type], args: list[Any]) -> bool:
         matched = True
         if len(arg_types) != len(args):
             matched = False
-            print(f"[API] Error: {source_fn} expected {len(arg_types)} arguments, got {len(args)}")
+            print(
+                f"[API] Error: {source_fn} expected {len(arg_types)} arguments, got {len(args)}")
             raise RuntimeError
         else:
             for i in range(len(arg_types)):
                 if not isinstance(args[i], arg_types[i]):
                     matched = False
-                    print(f"[API] Error: type mismatch at argument {i} of {source_fn}")
+                    print(
+                        f"[API] Error: type mismatch at argument {i} of {source_fn}")
                     raise TypeError
         return matched
-    
+
     def __check_status_code(self, source_fn: CommandType, ret: Any) -> Any:
         if not isinstance(ret, list):
-            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"object received from the game was not an array")
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
+                               f"object received from the game was not an array")
         if len(ret) < 1:
-            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"did not receive a status code")
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
+                               f"did not receive a status code")
         statuscode = ret[0]
         if statuscode not in StatusCode:
-            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"unknown status code {statuscode} from the server")
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
+                               f"unknown status code {statuscode} from the server")
         statuscode = StatusCode(statuscode)
         if statuscode != StatusCode.OK:
             if len(ret) == 2 and isinstance(ret[1], str) and len(ret[1]) != 0:
                 raise ApiException(source_fn, statuscode, ret[1])
-            raise ApiException(source_fn, statuscode, f"(empty or corrupted error message)")
+            raise ApiException(source_fn, statuscode,
+                               f"(empty or corrupted error message)")
         match len(ret):
             case 1:
                 return None
@@ -169,19 +178,21 @@ class GameClient:
             if ret is None:
                 return ret
             else:
-                raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"unexpected return value")
+                raise ApiException(
+                    source_fn, StatusCode.INTERNAL_ERR, f"unexpected return value")
         if isinstance(ret, list):
             for i in range(len(ret)):
-                ret[i] = self.__cast_return_type(source_fn, inner_ret_type, ret[i])
+                ret[i] = self.__cast_return_type(
+                    source_fn, inner_ret_type, ret[i])
             return ret
         elif isinstance(ret, inner_ret_type):
             return ret
         try:
             return inner_ret_type(ret)
         except:
-            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"failed to cast return type from {type(ret)} to {inner_ret_type}")
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
+                               f"failed to cast return type from {type(ret)} to {inner_ret_type}")
 
-    
     def await_send_command(self, command_id: CommandType, args: list[Any], arg_types: list[type], inner_ret_type: type | None) -> Any:
         try:
             if not self.__check_arg_types(command_id, arg_types, list(args)):
