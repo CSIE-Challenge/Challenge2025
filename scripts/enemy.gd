@@ -2,6 +2,8 @@ class_name Enemy
 extends Area2D
 
 @export var max_health: int = 100
+# Note that the speed of enemy should never exceed that of explosion of effect,
+# error may occur otherwise
 @export var max_speed: int = 50
 @export var flying: bool = false
 @export var damage: int = 5

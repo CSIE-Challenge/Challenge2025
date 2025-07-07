@@ -65,6 +65,7 @@ func _process(delta):
 	else:
 		desired_angle = (target.global_position - global_position).angle()
 
+	# TODO: add animation/rotation
 	rotation = lerp_angle(rotation, desired_angle, rotation_speed * delta)
 	position += Vector2.RIGHT.rotated(rotation) * movement_speed * delta
 
