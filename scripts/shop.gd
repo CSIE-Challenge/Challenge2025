@@ -1,4 +1,4 @@
-extends TabBar
+extends TextureRect
 
 # gdlint: disable=duplicated-load
 # temporarily disable for testing purposes
@@ -68,3 +68,7 @@ func _create_spell_options() -> void:
 		shop_item.callback = func(): building_game.deploy_spell.emit(spell)
 		shop_item.display_scene = load("res://scenes/towers/twin_turret.tscn")
 		grid.add_child(shop_item)
+
+
+func _on_switch_pressed() -> void:
+	self.visible = false
