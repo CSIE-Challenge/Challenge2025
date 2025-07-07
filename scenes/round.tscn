@@ -1,13 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=14 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
+[ext_resource type="Texture2D" uid="uid://coto12i32ybdk" path="res://assets/ui/player-status.png" id="3_eri0w"]
 [ext_resource type="PackedScene" uid="uid://c2q3w8rb1e31l" path="res://scenes/score.tscn" id="3_snxki"]
 [ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
+[ext_resource type="Texture2D" uid="uid://cnwky8dhvi1x" path="res://assets/ui/coin.png" id="4_p5kuw"]
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
+[ext_resource type="Texture2D" uid="uid://gvund60sjcnc" path="res://assets/ui/connected.png" id="5_h7h1o"]
 [ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scripts/chat.gd" id="5_vxv1r"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
+[ext_resource type="Texture2D" uid="uid://bvlbsdkpegbiw" path="res://assets/ui/game-status.png" id="6_ojwvf"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
+[ext_resource type="Texture2D" uid="uid://cmtdm1uj8hu0a" path="res://assets/ui/chat.png" id="11_i86cr"]
 
 [node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar")]
 layout_mode = 3
@@ -19,7 +24,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("1_vfk7k")
 script = ExtResource("2_b0w8h")
-game_timer_label = NodePath("Screen/Bottom/Mid/GameStatus/VBoxContainer/Countdown")
+game_timer_label = NodePath("Screen/Bottom/Mid/GameStatus/Countdown")
 score_bar = NodePath("Screen/Top/Score")
 
 [node name="Screen" type="VBoxContainer" parent="."]
@@ -36,27 +41,75 @@ metadata/_edit_use_anchors_ = true
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 
-[node name="Status1P" type="Panel" parent="Screen/Top"]
+[node name="Status1P" type="TextureRect" parent="Screen/Top"]
 layout_mode = 2
 size_flags_horizontal = 3
+texture = ExtResource("3_eri0w")
 
-[node name="Label" type="Label" parent="Screen/Top/Status1P"]
+[node name="Coin" type="TextureRect" parent="Screen/Top/Status1P"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = -25.0
+offset_right = 67.75
+offset_bottom = 25.0
 grow_vertical = 2
-text = "1P Status"
-horizontal_alignment = 1
+texture = ExtResource("4_p5kuw")
+
+[node name="Connection" type="TextureRect" parent="Screen/Top/Status1P"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -24.0
+offset_right = -24.0
+offset_bottom = 24.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("5_h7h1o")
+
+[node name="Money" type="Label" parent="Screen/Top/Status1P"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 83.0
+offset_top = -28.5
+offset_right = 435.0
+offset_bottom = 29.5
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "15024"
+vertical_alignment = 1
+
+[node name="Income" type="Label" parent="Screen/Top/Status1P"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 248.0
+offset_top = -24.5
+offset_right = 600.0
+offset_bottom = 25.5
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.6624, 0.92, 0.6624, 1)
+theme_override_font_sizes/font_size = 36
+text = "+123"
 vertical_alignment = 1
 
 [node name="Score" parent="Screen/Top" instance=ExtResource("3_snxki")]
+custom_minimum_size = Vector2(1024, 80)
 layout_mode = 2
 
-[node name="Status2P" type="Panel" parent="Screen/Top"]
+[node name="Status2P" type="TextureRect" parent="Screen/Top"]
 layout_mode = 2
 size_flags_horizontal = 3
+texture = ExtResource("3_eri0w")
 
 [node name="Label" type="Label" parent="Screen/Top/Status2P"]
 layout_mode = 1
@@ -76,35 +129,33 @@ layout_mode = 2
 [node name="LeftGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
 spawner = NodePath("../../../Spawner")
-status_panel = NodePath("../../Top/Status1P")
+status_panel = NodePath("")
 
 [node name="Mid" type="VBoxContainer" parent="Screen/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="GameStatus" type="Panel" parent="Screen/Bottom/Mid"]
-custom_minimum_size = Vector2(0, 150)
+[node name="GameStatus" type="TextureRect" parent="Screen/Bottom/Mid"]
+custom_minimum_size = Vector2(0, 152)
 layout_mode = 2
+texture = ExtResource("6_ojwvf")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Screen/Bottom/Mid/GameStatus"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 0
-
-[node name="Countdown" type="Label" parent="Screen/Bottom/Mid/GameStatus/VBoxContainer"]
+[node name="Countdown" type="Label" parent="Screen/Bottom/Mid/GameStatus"]
 layout_mode = 2
+offset_top = 16.0
+offset_right = 420.0
+offset_bottom = 100.0
 size_flags_vertical = 3
-theme_override_font_sizes/font_size = 62
+theme_override_font_sizes/font_size = 72
 text = "03:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WaveInfo" type="Label" parent="Screen/Bottom/Mid/GameStatus/VBoxContainer"]
+[node name="WaveInfo" type="Label" parent="Screen/Bottom/Mid/GameStatus"]
 layout_mode = 2
+offset_top = 78.0
+offset_right = 420.0
+offset_bottom = 154.0
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 24
 text = "Wave 10          00:24"
@@ -117,6 +168,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="TabContainer" type="TabContainer" parent="Screen/Bottom/Mid/ShopAndChat"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -194,16 +246,25 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
+[node name="TextureRect" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_i86cr")
+
 [node name="RightGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
 spawner = NodePath("../../../Spawner")
-status_panel = NodePath("../../Top/Status2P")
+status_panel = NodePath("")
 
 [node name="GameTimer" type="Timer" parent="."]
 
 [node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("wave_info_label")]
 script = ExtResource("6_b1bvr")
-wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/VBoxContainer/WaveInfo")
+wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/WaveInfo")
 
 [node name="PauseMenu" parent="." instance=ExtResource("7_unjed")]
 visible = false

@@ -1,6 +1,9 @@
-[gd_resource type="Theme" format=3 uid="uid://dvunoh38j5ne6"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dvunoh38j5ne6"]
+
+[ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="1_d8awb"]
 
 [resource]
+default_font = ExtResource("1_d8awb")
 default_font_size = 28
 HBoxContainer/constants/separation = 0
 VBoxContainer/constants/separation = 0
