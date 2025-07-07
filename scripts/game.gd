@@ -43,13 +43,13 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
 	built_towers.erase(cell_pos)
 
 
-func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
+func _place_tower(cell_pos: Vector2i, tower: Tower, map: Map) -> void:
 	if not _is_buildable(tower, cell_pos):
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
 
 	self.add_child(tower)
-	tower.enable(global_pos)
+	tower.enable(global_pos, map)
 
 	money -= tower.building_cost
 	built_towers[cell_pos] = tower
@@ -62,7 +62,7 @@ func buy_tower(tower: Tower):
 		return Previewer.PreviewMode.FAIL
 
 	var previewer = Previewer.new(tower, preview_color_callback, _map, true)
-	previewer.selected.connect(self._place_tower.bind(tower))
+	previewer.selected.connect(self._place_tower.bind(tower, _map))
 	self.add_child(previewer)
 
 

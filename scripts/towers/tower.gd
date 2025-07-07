@@ -30,7 +30,7 @@ func _ready():
 	self.z_index = 10  # For effect to be on the ground
 
 
-func enable(_global_position: Vector2) -> void:
+func enable(_global_position: Vector2, _map: Map) -> void:
 	enabled = true
 	global_position = _global_position
 	reload_timer.start(reload_seconds)

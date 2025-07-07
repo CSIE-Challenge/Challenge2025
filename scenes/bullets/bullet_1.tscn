@@ -1,15 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://cbrul5lcfidfo"]
+[gd_scene load_steps=4 format=3 uid="uid://dhcbg2jscx5iy"]
 
-[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_yr8mc"]
-[ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="2_gylbp"]
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_aymp5"]
+[ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="2_eui0c"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
 load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
 
-[node name="fist_2b" type="Area2D"]
+[node name="Bullet_1" type="Area2D"]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_yr8mc")
+script = ExtResource("1_aymp5")
 is_tracking = false
 is_penetrating = true
 
@@ -19,4 +19,4 @@ texture = SubResource("CompressedTexture2D_n5hp2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = ExtResource("2_gylbp")
+shape = ExtResource("2_eui0c")
