@@ -5,6 +5,7 @@ from typing import Any, Callable, cast
 from api.defs import *
 from api.serialization import *
 from api.utils import *
+from api.logger import logger
 from websockets.asyncio.client import connect
 
 
@@ -19,7 +20,7 @@ class GameClientBase:
             retry_count: int = 3) -> None:
 
         if token is None:
-            token = input("[API] Enter the token required for connection: ")
+            token = input("Enter the token required for connection: ")
 
         enforce_type('port', port, int)
         enforce_condition('0 <= port < 65536',
@@ -41,31 +42,28 @@ class GameClientBase:
         self.retry_count = retry_count
         self.server_url = f"ws://{self.server_domain}:{self.port}"
         get_event_loop().run_until_complete(self.__ws_connect())
-        print(f"[API] Info: connected to {self.server_url}")
+        logger.info(f"connected to {self.server_url}")
 
     async def __ws_connect(self) -> None:
         self.ws = await connect(self.server_url)
         authed = await self.__ws_authenticate()
         if not authed:
-            print("[API] Error: failed authenticating. Is the provided token correct?")
-            raise ConnectionError()
+            raise ConnectionError("authentication failed. Is the provided token correct?")
         # no need to disconnect by ws.close(); the socket is automatically disconnected on program exit
 
     async def __ws_authenticate(self) -> bool:
         try:
             await self.__ws_send(self.token)
             response = await self.__ws_recv()
-        except Exception as e:
-            print("[API] Error: connection error during authentication")
-            raise e
+        except Exception:
+            raise ConnectionError("authentication failed due to connection error")
         return response == "Connection OK. Have Fun!"  # magic string from game server
 
     async def __ws_send(self, msg: str | bytes) -> None:
         try:
             await wait_for(self.ws.send(msg), timeout=(self.retry_interval_msec / 1000))
         except TimeoutError:
-            print("[API] Error: sending message timed out")
-            raise TimeoutError()
+            raise TimeoutError("sending message timed out")
 
     async def __ws_recv(self) -> str | bytes:
         received = False
@@ -75,30 +73,20 @@ class GameClientBase:
                 msg = await wait_for(self.ws.recv(), timeout=(self.retry_interval_msec / 1000))
                 received = True
             except TimeoutError:
-                print("[API] Warning: receiving message timed out, retrying")
+                logger.warning("receiving message timed out, retrying")
         if not received:
-            print("[API] Error: receiving message timed out, retrying limit exceeded")
-            raise TimeoutError()
+            raise TimeoutError("receiving message timed out, retry limit exceeded")
         return msg
 
     async def __ws_send_gdvars(self, deserialized: Any) -> None:
-        try:
-            serialized = var_to_bytes(deserialized)
-        except Exception as e:
-            print("[API] Error: failed serializing an object into byte sequence")
-            raise e
+        serialized = var_to_bytes(deserialized)
         await self.__ws_send(serialized)
 
     async def __ws_recv_gdvars(self) -> Any:
         recved = await self.__ws_recv()
         enforce_type('serialized byte sequence received', recved, bytes)
         serialized: bytes = cast(bytes, recved)
-        try:
-            deserialized = bytes_to_var(serialized)
-        except Exception as e:
-            print(
-                "[API] Error: failed deserializing recieved byte sequence into an object")
-            raise e
+        deserialized = bytes_to_var(serialized)
         return deserialized
 
     async def __send_command(self, command_id, args) -> Any:
@@ -107,20 +95,13 @@ class GameClientBase:
         return await self.__ws_recv_gdvars()
 
     def __check_arg_types(self, source_fn: CommandType, arg_types: list[type], args: list[Any]) -> bool:
-        matched = True
         if len(arg_types) != len(args):
-            matched = False
-            print(
-                f"[API] Error: {source_fn} expected {len(arg_types)} arguments, got {len(args)}")
-            raise RuntimeError
+            raise ApiException(source_fn, StatusCode.ILLFORMED_COMMAND, f"{source_fn} expected {len(arg_types)} arguments, got {len(args)}")
         else:
             for i in range(len(arg_types)):
                 if not isinstance(args[i], arg_types[i]):
-                    matched = False
-                    print(
-                        f"[API] Error: type mismatch at argument {i} of {source_fn}")
-                    raise TypeError
-        return matched
+                    raise ApiException(source_fn, StatusCode.ILLEGAL_ARGUMENT, f"type mismatch at argument {i} of {source_fn}")
+        return True
 
     def __check_status_code(self, source_fn: CommandType, ret: Any) -> Any:
         if not isinstance(ret, list):
@@ -164,19 +145,20 @@ class GameClientBase:
         try:
             return inner_ret_type(ret)
         except:
-            raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
+            raise ApiException(source_fn, StatusCode.CLIENT_ERR,
                                f"failed to cast return type from {type(ret)} to {inner_ret_type}")
 
     def await_send_command(self, command_id: CommandType, args: list[Any], arg_types: list[type], inner_ret_type: type | None) -> Any:
         try:
-            if not self.__check_arg_types(command_id, arg_types, list(args)):
-                return [StatusCode.ILLEGAL_ARGUMENT]
+            self.__check_arg_types(command_id, arg_types, list(args))
             fut = self.__send_command(command_id, args)
             ret = get_event_loop().run_until_complete(fut)
             value = self.__check_status_code(command_id, ret)
             value = self.__cast_return_type(command_id, inner_ret_type, value)
         except ApiException as e:
             return e
+        except Exception as e:
+            raise ApiException(command_id, StatusCode.CLIENT_ERR, f"unexpected error\nwhat: {e}")
         return value
 
 

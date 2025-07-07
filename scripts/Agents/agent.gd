@@ -12,7 +12,8 @@ enum StatusCode {
 	ILLEGAL_ARGUMENT = 402,
 	COMMAND_ERR = 403,
 	NOT_FOUND = 404,
-	INTERNAL_ERR = 500
+	INTERNAL_ERR = 500,
+	CLIENT_ERR = 501
 }
 
 var type: AgentType = AgentType.NIL
