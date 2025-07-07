@@ -230,22 +230,41 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 36
 text = "Chat"
 
-[node name="LineEdit" type="LineEdit" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
-layout_mode = 0
-offset_top = 424.0
-offset_right = 100.0
-offset_bottom = 466.0
-
 [node name="MarginContainer" type="MarginContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
-layout_mode = 0
-offset_top = 424.0
-offset_bottom = 424.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer"]
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="LineEdit" type="LineEdit" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -68.0
+offset_right = -28.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 0
+placeholder_text = "Chat something..."
 
 [node name="RightGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
