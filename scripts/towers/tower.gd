@@ -17,6 +17,8 @@ var target: Node2D = null
 var enabled: bool = false
 var reload_timer: Timer
 
+@onready var anime = $Turret/AnimatedSprite2D
+
 
 func _ready():
 	add_to_group("towers")
@@ -81,11 +83,11 @@ func _flip_sprite() -> void:
 	return
 
 
-func _get_sprite_direction(angle: float) -> float:
+func _get_sprite_direction(angle: float) -> bool:
 	angle = wrapf(angle, -PI, PI)
 	if angle <= PI / 2 and angle >= -PI / 2:
-		return 0
-	return PI
+		return false
+	return true
 
 
 func _physics_process(_delta: float) -> void:
@@ -98,8 +100,10 @@ func _physics_process(_delta: float) -> void:
 func _on_reload_timer_timeout() -> void:
 	_refresh_target()
 	if target == null:
+		anime.stop()
 		return
-	# TODO: add animation
+	if not anime.is_playing():
+		anime.play("default")
 	var origin: Vector2 = self.global_position
 	var direction: float = (target.global_position - origin).angle()
 	var bullet := bullet_scene.instantiate()
