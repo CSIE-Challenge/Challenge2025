@@ -36,7 +36,8 @@ class GameClientBase:
         enforce_condition(f'command_timeout_msec must not be at least {self.COMMAND_RATE_LIMIT_MSEC} ms',
                           command_timeout_msec, lambda x: x >= self.COMMAND_RATE_LIMIT_MSEC)
         enforce_type('retry_count', retry_count, int)
-        enforce_condition('retry_count must be positive', retry_count, lambda x: x > 0)
+        enforce_condition('retry_count must be positive',
+                          retry_count, lambda x: x > 0)
 
         self.port = port
         self.token = token.lower()
@@ -54,7 +55,8 @@ class GameClientBase:
         self.ws = await connect(self.server_url)
         authed = await self.__ws_authenticate()
         if not authed:
-            raise ConnectionError("authentication failed. Is the provided token correct?")
+            raise ConnectionError(
+                "authentication failed. Is the provided token correct?")
         # no need to disconnect by ws.close(); the socket is automatically disconnected on program exit
 
     async def __ws_authenticate(self) -> bool:
@@ -62,7 +64,8 @@ class GameClientBase:
             await self.ws.send(self.token)
             response = await self.ws.recv()
         except Exception:
-            raise ConnectionError("authentication failed due to connection error")
+            raise ConnectionError(
+                "authentication failed due to connection error")
         return response == "Connection OK. Have Fun!"  # magic string from game server
 
     async def __ws_send_gdvars(self, deserialized: Any) -> None:
@@ -77,20 +80,23 @@ class GameClientBase:
         return deserialized
 
     def __wait_for_next_command(self) -> Any:
-        time_to_wait = self.COMMAND_RATE_LIMIT_MSEC * 1_000_000 - (time.time_ns() - self.last_command)
+        time_to_wait = self.COMMAND_RATE_LIMIT_MSEC * \
+            1_000_000 - (time.time_ns() - self.last_command)
         if time_to_wait >= 0:
             fut = asyncio.sleep(time_to_wait / (10 ** 9))
             asyncio.get_event_loop().run_until_complete(fut)
 
     def __check_arg_types(self, source_fn: CommandType, arg_types: list[type], args: list[Any]) -> bool:
         if len(arg_types) != len(args):
-            raise ApiException(source_fn, StatusCode.ILLFORMED_COMMAND, f"{source_fn.name} expected {len(arg_types)} arguments, got {len(args)}")
+            raise ApiException(source_fn, StatusCode.ILLFORMED_COMMAND,
+                               f"{source_fn.name} expected {len(arg_types)} arguments, got {len(args)}")
         else:
             for i in range(len(arg_types)):
                 if not isinstance(args[i], arg_types[i]):
-                    raise ApiException(source_fn, StatusCode.ILLEGAL_ARGUMENT, f"type mismatch at argument {i} of {source_fn.name}")
+                    raise ApiException(source_fn, StatusCode.ILLEGAL_ARGUMENT,
+                                       f"type mismatch at argument {i} of {source_fn.name}")
         return True
-    
+
     def __check_response_format(self, source_fn: CommandType, ret: Any) -> tuple[int, StatusCode, Any]:
         if not isinstance(ret, list):
             raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
@@ -100,7 +106,8 @@ class GameClientBase:
                                f"did not receive a request id and a status code")
         request_id = ret[0]
         if not isinstance(request_id, int):
-            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"the returned request is not an integer")
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
+                               f"the returned request is not an integer")
         statuscode = ret[1]
         if statuscode not in StatusCode:
             raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
@@ -161,7 +168,8 @@ class GameClientBase:
                 except ApiException as e:
                     return e
                 except Exception as e:
-                    raise ApiException(command_id, StatusCode.CLIENT_ERR, f"unexpected error\nwhat: {e}")
+                    raise ApiException(
+                        command_id, StatusCode.CLIENT_ERR, f"unexpected error\nwhat: {e}")
                 should_resend = False
             # wait for a response
             # - if it times out, retry receiving response until the limit is reached
@@ -169,24 +177,30 @@ class GameClientBase:
             # - if it failed with a known API exception, return the error
             # - if it fails for any other reason, raise the exception
             try:
-                fut = asyncio.wait_for(self.__ws_recv_gdvars(), timeout=(self.command_timeout_msec / 1000))
+                fut = asyncio.wait_for(self.__ws_recv_gdvars(), timeout=(
+                    self.command_timeout_msec / 1000))
                 ret = asyncio.get_event_loop().run_until_complete(fut)
-                returned_request_id, statuscode, value = self.__check_response_format(command_id, ret)
+                returned_request_id, statuscode, value = self.__check_response_format(
+                    command_id, ret)
                 if returned_request_id == request_id or returned_request_id == 0:
                     self.__check_status_code(command_id, statuscode, value)
-                    value = self.__cast_return_type(command_id, inner_ret_type, value)
+                    value = self.__cast_return_type(
+                        command_id, inner_ret_type, value)
                     return value
             except TimeoutError:
                 retry_count -= 1
-                logger.warning(f"command {command_id.name} timed out, retrying")
+                logger.warning(
+                    f"command {command_id.name} timed out, retrying")
             except ApiException as e:
                 if e.code == StatusCode.TOO_FREQUENT:
                     should_resend = True
                 else:
                     return e
             except Exception as e:
-                raise ApiException(command_id, StatusCode.CLIENT_ERR, f"unexpected error\nwhat: {e}")
-        raise ApiException(command_id, StatusCode.CLIENT_ERR, f"command {command_id.name} timed out, retry limit {self.retry_count} exceeded")
+                raise ApiException(
+                    command_id, StatusCode.CLIENT_ERR, f"unexpected error\nwhat: {e}")
+        raise ApiException(command_id, StatusCode.CLIENT_ERR,
+                           f"command {command_id.name} timed out, retry limit {self.retry_count} exceeded")
 
 
 # decorator for command handlers
