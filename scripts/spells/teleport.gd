@@ -15,25 +15,16 @@ static var metadata: Dictionary = {
 }
 var game: Game
 var manager
-
-var cooldown_timer: Timer
 var is_on_cooldown: bool = false
 @onready var range_indicator: RangeIndicator = $Range
+@onready var cooldown_timer: Timer = $CooldownTimer
 
 
 func _ready() -> void:
 	if get_parent().name == "SpellManager":
 		manager = get_parent()
 		game = manager.get_parent() as Game
-		create_timers()
-
-
-func create_timers():
-	# Create cooldown timer
-	cooldown_timer = Timer.new()
-	cooldown_timer.one_shot = true
-	cooldown_timer.timeout.connect(_on_cooldown_ended)
-	add_child(cooldown_timer)
+		cooldown_timer.timeout.connect(_on_cooldown_ended)
 
 
 func cast_spell(global_pos: Vector2i) -> bool:

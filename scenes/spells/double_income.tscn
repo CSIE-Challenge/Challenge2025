@@ -8,3 +8,9 @@ script = ExtResource("1_nkxoi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_41fmw")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="DurationTimer" type="Timer" parent="."]
+one_shot = true
