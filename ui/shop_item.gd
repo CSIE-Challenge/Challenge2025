@@ -4,6 +4,7 @@ extends AspectRatioContainer
 var callback: Callable
 var display_scene: PackedScene
 var display_cost: int = 10
+var display_name: String = ""
 
 @onready var container = $CenterContainer/Control
 
@@ -14,6 +15,8 @@ func _ready():
 	self.gui_input.connect(_on_gui_input)
 	$CenterContainer/Control.add_child(display_scene.instantiate())
 	$Cost.text = "$%d" % display_cost
+	if not display_name.is_empty():
+		$Name.text = display_name
 
 
 func _on_gui_input(event: InputEvent) -> void:
