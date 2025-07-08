@@ -16,31 +16,18 @@ static var metadata: Dictionary = {
 
 var game: Game
 var manager
-var duration_timer: Timer
-var cooldown_timer: Timer
 var is_active: bool = false
 var is_on_cooldown: bool = false
+@onready var duration_timer: Timer = $DurationTimer
+@onready var cooldown_timer: Timer = $CooldownTimer
 
 
 func _ready() -> void:
 	if get_parent().name == "SpellManager":
 		manager = get_parent()
 		game = manager.get_parent() as Game
-		create_timers()
-
-
-func create_timers():
-	# Create duration timer
-	duration_timer = Timer.new()
-	duration_timer.one_shot = true
-	duration_timer.timeout.connect(_on_duration_ended)
-	add_child(duration_timer)
-
-	# Create cooldown timer
-	cooldown_timer = Timer.new()
-	cooldown_timer.one_shot = true
-	cooldown_timer.timeout.connect(_on_cooldown_ended)
-	add_child(cooldown_timer)
+		duration_timer.timeout.connect(_on_duration_ended)
+		cooldown_timer.timeout.connect(_on_cooldown_ended)
 
 
 func cast_spell() -> bool:
@@ -58,8 +45,7 @@ func activate_effect():
 	is_active = true
 	var stats = metadata.stats
 
-	if game:
-		game.income_rate = 2
+	game.income_rate = 2
 
 	# Start timers
 	duration_timer.wait_time = stats.duration
@@ -71,13 +57,10 @@ func activate_effect():
 
 
 func _on_duration_ended():
-	if game:
-		game.income_rate = 1
-
+	game.income_rate = 1
 	is_active = false
 	print("Double income effect ended!")
 
 
 func _on_cooldown_ended():
 	is_on_cooldown = false
-	print("Double income spell ready to cast again!")
