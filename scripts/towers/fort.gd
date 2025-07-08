@@ -4,7 +4,8 @@ extends Tower
 var target_direction: float
 var _map: Map
 
-@onready var tower_body = $Turret
+@onready var tower_body = $Tower
+@onready var sprite = $Tower/AnimatedSprite2D
 @onready var enemy_detector = $AimRange/CollisionShape2D
 
 
@@ -13,7 +14,7 @@ func enable(_global_position: Vector2, map: Map) -> void:
 	global_position = _global_position
 	_map = map
 	target_direction = _get_fort_direction()
-	tower_body.rotation = _get_sprite_direction(target_direction)
+	sprite.flip_h = _determine_flipping(target_direction)
 	reload_timer.start(reload_seconds)
 
 
