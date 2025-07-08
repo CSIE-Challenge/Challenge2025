@@ -1,9 +1,27 @@
-[gd_scene load_steps=7 format=3 uid="uid://bp5vhlplilltu"]
+[gd_scene load_steps=9 format=3 uid="uid://bp5vhlplilltu"]
 
 [ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_eqtww"]
 [ext_resource type="PackedScene" uid="uid://yrhbq15od20f" path="res://scenes/bullets/fireball_3b.tscn" id="2_ulhc5"]
-[ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="3_bbptl"]
-[ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="4_8vlwu"]
+[ext_resource type="Texture2D" uid="uid://b77p5vt1t0gpf" path="res://pixel_art/tower/FireMarioStand.png" id="3_ulhc5"]
+[ext_resource type="Texture2D" uid="uid://b47ltcag6vqkv" path="res://pixel_art/tower/FireMarioPrepare.png" id="4_bbptl"]
+[ext_resource type="Texture2D" uid="uid://clht2uerh11kk" path="res://pixel_art/tower/FireMarioAttack.png" id="5_8vlwu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rxdad"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ulhc5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_bbptl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_8vlwu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
 size = Vector2(53, 52)
@@ -18,21 +36,11 @@ collision_mask = 0
 script = ExtResource("1_eqtww")
 bullet_scene = ExtResource("2_ulhc5")
 
-[node name="Base" type="Sprite2D" parent="."]
-texture = ExtResource("3_bbptl")
-
 [node name="Turret" type="Node2D" parent="."]
 
-[node name="Sprite" type="Sprite2D" parent="Turret"]
-rotation = 1.5708
-texture = ExtResource("4_8vlwu")
-offset = Vector2(0, -8.055)
-
-[node name="Left" type="Marker2D" parent="Turret"]
-position = Vector2(32, -6)
-
-[node name="Right" type="Marker2D" parent="Turret"]
-position = Vector2(32, 6)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Turret"]
+sprite_frames = SubResource("SpriteFrames_rxdad")
+frame_progress = 0.534917
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
