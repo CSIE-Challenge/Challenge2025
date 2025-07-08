@@ -107,7 +107,12 @@ func _get_money(_owned: bool) -> Array:
 
 func _get_income(_owned: bool) -> Array:
 	print("[GetIncome] Get request")
-	return [StatusCode.OK]
+	var income: int
+	if _owned == true:
+		income = int(game_self.status_panel.find_child("Income").text)
+	else:
+		income = int(game_other.status_panel.find_child("Income").text)
+	return [StatusCode.OK, income]
 
 
 #endregion

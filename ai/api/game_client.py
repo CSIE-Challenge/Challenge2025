@@ -18,3 +18,7 @@ class GameClient(GameClientBase):
     @game_command(CommandType.GET_MONEY, [bool], int)
     def get_money(self, owned: bool) -> int:
         raise NotImplementedError
+
+    @game_command(CommandType.GET_INCOME, [bool], int)
+    def get_income(self, owned: bool) -> int:
+        raise NotImplementedError
