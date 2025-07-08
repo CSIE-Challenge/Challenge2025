@@ -46,6 +46,12 @@ func _ready() -> void:
 	buy_spell.connect(_on_buy_spell)
 
 
+	if self == $"/root/Round/Screen/Bottom/LeftGame":
+		op_game = $"/root/Round/Screen/Bottom/RightGame"
+	else:
+		op_game = $"/root/Round/Screen/Bottom/LeftGame"
+
+
 func spend(cost: int) -> bool:
 	if money >= cost:
 		money -= cost
@@ -184,7 +190,7 @@ func _on_buy_spell(spell) -> void:
 		var original_spell_node = $SpellManager.get_node(spell.metadata.name)
 		var spell_scene = load(spell.metadata.scene_path)
 		var preview_spell_node = spell_scene.instantiate()
-		var preview_color_callback = func(node, cell_pos: Vector2i) -> Previewer.PreviewMode:
+		var preview_color_callback = func(node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
 			if money >= node.metadata.stats.cost and not node.is_on_cooldown:
 				return Previewer.PreviewMode.SUCCESS
 			return Previewer.PreviewMode.FAIL
