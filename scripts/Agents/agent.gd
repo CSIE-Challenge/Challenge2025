@@ -12,6 +12,7 @@ enum StatusCode {
 	ILLEGAL_ARGUMENT = 402,
 	COMMAND_ERR = 403,
 	NOT_FOUND = 404,
+	TOO_FREQUENT = 405,
 	INTERNAL_ERR = 500,
 	CLIENT_ERR = 501
 }
@@ -49,7 +50,7 @@ func _get_all_terrain() -> Array:
 
 func _get_scores(_owned: bool) -> Array:
 	print("[GetScores] Get request")
-	return [StatusCode.OK]
+	return [StatusCode.OK, 48763]
 
 
 func _get_current_wave() -> Array:

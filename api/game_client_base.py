@@ -1,5 +1,6 @@
-from asyncio import TimeoutError, get_event_loop, wait_for
+import asyncio
 import re
+import time
 from typing import Any, Callable, cast
 
 from api.defs import *
@@ -11,12 +12,14 @@ from websockets.asyncio.client import connect
 
 class GameClientBase:
 
+    COMMAND_RATE_LIMIT_MSEC = 10
+
     def __init__(
             self,
             port: int,
             token: str | None = None,
             server_domain: str = "localhost",
-            retry_interval_msec: int = 30,
+            command_timeout_msec: int = 20,
             retry_count: int = 3) -> None:
 
         if token is None:
@@ -29,19 +32,21 @@ class GameClientBase:
         enforce_condition('token must be a 8-digit hexadecimal number',
                           token, lambda t: re.fullmatch(r'[0-9a-fA-F]{8}', t))
         enforce_type('server_domain', server_domain, str)
-        enforce_type('retry_interval_msec', retry_interval_msec, int)
-        enforce_condition('retry_interval_msec must not be at least 10 msec',
-                          retry_interval_msec, lambda x: x >= 10)
+        enforce_type('command_timeout_msec', command_timeout_msec, int)
+        enforce_condition(f'command_timeout_msec must not be at least {self.COMMAND_RATE_LIMIT_MSEC} ms',
+                          command_timeout_msec, lambda x: x >= self.COMMAND_RATE_LIMIT_MSEC)
         enforce_type('retry_count', retry_count, int)
-        enforce_condition('retry_count must be positive',
-                          retry_count, lambda x: x > 0)
+        enforce_condition('retry_count must be positive', retry_count, lambda x: x > 0)
+
         self.port = port
         self.token = token.lower()
         self.server_domain = server_domain
-        self.retry_interval_msec = retry_interval_msec
+        self.command_timeout_msec = command_timeout_msec
         self.retry_count = retry_count
+
+        self.last_command = time.time_ns()
         self.server_url = f"ws://{self.server_domain}:{self.port}"
-        get_event_loop().run_until_complete(self.__ws_connect())
+        asyncio.get_event_loop().run_until_complete(self.__ws_connect())
         logger.info(f"connected to {self.server_url}")
 
     async def __ws_connect(self) -> None:
@@ -53,46 +58,33 @@ class GameClientBase:
 
     async def __ws_authenticate(self) -> bool:
         try:
-            await self.__ws_send(self.token)
-            response = await self.__ws_recv()
+            await self.ws.send(self.token)
+            response = await self.ws.recv()
         except Exception:
             raise ConnectionError("authentication failed due to connection error")
         return response == "Connection OK. Have Fun!"  # magic string from game server
 
-    async def __ws_send(self, msg: str | bytes) -> None:
-        try:
-            await wait_for(self.ws.send(msg), timeout=(self.retry_interval_msec / 1000))
-        except TimeoutError:
-            raise TimeoutError("sending message timed out")
-
-    async def __ws_recv(self) -> str | bytes:
-        received = False
-        msg = ""  # surpass unbound type checking
-        for _ in range(self.retry_count):
-            try:
-                msg = await wait_for(self.ws.recv(), timeout=(self.retry_interval_msec / 1000))
-                received = True
-            except TimeoutError:
-                logger.warning("receiving message timed out, retrying")
-        if not received:
-            raise TimeoutError("receiving message timed out, retry limit exceeded")
-        return msg
-
     async def __ws_send_gdvars(self, deserialized: Any) -> None:
         serialized = var_to_bytes(deserialized)
-        await self.__ws_send(serialized)
+        await self.ws.send(serialized)
 
     async def __ws_recv_gdvars(self) -> Any:
-        recved = await self.__ws_recv()
+        recved = await self.ws.recv()
         enforce_type('serialized byte sequence received', recved, bytes)
         serialized: bytes = cast(bytes, recved)
         deserialized = bytes_to_var(serialized)
         return deserialized
 
     async def __send_command(self, command_id, args) -> Any:
+        time_to_wait = self.COMMAND_RATE_LIMIT_MSEC * 1_000_000 - (time.time_ns() - self.last_command)
+        if time_to_wait >= 0:
+            await asyncio.sleep(time_to_wait / (10 ** 9))
         args = [int(command_id), *args]
-        await self.__ws_send_gdvars(args)
-        return await self.__ws_recv_gdvars()
+        async def send_and_receive():
+            await self.__ws_send_gdvars(args)
+            self.last_command = time.time_ns()
+            return await self.__ws_recv_gdvars()
+        return await asyncio.wait_for(send_and_receive(), timeout=(self.command_timeout_msec / 1000))
 
     def __check_arg_types(self, source_fn: CommandType, arg_types: list[type], args: list[Any]) -> bool:
         if len(arg_types) != len(args):
@@ -149,17 +141,26 @@ class GameClientBase:
                                f"failed to cast return type from {type(ret)} to {inner_ret_type}")
 
     def await_send_command(self, command_id: CommandType, args: list[Any], arg_types: list[type], inner_ret_type: type | None) -> Any:
-        try:
-            self.__check_arg_types(command_id, arg_types, list(args))
-            fut = self.__send_command(command_id, args)
-            ret = get_event_loop().run_until_complete(fut)
-            value = self.__check_status_code(command_id, ret)
-            value = self.__cast_return_type(command_id, inner_ret_type, value)
-        except ApiException as e:
-            return e
-        except Exception as e:
-            raise ApiException(command_id, StatusCode.CLIENT_ERR, f"unexpected error\nwhat: {e}")
-        return value
+        retry_count = self.retry_count
+        while retry_count > 0:
+            try:
+                self.__check_arg_types(command_id, arg_types, list(args))
+                fut = self.__send_command(command_id, args)
+                ret = asyncio.get_event_loop().run_until_complete(fut)
+                value = self.__check_status_code(command_id, ret)
+                value = self.__cast_return_type(command_id, inner_ret_type, value)
+                return value
+            except TimeoutError:
+                retry_count -= 1
+                logger.warning(f"command {command_id.name} timed out, retrying")
+            except ApiException as e:
+                if e.code == StatusCode.TOO_FREQUENT:
+                    continue
+                else:
+                    return e
+            except Exception as e:
+                raise ApiException(command_id, StatusCode.CLIENT_ERR, f"unexpected error\nwhat: {e}")
+        raise ApiException(command_id, StatusCode.CLIENT_ERR, f"command {command_id.name} timed out, retry limit {self.retry_count} exceeded")
 
 
 # decorator for command handlers
