@@ -15,6 +15,10 @@ run/main_scene="uid://cjayw2pm0713u"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ApiServer="*res://scripts/APIServer/api_server.gd"
+
 [display]
 
 window/size/viewport_width=1920
