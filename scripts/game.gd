@@ -178,14 +178,14 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 
 func _on_buy_spell(spell) -> void:
 	if not spell.metadata.stats.target:
-		var spell_node = get_node(spell.metadata.name)
+		var spell_node = $SpellManager.get_node(spell.metadata.name)
 		spell_node.cast_spell()
 	else:
-		var original_spell_node = get_node(spell.metadata.name)
+		var original_spell_node = $SpellManager.get_node(spell.metadata.name)
 		var spell_scene = load(spell.metadata.scene_path)
 		var preview_spell_node = spell_scene.instantiate()
 		var preview_color_callback = func(node, cell_pos: Vector2i) -> Previewer.PreviewMode:
-			if money >= node.metadata.stats.cost:
+			if money >= node.metadata.stats.cost and not node.is_on_cooldown:
 				return Previewer.PreviewMode.SUCCESS
 			return Previewer.PreviewMode.FAIL
 
@@ -199,7 +199,8 @@ func _on_buy_spell(spell) -> void:
 
 
 func _place_spell(cell_pos: Vector2i, spell_node) -> void:
-	spell_node.cast_spell(cell_pos)
+	var global_pos: Vector2 = _map.cell_to_global(cell_pos)
+	spell_node.cast_spell(global_pos)
 
 
 #endregion
