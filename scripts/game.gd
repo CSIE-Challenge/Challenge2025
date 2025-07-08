@@ -13,6 +13,7 @@ const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 @export var spawner: Spawner
 @export var status_panel: TextureRect
 
+var score: int = 0
 var money: int = 100
 var income_per_second = 10
 var built_towers: Dictionary = {}
@@ -68,8 +69,8 @@ func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 
 func _on_buy_tower(tower_scene: PackedScene):
 	var tower = tower_scene.instantiate() as Tower
-	var preview_color_callback = func(tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
-		if money >= tower.building_cost and _is_buildable(tower, cell_pos):
+	var preview_color_callback = func(_tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
+		if money >= _tower.building_cost and _is_buildable(_tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
@@ -135,6 +136,10 @@ func _on_enemy_spawn(unit_data: Dictionary) -> void:
 
 func _on_enemy_summon(unit_data: Dictionary) -> void:
 	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.OPPONENT)
+
+
+func on_damage_dealt(damage: int) -> void:
+	score += damage
 
 
 func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:

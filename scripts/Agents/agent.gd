@@ -22,15 +22,23 @@ var type: AgentType = AgentType.NIL
 var money: int
 var score: int
 
-@onready var game = self.get_parent()
-@onready var round = game.get_parent().get_parent().get_parent()
+var ongoing_round: Round = null
+var game_self: Game = null
+var game_other: Game = null
+
+
+func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
+	ongoing_round = _round
+	game_self = _game_self
+	game_other = _game_other
+
 
 #region MapInfo
 
 
 func _get_all_terrain() -> Array:
 	print("[GetAllTerrain] Get request")
-	var map = game.get_node("Map")
+	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[GetAllTerrain] Error: cannot find map"]
 
@@ -56,7 +64,7 @@ func _get_scores(_owned: bool) -> Array:
 
 func _get_current_wave() -> Array:
 	print("[GetCurrentWave] Get request")
-	var wave = round.get_node("Spawner")
+	var wave = ongoing_round.get_node("Spawner")
 	if not wave:
 		return [StatusCode.INTERNAL_ERR, "[GetCurrentWave] Error: cannot find wave"]
 	var wave_num: int = wave.current_wave_data.wave_number
@@ -65,7 +73,7 @@ func _get_current_wave() -> Array:
 
 func _get_remain_time() -> Array:
 	print("[GetRemainTime] Get request")
-	var time_left = round.get_node("GameTimer").time_left
+	var time_left = ongoing_round.get_node("GameTimer").time_left
 	if time_left == null:
 		return [StatusCode.INTERNAL_ERR, "[GetRemainTime] Error: cannot find timeleft"]
 	return [StatusCode.OK, time_left]
@@ -73,7 +81,7 @@ func _get_remain_time() -> Array:
 
 func _get_time_until_next_wave() -> Array:
 	print("[GetTimeUntilNextWave] Get request")
-	var time_left = round.get_node("Spawner").next_wave_timer.time_left
+	var time_left = ongoing_round.get_node("Spawner").next_wave_timer.time_left
 	if time_left == null:
 		return [
 			StatusCode.INTERNAL_ERR,
@@ -99,19 +107,19 @@ func _get_income(_owned: bool) -> Array:
 
 func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
-	var map = game.get_node("Map")
+	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
 	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
 		return [
 			StatusCode.INTERNAL_ERR, "[PlaceTower] Error: invalid coordinate for building tower"
 		]
-	if game.built_towers.has(_coord):
+	if game_self.built_towers.has(_coord):
 		# TODO: check whether existing tower is upgrade-able
 		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: can't upgrade tower"]
 
 	# TODO: handle different type of tower
-	game.place_tower(_coord, TOWER_SCENE.instantiate())
+	game_self.place_tower(_coord, TOWER_SCENE.instantiate())
 	return [StatusCode.OK]
 
 

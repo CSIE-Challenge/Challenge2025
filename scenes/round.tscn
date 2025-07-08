@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
-[ext_resource type="PackedScene" path="res://scenes/player_status.tscn" id="3_g6yuj"]
+[ext_resource type="PackedScene" uid="uid://cdv4tuh5x2nw2" path="res://scenes/player_status.tscn" id="3_g6yuj"]
 [ext_resource type="PackedScene" uid="uid://c2q3w8rb1e31l" path="res://scenes/score.tscn" id="3_snxki"]
 [ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
 [ext_resource type="Texture2D" uid="uid://b6pbjn41fp243" path="res://assets/ui/score.png" id="4_g6yuj"]
@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dp2dc15q5igfw" path="res://assets/ui/shop.png" id="8_p5kuw"]
 [ext_resource type="Texture2D" uid="uid://cmtdm1uj8hu0a" path="res://assets/ui/chat.png" id="11_i86cr"]
 
-[node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar")]
+[node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar", "game_1p", "game_2p")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,6 +26,8 @@ theme = ExtResource("1_vfk7k")
 script = ExtResource("2_b0w8h")
 game_timer_label = NodePath("Screen/Bottom/Mid/GameStatus/Countdown")
 score_bar = NodePath("Screen/Top/TextureRect/Score")
+game_1p = NodePath("Screen/Bottom/Game1P")
+game_2p = NodePath("Screen/Bottom/Game2P")
 
 [node name="Screen" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -64,7 +66,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 1000)
 layout_mode = 2
 
-[node name="LeftGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
+[node name="Game1P" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
 spawner = NodePath("../../../Spawner")
 status_panel = NodePath("../../Top/Status1P")
@@ -121,8 +123,8 @@ layout_mode = 2
 texture = ExtResource("8_p5kuw")
 script = ExtResource("4_snxki")
 options_container = NodePath("MarginContainer/ScrollContainer/VBoxContainer")
-building_game = NodePath("../../../../LeftGame")
-opposing_game = NodePath("../../../../RightGame")
+building_game = NodePath("../../../../Game1P")
+opposing_game = NodePath("../../../../Game2P")
 metadata/_tab_index = 0
 
 [node name="Switch" type="TextureButton" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop"]
@@ -266,7 +268,7 @@ grow_horizontal = 2
 grow_vertical = 0
 placeholder_text = "Chat something..."
 
-[node name="RightGame" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
+[node name="Game2P" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
 spawner = NodePath("../../../Spawner")
 status_panel = NodePath("../../Top/Status2P")
