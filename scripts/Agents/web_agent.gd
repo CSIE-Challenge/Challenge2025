@@ -9,6 +9,7 @@ enum CommandType {
 	GET_TIME_UNTIL_NEXT_WAVE = 5,
 	GET_MONEY = 6,
 	GET_INCOME = 7,
+	GET_TERRAIN = 9,
 	PLACE_TOWER = 101,
 	GET_ALL_TOWERS = 102,
 	GET_TOWER = 103,
@@ -63,6 +64,7 @@ var _general_commands: Dictionary = {}
 func _register_command_handlers() -> void:
 	var handlers: Array[CommandHandler] = [
 		CommandHandler.new(CommandType.GET_ALL_TERRAIN, [], _get_all_terrain),
+		CommandHandler.new(CommandType.GET_TERRAIN, [TYPE_BOOL, TYPE_VECTOR2I], _get_terrain),
 		CommandHandler.new(CommandType.GET_SCORES, [TYPE_BOOL], _get_scores),
 		CommandHandler.new(CommandType.GET_CURRENT_WAVE, [], _get_current_wave),
 		CommandHandler.new(CommandType.GET_REMAIN_TIME, [], _get_remain_time),

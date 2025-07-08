@@ -9,6 +9,7 @@ class CommandType(IntEnum):
     GET_TIME_UNTIL_NEXT_WAVE = 5
     GET_MONEY = 6
     GET_INCOME = 7
+    GET_TERRAIN = 9
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103

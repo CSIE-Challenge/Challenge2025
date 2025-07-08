@@ -63,6 +63,19 @@ func _get_all_terrain() -> Array:
 	return [StatusCode.OK, all_terrain]
 
 
+func _get_terrain(_owned: bool, _coord: Vector2i) -> Array:
+	print("[GetTerrain] Get request")
+	var map
+	if _owned == true:
+		map = game_self.get_node("Map")
+	else:
+		map = game_other.get_node("Map")
+	if not map:
+		return [StatusCode.INTERNAL_ERR, "[GetAllTerrain] Error: cannot find map"]
+
+	return [StatusCode.OK, map.get_cell_terrain(_coord)]
+
+
 func _get_scores(_owned: bool) -> Array:
 	print("[GetScores] Get request")
 	var score: int

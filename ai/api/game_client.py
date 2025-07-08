@@ -10,6 +10,10 @@ class GameClient(GameClientBase):
     @game_command(CommandType.GET_ALL_TERRAIN, [], TerrainType)
     def get_all_terrain(self) -> list[list[TerrainType]]:
         raise NotImplementedError
+    
+    @game_command(CommandType.GET_TERRAIN, [bool, Vector2], TerrainType)
+    def get_terrain(self, owned: bool, pos: Vector2) -> TerrainType:
+        raise NotImplementedError
 
     @game_command(CommandType.GET_SCORES, [bool], int)
     def get_scores(self, owned: bool) -> int:
