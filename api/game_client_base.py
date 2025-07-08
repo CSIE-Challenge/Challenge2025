@@ -44,6 +44,7 @@ class GameClientBase:
         self.command_timeout_msec = command_timeout_msec
         self.retry_count = retry_count
 
+        self.sent_command_count = 0
         self.last_command = time.time_ns()
         self.server_url = f"ws://{self.server_domain}:{self.port}"
         asyncio.get_event_loop().run_until_complete(self.__ws_connect())
@@ -75,50 +76,52 @@ class GameClientBase:
         deserialized = bytes_to_var(serialized)
         return deserialized
 
-    async def __send_command(self, command_id, args) -> Any:
+    def __wait_for_next_command(self) -> Any:
         time_to_wait = self.COMMAND_RATE_LIMIT_MSEC * 1_000_000 - (time.time_ns() - self.last_command)
         if time_to_wait >= 0:
-            await asyncio.sleep(time_to_wait / (10 ** 9))
-        args = [int(command_id), *args]
-        async def send_and_receive():
-            await self.__ws_send_gdvars(args)
-            self.last_command = time.time_ns()
-            return await self.__ws_recv_gdvars()
-        return await asyncio.wait_for(send_and_receive(), timeout=(self.command_timeout_msec / 1000))
+            fut = asyncio.sleep(time_to_wait / (10 ** 9))
+            asyncio.get_event_loop().run_until_complete(fut)
 
     def __check_arg_types(self, source_fn: CommandType, arg_types: list[type], args: list[Any]) -> bool:
         if len(arg_types) != len(args):
-            raise ApiException(source_fn, StatusCode.ILLFORMED_COMMAND, f"{source_fn} expected {len(arg_types)} arguments, got {len(args)}")
+            raise ApiException(source_fn, StatusCode.ILLFORMED_COMMAND, f"{source_fn.name} expected {len(arg_types)} arguments, got {len(args)}")
         else:
             for i in range(len(arg_types)):
                 if not isinstance(args[i], arg_types[i]):
-                    raise ApiException(source_fn, StatusCode.ILLEGAL_ARGUMENT, f"type mismatch at argument {i} of {source_fn}")
+                    raise ApiException(source_fn, StatusCode.ILLEGAL_ARGUMENT, f"type mismatch at argument {i} of {source_fn.name}")
         return True
-
-    def __check_status_code(self, source_fn: CommandType, ret: Any) -> Any:
+    
+    def __check_response_format(self, source_fn: CommandType, ret: Any) -> tuple[int, StatusCode, Any]:
         if not isinstance(ret, list):
             raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
                                f"object received from the game was not an array")
-        if len(ret) < 1:
+        if len(ret) < 2:
             raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
-                               f"did not receive a status code")
-        statuscode = ret[0]
+                               f"did not receive a request id and a status code")
+        request_id = ret[0]
+        if not isinstance(request_id, int):
+            raise ApiException(source_fn, StatusCode.INTERNAL_ERR, f"the returned request is not an integer")
+        statuscode = ret[1]
         if statuscode not in StatusCode:
             raise ApiException(source_fn, StatusCode.INTERNAL_ERR,
                                f"unknown status code {statuscode} from the server")
         statuscode = StatusCode(statuscode)
+        return_value = None
+        match len(ret):
+            case 2:
+                return_value = None
+            case 3:
+                return_value = ret[2]
+            case _:
+                return_value = ret[2:]
+        return (request_id, statuscode, return_value)
+
+    def __check_status_code(self, source_fn: CommandType, statuscode: StatusCode, value: Any) -> None:
         if statuscode != StatusCode.OK:
-            if len(ret) == 2 and isinstance(ret[1], str) and len(ret[1]) != 0:
-                raise ApiException(source_fn, statuscode, ret[1])
+            if isinstance(value, str) and len(value) != 0:
+                raise ApiException(source_fn, statuscode, value)
             raise ApiException(source_fn, statuscode,
                                f"(empty or corrupted error message)")
-        match len(ret):
-            case 1:
-                return None
-            case 2:
-                return ret[1]
-            case _:
-                return ret[1:]
 
     def __cast_return_type(self, source_fn: CommandType, inner_ret_type: type | None, ret: Any) -> Any:
         if inner_ret_type is None:
@@ -141,21 +144,44 @@ class GameClientBase:
                                f"failed to cast return type from {type(ret)} to {inner_ret_type}")
 
     def await_send_command(self, command_id: CommandType, args: list[Any], arg_types: list[type], inner_ret_type: type | None) -> Any:
+        should_resend = True
+        request_id = 0
         retry_count = self.retry_count
         while retry_count > 0:
+            # send request with a new id
+            if should_resend:
+                self.sent_command_count += 1
+                request_id = self.sent_command_count
+                try:
+                    self.__check_arg_types(command_id, arg_types, list(args))
+                    self.__wait_for_next_command()
+                    wrapped_args = [request_id, int(command_id), *args]
+                    asyncio.get_event_loop().run_until_complete(self.__ws_send_gdvars(wrapped_args))
+                    self.last_command = time.time_ns()
+                except ApiException as e:
+                    return e
+                except Exception as e:
+                    raise ApiException(command_id, StatusCode.CLIENT_ERR, f"unexpected error\nwhat: {e}")
+                should_resend = False
+            # wait for a response
+            # - if it times out, retry receiving response until the limit is reached
+            # - if it is rejected by the server with TOO_FREQUENT, resend the same request with a different id
+            # - if it failed with a known API exception, return the error
+            # - if it fails for any other reason, raise the exception
             try:
-                self.__check_arg_types(command_id, arg_types, list(args))
-                fut = self.__send_command(command_id, args)
+                fut = asyncio.wait_for(self.__ws_recv_gdvars(), timeout=(self.command_timeout_msec / 1000))
                 ret = asyncio.get_event_loop().run_until_complete(fut)
-                value = self.__check_status_code(command_id, ret)
-                value = self.__cast_return_type(command_id, inner_ret_type, value)
-                return value
+                returned_request_id, statuscode, value = self.__check_response_format(command_id, ret)
+                if returned_request_id == request_id or returned_request_id == 0:
+                    self.__check_status_code(command_id, statuscode, value)
+                    value = self.__cast_return_type(command_id, inner_ret_type, value)
+                    return value
             except TimeoutError:
                 retry_count -= 1
                 logger.warning(f"command {command_id.name} timed out, retrying")
             except ApiException as e:
                 if e.code == StatusCode.TOO_FREQUENT:
-                    continue
+                    should_resend = True
                 else:
                     return e
             except Exception as e:
