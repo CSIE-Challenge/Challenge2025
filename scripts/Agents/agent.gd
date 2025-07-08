@@ -18,6 +18,7 @@ enum StatusCode {
 }
 
 const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
+const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 var type: AgentType = AgentType.NIL
 var money: int
 var score: int
@@ -200,6 +201,17 @@ func _get_effective_spells(_owned: bool) -> Array:
 
 func _send_chat(_msg: String) -> Array:
 	print("[SendChat] Get request")
+	if TEXTBOX_SCENE == null:
+		print("[Error] TEXTBOX_SCENE not loaded")
+		return [StatusCode.INTERNAL_ERR]
+
+	if _msg.length() > 50:
+		print("[Error] too long")
+		return [StatusCode.ILLEGAL_ARGUMENT]
+
+	var textbox: MarginContainer = TEXTBOX_SCENE.instantiate()
+	textbox.set_text(_msg)
+	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
 	return [StatusCode.OK]
 
 

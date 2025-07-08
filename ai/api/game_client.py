@@ -14,3 +14,7 @@ class GameClient(GameClientBase):
     @game_command(CommandType.GET_SCORES, [bool], int)
     def get_scores(self, owned: bool) -> int:
         raise NotImplementedError
+
+    @game_command(CommandType.SEND_CHAT, [bool], int)
+    def send_chat(self, msg: str) -> bool:
+        raise NotImplementedError
