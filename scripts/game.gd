@@ -4,7 +4,7 @@ extends Control
 signal damage_taken(damage: int)
 signal buy_tower(tower_scene: PackedScene)
 signal summon_enemy(unit_data: Dictionary)
-signal deploy_spell(spell_data)
+signal buy_spell(spell_data)
 
 # TODO: add flying path for system and opponent to map
 enum EnemySource { SYSTEM, OPPONENT }
@@ -30,8 +30,9 @@ func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
-	deploy_spell.connect(_on_spell_deploy)
-	init_spells()
+
+	buy_spell.connect(_on_buy_spell)
+
 	if self == $"/root/Round/Screen/Bottom/LeftGame":
 		op_game = $"/root/Round/Screen/Bottom/RightGame"
 	else:
@@ -164,16 +165,31 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 #region Spells
 
 
-func init_spells() -> void:
-	for spell in [PoisonSpell, DoubleIncomeSpell, TeleportSpell]:
-		var spell_instance = spell.new()
-		add_child(spell_instance)
-		spell_instance.game = self
-		spell_dict[spell] = spell_instance
+func _on_buy_spell(spell) -> void:
+	if not spell.metadata.stats.target:
+		var spell_node = $SpellManager.get_node(spell.metadata.name)
+		spell_node.cast_spell()
+	else:
+		var original_spell_node = $SpellManager.get_node(spell.metadata.name)
+		var spell_scene = load(spell.metadata.scene_path)
+		var preview_spell_node = spell_scene.instantiate()
+		var preview_color_callback = func(node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
+			if money >= node.metadata.stats.cost and not node.is_on_cooldown:
+				return Previewer.PreviewMode.SUCCESS
+			return Previewer.PreviewMode.FAIL
+
+		if previewer != null:
+			previewer.free()
+
+		previewer = Previewer.new(preview_spell_node, preview_color_callback, _map, true)
+		previewer.selected.connect(self._place_spell.bind(original_spell_node))
+		self.add_child(previewer)
+		preview_spell_node.range_indicator.show()
 
 
-func _on_spell_deploy(spell) -> void:
-	spell_dict[spell].cast_spell()
+func _place_spell(cell_pos: Vector2i, spell_node) -> void:
+	var global_pos: Vector2 = _map.cell_to_global(cell_pos)
+	spell_node.cast_spell(global_pos)
 
 
 #endregion

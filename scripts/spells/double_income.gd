@@ -10,37 +10,32 @@ static var metadata: Dictionary = {
 		"duration": 8,
 		"cooldown": 20,
 		"cost": 20,
+		"target": false,
 	}
 }
 
 var game: Game
-var duration_timer: Timer
-var cooldown_timer: Timer
+var manager
 var is_active: bool = false
 var is_on_cooldown: bool = false
+@onready var duration_timer: Timer = $DurationTimer
+@onready var cooldown_timer: Timer = $CooldownTimer
 
 
 func _ready() -> void:
-	create_timers()
-
-
-func create_timers():
-	# Create duration timer
-	duration_timer = Timer.new()
-	duration_timer.one_shot = true
-	duration_timer.timeout.connect(_on_duration_ended)
-	add_child(duration_timer)
-
-	# Create cooldown timer
-	cooldown_timer = Timer.new()
-	cooldown_timer.one_shot = true
-	cooldown_timer.timeout.connect(_on_cooldown_ended)
-	add_child(cooldown_timer)
+	if get_parent().name == "SpellManager":
+		manager = get_parent()
+		game = manager.get_parent() as Game
+		duration_timer.timeout.connect(_on_duration_ended)
+		cooldown_timer.timeout.connect(_on_cooldown_ended)
 
 
 func cast_spell() -> bool:
 	if is_on_cooldown or is_active or not game:
 		print("Spell is on cooldown! Wait ", cooldown_timer.get_time_left(), " seconds")
+		return false
+	if not game.spend(metadata.stats.cost):
+		print("Not enough money")
 		return false
 	activate_effect()
 	return true
@@ -50,8 +45,7 @@ func activate_effect():
 	is_active = true
 	var stats = metadata.stats
 
-	if game:
-		game.income_rate = 2
+	game.income_rate = 2
 
 	# Start timers
 	duration_timer.wait_time = stats.duration
@@ -63,13 +57,10 @@ func activate_effect():
 
 
 func _on_duration_ended():
-	if game:
-		game.income_rate = 1
-
+	game.income_rate = 1
 	is_active = false
 	print("Double income effect ended!")
 
 
 func _on_cooldown_ended():
 	is_on_cooldown = false
-	print("Double income spell ready to cast again!")

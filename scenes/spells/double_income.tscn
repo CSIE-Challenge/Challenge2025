@@ -1,18 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://b47thwmstjuji"]
+[gd_scene load_steps=3 format=3 uid="uid://b47thwmstjuji"]
 
+[ext_resource type="Texture2D" uid="uid://ftaevdr2sdej" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile251.png" id="1_41fmw"]
 [ext_resource type="Script" uid="uid://dwhhbvtmvijdf" path="res://scripts/spells/double_income.gd" id="1_nkxoi"]
-[ext_resource type="Texture2D" uid="uid://bop4f2f2f25bk" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile245.png" id="2_rm0ul"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_55jtl"]
-
-[node name="DoubleIncome" type="Area2D" groups=["EnemyGroup"]]
-collision_mask = 2
+[node name="DoubleIncome" type="Node2D"]
 script = ExtResource("1_nkxoi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_rm0ul")
+texture = ExtResource("1_41fmw")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_55jtl")
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[node name="DurationTimer" type="Timer" parent="."]
+one_shot = true
