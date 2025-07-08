@@ -40,7 +40,7 @@ def var_to_bytes(obj: Any) -> bytes:
         nonlocal serialized
         encoded = bytearray(value.encode("utf-8"))
         length = len(encoded)
-        while length % 4 == 0:
+        while length % 4 != 0:
             encoded.append(0)
             length += 1
         pushInt32(length)

@@ -141,9 +141,7 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 			]
 		elif not _command_handlers[command_id].check_argument_types(command):
 			response = [
-				request_id,
-				StatusCode.ILLEGAL_ARGUMENT,
-				"[Receive Command] Error: illegal argument"
+				request_id, StatusCode.ILLEGAL_ARGUMENT, "[Receive Command] Error: illegal argument"
 			]
 		else:
 			response = _command_handlers[command_id].handle(command)

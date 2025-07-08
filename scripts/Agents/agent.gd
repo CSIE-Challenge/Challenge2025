@@ -26,6 +26,7 @@ var score: int
 var ongoing_round: Round = null
 var game_self: Game = null
 var game_other: Game = null
+var chat_node: Node = null
 
 
 func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
@@ -60,7 +61,12 @@ func _get_all_terrain() -> Array:
 
 func _get_scores(_owned: bool) -> Array:
 	print("[GetScores] Get request")
-	return [StatusCode.OK, 48763]
+	var score: int
+	if _owned == true:
+		score = game_self.score
+	else:
+		score = game_other.score
+	return [StatusCode.OK, score]
 
 
 func _get_current_wave() -> Array:
@@ -93,12 +99,22 @@ func _get_time_until_next_wave() -> Array:
 
 func _get_money(_owned: bool) -> Array:
 	print("[GetMoney] Get request")
-	return [StatusCode.OK]
+	var money: int
+	if _owned == true:
+		money = int(game_self.status_panel.find_child("Money").text)
+	else:
+		money = int(game_other.status_panel.find_child("Money").text)
+	return [StatusCode.OK, money]
 
 
 func _get_income(_owned: bool) -> Array:
 	print("[GetIncome] Get request")
-	return [StatusCode.OK]
+	var income: int
+	if _owned == true:
+		income = int(game_self.status_panel.find_child("Income").text)
+	else:
+		income = int(game_other.status_panel.find_child("Income").text)
+	return [StatusCode.OK, income]
 
 
 #endregion
@@ -203,16 +219,14 @@ func _send_chat(_msg: String) -> Array:
 	print("[SendChat] Get request")
 	if TEXTBOX_SCENE == null:
 		print("[Error] TEXTBOX_SCENE not loaded")
-		return [StatusCode.INTERNAL_ERR]
+		return [StatusCode.INTERNAL_ERR, false]
 
 	if _msg.length() > 50:
 		print("[Error] too long")
-		return [StatusCode.ILLEGAL_ARGUMENT]
+		return [StatusCode.ILLEGAL_ARGUMENT, false]
 
-	var textbox: MarginContainer = TEXTBOX_SCENE.instantiate()
-	textbox.set_text(_msg)
-	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
-	return [StatusCode.OK]
+	chat_node._on_line_edit_text_submitted(_msg)
+	return [StatusCode.OK, true]
 
 
 func _get_chat_history(_num: int) -> Array:

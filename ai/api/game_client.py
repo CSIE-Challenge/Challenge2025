@@ -15,6 +15,14 @@ class GameClient(GameClientBase):
     def get_scores(self, owned: bool) -> int:
         raise NotImplementedError
 
-    @game_command(CommandType.SEND_CHAT, [bool], int)
+    @game_command(CommandType.SEND_CHAT, [str], bool)
     def send_chat(self, msg: str) -> bool:
+        raise NotImplementedError
+    
+    @game_command(CommandType.GET_MONEY, [bool], int)
+    def get_money(self, owned: bool) -> int:
+        raise NotImplementedError
+
+    @game_command(CommandType.GET_INCOME, [bool], int)
+    def get_income(self, owned: bool) -> int:
         raise NotImplementedError
