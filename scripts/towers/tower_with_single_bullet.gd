@@ -1,4 +1,4 @@
-class_name TowerThrowingBullet
+class_name TowerWithSingleBullet
 extends Tower
 
 @onready var tower_body = $Turret
@@ -10,7 +10,6 @@ func _ready():
 	enemy_detector.shape.radius = 0.5 * aim_range
 
 
-# take aim when enabled
 func _flip_sprite() -> void:
 	if target != null:
 		var desired_angle = (target.global_position - tower_body.global_position).angle()
