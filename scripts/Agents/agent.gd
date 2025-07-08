@@ -59,7 +59,12 @@ func _get_all_terrain() -> Array:
 
 func _get_scores(_owned: bool) -> Array:
 	print("[GetScores] Get request")
-	return [StatusCode.OK, 48763]
+	var score: int
+	if _owned == true:
+		score = game_self.score
+	else:
+		score = game_other.score
+	return [StatusCode.OK, score]
 
 
 func _get_current_wave() -> Array:
