@@ -87,11 +87,11 @@ func _flip_sprite() -> void:
 	return
 
 
-func _get_sprite_direction(angle: float) -> bool:
+func _get_sprite_direction(angle: float) -> float:
 	angle = wrapf(angle, -PI, PI)
 	if angle <= PI / 2 and angle >= -PI / 2:
-		return false
-	return true
+		return 0
+	return PI
 
 
 func _physics_process(_delta: float) -> void:
