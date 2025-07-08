@@ -217,7 +217,7 @@ func _get_effective_spells(_owned: bool) -> Array:
 
 func _send_chat(_msg: String) -> Array:
 	print("[SendChat] Get request")
-	if TEXTBOX_SCENE == null:
+	if chat_node == null:
 		print("[Error] TEXTBOX_SCENE not loaded")
 		return [StatusCode.INTERNAL_ERR, false]
 
@@ -231,6 +231,11 @@ func _send_chat(_msg: String) -> Array:
 
 func _get_chat_history(_num: int) -> Array:
 	print("[GetChatHistory] Get request")
-	return [StatusCode.OK]
+	if chat_node == null:
+		print("[Error] TEXTBOX_SCENE not loaded")
+		return [StatusCode.INTERNAL_ERR, false]
+
+	var history = chat_node.get_history(_num)
+	return [StatusCode.OK, history]
 
 #endregion
