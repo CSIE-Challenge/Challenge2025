@@ -8,7 +8,6 @@ enum TargetStrategy { FIRST, LAST, CLOSE }
 @export var auto_aim: bool = true
 @export var anti_air: bool = false
 @export var bullet_scene: PackedScene
-@export var bullet_number: int = 1
 @export var reload_seconds: float = 0.25
 @export var aim_range: float = 450
 @export var damage: int = 2

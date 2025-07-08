@@ -9,6 +9,9 @@ signal deploy_spell(spell_data)
 # TODO: add flying path for system and opponent to map
 enum EnemySource { SYSTEM, OPPONENT }
 
+# todo: move tower parameters into the tower classes
+const TOWER_SCENE := preload("res://scenes/towers/shy_guy_2a.tscn")
+const ENEMY_SCENE := preload("res://scenes/enemies/enemy.tscn")
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
 @export var spawner: Spawner
