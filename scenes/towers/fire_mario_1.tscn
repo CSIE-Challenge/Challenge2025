@@ -29,7 +29,7 @@ size = Vector2(53, 52)
 [sub_resource type="CircleShape2D" id="CircleShape2D_ktxwe"]
 radius = 734.063
 
-[node name="Tower" type="Area2D"]
+[node name="Fire_mario_1" type="Area2D"]
 scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
@@ -38,9 +38,15 @@ type = 1
 anti_air = true
 bullet_scene = ExtResource("2_pjfx8")
 
+<<<<<<< HEAD
 [node name="Turret" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Turret"]
+=======
+[node name="Tower" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+>>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_mrut0")
 frame_progress = 0.963593
 
