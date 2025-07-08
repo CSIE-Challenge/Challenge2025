@@ -20,6 +20,7 @@ var income_rate: float = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
+var op_game: Game
 var _enemy_scene_cache = {}
 
 @onready var _map: Map = $Map
@@ -31,6 +32,10 @@ func _ready() -> void:
 	summon_enemy.connect(_on_enemy_summon)
 	deploy_spell.connect(_on_spell_deploy)
 	init_spells()
+	if self == $"/root/Round/Screen/Bottom/LeftGame":
+		op_game = $"/root/Round/Screen/Bottom/RightGame"
+	else:
+		op_game = $"/root/Round/Screen/Bottom/LeftGame"
 
 
 func spend(cost: int) -> bool:

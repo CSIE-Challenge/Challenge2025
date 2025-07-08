@@ -15,6 +15,8 @@ extends Area2D
 
 var game: Game
 var path_follow: PathFollow2D
+var speed_ratio: float = 1
+var knockback_ratio: float = 0.1
 var source: Game.EnemySource
 var health: int:
 	get:
@@ -56,12 +58,32 @@ func _on_area_entered(bullet: Bullet) -> void:
 	bullet.call_deferred("_on_hit")
 
 
+#region Effect
+
+
+func knockback(far: bool):
+	if far:
+		if knockback_resist:
+			path_follow.progress_ratio -= knockback_ratio
+		else:
+			path_follow.progress_ratio -= knockback_ratio * 2
+	else:
+		if not knockback_resist:
+			path_follow.progress_ratio -= knockback_ratio
+
+
+func freeze(rate: float):
+	speed_ratio *= rate
+	await get_tree().create_timer(8).timeout
+	speed_ratio /= rate
+
+
 #region Spells
 
 
-func transport(op_game):
+func transport():
+	var op_game = game.op_game
 	path_follow.get_parent().remove_child(path_follow)
-	game = op_game
 	# TODO: for flying enemy, add_child to flying path
 	op_game._map.opponent_path.add_child(path_follow)
 	path_follow.progress_ratio = 0
@@ -89,7 +111,7 @@ func _ready():
 
 
 func _process(delta):
-	path_follow.progress += max_speed * delta
+	path_follow.progress += speed_ratio * max_speed * delta
 	if path_follow.progress_ratio >= 0.99:
 		_on_reached()
 
