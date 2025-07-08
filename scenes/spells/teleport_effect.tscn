@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmv46ogkf4ckc"]
+
+[ext_resource type="Script" uid="uid://cm8u4cn43tlsf" path="res://scripts/spells/teleport_effect.gd" id="1_mxvwf"]
+[ext_resource type="Texture2D" uid="uid://dpjhwdsioyj62" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile067.png" id="2_prjt8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mxvwf"]
+radius = 32.1403
+
+[node name="Effect" type="Area2D"]
+z_index = 20
+script = ExtResource("1_mxvwf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("2_prjt8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mxvwf")

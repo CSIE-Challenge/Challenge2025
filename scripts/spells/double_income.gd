@@ -15,6 +15,7 @@ static var metadata: Dictionary = {
 }
 
 var game: Game
+var manager
 var duration_timer: Timer
 var cooldown_timer: Timer
 var is_active: bool = false
@@ -22,8 +23,10 @@ var is_on_cooldown: bool = false
 
 
 func _ready() -> void:
-	game = get_parent() as Game
-	create_timers()
+	if get_parent().name == "SpellManager":
+		manager = get_parent()
+		game = manager.get_parent() as Game
+		create_timers()
 
 
 func create_timers():
