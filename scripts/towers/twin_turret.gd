@@ -13,14 +13,11 @@ func _ready():
 
 
 # take aim when enabled
-func _physics_process(delta: float) -> void:
-	if not enabled:
-		return
-	_refresh_target()
+func _flip_sprite() -> void:
 	if target != null:
 		var desired_angle = (target.global_position - turret.global_position).angle()
-		var max_rotation = deg_to_rad(rotation_speed) * delta
-		turret.rotation = _move_toward_angle(turret.rotation, desired_angle, max_rotation)
+		turret.rotation = _move_toward_angle(turret.rotation, desired_angle)
+	return
 
 
 func _on_reload_timer_timeout() -> void:
