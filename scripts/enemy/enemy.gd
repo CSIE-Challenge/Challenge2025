@@ -48,12 +48,13 @@ func take_damage(amount: int):
 		_on_killed()
 
 
-# implement in bullet.gd
-# func _on_area_entered(bullet: Bullet) -> void:
-# 	if not bullet.alive:
-# 		return
-# 	take_damage(bullet.damage)
-# 	bullet.call_deferred("destroy")
+# TODO: to delete, already implemented in bullet.gd
+func _on_area_entered(bullet: Bullet) -> void:
+	if not bullet.alive:
+		return
+	take_damage(bullet.damage)
+	bullet.call_deferred("destroy")
+
 
 #region Spells
 
@@ -61,7 +62,7 @@ func take_damage(amount: int):
 func transport(op_game):
 	path_follow.get_parent().remove_child(path_follow)
 	game = op_game
-
+	# TODO: for flying enemy, add_child to flying path
 	op_game._map.opponent_path.add_child(path_follow)
 	path_follow.progress_ratio = 0
 
