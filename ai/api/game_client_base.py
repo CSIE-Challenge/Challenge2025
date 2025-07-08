@@ -144,6 +144,19 @@ class GameClientBase:
             return ret
         elif isinstance(ret, inner_ret_type):
             return ret
+        elif isinstance(ret, dict) and inner_ret_type in (Tower, Enemy, Spell):
+            if inner_ret_type == Tower:
+                return Tower.from_dict(ret)
+            elif inner_ret_type == Enemy:
+                return Enemy.from_dict(ret)
+            elif inner_ret_type == Spell:
+                return Spell.from_dict(ret)
+            elif inner_ret_type == dict:
+                return ret
+            else:
+                raise ApiException(
+                    source_fn, StatusCode.INTERNAL_ERR,
+                    f"unexpected return value of type {type(ret)} for {inner_ret_type}")
         try:
             return inner_ret_type(ret)
         except:
