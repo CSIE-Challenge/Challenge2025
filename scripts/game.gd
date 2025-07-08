@@ -16,8 +16,10 @@ const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
 var money: int = 100
 var income_per_second = 10
+var income_rate: float = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
+var spell_dict: Dictionary
 var _enemy_scene_cache = {}
 
 @onready var _map: Map = $Map
@@ -28,6 +30,7 @@ func _ready() -> void:
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
 	deploy_spell.connect(_on_spell_deploy)
+	init_spells()
 
 
 func spend(cost: int) -> bool:
@@ -105,7 +108,7 @@ func _handle_tower_selection(event: InputEvent) -> void:
 
 
 func _on_constant_income_timer_timeout() -> void:
-	money += income_per_second
+	money += income_rate * income_per_second
 
 
 #endregion
@@ -155,8 +158,16 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 #region Spells
 
 
-func _on_spell_deploy(spell_data) -> void:
-	print("Spell ", spell_data, " unhandled")
+func init_spells() -> void:
+	for spell in [PoisonSpell, DoubleIncomeSpell, TeleportSpell]:
+		var spell_instance = spell.new()
+		add_child(spell_instance)
+		spell_instance.game = self
+		spell_dict[spell] = spell_instance
+
+
+func _on_spell_deploy(spell) -> void:
+	spell_dict[spell].cast_spell()
 
 
 #endregion
