@@ -20,6 +20,7 @@ var income_rate: float = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
+var op_game: Game
 var _enemy_scene_cache = {}
 
 @onready var _map: Map = $Map
@@ -29,7 +30,14 @@ func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
+
 	buy_spell.connect(_on_buy_spell)
+
+	if self == $"/root/Round/Screen/Bottom/LeftGame":
+		op_game = $"/root/Round/Screen/Bottom/RightGame"
+	else:
+		op_game = $"/root/Round/Screen/Bottom/LeftGame"
+
 
 
 func spend(cost: int) -> bool:
@@ -44,6 +52,7 @@ func spend(cost: int) -> bool:
 
 func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 	if built_towers.has(cell_pos):
+		# TODO: Should replace current tower
 		return false
 	if money < tower.building_cost:
 		return false
@@ -59,13 +68,15 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
 	built_towers.erase(cell_pos)
 
 
-func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
-	if not (_is_buildable(tower, cell_pos) and spend(tower.building_cost)):
+func _place_tower(cell_pos: Vector2i, tower: Tower, map: Map) -> void:
+	if not _is_buildable(tower, cell_pos):
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
 
 	self.add_child(tower)
-	tower.enable(global_pos)
+	tower.enable(global_pos, map)
+
+	money -= tower.building_cost
 	built_towers[cell_pos] = tower
 
 
@@ -76,10 +87,8 @@ func _on_buy_tower(tower_scene: PackedScene):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
-	if previewer != null:
-		previewer.free()
-	previewer = Previewer.new(tower, preview_color_callback, _map, true)
-	previewer.selected.connect(self._place_tower.bind(tower))
+	var previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	previewer.selected.connect(self._place_tower.bind(tower, _map))
 	self.add_child(previewer)
 
 

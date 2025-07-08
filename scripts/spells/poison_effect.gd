@@ -24,7 +24,7 @@ func trigger() -> void:
 	var enemies: Array[Area2D] = get_overlapping_areas()
 	for enemy in enemies:
 		# TODO: replace with true poison logic
-		enemy.transport(game)
+		enemy.transport()
 
 
 func _on_trigger():

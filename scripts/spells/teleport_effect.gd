@@ -3,7 +3,6 @@ extends Area2D
 @onready var spell: TeleportSpell = get_parent()
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var duration_timer: Timer = $DurationTimer
-@onready var trigger_timer: Timer = $TriggerTimer
 
 
 func _ready():
@@ -25,7 +24,7 @@ func _draw():
 func trigger() -> void:
 	var enemies: Array[Area2D] = get_overlapping_areas()
 	for enemy in enemies:
-		enemy.transport(game)
+		enemy.transport()
 
 
 func _physics_process(_delta: float) -> void:
