@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cmlohmpvt3u8h"]
+[gd_scene load_steps=7 format=3 uid="uid://c8xtcx5gblp84"]
 
 [ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scripts/towers/twin_turret.gd" id="1_cfmne"]
 [ext_resource type="PackedScene" uid="uid://gkfjlrjp0wly" path="res://scenes/bullets/bullet_for_twin_turret.tscn" id="2_2d7uu"]
@@ -36,11 +36,15 @@ collision_mask = 0
 script = ExtResource("1_cfmne")
 bullet_scene = ExtResource("2_2d7uu")
 
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("3_wct6g")
+
 [node name="Turret" type="Node2D" parent="."]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Turret"]
-sprite_frames = SubResource("SpriteFrames_8nx6k")
-frame_progress = 0.58988
+[node name="Sprite" type="Sprite2D" parent="Turret"]
+rotation = 1.5708
+texture = ExtResource("4_ucm8g")
+offset = Vector2(0, -8.055)
 
 [node name="Left" type="Marker2D" parent="Turret"]
 position = Vector2(32, -6)
