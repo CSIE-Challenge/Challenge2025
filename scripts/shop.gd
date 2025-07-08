@@ -1,14 +1,6 @@
 extends TextureRect
 
 # gdlint: disable=duplicated-load
-# temporarily disable for testing purposes
-const TOWER_SCENES := [
-	preload("res://scenes/towers/donkey_kong_1.tscn"),
-	preload("res://scenes/towers/fire_mario_1.tscn"),
-	preload("res://scenes/towers/fort_1.tscn"),
-	preload("res://scenes/towers/ice_luigi_1.tscn"),
-	preload("res://scenes/towers/shy_guy_1.tscn")
-]
 const SHOP_ITEM_SCENE := preload("res://scenes/ui/shop_item.tscn")
 
 @export var options_container: VBoxContainer
@@ -42,12 +34,24 @@ func _create_section(title: String) -> GridContainer:
 
 
 func _create_tower_options() -> void:
+	var tower_scenes = []
+	var tower_dir := DirAccess.open("res://scenes/towers")
+	tower_dir.list_dir_begin()
+	var tower_name = tower_dir.get_next()
+	while tower_name != "":
+		tower_scenes.append(load("res://scenes/towers/" + tower_name))
+		tower_name = tower_dir.get_next()
+	tower_dir.list_dir_end()
+
 	var grid := _create_section("Towers")
-	for scene in TOWER_SCENES:
+	for scene in tower_scenes:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
 		shop_item.callback = func(): building_game.buy_tower.emit(scene)
 		shop_item.display_scene = scene
 		shop_item.display_cost = scene.instantiate().building_cost
+		shop_item.display_name = (
+			"lv. %d" % max(scene.instantiate().level_a, scene.instantiate().level_b)
+		)
 		grid.add_child(shop_item)
 
 
