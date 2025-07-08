@@ -3,10 +3,11 @@ extends TabBar
 # gdlint: disable=duplicated-load
 # temporarily disable for testing purposes
 const TOWER_SCENES := [
-	preload("res://scenes/towers/twin_turret.tscn"),
-	preload("res://scenes/towers/twin_turret.tscn"),
-	preload("res://scenes/towers/twin_turret.tscn"),
-	preload("res://scenes/towers/twin_turret.tscn")
+	preload("res://scenes/towers/donkey_kong_1.tscn"),
+	preload("res://scenes/towers/fire_mario_1.tscn"),
+	preload("res://scenes/towers/fort_1.tscn"),
+	preload("res://scenes/towers/ice_luigi_1.tscn"),
+	preload("res://scenes/towers/shy_guy_1.tscn")
 ]
 const SHOP_ITEM_SCENE := preload("res://scenes/ui/shop_item.tscn")
 
