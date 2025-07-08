@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c8xtcx5gblp84"]
+[gd_scene load_steps=9 format=3 uid="uid://cmlohmpvt3u8h"]
 
 [ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scripts/towers/twin_turret.gd" id="1_cfmne"]
 [ext_resource type="PackedScene" uid="uid://gkfjlrjp0wly" path="res://scenes/bullets/bullet_for_twin_turret.tscn" id="2_2d7uu"]
