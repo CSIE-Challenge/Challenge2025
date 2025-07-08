@@ -40,6 +40,7 @@ func _create_tower_options() -> void:
 	var tower_name = tower_dir.get_next()
 	while tower_name != "":
 		if tower_name == "twin_turret.tscn":
+			tower_name = tower_dir.get_next()
 			continue
 		tower_scenes.append(load("res://scenes/towers/" + tower_name))
 		tower_name = tower_dir.get_next()
