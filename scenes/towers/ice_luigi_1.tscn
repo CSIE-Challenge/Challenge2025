@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cilaoobs1ayro"]
 
-[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_bullet.gd" id="1_vpyy1"]
+[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_vpyy1"]
 [ext_resource type="PackedScene" uid="uid://driufjb0sdxx7" path="res://scenes/bullets/iceball_2a.tscn" id="2_vpyy1"]
 [ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="3_e3lov"]
 [ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="4_5likx"]
