@@ -97,7 +97,12 @@ func _get_time_until_next_wave() -> Array:
 
 func _get_money(_owned: bool) -> Array:
 	print("[GetMoney] Get request")
-	return [StatusCode.OK]
+	var money: int
+	if _owned == true:
+		money = int(game_self.status_panel.find_child("Money").text)
+	else:
+		money = int(game_other.status_panel.find_child("Money").text)
+	return [StatusCode.OK, money]
 
 
 func _get_income(_owned: bool) -> Array:
