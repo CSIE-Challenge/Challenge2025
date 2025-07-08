@@ -2,6 +2,8 @@ class_name Enemy
 extends Area2D
 
 @export var max_health: int = 100
+# Note that the speed of enemy should never exceed that of explosion of effect,
+# error may occur otherwise
 @export var max_speed: int = 50
 @export var flying: bool = false
 @export var damage: int = 5
@@ -51,7 +53,7 @@ func _on_area_entered(bullet: Bullet) -> void:
 	if not bullet.alive:
 		return
 	take_damage(bullet.damage)
-	bullet.call_deferred("destroy")
+	bullet.call_deferred("_on_hit")
 
 
 #region Spells
@@ -83,6 +85,7 @@ func _ready():
 		path_follow.progress_ratio = 0
 	add_to_group("enemies")
 	$AnimatedSprite2D.play("default")
+	self.z_index = 10  # For effect to be on the ground
 
 
 func _process(delta):
