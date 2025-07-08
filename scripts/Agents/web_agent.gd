@@ -51,7 +51,7 @@ class CommandHandler:
 		return _handler.callv(args)
 
 
-const MIN_COMMAND_INTERVAL_MSEC = 10
+const MIN_COMMAND_INTERVAL_MSEC = 5
 var _ws: WebSocketConnection = null
 var _last_command: float = -1
 var _command_handlers: Dictionary = {}  # command id -> command handler
@@ -115,6 +115,7 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 	# rate-limit commands
 	var this_command = Time.get_ticks_msec()
 	if _last_command >= 0 and this_command - _last_command < MIN_COMMAND_INTERVAL_MSEC:
+		_ws.send_bytes(var_to_bytes([StatusCode.TOO_FREQUENT]))
 		return
 	_last_command = this_command
 

@@ -54,7 +54,9 @@ class StatusCode(IntEnum):
     ILLEGAL_ARGUMENT = 402
     COMMAND_ERR = 403
     NOT_FOUND = 404
+    TOO_FREQUENT = 405
     INTERNAL_ERR = 500
+    CLIENT_ERR = 501
 
 
 class TypeCode(IntEnum):
@@ -79,7 +81,7 @@ class Vector2:
 class ApiException(Exception):
     def __init__(self, source_fn: CommandType, code: StatusCode, what: str) -> None:
         super().__init__(
-            f"API call {source_fn} fails with status code {code}: {what}")
+            f"API call {source_fn.name}({source_fn.value}) fails with status code {code.name}({code.value}): {what}")
         self.source_fn = source_fn
         self.code = code
         self.what = what
