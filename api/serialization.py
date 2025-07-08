@@ -34,7 +34,7 @@ def var_to_bytes(obj: Any) -> bytes:
         x = x if x >= 0 else (x + 2 ** 31)
         for _ in range(4):
             serialized.append(x & 255)
-            x //= 255
+            x //= 256
 
     def pushString(value: str) -> None:
         nonlocal serialized
