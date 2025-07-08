@@ -1,9 +1,27 @@
-[gd_scene load_steps=7 format=3 uid="uid://bgxbyomtejocg"]
+[gd_scene load_steps=9 format=3 uid="uid://bgxbyomtejocg"]
 
 [ext_resource type="Script" uid="uid://bgtui2ogpsrpq" path="res://scripts/towers/tower_with_multiple_bullet.gd" id="1_4r3wq"]
 [ext_resource type="PackedScene" uid="uid://vnq5insokn0d" path="res://scenes/bullets/knife_2a.tscn" id="2_2mpuf"]
-[ext_resource type="Texture2D" uid="uid://wq6iqyrbvkda" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile180.png" id="3_fis6i"]
-[ext_resource type="Texture2D" uid="uid://db7ox8663b1tl" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile250.png" id="4_6snqr"]
+[ext_resource type="Texture2D" uid="uid://bqikcu5a6ov7i" path="res://pixel_art/tower/ShyGuyStand.png" id="3_lrpro"]
+[ext_resource type="Texture2D" uid="uid://ddc73100y5t64" path="res://pixel_art/tower/ShyGuyPrepare.png" id="4_fis6i"]
+[ext_resource type="Texture2D" uid="uid://bym1xfjew7tgo" path="res://pixel_art/tower/ShyGuyAttack.png" id="5_6snqr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5xu31"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_lrpro")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_fis6i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_6snqr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
 size = Vector2(53, 52)
@@ -19,21 +37,10 @@ script = ExtResource("1_4r3wq")
 anti_air = true
 bullet_scene = ExtResource("2_2mpuf")
 
-[node name="Base" type="Sprite2D" parent="."]
-texture = ExtResource("3_fis6i")
-
 [node name="Turret" type="Node2D" parent="."]
 
-[node name="Sprite" type="Sprite2D" parent="Turret"]
-rotation = 1.5708
-texture = ExtResource("4_6snqr")
-offset = Vector2(0, -8.055)
-
-[node name="Left" type="Marker2D" parent="Turret"]
-position = Vector2(32, -6)
-
-[node name="Right" type="Marker2D" parent="Turret"]
-position = Vector2(32, 6)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Turret"]
+sprite_frames = SubResource("SpriteFrames_5xu31")
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
