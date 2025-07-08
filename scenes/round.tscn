@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
 [ext_resource type="Texture2D" uid="uid://b6pbjn41fp243" path="res://assets/ui/score.png" id="4_g6yuj"]
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
-[ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scripts/chat.gd" id="5_vxv1r"]
+[ext_resource type="Script" path="res://scripts/chat.gd" id="5_vxv1r"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
 [ext_resource type="Texture2D" uid="uid://bvlbsdkpegbiw" path="res://assets/ui/game-status.png" id="6_ojwvf"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
