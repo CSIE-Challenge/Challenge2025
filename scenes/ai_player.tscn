@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ceagvjkihq38c"]
-
-[ext_resource type="Script" uid="uid://efxo5od1klor" path="res://scripts/Agents/web_agent.gd" id="1_8ludx"]
-
-[node name="AiPlayer" type="Node2D"]
-script = ExtResource("1_8ludx")
