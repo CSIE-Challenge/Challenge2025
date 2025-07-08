@@ -16,6 +16,7 @@ scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_vpyy1")
+type = 2
 anti_air = true
 bullet_scene = ExtResource("2_vpyy1")
 

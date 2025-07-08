@@ -2,9 +2,13 @@ class_name Tower
 extends Area2D
 
 enum TargetStrategy { FIRST, LAST, CLOSE }
+# NONE to compatible with twin_turret
+enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 
+@export var type: TowerType = TowerType.NONE
+@export var level_a: int = 1
+@export var level_b: int = 1
 @export var building_cost: int = 5
-@export var upgrade_cost: int = 10
 @export var auto_aim: bool = true
 @export var anti_air: bool = false
 @export var bullet_scene: PackedScene
