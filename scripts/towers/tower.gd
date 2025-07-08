@@ -21,7 +21,7 @@ var target: Node2D = null
 var enabled: bool = false
 var reload_timer: Timer
 
-@onready var anime = $Turret/AnimatedSprite2D
+@onready var anime = $Tower/AnimatedSprite2D
 
 
 func _ready():
@@ -86,11 +86,9 @@ func _flip_sprite() -> void:
 	return
 
 
-func _get_sprite_direction(angle: float) -> float:
+func _determine_flipping(angle: float) -> bool:
 	angle = wrapf(angle, -PI, PI)
-	if angle <= PI / 2 and angle >= -PI / 2:
-		return 0
-	return PI
+	return angle > PI / 2 or angle < -PI / 2
 
 
 func _physics_process(_delta: float) -> void:
