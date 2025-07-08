@@ -48,15 +48,25 @@ func take_damage(amount: int):
 		_on_killed()
 
 
-func _on_area_entered(bullet: Bullet) -> void:
-	if not bullet.alive:
-		return
-	take_damage(bullet.damage)
-	var effect = bullet.effect
-	bullet.call_deferred("destroy")
+# implement in bullet.gd
+# func _on_area_entered(bullet: Bullet) -> void:
+# 	if not bullet.alive:
+# 		return
+# 	take_damage(bullet.damage)
+# 	bullet.call_deferred("destroy")
+
+#region Spells
 
 
-# TODO: interact with bullet effects and spells
+func transport(op_game):
+	path_follow.get_parent().remove_child(path_follow)
+	game = op_game
+
+	op_game._map.opponent_path.add_child(path_follow)
+	path_follow.progress_ratio = 0
+
+
+#endregion
 
 
 # _init not overridden because PackedScene.instantiate() does not accept arguments
