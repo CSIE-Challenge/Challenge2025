@@ -124,13 +124,8 @@ func register_connection() -> WebSocketConnection:
 		if not used_token.has(token):
 			break
 	var conn = WebSocketConnection.new(token)
-	add_child(conn)
 	used_token[token] = conn
 	return conn
-
-
-func remove_connection(conn: WebSocketConnection) -> void:
-	conn.queue_free()
 
 
 func auth_connection(ws: WebSocketPeer) -> WebSocketConnection:
