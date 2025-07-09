@@ -33,6 +33,7 @@ stream = ExtResource("5_ujhup")
 
 [node name="ButtonOnClick" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_aoitu")
+volume_db = -5.0
 
 [node name="TowerPlace" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_3asnw")
