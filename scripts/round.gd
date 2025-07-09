@@ -17,6 +17,13 @@ func _ready() -> void:
 	game_2p.find_child("RemoteAgent").start_game(self, game_2p, game_1p)
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
 	game_2p.damage_taken.connect(game_1p.on_damage_dealt)
+	var chat_node = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
+	var agent_1p = game_1p.find_child("RemoteAgent")
+	var agent_2p = game_2p.find_child("RemoteAgent")
+	agent_1p.chat_node = chat_node
+	agent_2p.chat_node = chat_node
+	agent_1p.player_id = 1
+	agent_2p.player_id = 2
 
 
 func get_formatted_time() -> String:

@@ -82,7 +82,15 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
+
+    @game_command(CommandType.SEND_CHAT, [str], bool)
+    def send_chat(self, msg: str) -> bool:
+        raise NotImplementedError
     
+    @game_command(CommandType.GET_CHAT_HISTORY, [int], str)
+    def get_chat_history(self, num: int) -> str:
+        raise NotImplementedError
+
     @game_command(CommandType.GET_MONEY, [bool], int)
     def get_money(self, owned: bool) -> int:
         """
