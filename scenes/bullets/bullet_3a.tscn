@@ -2,12 +2,11 @@
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_jl733"]
 [ext_resource type="PackedScene" uid="uid://bav6s8r0rqxv1" path="res://scenes/bullets/explode_3a.tscn" id="2_jl733"]
+[ext_resource type="Texture2D" uid="uid://bcuimnmosj4bm" path="res://pixel_art/bullet/Bomb.png" id="3_wmg5q"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
-load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_7unru"]
-radius = 7.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_jl733"]
+radius = 6.0
+height = 32.0
 
 [node name="Bullet_3a" type="Area2D"]
 collision_layer = 2
@@ -18,9 +17,8 @@ aoe_scale = 0.0
 shockwave_scene = ExtResource("2_jl733")
 
 [node name="Body" type="Sprite2D" parent="."]
-rotation = -1.5708
-texture = SubResource("CompressedTexture2D_n5hp2")
+texture = ExtResource("3_wmg5q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = SubResource("CircleShape2D_7unru")
+shape = SubResource("CapsuleShape2D_jl733")

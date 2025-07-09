@@ -1,12 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://y1s2vx8vmy4c"]
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_jnnmc"]
+[ext_resource type="Texture2D" uid="uid://d3w5eaa0sxeej" path="res://pixel_art/bullet/Dart.png" id="2_oesra"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
-load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_1ffux"]
-radius = 7.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_jnnmc"]
+radius = 9.0
 
 [node name="Knife_1" type="Area2D"]
 collision_layer = 10
@@ -14,11 +12,11 @@ collision_mask = 0
 script = ExtResource("1_jnnmc")
 is_tracking = false
 is_anti_air = true
+spanning_speed = 1.047
 
 [node name="Body" type="Sprite2D" parent="."]
-rotation = -1.5708
-texture = SubResource("CompressedTexture2D_n5hp2")
+texture = ExtResource("2_oesra")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = SubResource("CircleShape2D_1ffux")
+shape = SubResource("CircleShape2D_jnnmc")

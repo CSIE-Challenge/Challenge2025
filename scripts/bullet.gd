@@ -4,6 +4,8 @@ extends Area2D
 enum Effect { NONE, FIRE, HELLFIRE, FREEZE, DEEP_FREEZE, KNOCKBACK, FAR_KNOCKBACK }
 # The time that the effect/shockwave grow into its full size
 const RANGE_ATTACK_ANIMATION_TIME := 0.075
+# The angular speed of the bullet, used for tracking the target
+const ROTATION_SPEED := 8.0
 
 @export var is_tracking: bool = true
 @export var is_anti_air: bool = false
@@ -11,18 +13,20 @@ const RANGE_ATTACK_ANIMATION_TIME := 0.075
 @export var aoe_scale: float = 1
 @export var shockwave_scene: PackedScene  # The scene of generated effect/shockwave
 @export var movement_speed := 400.0
-@export var rotation_speed := 8.0
-@export var damage := 3
+@export var damage := 1
+
 @export var lifespan_seconds := 5
-@export var penetrating_time := 15
+@export var penetrating_time := 15  # The lifetime after the its first hit
+@export var spanning_speed: float = 0  # For spanning animation
 
 @export var effect: Effect = Effect.NONE
-@export var effect_damage := 2
+@export var effect_damage := 0
 @export var effect_duration := 3  # The period of (burning) effect
 @export var effect_interval := 0.5  # The inverse of (burning) effect frequency
 
 var target: Node2D = null
 var start_position: Vector2
+var direction: float
 var alive: bool = true
 var timer = Timer.new()
 var effect_timer = Timer.new()
@@ -31,13 +35,19 @@ var respawn_effect_timer = Timer.new()  # Half of the period of (burning) effect
 var exploding: bool = false  # Effect explode after time_out (actually 0 for all cases) if AOE > 0
 var penetrating: bool = false  # For bullet to disappear at certain time after its first hit
 
+@onready var sprite := $Body
 @onready var collider := $CollisionShape2D
 
 
 func init(origin, orientation, _target) -> void:
 	global_position = origin
 	start_position = origin
-	rotation = orientation
+	direction = orientation
+	if cos(direction) < 0:
+		sprite.flip_h = true
+		rotation = PI + direction
+	else:
+		rotation = direction
 	if is_instance_valid(_target):
 		target = _target
 	else:
@@ -61,13 +71,13 @@ func _process(delta):
 	var desired_angle: float
 
 	if target == null or not is_instance_valid(target) or not is_tracking:
-		desired_angle = rotation
+		desired_angle = direction
 	else:
 		desired_angle = (target.global_position - global_position).angle()
 
-	# TODO: add animation/rotation
-	rotation = lerp_angle(rotation, desired_angle, rotation_speed * delta)
-	position += Vector2.RIGHT.rotated(rotation) * movement_speed * delta
+	rotation += spanning_speed
+	direction = lerp_angle(direction, desired_angle, ROTATION_SPEED * delta)
+	position += Vector2.RIGHT.rotated(direction) * movement_speed * delta
 
 	var traverse_distance = global_position.distance_to(start_position)
 	if traverse_distance >= 10.0 and not exploding:
@@ -95,7 +105,7 @@ func destroy() -> void:
 	elif aoe_scale == 0:  # Generate a shockwave
 		var shockwave := shockwave_scene.instantiate()
 		self.get_parent().add_child(shockwave)
-		shockwave.init(global_position, rotation, null)
+		shockwave.init(global_position, direction, null)
 		self.queue_free()
 	else:  # Shockwave that expand
 		_explode()

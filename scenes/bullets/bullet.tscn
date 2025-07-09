@@ -2,7 +2,10 @@
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_lj7gv"]
 [ext_resource type="Texture2D" uid="uid://ck2spqdqr8fbc" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile297.png" id="2_tocqt"]
-[ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="3_0s0cy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5f1na"]
+radius = 6.0
+height = 38.0
 
 [node name="Bullet" type="Area2D"]
 collision_layer = 2
@@ -15,4 +18,4 @@ texture = ExtResource("2_tocqt")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = ExtResource("3_0s0cy")
+shape = SubResource("CapsuleShape2D_5f1na")

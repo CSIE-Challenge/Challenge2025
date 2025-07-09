@@ -14,7 +14,7 @@ func enable(_global_position: Vector2, map: Map) -> void:
 	global_position = _global_position
 	_map = map
 	target_direction = _get_fort_direction()
-	sprite.flip_h = _determine_flipping(target_direction)
+	sprite.flip_h = cos(target_direction) < 0
 	reload_timer.start(reload_seconds)
 
 

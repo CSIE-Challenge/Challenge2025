@@ -1,12 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://dhcbg2jscx5iy"]
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_aymp5"]
+[ext_resource type="Texture2D" uid="uid://bcuimnmosj4bm" path="res://pixel_art/bullet/Bomb.png" id="2_btgby"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
-load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ic2rn"]
-radius = 7.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kxxa2"]
+radius = 6.0
+height = 32.0
 
 [node name="Bullet_1" type="Area2D"]
 collision_layer = 2
@@ -16,9 +15,8 @@ is_tracking = false
 is_penetrating = true
 
 [node name="Body" type="Sprite2D" parent="."]
-rotation = -1.5708
-texture = SubResource("CompressedTexture2D_n5hp2")
+texture = ExtResource("2_btgby")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = SubResource("CircleShape2D_ic2rn")
+shape = SubResource("CapsuleShape2D_kxxa2")

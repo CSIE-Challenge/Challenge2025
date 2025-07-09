@@ -86,11 +86,6 @@ func _flip_sprite() -> void:
 	return
 
 
-func _determine_flipping(angle: float) -> bool:
-	angle = wrapf(angle, -PI, PI)
-	return angle > PI / 2 or angle < -PI / 2
-
-
 func _physics_process(_delta: float) -> void:
 	if not enabled:
 		return
