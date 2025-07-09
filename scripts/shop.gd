@@ -34,21 +34,11 @@ func _create_section(title: String) -> GridContainer:
 
 
 func _create_tower_options() -> void:
-	var tower_scenes = []
-	var tower_dir := DirAccess.open("res://scenes/towers")
-	tower_dir.list_dir_begin()
-	var tower_name = tower_dir.get_next()
-	while tower_name != "":
-		if tower_name == "twin_turret.tscn":
-			tower_name = tower_dir.get_next()
-			continue
-		tower_scenes.append(load("res://scenes/towers/" + tower_name))
-		tower_name = tower_dir.get_next()
-	tower_dir.list_dir_end()
-
+	var tower_data = TowerData.new()
 	var grid := _create_section("Towers")
-	for scene in tower_scenes:
+	for tower in tower_data.tower_data_list:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
+		var scene = load(tower)
 		shop_item.callback = func(): building_game.buy_tower.emit(scene)
 		shop_item.display_scene = scene
 		shop_item.display_cost = scene.instantiate().building_cost
