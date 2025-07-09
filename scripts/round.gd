@@ -10,6 +10,8 @@ const GAME_DURATION = 180.0
 
 var manual_controlled: int
 
+@onready var game_timer: Timer = $GameTimer
+
 
 func set_controllers(
 	player_selection_1p: IndividualPlayerSelection,
@@ -30,9 +32,9 @@ func _ready() -> void:
 	game_2p.op_game = game_1p
 
 	# start game timer
-	$GameTimer.wait_time = GAME_DURATION
-	$GameTimer.one_shot = true
-	$GameTimer.start()
+	game_timer.wait_time = GAME_DURATION
+	game_timer.one_shot = true
+	game_timer.start()
 
 	# notify the shop and the chat
 	var shop = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop
@@ -65,6 +67,8 @@ func _process(_delta: float) -> void:
 
 
 func _on_game_timer_timeout():
+	game_1p.player_selection.web_agent.game_running = false
+	game_2p.player_selection.web_agent.game_running = false
 	# load end scene
 	var end_scene = preload("res://scenes/end.tscn").instantiate()
 	end_scene.player1_score = game_1p.score

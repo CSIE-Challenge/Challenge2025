@@ -55,6 +55,7 @@ class StatusCode(IntEnum):
     COMMAND_ERR = 403
     NOT_FOUND = 404
     TOO_FREQUENT = 405
+    NOT_STARTED = 406
     INTERNAL_ERR = 500
     CLIENT_ERR = 501
 
