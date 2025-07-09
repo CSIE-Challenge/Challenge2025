@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://doqljf767fwf3"]
+
+[ext_resource type="Script" uid="uid://xsselfn6s12u" path="res://scripts/audio_manager.gd" id="1_8qd8g"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_8qd8g")
+
+[node name="EnemyAttack" type="AudioStreamPlayer" parent="."]
+
+[node name="EnemyDie" type="AudioStreamPlayer" parent="."]
+
+[node name="EnemyMove" type="AudioStreamPlayer" parent="."]
+
+[node name="BackgroundGame" type="AudioStreamPlayer" parent="."]
+
+[node name="BackgroundMenu" type="AudioStreamPlayer" parent="."]
+
+[node name="ButtonOnClick" type="AudioStreamPlayer" parent="."]
+
+[node name="TowerPlace" type="AudioStreamPlayer" parent="."]
+
+[node name="TowerShoot" type="AudioStreamPlayer" parent="."]
+
+[node name="Upgrade" type="AudioStreamPlayer" parent="."]
