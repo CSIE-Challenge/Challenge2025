@@ -118,13 +118,11 @@ tab_alignment = 1
 current_tab = 0
 tabs_visible = false
 
-[node name="Shop" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer" node_paths=PackedStringArray("options_container", "building_game", "opposing_game")]
+[node name="Shop" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer" node_paths=PackedStringArray("options_container")]
 layout_mode = 2
 texture = ExtResource("8_p5kuw")
 script = ExtResource("4_snxki")
 options_container = NodePath("MarginContainer/ScrollContainer/VBoxContainer")
-building_game = NodePath("../../../../Game1P")
-opposing_game = NodePath("../../../../Game2P")
 metadata/_tab_index = 0
 
 [node name="Switch" type="TextureButton" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop"]

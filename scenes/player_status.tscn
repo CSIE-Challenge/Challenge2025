@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cdv4tuh5x2nw2"]
+[gd_scene load_steps=6 format=3 uid="uid://cdv4tuh5x2nw2"]
 
 [ext_resource type="Texture2D" uid="uid://coto12i32ybdk" path="res://assets/ui/player-status.png" id="1_j2yv7"]
 [ext_resource type="Texture2D" uid="uid://cnwky8dhvi1x" path="res://assets/ui/coin.png" id="2_5cs0w"]
+[ext_resource type="Script" uid="uid://dbxhj2ra8afr3" path="res://scripts/player_status.gd" id="2_ys54m"]
 [ext_resource type="Texture2D" uid="uid://gvund60sjcnc" path="res://assets/ui/connected.png" id="3_ys54m"]
+[ext_resource type="Texture2D" uid="uid://cu5ib2v4yl0gq" path="res://assets/ui/disconnected.png" id="4_5cs0w"]
 
 [node name="Status" type="TextureRect"]
+custom_minimum_size = Vector2(448, 80)
 size_flags_horizontal = 3
 texture = ExtResource("1_j2yv7")
+script = ExtResource("2_ys54m")
 
 [node name="Coin" type="TextureRect" parent="."]
 layout_mode = 1
@@ -20,7 +24,8 @@ offset_bottom = 25.0
 grow_vertical = 2
 texture = ExtResource("2_5cs0w")
 
-[node name="Connection" type="TextureRect" parent="."]
+[node name="StatusConnected" type="TextureButton" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -33,7 +38,32 @@ offset_right = -24.0
 offset_bottom = 24.0
 grow_horizontal = 0
 grow_vertical = 2
-texture = ExtResource("3_ys54m")
+texture_normal = ExtResource("3_ys54m")
+texture_pressed = ExtResource("3_ys54m")
+texture_hover = ExtResource("3_ys54m")
+texture_disabled = ExtResource("3_ys54m")
+texture_focused = ExtResource("3_ys54m")
+stretch_mode = 4
+
+[node name="StatusDisconnected" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = -24.0
+offset_right = -24.0
+offset_bottom = 24.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("4_5cs0w")
+texture_pressed = ExtResource("4_5cs0w")
+texture_hover = ExtResource("4_5cs0w")
+texture_disabled = ExtResource("4_5cs0w")
+texture_focused = ExtResource("4_5cs0w")
+stretch_mode = 4
 
 [node name="Money" type="Label" parent="."]
 layout_mode = 1
@@ -63,3 +93,5 @@ theme_override_colors/font_color = Color(0.6624, 0.92, 0.6624, 1)
 theme_override_font_sizes/font_size = 36
 text = "+123"
 vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]

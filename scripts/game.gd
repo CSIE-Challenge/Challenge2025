@@ -18,9 +18,16 @@ var money: int = 100
 var income_per_second = 10
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
+var player_selection: IndividualPlayerSelection = null
 var _enemy_scene_cache = {}
 
 @onready var _map: Map = $Map
+
+
+func set_controller(_player_selection: IndividualPlayerSelection) -> void:
+	player_selection = _player_selection
+	player_selection.get_parent().remove_child(player_selection)
+	status_panel.link_player_selection(player_selection)
 
 
 func _ready() -> void:

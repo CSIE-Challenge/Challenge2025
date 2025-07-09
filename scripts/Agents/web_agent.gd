@@ -100,15 +100,12 @@ func _init() -> void:
 	type = AgentType.AI
 	_register_command_handlers()
 	_ws = ApiServer.register_connection()
+	add_child(_ws)
 	_ws.received_bytes.connect(_on_received_command)
 	_ws.client_connected.connect(func(): print("[API Server] Remote agent %s connected" % name))
 	_ws.client_disconnected.connect(
 		func(): print("[API Server] Remote agent %s disconnected" % name)
 	)
-
-
-func _exit_tree() -> void:
-	ApiServer.remove_connection(_ws)
 
 
 func _on_received_command(command_bytes: PackedByteArray) -> void:
