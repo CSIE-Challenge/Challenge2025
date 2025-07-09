@@ -13,10 +13,10 @@ animations = [{
 "texture": ExtResource("3_xhdrd")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_oc2kn")
+"texture": ExtResource("5_4f4bc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_4f4bc")
+"texture": ExtResource("4_oc2kn")
 }],
 "loop": true,
 "name": &"default",
@@ -48,8 +48,9 @@ bullet_scene = ExtResource("2_331pa")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 >>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_8qdkr")
-frame = 2
-frame_progress = 0.100773
+
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(24.3278, -3.84123)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

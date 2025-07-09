@@ -44,10 +44,13 @@ bullet_scene = ExtResource("2_ffd5a")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_66fct")
 =======
 position = Vector2(0, 7.68246)
+=======
+>>>>>>> 6faed4a (feat: add Marker2D to tower)
 sprite_frames = SubResource("SpriteFrames_ffd5a")
 >>>>>>> df94f02 (feat: updates on freeze effect, fort position)
 

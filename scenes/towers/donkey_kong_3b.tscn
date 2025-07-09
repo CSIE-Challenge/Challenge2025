@@ -49,6 +49,9 @@ bullet_scene = ExtResource("2_r4rqj")
 >>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_uiysq")
 
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(24.3278, -3.84123)
+
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(-0.5, 0)

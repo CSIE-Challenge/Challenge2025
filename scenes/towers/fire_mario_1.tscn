@@ -48,7 +48,9 @@ bullet_scene = ExtResource("2_pjfx8")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 >>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_mrut0")
-frame_progress = 0.963593
+
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(23.0474, -11.5237)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
