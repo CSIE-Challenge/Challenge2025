@@ -30,3 +30,8 @@ func _process(_delta: float) -> void:
 	game_timer_label.text = get_formatted_time()
 	score_bar.left_score = game_1p.score
 	score_bar.right_score = game_2p.score
+
+
+func _on_game_timer_timeout():
+	# load end scene
+	get_tree().change_scene_to_file("res://scenes/end.tscn")
