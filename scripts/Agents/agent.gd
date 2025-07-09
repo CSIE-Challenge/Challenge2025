@@ -2,7 +2,8 @@ class_name Agent
 extends Node
 enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
-enum TowerType { BASIC }
+# TODO: Remove BASIC legacy
+enum TowerType { BASIC, DONKEY_KONG, FIRE_MARIO, FORT, ICE_LUIGI, SHY_GUY }
 enum EnemyType { BASIC }
 enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
 enum StatusCode {
@@ -147,21 +148,32 @@ func _get_game_status() -> Array:
 #region Tower
 
 
-func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
+func _place_tower(_type: TowerType, _level_a: int, _level_b: int, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
+	if _type == TowerType.BASIC:
+		return [StatusCode.OK]
 	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
 	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
-		return [
-			StatusCode.INTERNAL_ERR, "[PlaceTower] Error: invalid coordinate for building tower"
-		]
-	if game_self.built_towers.has(_coord):
-		# TODO: check whether existing tower is upgrade-able
-		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: can't upgrade tower"]
-
-	# TODO: handle different type of tower
-	game_self.place_tower(_coord, TOWER_SCENE.instantiate())
+		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
+	var index: int = -1
+	if _level_a == 1:
+		if _level_b == 1:
+			index = 0
+		elif _level_b == 2:
+			index = 2
+		elif _level_b == 3:
+			index = 4
+	elif _level_a == 2 and _level_b == 1:
+		index = 1
+	elif _level_a == 3 and _level_b == 1:
+		index = 3
+	if index == -1:
+		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid level"]
+	var tower_data = TowerData.new()
+	var new_tower_scene = load(tower_data.tower_data_list[(_type - 1) * 5 + index])
+	game_self.place_tower(_coord, new_tower_scene.instantiate())
 	return [StatusCode.OK]
 
 

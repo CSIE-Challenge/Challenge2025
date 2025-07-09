@@ -190,8 +190,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.PLACE_TOWER, [TowerType, Vector2], None)
-    def place_tower(self, type: TowerType, coord: Vector2) -> None:
+    @game_command(CommandType.PLACE_TOWER, [TowerType, int, int, Vector2], None)
+    def place_tower(self, type: TowerType, level_a: int, level_b: int, coord: Vector2) -> None:
         """
         # Place Tower
         在指定位置放置一個塔。

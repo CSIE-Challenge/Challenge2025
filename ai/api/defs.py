@@ -38,7 +38,12 @@ class TerrainType(IntEnum):
 
 
 class TowerType(IntEnum):
-    BASIC = 0
+    BASIC = 0   # Legacy
+    DONKEY_KONG = 1
+    FIRE_MARIO = 2
+    FORT = 3
+    ICE_LUIGI = 4
+    SHY_GUY = 5
 
 
 class EnemyType(IntEnum):
