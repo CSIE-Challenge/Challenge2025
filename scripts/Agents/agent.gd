@@ -1,6 +1,5 @@
 class_name Agent
 extends Node
-
 enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
 enum TowerType { BASIC }
@@ -36,7 +35,6 @@ func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
 	ongoing_round = _round
 	game_self = _game_self
 	game_other = _game_other
-	game_status = GameStatus.START
 
 
 #region MapInfo
@@ -162,13 +160,30 @@ func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
 
 
 func _get_all_towers(_owned: bool) -> Array:
-	print("[GetAllTower] Get request")
-	return [StatusCode.OK]
+	print("[GetAllTowers] Get request")
+	var towers: Array = []
+	if _owned:
+		for key in game_self.built_towers.keys():
+			var tower_dict = game_self.built_towers[key].to_dict(key)
+			tower_dict["type"] = TowerType.BASIC
+			towers.append(tower_dict)
+		return [StatusCode.OK, towers]
+	for key in game_other.built_towers.keys():
+		var tower_dict = game_other.built_towers[key].to_dict(key)
+		tower_dict["type"] = TowerType.BASIC
+		towers.append(tower_dict)
+	return [StatusCode.OK, towers]
 
 
 func _get_tower(_coord: Vector2i) -> Array:
 	print("[GetTower] Get request")
-	return [StatusCode.OK]
+	if game_self.built_towers.has(_coord):
+		var dict = game_self.built_towers[_coord].to_dict(_coord)
+		return [StatusCode.OK, dict]
+	if game_other.built_towers.has(_coord):
+		var dict = game_other.built_towers[_coord].to_dict(_coord)
+		return [StatusCode.OK, dict]
+	return [StatusCode.INTERNAL_ERR, "[GetTower] Error: no tower found"]
 
 
 #endregion

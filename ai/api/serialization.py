@@ -2,7 +2,7 @@ from typing import Any
 from enum import IntEnum
 import struct
 
-from defs import *
+from .defs import *
 
 # Byte 0: `Variant::Type`, byte 1: unused, bytes 2 and 3: additional data.
 HEADER_TYPE_MASK = 0xFF
@@ -136,7 +136,6 @@ def bytes_to_var(serialized: bytes) -> Any:
             raise ValueError(
                 f"[GdType] Unable to deserialize: insufficient data in sequence")
         ieee_integer = popInt32()
-        idx += 4
         return struct.unpack('>f', struct.pack('>I', ieee_integer))[0]
 
     def popFloat64() -> float:
