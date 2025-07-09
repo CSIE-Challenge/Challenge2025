@@ -5,7 +5,7 @@ api = GameClient(7749)
 
 print(api.get_scores(True))
 print(api.get_scores(False))
-
+print(api.get_current_wave())
 start = time.perf_counter()
 for _ in range(500):
     #ret = api.get_all_terrain()
