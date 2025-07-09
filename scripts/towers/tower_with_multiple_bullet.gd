@@ -17,7 +17,7 @@ func _ready():
 func _flip_sprite() -> void:
 	if target != null:
 		var desired_angle = (target.global_position - tower_body.global_position).angle()
-		sprite.flip_h = _determine_flipping(desired_angle)
+		sprite.flip_h = cos(desired_angle) < 0
 
 
 func _on_reload_timer_timeout() -> void:
@@ -28,7 +28,6 @@ func _on_reload_timer_timeout() -> void:
 	if not anime.is_playing():
 		anime.play("default")
 	for i in range(roundi(randfn(expected_bullet_number, 3) + 0.5)):
-		# TODO: add animation
 		var origin: Vector2 = self.global_position
 		var direction: float = (
 			(target.global_position - origin).angle() + randfn(0.0, scattering_angle / 6)

@@ -9,8 +9,9 @@ func _process(delta):
 	if exploding:
 		return
 
+	rotation += spanning_speed
 	movement_speed -= RESISTENCE * delta
-	position += Vector2.RIGHT.rotated(rotation) * delta * movement_speed
+	position += Vector2.RIGHT.rotated(direction) * delta * movement_speed
 
 	var traverse_distance = global_position.distance_to(start_position)
 

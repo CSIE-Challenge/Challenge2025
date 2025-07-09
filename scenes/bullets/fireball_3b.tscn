@@ -2,8 +2,10 @@
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_lryqa"]
 [ext_resource type="PackedScene" uid="uid://den22sw68w24" path="res://scenes/bullets/hellfire.tscn" id="2_lryqa"]
-[ext_resource type="Texture2D" uid="uid://ck2spqdqr8fbc" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile297.png" id="3_vw6d6"]
-[ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="4_4y2ij"]
+[ext_resource type="Texture2D" uid="uid://c1svtwm2u3fyu" path="res://pixel_art/bullet/FireBall.png" id="3_btth8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e24mr"]
+radius = 7.0
 
 [node name="Fireball_3b" type="Area2D"]
 collision_layer = 2
@@ -12,12 +14,14 @@ script = ExtResource("1_lryqa")
 is_tracking = false
 aoe_scale = 0.0
 shockwave_scene = ExtResource("2_lryqa")
+spanning_speed = 0.262
 effect = 2
 
 [node name="Body" type="Sprite2D" parent="."]
+position = Vector2(-2, -7)
 rotation = -1.5708
-texture = ExtResource("3_vw6d6")
+texture = ExtResource("3_btth8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = ExtResource("4_4y2ij")
+shape = SubResource("CircleShape2D_e24mr")
