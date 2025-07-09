@@ -22,6 +22,8 @@ func _ready() -> void:
 	var agent_2p = game_2p.find_child("RemoteAgent")
 	agent_1p.chat_node = chat_node
 	agent_2p.chat_node = chat_node
+	agent_1p.player_id = 1
+	agent_2p.player_id = 2
 
 
 func get_formatted_time() -> String:

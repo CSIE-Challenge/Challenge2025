@@ -22,6 +22,7 @@ const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 var type: AgentType = AgentType.NIL
 var money: int
 var score: int
+var player_id: int
 
 var ongoing_round: Round = null
 var game_self: Game = null
@@ -225,7 +226,7 @@ func _send_chat(_msg: String) -> Array:
 		print("[Error] too long")
 		return [StatusCode.ILLEGAL_ARGUMENT, false]
 
-	chat_node._on_line_edit_text_submitted(_msg)
+	chat_node.send_chat_with_sender(player_id, _msg)
 	return [StatusCode.OK, true]
 
 
