@@ -8,7 +8,7 @@ from typing import List
 
 class GameClient(GameClientBase):
 
-    @game_command(CommandType.GET_ALL_TERRAIN, [bool], list[list[TerrainType]])
+    @game_command(CommandType.GET_ALL_TERRAIN, [], list[list[TerrainType]])
     def get_all_terrain(self, owned: bool) -> list[list[TerrainType]]:
         """
         # Get All Terrain
@@ -504,7 +504,7 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_CHAT_HISTORY, [int], list)
+    @game_command(CommandType.GET_CHAT_HISTORY, [int], list[tuple[int, str]])
     def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
         """
         # Get Chat History
