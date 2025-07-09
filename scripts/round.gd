@@ -1,7 +1,7 @@
 class_name Round
 extends Control
 
-const GAME_DURATION = 180.0
+const GAME_DURATION = 1
 
 @export var game_timer_label: Label
 @export var score_bar: ScoreBar
@@ -38,8 +38,8 @@ func _on_game_timer_timeout():
 	end_scene.player1_score = game_1p.score
 	end_scene.player2_score = game_2p.score
 	# TODO: send real kill count stats
-	end_scene.player1_kill_cnt = -1
-	end_scene.player2_kill_cnt = -1
+	end_scene.player1_kill_cnt = game_1p.kill_cnt
+	end_scene.player2_kill_cnt = game_2p.kill_cnt
 	end_scene.player1_money = game_1p.money
 	end_scene.player2_money = game_2p.money
 	get_tree().get_root().add_child(end_scene)

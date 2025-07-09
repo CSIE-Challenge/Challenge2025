@@ -16,6 +16,7 @@ const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 var score: int = 0
 var money: int = 100
 var income_per_second = 10
+var kill_cnt = 0
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var _enemy_scene_cache = {}
