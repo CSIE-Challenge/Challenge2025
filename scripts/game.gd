@@ -168,7 +168,6 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 
 	var enemy: Enemy = _enemy_scene_cache[scene_path].instantiate()
 	var stats: Dictionary = unit_data.get("stats", {})
-	enemy.kill_reward = stats.kill_reward
 	enemy.income_impact = stats.income_impact
 	enemy.max_health = stats.max_health
 	enemy.max_speed = stats.max_speed

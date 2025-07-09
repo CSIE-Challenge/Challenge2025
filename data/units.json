@@ -3,7 +3,6 @@
 	"scene_path": "res://scenes/enemies/goomba.tscn",
 	"stats": {
 		"deploy_cost": 10,
-		"kill_reward": 1,
 		"income_impact": 1,
 		"max_health": 10,
 		"max_speed": 50,
@@ -14,7 +13,6 @@
 	"scene_path": "res://scenes/enemies/koopa_paratroopa.tscn",
 	"stats": {
 		"deploy_cost": 20,
-		"kill_reward": 1,
 		"income_impact": 2,
 		"max_health": 15,
 		"max_speed": 80,
@@ -25,7 +23,6 @@
 	"scene_path": "res://scenes/enemies/spiny_shell.tscn",
 	"stats": {
 		"deploy_cost": 30,
-		"kill_reward": 1,
 		"income_impact": 3,
 		"max_health": 20,
 		"max_speed": 120,
@@ -36,7 +33,6 @@
 	"scene_path": "res://scenes/enemies/buzzy_beetle.tscn",
 	"stats": {
 		"deploy_cost": 40,
-		"kill_reward": 1,
 		"income_impact": 4,
 		"max_health": 25,
 		"max_speed": 75,
@@ -47,7 +43,6 @@
 	"scene_path": "res://scenes/enemies/wiggler.tscn",
 	"stats": {
 		"deploy_cost": 50,
-		"kill_reward": 1,
 		"income_impact": 5,
 		"max_health": 60,
 		"max_speed": 60,
@@ -58,7 +53,6 @@
 	"scene_path": "res://scenes/enemies/koopa_jr.tscn",
 	"stats": {
 		"deploy_cost": 60,
-		"kill_reward": 1,
 		"income_impact": -1,
 		"max_health": 40,
 		"max_speed": 70,
@@ -69,7 +63,6 @@
 	"scene_path": "res://scenes/enemies/koopa.tscn",
 	"stats": {
 		"deploy_cost": 70,
-		"kill_reward": 1,
 		"income_impact": -5,
 		"max_health": 100,
 		"max_speed": 20,
