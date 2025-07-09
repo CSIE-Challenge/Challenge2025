@@ -50,6 +50,9 @@ sprite_frames = SubResource("SpriteFrames_gah3o")
 sprite_frames = SubResource("SpriteFrames_3necw")
 >>>>>>> 6faed4a (feat: add Marker2D to tower)
 
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(0, -7.68246)
+
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(-0.5, 0)

@@ -29,7 +29,7 @@ func _on_reload_timer_timeout() -> void:
 		anime.play("default")
 	for i in range(roundi(randfn(expected_bullet_number, 3) + 0.5)):
 		# TODO: add animation
-		var origin: Vector2 = self.global_position
+		var origin: Vector2 = $Tower/Marker2D.global_position
 		var direction: float = (
 			(target.global_position - origin).angle() + randfn(0.0, scattering_angle / 6)
 		)
