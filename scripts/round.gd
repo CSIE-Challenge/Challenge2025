@@ -72,6 +72,7 @@ func _process(_delta: float) -> void:
 	score_bar.right_score = game_2p.score
 
 
-func _on_stage_change() -> void:
-	AudioManager.background_game_stage1.stop()
-	AudioManager.background_game_stage2.play()
+func _on_game_timer_timeout():
+	# load end scene
+	get_tree().change_scene_to_file("res://scenes/end.tscn")
+
