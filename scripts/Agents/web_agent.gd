@@ -54,7 +54,10 @@ class CommandHandler:
 const MIN_COMMAND_INTERVAL_MSEC = 5
 var _ws: WebSocketConnection = null
 var _last_command: float = -1
-var _command_handlers: Dictionary = {}  # command id -> command handler
+# command id -> command handler
+var _command_handlers: Dictionary = {}
+# the set of command types that may be called when the game is not running
+var _general_commands: Dictionary = {}
 
 
 func _register_command_handlers() -> void:
@@ -94,6 +97,7 @@ func _register_command_handlers() -> void:
 		if _command_handlers.has(handler.command_id):
 			pass  # error: duplicated handler id
 		_command_handlers[handler.command_id] = handler
+	_general_commands = {CommandType.GET_REMAIN_TIME: null}
 
 
 func _init() -> void:
@@ -139,6 +143,12 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 		elif not _command_handlers[command_id].check_argument_types(command):
 			response = [
 				request_id, StatusCode.ILLEGAL_ARGUMENT, "[Receive Command] Error: illegal argument"
+			]
+		elif not game_running and not _general_commands.has(command_id):
+			response = [
+				request_id,
+				StatusCode.NOT_STARTED,
+				"[Receive Command] Error: the game is not running"
 			]
 		else:
 			response = _command_handlers[command_id].handle(command)

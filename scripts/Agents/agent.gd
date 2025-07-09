@@ -13,6 +13,7 @@ enum StatusCode {
 	COMMAND_ERR = 403,
 	NOT_FOUND = 404,
 	TOO_FREQUENT = 405,
+	NOT_STARTED = 406,
 	INTERNAL_ERR = 500,
 	CLIENT_ERR = 501
 }
@@ -24,6 +25,7 @@ var money: int
 var score: int
 var player_id: int
 
+var game_running: bool = false
 var ongoing_round: Round = null
 var game_self: Game = null
 var game_other: Game = null
@@ -31,6 +33,7 @@ var chat_node: Node = null
 
 
 func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
+	game_running = true
 	ongoing_round = _round
 	game_self = _game_self
 	game_other = _game_other
@@ -81,6 +84,9 @@ func _get_current_wave() -> Array:
 
 func _get_remain_time() -> Array:
 	print("[GetRemainTime] Get request")
+	if not game_running:
+		# TODO: get remaining time from player_selection when counting down
+		return [StatusCode.OK, 1]
 	var time_left = ongoing_round.get_node("GameTimer").time_left
 	if time_left == null:
 		return [StatusCode.INTERNAL_ERR, "[GetRemainTime] Error: cannot find timeleft"]

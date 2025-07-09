@@ -10,6 +10,8 @@ const GAME_DURATION = 10.0
 
 var manual_controlled: int
 
+@onready var game_timer: Timer = $GameTimer
+
 
 func set_controllers(
 	player_selection_1p: IndividualPlayerSelection,
@@ -24,12 +26,13 @@ func set_controllers(
 
 
 func _ready() -> void:
-	$Screen/Bottom/LeftGame.op_game = $Screen/Bottom/RightGame
-	$Screen/Bottom/RightGame.op_game = $Screen/Bottom/LeftGame
-	$GameTimer.wait_time = GAME_DURATION
-	$GameTimer.one_shot = true
-	$StageSwitchTimer.wait_time = GAME_DURATION * 0.7
-	$GameTimer.start()
+	game_1p.op_game = game_2p
+	game_2p.op_game = game_1p
+
+	# start game timer
+	game_timer.wait_time = GAME_DURATION
+	game_timer.one_shot = true
+	game_timer.start()
 
 	# notify web agents
 	game_1p.find_child("RemoteAgent").start_game(self, game_1p, game_2p)
@@ -74,6 +77,8 @@ func _process(_delta: float) -> void:
 
 
 func _on_game_timer_timeout():
+	game_1p.player_selection.web_agent.game_running = false
+	game_2p.player_selection.web_agent.game_running = false
 	# load end scene
 	var end_scene = preload("res://scenes/end.tscn").instantiate()
 	end_scene.player1_score = game_1p.score
