@@ -95,8 +95,10 @@ func freeze(rate: float):
 func transport():
 	var op_game = game.op_game
 	path_follow.get_parent().remove_child(path_follow)
-	# TODO: for flying enemy, add_child to flying path
-	op_game._map.opponent_path.add_child(path_follow)
+	if flying:
+		op_game._map.flying_opponent_path.add_child(path_follow)
+	else:
+		op_game._map.opponent_path.add_child(path_follow)
 	path_follow.progress_ratio = 0
 
 
