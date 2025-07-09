@@ -49,7 +49,6 @@ bullet_scene = ExtResource("2_3phi0")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 >>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_3hk4r")
-frame = 2
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 position = Vector2(17.9257, -20.4866)

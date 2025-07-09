@@ -41,10 +41,15 @@ func _create_tower_options() -> void:
 		var scene = load(tower)
 		shop_item.callback = func(): building_game.buy_tower.emit(scene)
 		shop_item.display_scene = scene
-		shop_item.display_cost = scene.instantiate().building_cost
-		shop_item.display_name = (
-			"lv. %d" % max(scene.instantiate().level_a, scene.instantiate().level_b)
-		)
+		var inst = scene.instantiate()
+		shop_item.display_cost = inst.building_cost
+		var ab: String
+		if inst.level_a == inst.level_b:
+			ab = ""
+		else:
+			ab = "a" if inst.level_a > inst.level_b else "b"
+		shop_item.display_name = ("lv. %d%s" % [max(inst.level_a, inst.level_b), ab])
+		inst.queue_free()
 		grid.add_child(shop_item)
 
 
