@@ -16,8 +16,6 @@ func set_controllers(
 	player_selection_2p: IndividualPlayerSelection,
 	_manual_controlled: int
 ) -> void:
-	game_1p.set_controller(player_selection_1p)
-	game_2p.set_controller(player_selection_2p)
 	manual_controlled = _manual_controlled
 
 
@@ -29,8 +27,8 @@ func _ready() -> void:
 	$GameTimer.start()
 
 	# notify web agents
-	game_1p.player_selection.web_agent.start_game(self, game_1p, game_2p)
-	game_2p.player_selection.web_agent.start_game(self, game_2p, game_1p)
+	game_1p.find_child("RemoteAgent").start_game(self, game_1p, game_2p)
+	game_2p.find_child("RemoteAgent").start_game(self, game_2p, game_1p)
 
 	# notify the shop and the chat
 	var shop = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop
