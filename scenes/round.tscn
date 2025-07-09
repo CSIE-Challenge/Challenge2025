@@ -283,6 +283,9 @@ wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/WaveInfo")
 visible = false
 layout_mode = 1
 
+[node name="StageSwitchTimer" type="Timer" parent="."]
+
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]
 [connection signal="text_submitted" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/LineEdit" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_line_edit_text_submitted"]
+[connection signal="timeout" from="StageSwitchTimer" to="." method="_on_stage_change"]

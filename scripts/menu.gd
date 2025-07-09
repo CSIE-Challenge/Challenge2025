@@ -1,8 +1,13 @@
 extends Control
 
 
+func _ready() -> void:
+	AudioManager.background_menu.play()
+
+
 func _on_start_pressed() -> void:
 	AudioManager.button_on_click.play()
+	AudioManager.background_menu.stop()
 	get_tree().change_scene_to_file("res://scenes/round.tscn")
 
 

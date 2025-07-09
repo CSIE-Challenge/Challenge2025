@@ -12,7 +12,9 @@ const GAME_DURATION = 180.0
 func _ready() -> void:
 	$GameTimer.wait_time = GAME_DURATION
 	$GameTimer.one_shot = true
+	$StageSwitchTimer.wait_time = GAME_DURATION * 0.7
 	$GameTimer.start()
+	$StageSwitchTimer.start()
 	game_1p.find_child("RemoteAgent").start_game(self, game_1p, game_2p)
 	game_2p.find_child("RemoteAgent").start_game(self, game_2p, game_1p)
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
@@ -24,6 +26,7 @@ func _ready() -> void:
 	agent_2p.chat_node = chat_node
 	agent_1p.player_id = 1
 	agent_2p.player_id = 2
+	AudioManager.background_game_stage1.play()
 
 
 func get_formatted_time() -> String:
@@ -37,3 +40,8 @@ func _process(_delta: float) -> void:
 	game_timer_label.text = get_formatted_time()
 	score_bar.left_score = game_1p.score
 	score_bar.right_score = game_2p.score
+
+
+func _on_stage_change() -> void:
+	AudioManager.background_game_stage1.stop()
+	AudioManager.background_game_stage2.play()
