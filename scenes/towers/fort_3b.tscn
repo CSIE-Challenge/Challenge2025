@@ -38,7 +38,6 @@ bullet_scene = ExtResource("2_efhko")
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-position = Vector2(0, 7.68246)
 sprite_frames = SubResource("SpriteFrames_efhko")
 
 [node name="Body" type="CollisionShape2D" parent="."]

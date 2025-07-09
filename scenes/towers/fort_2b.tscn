@@ -38,7 +38,6 @@ bullet_scene = ExtResource("2_ffd5a")
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-position = Vector2(0, 7.68246)
 sprite_frames = SubResource("SpriteFrames_ffd5a")
 
 [node name="Body" type="CollisionShape2D" parent="."]

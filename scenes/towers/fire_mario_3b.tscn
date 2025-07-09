@@ -42,7 +42,10 @@ bullet_scene = ExtResource("2_ulhc5")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 sprite_frames = SubResource("SpriteFrames_rxdad")
-frame_progress = 0.534917
+frame_progress = 0.196116
+
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(23.0474, -11.5237)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

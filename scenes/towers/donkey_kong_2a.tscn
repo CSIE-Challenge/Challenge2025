@@ -45,6 +45,9 @@ bullet_scene = ExtResource("2_1a38i")
 sprite_frames = SubResource("SpriteFrames_ugl15")
 frame_progress = 0.220185
 
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(24.3278, -3.84123)
+
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(-0.5, 0)
