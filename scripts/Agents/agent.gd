@@ -1,6 +1,7 @@
 class_name Agent
 extends Node
 
+enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
 enum TowerType { BASIC }
 enum EnemyType { BASIC }
@@ -20,6 +21,7 @@ enum StatusCode {
 const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 var type: AgentType = AgentType.NIL
+var game_status: GameStatus = GameStatus.PREPARE
 var money: int
 var score: int
 var player_id: int
@@ -34,6 +36,7 @@ func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
 	ongoing_round = _round
 	game_self = _game_self
 	game_other = _game_other
+	game_status = GameStatus.START
 
 
 #region MapInfo
@@ -129,6 +132,10 @@ func _get_income(_owned: bool) -> Array:
 	else:
 		income = int(game_other.status_panel.find_child("Income").text)
 	return [StatusCode.OK, income]
+
+
+func _get_game_status() -> Array:
+	return [StatusCode.OK, game_status]
 
 
 #endregion
