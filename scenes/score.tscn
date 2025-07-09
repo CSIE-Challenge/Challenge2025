@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://c2q3w8rb1e31l"]
+[gd_scene load_steps=7 format=3 uid="uid://c2q3w8rb1e31l"]
 
 [ext_resource type="Script" uid="uid://de8fbmtpnxj4r" path="res://scripts/enemy/score_bar.gd" id="1_8juob"]
+[ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_bak1h"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vxv1r"]
 
@@ -12,15 +13,9 @@ bg_color = Color(0.176471, 0, 0.819608, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_snxki"]
 bg_color = Color(0.709804, 0, 0.227451, 1)
 
-[sub_resource type="SystemFont" id="SystemFont_vxv1r"]
-font_names = PackedStringArray("Noto Sans")
-
-[sub_resource type="SystemFont" id="SystemFont_snxki"]
-font_names = PackedStringArray("Noto Sans")
-font_weight = 600
-
 [node name="Score" type="Container"]
-custom_minimum_size = Vector2(1000, 80)
+custom_minimum_size = Vector2(1024, 80)
+theme = ExtResource("1_bak1h")
 script = ExtResource("1_8juob")
 
 [node name="TopBorder1P" type="ColorRect" parent="."]
@@ -58,9 +53,8 @@ theme_override_constants/margin_right = 5
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ScoreDiff"]
 layout_mode = 2
-theme_override_fonts/normal_font = SubResource("SystemFont_vxv1r")
-theme_override_fonts/bold_font = SubResource("SystemFont_snxki")
 text = "100"
+scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -70,8 +64,6 @@ theme_override_constants/margin_right = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Score1P"]
 layout_mode = 2
-theme_override_fonts/normal_font = SubResource("SystemFont_vxv1r")
-theme_override_fonts/bold_font = SubResource("SystemFont_snxki")
 text = "100"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -82,8 +74,7 @@ theme_override_constants/margin_left = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Score2P"]
 layout_mode = 2
-theme_override_fonts/normal_font = SubResource("SystemFont_vxv1r")
-theme_override_fonts/bold_font = SubResource("SystemFont_snxki")
 text = "100
 "
+scroll_active = false
 vertical_alignment = 1

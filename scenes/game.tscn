@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bgtv02vp8m02u"]
+[gd_scene load_steps=4 format=3 uid="uid://bgtv02vp8m02u"]
 
 [ext_resource type="PackedScene" uid="uid://cbxbq3tqvvn8j" path="res://scenes/map.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://b488pqxmi1nd" path="res://scripts/game.gd" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://efxo5od1klor" path="res://scripts/Agents/web_agent.gd" id="3_lnu2h"]
 
 [node name="Game" type="Control"]
 clip_contents = true
@@ -21,5 +22,8 @@ script = ExtResource("1_yqjtg")
 
 [node name="ConstantIncomeTimer" type="Timer" parent="."]
 autostart = true
+
+[node name="RemoteAgent" type="Node" parent="."]
+script = ExtResource("3_lnu2h")
 
 [connection signal="timeout" from="ConstantIncomeTimer" to="." method="_on_constant_income_timer_timeout"]

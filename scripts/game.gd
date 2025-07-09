@@ -11,8 +11,9 @@ enum EnemySource { SYSTEM, OPPONENT }
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 
 @export var spawner: Spawner
-@export var status_panel: Panel
+@export var status_panel: TextureRect
 
+var score: int = 0
 var money: int = 100
 var income_per_second = 10
 var built_towers: Dictionary = {}
@@ -56,7 +57,7 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
 	built_towers.erase(cell_pos)
 
 
-func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
+func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	if not (_is_buildable(tower, cell_pos) and spend(tower.building_cost)):
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
@@ -68,15 +69,15 @@ func _place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 
 func _on_buy_tower(tower_scene: PackedScene):
 	var tower = tower_scene.instantiate() as Tower
-	var preview_color_callback = func(tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
-		if money >= tower.building_cost and _is_buildable(tower, cell_pos):
+	var preview_color_callback = func(_tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
+		if money >= _tower.building_cost and _is_buildable(_tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
 	if previewer != null:
 		previewer.free()
 	previewer = Previewer.new(tower, preview_color_callback, _map, true)
-	previewer.selected.connect(self._place_tower.bind(tower))
+	previewer.selected.connect(self.place_tower.bind(tower))
 	self.add_child(previewer)
 
 
@@ -137,6 +138,10 @@ func _on_enemy_summon(unit_data: Dictionary) -> void:
 	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.OPPONENT)
 
 
+func on_damage_dealt(damage: int) -> void:
+	score += damage
+
+
 func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	enemy.game = self
 	enemy.init(source)
@@ -162,7 +167,8 @@ func _on_spell_deploy(spell_data) -> void:
 
 
 func _process(_delta) -> void:
-	status_panel.get_child(0).text = "$%d" % money
+	status_panel.find_child("Money").text = "%d" % money
+	status_panel.find_child("Income").text = "+%d" % income_per_second
 
 
 func _unhandled_input(event: InputEvent) -> void:

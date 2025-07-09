@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cjjb87yltl2v0"]
+[gd_scene load_steps=4 format=3 uid="uid://cjjb87yltl2v0"]
 
 [ext_resource type="Script" uid="uid://bw1dweveahglx" path="res://ui/shop_item.gd" id="1_jol1k"]
-[ext_resource type="Texture2D" uid="uid://b3nq5ngja18na" path="res://assets/kenney_ui-pack-pixel-adventure/Tiles/Large tiles/Thick outline/tile_0000.png" id="1_obnp4"]
+[ext_resource type="Texture2D" uid="uid://1llf701ahhnn" path="res://assets/ui/shop-item.png" id="2_jol1k"]
+[ext_resource type="Texture2D" uid="uid://c2opjooqfrtgm" path="res://assets/ui/shop-item-pressed.png" id="3_aty2n"]
 
 [node name="ShopItem" type="AspectRatioContainer"]
 anchors_preset = -1
@@ -14,7 +15,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="TextureButton" type="TextureButton" parent="."]
 layout_mode = 2
-texture_normal = ExtResource("1_obnp4")
+texture_normal = ExtResource("2_jol1k")
+texture_pressed = ExtResource("3_aty2n")
 stretch_mode = 0
 
 [node name="Cost" type="Label" parent="."]
