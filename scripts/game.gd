@@ -27,7 +27,7 @@ var _enemy_scene_cache = {}
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
 	player_selection = _player_selection
 	player_selection.get_parent().remove_child(player_selection)
-	add_child(player_selection)
+	status_panel.link_player_selection(player_selection)
 
 
 func _ready() -> void:

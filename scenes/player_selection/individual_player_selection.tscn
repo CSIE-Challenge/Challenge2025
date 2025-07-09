@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b7jvynxasd754" path="res://scripts/player_selection/individual_player_selection.gd" id="2_t2jgp"]
 
 [node name="Panel1P" type="Panel"]
-custom_minimum_size = Vector2(450, 700)
+custom_minimum_size = Vector2(448, 700)
 offset_right = 450.0
 offset_bottom = 700.0
 theme = ExtResource("1_f28vv")
