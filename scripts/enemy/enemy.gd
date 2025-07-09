@@ -26,6 +26,7 @@ var health: int:
 
 
 func _on_killed() -> void:
+	game.kill_cnt += 1
 	path_follow.queue_free()
 
 

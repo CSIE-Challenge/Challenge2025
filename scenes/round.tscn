@@ -284,3 +284,4 @@ layout_mode = 1
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]
 [connection signal="text_submitted" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/LineEdit" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_line_edit_text_submitted"]
+[connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
