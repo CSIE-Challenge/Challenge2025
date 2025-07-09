@@ -185,7 +185,7 @@ func _get_enemy_cooldown(_owned: bool, _type: EnemyType) -> Array:
 	return [StatusCode.OK]
 
 
-func _get_all_enemy_info(_type: EnemyType) -> Array:
+func _get_enemy_info(_type: EnemyType) -> Array:
 	print("[GetAllEnemyInfo] Get request")
 	return [StatusCode.OK]
 
@@ -220,7 +220,7 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 	return [StatusCode.OK]
 
 
-func _get_all_spell_cost() -> Array:
+func _get_spell_cost() -> Array:
 	print("[GetAllSpellCost] Get request")
 	return [StatusCode.OK]
 

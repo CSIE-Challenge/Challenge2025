@@ -8,7 +8,7 @@ from typing import List
 
 class GameClient(GameClientBase):
 
-    @game_command(CommandType.GET_ALL_TERRAIN, [bool], TerrainType)
+    @game_command(CommandType.GET_ALL_TERRAIN, [bool], list[list[TerrainType]])
     def get_all_terrain(self, owned: bool) -> list[list[TerrainType]]:
         """
         # Get All Terrain
@@ -214,7 +214,7 @@ class GameClient(GameClientBase):
         raise NotImplementedError
 
     @game_command(CommandType.GET_ALL_TOWERS, [bool], list)
-    def get_all_towers(self, owned: bool) -> List[Tower]:
+    def get_all_towers(self, owned: bool) -> List[TowerType]:
         """
         # Get All Towers
         取得所有塔的資訊。
@@ -234,8 +234,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_TOWER, [Vector2], Tower)
-    def get_tower(self, coord: Vector2) -> Tower:
+    @game_command(CommandType.GET_TOWER, [Vector2], TowerType)
+    def get_tower(self, coord: Vector2) -> TowerType:
         """
         # Get Tower
         取得指定位置的塔的資訊。
@@ -299,8 +299,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_ENEMY_INFO, [EnemyType], Enemy)
-    def get_enemy_info(self, type: EnemyType) -> Enemy:
+    @game_command(CommandType.GET_ENEMY_INFO, [EnemyType], EnemyType)
+    def get_enemy_info(self, type: EnemyType) -> EnemyType:
         """
         # Get Enemy Info
         取得指定類型敵人的資訊。
@@ -323,7 +323,7 @@ class GameClient(GameClientBase):
         raise NotImplementedError
 
     @game_command(CommandType.GET_AVAILABLE_ENEMIES, [], list)
-    def get_available_enemies(self) -> List[Enemy]:
+    def get_available_enemies(self) -> List[EnemyType]:
         """
         # Get Available Enemies
         取得所有可用的敵人資訊。
@@ -341,7 +341,7 @@ class GameClient(GameClientBase):
         raise NotImplementedError
 
     @game_command(CommandType.GET_CLOSEST_ENEMIES, [Vector2, int], list)
-    def get_closest_enemies(self, position: Vector2, count: int) -> List[Enemy]:
+    def get_closest_enemies(self, position: Vector2, count: int) -> List[EnemyType]:
         """
         # Get Closest Enemies
         取得離指定位置最近的敵人。
@@ -363,7 +363,7 @@ class GameClient(GameClientBase):
         raise NotImplementedError
 
     @game_command(CommandType.GET_ENEMIES_IN_RANGE, [Vector2, float], list)
-    def get_enemies_in_range(self, center: Vector2, radius: float) -> List[Enemy]:
+    def get_enemies_in_range(self, center: Vector2, radius: float) -> List[EnemyType]:
         """
         # Get Enemies in Range
         取得在指定範圍內的敵人。
@@ -461,7 +461,7 @@ class GameClient(GameClientBase):
         raise NotImplementedError
 
     @game_command(CommandType.GET_EFFECTIVE_SPELLS, [bool], list)
-    def get_effective_spells(self, owned: bool) -> List[Spell]:
+    def get_effective_spells(self, owned: bool) -> List[SpellType]:
         """
         # Get Effective Spells
         取得當前生效的法術。
@@ -505,7 +505,7 @@ class GameClient(GameClientBase):
         raise NotImplementedError
 
     @game_command(CommandType.GET_CHAT_HISTORY, [int], list)
-    def get_chat_history(self, num: int = 15) -> List[tuple[int, str]]:
+    def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
         """
         # Get Chat History
         取得聊天歷史紀錄。
@@ -545,8 +545,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_DEVS, [], list)
-    def get_devs(self) -> List[str]:
+    @game_command(CommandType.GET_DEVS, [], list[str])
+    def get_devs(self) -> list[str]:
         """
         # Get Devs
         取得開發者名單。
