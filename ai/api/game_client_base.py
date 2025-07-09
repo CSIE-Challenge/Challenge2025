@@ -1,4 +1,5 @@
 import asyncio
+import os
 import re
 import time
 from typing import Any, Callable, cast
@@ -23,7 +24,10 @@ class GameClientBase:
             retry_count: int = 3) -> None:
 
         if token is None:
-            token = input("Enter the token required for connection: ")
+            if is_auto_invoked():
+                raise EnvironmentError(f"TOKEN must be present when automatically invoked!")
+            else:
+                token = input("Enter the token required for connection: ")
 
         enforce_type('port', port, int)
         enforce_condition('0 <= port < 65536',
