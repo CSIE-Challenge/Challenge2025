@@ -9,18 +9,6 @@ func link_player_selection(_player_selection: IndividualPlayerSelection) -> void
 	$CanvasLayer.add_child(player_selection)
 	player_selection.visible = false
 
-	# display connection status with red/green lights
-	player_selection.web_agent._ws.client_connected.connect(
-		func():
-			$StatusConnected.visible = true
-			$StatusDisconnected.visible = false
-	)
-	player_selection.web_agent._ws.client_disconnected.connect(
-		func():
-			$StatusConnected.visible = false
-			$StatusDisconnected.visible = true
-	)
-
 	# toggle player selection panel when the indicator is clicked
 	var toggle_selection_panel = func(): player_selection.visible = not player_selection.visible
 	$StatusConnected.pressed.connect(toggle_selection_panel)
@@ -29,3 +17,8 @@ func link_player_selection(_player_selection: IndividualPlayerSelection) -> void
 
 func _process(_delta: float) -> void:
 	player_selection.global_position = Vector2(global_position.x, global_position.y + size.y)
+
+	# display connection status with red/green lights
+	var agent_connected = player_selection.web_agent._ws.is_client_connected()
+	$StatusConnected.visible = agent_connected
+	$StatusDisconnected.visible = not agent_connected
