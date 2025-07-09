@@ -57,7 +57,7 @@ func _on_area_entered(bullet: Bullet) -> void:
 	if not bullet.alive:
 		return
 	take_damage(bullet.damage)
-	bullet.call_deferred("_on_hit")
+	bullet._on_hit()
 
 	match bullet.effect:
 		bullet.Effect.FREEZE:
