@@ -1,7 +1,7 @@
 class_name Round
 extends Control
 
-const GAME_DURATION = 1
+const GAME_DURATION = 180.0
 
 @export var game_timer_label: Label
 @export var score_bar: ScoreBar
