@@ -29,7 +29,7 @@ func _flip_sprite() -> void:
 
 
 func _on_reload_timer_timeout() -> void:
-	var origin: Vector2 = self.global_position
+	var origin: Vector2 = $Tower/Marker2D.global_position
 	var direction: float = target_direction
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)

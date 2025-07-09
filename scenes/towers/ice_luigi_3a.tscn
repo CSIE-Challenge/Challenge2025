@@ -44,6 +44,9 @@ bullet_scene = ExtResource("2_wgg0p")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 sprite_frames = SubResource("SpriteFrames_wbc6e")
 
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(21.767, -12.8041)
+
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(-0.5, 0)
