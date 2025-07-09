@@ -9,6 +9,7 @@ enum CommandType {
 	GET_TIME_UNTIL_NEXT_WAVE = 5,
 	GET_MONEY = 6,
 	GET_INCOME = 7,
+	GET_GAME_STATUS = 8,
 	GET_TERRAIN = 9,
 	PLACE_TOWER = 101,
 	GET_ALL_TOWERS = 102,
@@ -68,6 +69,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_TIME_UNTIL_NEXT_WAVE, [], _get_time_until_next_wave),
 		CommandHandler.new(CommandType.GET_MONEY, [TYPE_BOOL], _get_money),
 		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income),
+		CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
 		CommandHandler.new(CommandType.PLACE_TOWER, [TYPE_INT, TYPE_VECTOR2I], _place_tower),
 		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
 		CommandHandler.new(CommandType.GET_TOWER, [TYPE_VECTOR2I], _get_tower),
@@ -117,36 +119,25 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 	# rate-limit commands
 	var this_command = Time.get_ticks_msec()
 	if _last_command >= 0 and this_command - _last_command < MIN_COMMAND_INTERVAL_MSEC:
-		_ws.send_bytes(var_to_bytes([0, StatusCode.TOO_FREQUENT]))
+		_ws.send_bytes(var_to_bytes([StatusCode.TOO_FREQUENT]))
 		return
 	_last_command = this_command
 
 	# handle command
 	var response: Array
 	var command = bytes_to_var(command_bytes)
-	if (
-		typeof(command) != TYPE_ARRAY
-		or command.size() < 2
-		or typeof(command[0]) != TYPE_INT
-		or typeof(command[1]) != TYPE_INT
-	):
-		response = [0, StatusCode.ILLFORMED_COMMAND]
+	if typeof(command) != TYPE_ARRAY or command.size() < 1 or typeof(command[0]) != TYPE_INT:
+		response.push_back(StatusCode.ILLFORMED_COMMAND)
 	else:
-		var request_id: int = command.pop_front()
 		var command_id: int = command.pop_front()
-		print("[API Server] received command: ", request_id, " ", command_id)
 		if not _command_handlers.has(command_id):
 			response = [
-				request_id,
 				StatusCode.NOT_FOUND,
 				"[Receive Command] Error: cannot find command: %d" % command_id
 			]
 		elif not _command_handlers[command_id].check_argument_types(command):
-			response = [
-				request_id, StatusCode.ILLEGAL_ARGUMENT, "[Receive Command] Error: illegal argument"
-			]
+			response = [StatusCode.ILLEGAL_ARGUMENT, "[Receive Command] Error: illegal argument"]
 		else:
 			response = _command_handlers[command_id].handle(command)
-			response.push_front(request_id)
 
 	_ws.send_bytes(var_to_bytes(response))
