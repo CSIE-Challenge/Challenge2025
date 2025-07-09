@@ -1,4 +1,7 @@
+class_name IndividualPlayerSelection
 extends Panel
+
+signal manual_control_enabled
 
 @export var player_identifier: String = "Player 1"
 
@@ -35,9 +38,15 @@ func _init() -> void:
 # of individual one-line functions. Connect the handlers at runtime with anonymous
 # lambda functions could be more concise.
 func _ready() -> void:
+	$PlayerIdentifierLabel.text = player_identifier
+
 	# manual control
-	manual_control_off_button.pressed.connect(func(): manual_control = false)
-	manual_control_on_button.pressed.connect(func(): manual_control = true)
+	manual_control_off_button.pressed.connect(
+		func():
+			manual_control = true
+			manual_control_enabled.emit()
+	)
+	manual_control_on_button.pressed.connect(func(): manual_control = false)
 
 	# python interpreter
 	python_interpreter_button.pressed.connect(python_interpreter_dialog.popup)
@@ -82,8 +91,8 @@ func _process(_delta: float) -> void:
 
 func _display_fields() -> void:
 	# manual control
-	manual_control_off_button.visible = manual_control
-	manual_control_on_button.visible = not manual_control
+	manual_control_off_button.visible = not manual_control
+	manual_control_on_button.visible = manual_control
 
 	# python interpreter
 	var python_interpreter_path = python_subprocess.python_interpreter_path
