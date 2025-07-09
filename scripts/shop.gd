@@ -1,13 +1,6 @@
 extends TextureRect
 
 # gdlint: disable=duplicated-load
-# temporarily disable for testing purposes
-const TOWER_SCENES := [
-	preload("res://scenes/towers/twin_turret.tscn"),
-	preload("res://scenes/towers/twin_turret.tscn"),
-	preload("res://scenes/towers/twin_turret.tscn"),
-	preload("res://scenes/towers/twin_turret.tscn")
-]
 const SHOP_ITEM_SCENE := preload("res://scenes/ui/shop_item.tscn")
 
 @export var options_container: VBoxContainer
@@ -41,12 +34,22 @@ func _create_section(title: String) -> GridContainer:
 
 
 func _create_tower_options() -> void:
+	var tower_data = TowerData.new()
 	var grid := _create_section("Towers")
-	for scene in TOWER_SCENES:
+	for tower in tower_data.tower_data_list:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
+		var scene = load(tower)
 		shop_item.callback = func(): building_game.buy_tower.emit(scene)
 		shop_item.display_scene = scene
-		shop_item.display_cost = scene.instantiate().building_cost
+		var inst = scene.instantiate()
+		shop_item.display_cost = inst.building_cost
+		var ab: String
+		if inst.level_a == inst.level_b:
+			ab = ""
+		else:
+			ab = "a" if inst.level_a > inst.level_b else "b"
+		shop_item.display_name = ("lv. %d%s" % [max(inst.level_a, inst.level_b), ab])
+		inst.queue_free()
 		grid.add_child(shop_item)
 
 
@@ -66,12 +69,12 @@ func _create_unit_options() -> void:
 
 
 func _create_spell_options() -> void:
-	# TODO: load and add actual spells
 	var grid := _create_section("Spells")
-	for spell in ["Placeholder A", "Placeholder B", "Placeholder C"]:
+	for spell in [PoisonSpell, DoubleIncomeSpell, TeleportSpell]:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
-		shop_item.callback = func(): building_game.deploy_spell.emit(spell)
-		shop_item.display_scene = load("res://scenes/towers/twin_turret.tscn")
+		shop_item.callback = func(): building_game.buy_spell.emit(spell)
+		shop_item.display_cost = spell.metadata["stats"]["cost"]
+		shop_item.display_scene = load(spell.metadata["scene_path"])
 		grid.add_child(shop_item)
 
 

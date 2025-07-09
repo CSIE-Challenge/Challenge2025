@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://ka30vdrvla2k"]
+
+[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_1a38i"]
+[ext_resource type="PackedScene" uid="uid://brnh001o7fq8i" path="res://scenes/bullets/donkey_attack_2a.tscn" id="2_1a38i"]
+[ext_resource type="Texture2D" uid="uid://dn8dmr7xhtkfc" path="res://pixel_art/tower/DonkeyKongStand.png" id="3_3nf7w"]
+[ext_resource type="Texture2D" uid="uid://cbgtn5dajnqp7" path="res://pixel_art/tower/DonkeyKongSlam.png" id="4_opdar"]
+[ext_resource type="Texture2D" uid="uid://dnhky8b6idvjr" path="res://pixel_art/tower/DonkeyKongPunch.png" id="5_alufv"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ugl15"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_3nf7w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_opdar")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_alufv")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
+size = Vector2(53, 52)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ktxwe"]
+radius = 734.063
+
+[node name="Donkey_kong_2a" type="Area2D"]
+scale = Vector2(0.781, 0.781)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_1a38i")
+type = 3
+level_a = 2
+auto_aim = false
+bullet_scene = ExtResource("2_1a38i")
+
+[node name="Tower" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+sprite_frames = SubResource("SpriteFrames_ugl15")
+frame_progress = 0.220185
+
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(24.3278, -3.84123)
+
+[node name="Body" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_ktxwe")
+
+[node name="AimRange" type="Area2D" parent="."]
+visible = false
+light_mask = 0
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AimRange"]
+shape = SubResource("CircleShape2D_ktxwe")
+
+[connection signal="area_entered" from="AimRange" to="." method="_on_aim_range_area_entered"]
+[connection signal="area_exited" from="AimRange" to="." method="_on_aim_range_area_exited"]

@@ -1,7 +1,7 @@
 class_name Round
 extends Control
 
-const GAME_DURATION = 10.0
+const GAME_DURATION = 180.0
 
 @export var game_timer_label: Label
 @export var score_bar: ScoreBar
@@ -26,6 +26,9 @@ func set_controllers(
 
 
 func _ready() -> void:
+	game_1p.op_game = game_2p
+	game_2p.op_game = game_1p
+
 	# start game timer
 	$GameTimer.wait_time = GAME_DURATION
 	$GameTimer.one_shot = true

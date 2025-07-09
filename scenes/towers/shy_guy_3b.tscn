@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://ciotquik86l1x"]
+
+[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_3phi0"]
+[ext_resource type="PackedScene" uid="uid://djnpt2h2ebj70" path="res://scenes/bullets/knife_3b.tscn" id="2_3phi0"]
+[ext_resource type="Texture2D" uid="uid://bqikcu5a6ov7i" path="res://pixel_art/tower/ShyGuyStand.png" id="3_s5vor"]
+[ext_resource type="Texture2D" uid="uid://ddc73100y5t64" path="res://pixel_art/tower/ShyGuyPrepare.png" id="4_eut8s"]
+[ext_resource type="Texture2D" uid="uid://bym1xfjew7tgo" path="res://pixel_art/tower/ShyGuyAttack.png" id="5_40np8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3hk4r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_s5vor")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_eut8s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_40np8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
+size = Vector2(53, 52)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ktxwe"]
+radius = 734.063
+
+[node name="Shy_guy_3b" type="Area2D"]
+scale = Vector2(0.781, 0.781)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_3phi0")
+type = 5
+level_b = 3
+anti_air = true
+bullet_scene = ExtResource("2_3phi0")
+
+[node name="Tower" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+sprite_frames = SubResource("SpriteFrames_3hk4r")
+
+[node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(17.9257, -20.4866)
+
+[node name="Body" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_ktxwe")
+
+[node name="AimRange" type="Area2D" parent="."]
+visible = false
+light_mask = 0
+collision_layer = 0
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AimRange"]
+shape = SubResource("CircleShape2D_ktxwe")
+
+[connection signal="area_entered" from="AimRange" to="." method="_on_aim_range_area_entered"]
+[connection signal="area_exited" from="AimRange" to="." method="_on_aim_range_area_exited"]

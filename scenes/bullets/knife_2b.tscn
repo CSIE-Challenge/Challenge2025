@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://c15hbsg2p236o"]
+
+[ext_resource type="Script" uid="uid://cbmn0kdprupln" path="res://scripts/boomerang.gd" id="1_8otx2"]
+[ext_resource type="Texture2D" uid="uid://d3w5eaa0sxeej" path="res://pixel_art/bullet/Dart.png" id="2_yb3hn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8otx2"]
+radius = 9.0
+
+[node name="Knife_2b" type="Area2D"]
+collision_layer = 10
+collision_mask = 0
+script = ExtResource("1_8otx2")
+is_tracking = false
+is_anti_air = true
+is_penetrating = true
+spanning_speed = 1.047
+
+[node name="Body" type="Sprite2D" parent="."]
+rotation = -1.5708
+texture = ExtResource("2_yb3hn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CircleShape2D_8otx2")

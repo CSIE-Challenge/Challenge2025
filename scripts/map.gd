@@ -11,6 +11,7 @@ enum CellTerrain {
 @onready var terrain: TileMapLayer = $Terrain
 @onready var opponent_path: Path2D = $OpponentPath
 @onready var system_path: Path2D = $SystemPath
+# @onready var flying...
 
 
 func global_to_local(global_pos: Vector2) -> Vector2:

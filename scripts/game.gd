@@ -4,11 +4,13 @@ extends Control
 signal damage_taken(damage: int)
 signal buy_tower(tower_scene: PackedScene)
 signal summon_enemy(unit_data: Dictionary)
-signal deploy_spell(spell_data)
+signal buy_spell(spell_data)
 
+# TODO: add flying path for system and opponent to map
 enum EnemySource { SYSTEM, OPPONENT }
 
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
+const DEPRECIATION_RATE := 0.9
 
 @export var spawner: Spawner
 @export var status_panel: TextureRect
@@ -17,9 +19,12 @@ var score: int = 0
 var money: int = 100
 var income_per_second = 10
 var kill_cnt = 0
+var player_selection: IndividualPlayerSelection = null
+var income_rate: float = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
-var player_selection: IndividualPlayerSelection = null
+var spell_dict: Dictionary
+var op_game: Game
 var _enemy_scene_cache = {}
 
 @onready var _map: Map = $Map
@@ -35,7 +40,8 @@ func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
-	deploy_spell.connect(_on_spell_deploy)
+
+	buy_spell.connect(_on_buy_spell)
 
 
 func spend(cost: int) -> bool:
@@ -50,50 +56,69 @@ func spend(cost: int) -> bool:
 
 func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 	if built_towers.has(cell_pos):
-		return false
+		var previous_tower = built_towers[cell_pos]
+		if (
+			previous_tower.type == tower.type
+			and previous_tower.level_a <= tower.level_a
+			and previous_tower.level_b <= tower.level_b
+			and money + previous_tower.building_cost < tower.building_cost
+		):
+			return false
+		if money + (previous_tower.building_cost * DEPRECIATION_RATE) < tower.building_cost:
+			return false
 	if money < tower.building_cost:
 		return false
 	return _map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
-func _on_tower_sold(tower: Tower, tower_ui: TowerUi):
-	var refund := tower.upgrade_cost
-	money += refund
+func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
+	money += tower.building_cost * DEPRECIATION_RATE if depreciation else tower.building_cost
 	tower.queue_free()
-	tower_ui.queue_free()
+	if is_instance_valid(tower_ui):
+		tower_ui.queue_free()
 	var cell_pos = _map.global_to_cell(tower.global_position)
 	built_towers.erase(cell_pos)
 
 
 func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
-	if not (_is_buildable(tower, cell_pos) and spend(tower.building_cost)):
+	if not _is_buildable(tower, cell_pos):
 		return
+
+	if built_towers.has(cell_pos):
+		var previous_tower = built_towers[cell_pos]
+		var depreciation = (
+			previous_tower.type != tower.type
+			or previous_tower.level_a > tower.level_a
+			or previous_tower.level_b > tower.level_b
+		)
+		_on_tower_sold(previous_tower, null, depreciation)
+
 	var global_pos = _map.cell_to_global(cell_pos)
 
 	self.add_child(tower)
-	tower.enable(global_pos)
+	tower.enable(global_pos, _map)
+
+	money -= tower.building_cost
 	built_towers[cell_pos] = tower
 
 
 func _on_buy_tower(tower_scene: PackedScene):
 	var tower = tower_scene.instantiate() as Tower
-	var preview_color_callback = func(_tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
-		if money >= _tower.building_cost and _is_buildable(_tower, cell_pos):
+	var preview_color_callback = func(tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
+		if _is_buildable(tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
-	if previewer != null:
-		previewer.free()
-	previewer = Previewer.new(tower, preview_color_callback, _map, true)
-	previewer.selected.connect(self.place_tower.bind(tower))
-	self.add_child(previewer)
+	var new_previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	new_previewer.selected.connect(self.place_tower.bind(tower))
+	self.add_child(new_previewer)
 
 
 func _select_tower(tower: Tower):
 	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
 	self.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
-	tower_ui.sold.connect(self._on_tower_sold.bind(tower, tower_ui))
+	tower_ui.sold.connect(self._on_tower_sold.bind(tower, tower_ui, true))
 
 
 func _handle_tower_selection(event: InputEvent) -> void:
@@ -113,7 +138,7 @@ func _handle_tower_selection(event: InputEvent) -> void:
 
 
 func _on_constant_income_timer_timeout() -> void:
-	money += income_per_second
+	money += income_rate * income_per_second  # float to int
 
 
 #endregion
@@ -167,8 +192,31 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 #region Spells
 
 
-func _on_spell_deploy(spell_data) -> void:
-	print("Spell ", spell_data, " unhandled")
+func _on_buy_spell(spell) -> void:
+	if not spell.metadata.stats.target:
+		var spell_node = $SpellManager.get_node(spell.metadata.name)
+		spell_node.cast_spell()
+	else:
+		var original_spell_node = $SpellManager.get_node(spell.metadata.name)
+		var spell_scene = load(spell.metadata.scene_path)
+		var preview_spell_node = spell_scene.instantiate()
+		var preview_color_callback = func(node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
+			if money >= node.metadata.stats.cost and not node.is_on_cooldown:
+				return Previewer.PreviewMode.SUCCESS
+			return Previewer.PreviewMode.FAIL
+
+		if previewer != null:
+			previewer.free()
+
+		previewer = Previewer.new(preview_spell_node, preview_color_callback, _map, true)
+		previewer.selected.connect(self._place_spell.bind(original_spell_node))
+		self.add_child(previewer)
+		preview_spell_node.range_indicator.show()
+
+
+func _place_spell(cell_pos: Vector2i, spell_node) -> void:
+	var global_pos: Vector2 = _map.cell_to_global(cell_pos)
+	spell_node.cast_spell(global_pos)
 
 
 #endregion
