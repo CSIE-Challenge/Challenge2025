@@ -94,7 +94,7 @@ func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 		_on_tower_sold(previous_tower, null, depreciation)
 
 	var global_pos = _map.cell_to_global(cell_pos)
-
+	built_towers[cell_pos] = tower
 	self.add_child(tower)
 	tower.enable(global_pos, _map)
 

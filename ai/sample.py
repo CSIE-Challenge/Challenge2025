@@ -1,16 +1,16 @@
 import time
 from api import *
 
-api = GameClient(7749)
+api = GameClient(7749, "TOKEN")
 
 print(api.get_scores(True))
 print(api.get_scores(False))
 
-start = time.perf_counter()
-for _ in range(500):
-    ret = api.get_all_terrain()
-    if isinstance(ret, ApiException):
-        print(ret)
-end = time.perf_counter()
-elapsed = end - start
-print(f"Elapsed time: {elapsed:.6f} seconds")
+terrain = api.get_all_terrain()
+for i in range(4):
+    for j in range(4):
+        print(f"{repr(terrain[i][j]):27s}", end="")
+    print()
+
+print(api.place_tower(TowerType.BASIC, Vector2(2, 2)))
+print(api.get_all_towers(True))

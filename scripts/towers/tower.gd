@@ -105,3 +105,18 @@ func _on_reload_timer_timeout() -> void:
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)
 	bullet.init(origin, direction, target)
+
+
+func to_dict(coord: Vector2i) -> Dictionary:
+	# todo: fill in the actual data
+	var dict: Dictionary = {}
+	dict["type"] = 0
+	dict["position"] = {"x": coord[0], "y": coord[1]}
+	dict["level"] = 1
+	dict["aim"] = "what"
+	dict["anti_air"] = anti_air
+	dict["bullet_number"] = 0
+	dict["reload"] = reload_seconds
+	dict["range"] = aim_range
+	dict["damage"] = damage
+	return dict

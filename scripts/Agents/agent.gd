@@ -1,6 +1,6 @@
 class_name Agent
 extends Node
-
+enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
 enum TowerType { BASIC }
 enum EnemyType { BASIC }
@@ -19,14 +19,18 @@ enum StatusCode {
 }
 
 const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
+const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 var type: AgentType = AgentType.NIL
+var game_status: GameStatus = GameStatus.PREPARE
 var money: int
 var score: int
+var player_id: int
 
 var game_running: bool = false
 var ongoing_round: Round = null
 var game_self: Game = null
 var game_other: Game = null
+var chat_node: Node = null
 
 
 func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
@@ -60,9 +64,27 @@ func _get_all_terrain() -> Array:
 	return [StatusCode.OK, all_terrain]
 
 
+func _get_terrain(_owned: bool, _coord: Vector2i) -> Array:
+	print("[GetTerrain] Get request")
+	var map
+	if _owned == true:
+		map = game_self.get_node("Map")
+	else:
+		map = game_other.get_node("Map")
+	if not map:
+		return [StatusCode.INTERNAL_ERR, "[GetAllTerrain] Error: cannot find map"]
+
+	return [StatusCode.OK, map.get_cell_terrain(_coord)]
+
+
 func _get_scores(_owned: bool) -> Array:
 	print("[GetScores] Get request")
-	return [StatusCode.OK, 48763]
+	var score: int
+	if _owned == true:
+		score = game_self.score
+	else:
+		score = game_other.score
+	return [StatusCode.OK, score]
 
 
 func _get_current_wave() -> Array:
@@ -98,12 +120,26 @@ func _get_time_until_next_wave() -> Array:
 
 func _get_money(_owned: bool) -> Array:
 	print("[GetMoney] Get request")
-	return [StatusCode.OK]
+	var money: int
+	if _owned == true:
+		money = int(game_self.status_panel.find_child("Money").text)
+	else:
+		money = int(game_other.status_panel.find_child("Money").text)
+	return [StatusCode.OK, money]
 
 
 func _get_income(_owned: bool) -> Array:
 	print("[GetIncome] Get request")
-	return [StatusCode.OK]
+	var income: int
+	if _owned == true:
+		income = int(game_self.status_panel.find_child("Income").text)
+	else:
+		income = int(game_other.status_panel.find_child("Income").text)
+	return [StatusCode.OK, income]
+
+
+func _get_game_status() -> Array:
+	return [StatusCode.OK, game_status]
 
 
 #endregion
@@ -130,13 +166,30 @@ func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
 
 
 func _get_all_towers(_owned: bool) -> Array:
-	print("[GetAllTower] Get request")
-	return [StatusCode.OK]
+	print("[GetAllTowers] Get request")
+	var towers: Array = []
+	if _owned:
+		for key in game_self.built_towers.keys():
+			var tower_dict = game_self.built_towers[key].to_dict(key)
+			tower_dict["type"] = TowerType.BASIC
+			towers.append(tower_dict)
+		return [StatusCode.OK, towers]
+	for key in game_other.built_towers.keys():
+		var tower_dict = game_other.built_towers[key].to_dict(key)
+		tower_dict["type"] = TowerType.BASIC
+		towers.append(tower_dict)
+	return [StatusCode.OK, towers]
 
 
 func _get_tower(_coord: Vector2i) -> Array:
 	print("[GetTower] Get request")
-	return [StatusCode.OK]
+	if game_self.built_towers.has(_coord):
+		var dict = game_self.built_towers[_coord].to_dict(_coord)
+		return [StatusCode.OK, dict]
+	if game_other.built_towers.has(_coord):
+		var dict = game_other.built_towers[_coord].to_dict(_coord)
+		return [StatusCode.OK, dict]
+	return [StatusCode.INTERNAL_ERR, "[GetTower] Error: no tower found"]
 
 
 #endregion
@@ -154,7 +207,7 @@ func _get_enemy_cooldown(_owned: bool, _type: EnemyType) -> Array:
 	return [StatusCode.OK]
 
 
-func _get_all_enemy_info(_type: EnemyType) -> Array:
+func _get_enemy_info(_type: EnemyType) -> Array:
 	print("[GetAllEnemyInfo] Get request")
 	return [StatusCode.OK]
 
@@ -189,7 +242,7 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 	return [StatusCode.OK]
 
 
-func _get_all_spell_cost() -> Array:
+func _get_spell_cost() -> Array:
 	print("[GetAllSpellCost] Get request")
 	return [StatusCode.OK]
 
@@ -206,11 +259,25 @@ func _get_effective_spells(_owned: bool) -> Array:
 
 func _send_chat(_msg: String) -> Array:
 	print("[SendChat] Get request")
-	return [StatusCode.OK]
+	if chat_node == null:
+		print("[Error] TEXTBOX_SCENE not loaded")
+		return [StatusCode.INTERNAL_ERR, false]
+
+	if _msg.length() > 50:
+		print("[Error] too long")
+		return [StatusCode.ILLEGAL_ARGUMENT, false]
+
+	chat_node.send_chat_with_sender(player_id, _msg)
+	return [StatusCode.OK, true]
 
 
 func _get_chat_history(_num: int) -> Array:
 	print("[GetChatHistory] Get request")
-	return [StatusCode.OK]
+	if chat_node == null:
+		print("[Error] TEXTBOX_SCENE not loaded")
+		return [StatusCode.INTERNAL_ERR, false]
+
+	var history = chat_node.get_history(_num)
+	return [StatusCode.OK, history]
 
 #endregion

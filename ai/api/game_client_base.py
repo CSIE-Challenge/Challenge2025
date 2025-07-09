@@ -141,13 +141,39 @@ class GameClientBase:
             else:
                 raise ApiException(
                     source_fn, StatusCode.INTERNAL_ERR, f"unexpected return value")
+        
         if isinstance(ret, list):
-            for i in range(len(ret)):
-                ret[i] = self.__cast_return_type(
-                    source_fn, inner_ret_type, ret[i])
-            return ret
+            if inner_ret_type.__origin__ == list:
+                for i in range(len(ret)):
+                    ret[i] = self.__cast_return_type(
+                        source_fn, inner_ret_type.__args__[0], ret[i])
+                return ret
+            elif inner_ret_type.__origin__ == tuple:
+                if len(ret) != len(inner_ret_type.__args__):
+                    raise ApiException(
+                        source_fn, StatusCode.INTERNAL_ERR, f"unexpected return value")
+                for i in range(len(ret)):
+                    ret[i] = self.__cast_return_type(
+                        source_fn, inner_ret_type.__args__[i], ret[i])
+                return tuple(ret)
+            else:
+                raise ApiException(
+                    source_fn, StatusCode.INTERNAL_ERR, f"unexpected return value")
         elif isinstance(ret, inner_ret_type):
             return ret
+        elif isinstance(ret, dict) and inner_ret_type in (Tower, Enemy, Spell):
+            if inner_ret_type == Tower:
+                return Tower.from_dict(ret)
+            elif inner_ret_type == Enemy:
+                return Enemy.from_dict(ret)
+            elif inner_ret_type == Spell:
+                return Spell.from_dict(ret)
+            elif inner_ret_type == dict:
+                return ret
+            else:
+                raise ApiException(
+                    source_fn, StatusCode.INTERNAL_ERR,
+                    f"unexpected return value of type {type(ret)} for {inner_ret_type}")
         try:
             return inner_ret_type(ret)
         except:

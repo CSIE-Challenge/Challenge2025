@@ -9,18 +9,20 @@ enum CommandType {
 	GET_TIME_UNTIL_NEXT_WAVE = 5,
 	GET_MONEY = 6,
 	GET_INCOME = 7,
+	GET_GAME_STATUS = 8,
+	GET_TERRAIN = 9,
 	PLACE_TOWER = 101,
 	GET_ALL_TOWERS = 102,
 	GET_TOWER = 103,
 	SPAWN_ENEMY = 201,
 	GET_ENEMY_COOLDOWN = 202,
-	GET_ALL_ENEMY_INFO = 203,
+	GET_ENEMY_INFO = 203,
 	GET_AVAILABLE_ENEMIES = 204,
 	GET_CLOSEST_ENEMIES = 205,
 	GET_ENEMIES_IN_RANGE = 206,
 	CAST_SPELL = 301,
 	GET_SPELL_COOLDOWN = 302,
-	GET_ALL_SPELL_COST = 303,
+	GET_SPELL_COST = 303,
 	GET_EFFECTIVE_SPELLS = 304,
 	SEND_CHAT = 401,
 	GET_CHAT_HISTORY = 402
@@ -63,12 +65,14 @@ var _general_commands: Dictionary = {}
 func _register_command_handlers() -> void:
 	var handlers: Array[CommandHandler] = [
 		CommandHandler.new(CommandType.GET_ALL_TERRAIN, [], _get_all_terrain),
+		CommandHandler.new(CommandType.GET_TERRAIN, [TYPE_BOOL, TYPE_VECTOR2I], _get_terrain),
 		CommandHandler.new(CommandType.GET_SCORES, [TYPE_BOOL], _get_scores),
 		CommandHandler.new(CommandType.GET_CURRENT_WAVE, [], _get_current_wave),
 		CommandHandler.new(CommandType.GET_REMAIN_TIME, [], _get_remain_time),
 		CommandHandler.new(CommandType.GET_TIME_UNTIL_NEXT_WAVE, [], _get_time_until_next_wave),
 		CommandHandler.new(CommandType.GET_MONEY, [TYPE_BOOL], _get_money),
 		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income),
+		#CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
 		CommandHandler.new(CommandType.PLACE_TOWER, [TYPE_INT, TYPE_VECTOR2I], _place_tower),
 		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
 		CommandHandler.new(CommandType.GET_TOWER, [TYPE_VECTOR2I], _get_tower),
@@ -76,7 +80,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(
 			CommandType.GET_ENEMY_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_enemy_cooldown
 		),
-		CommandHandler.new(CommandType.GET_ALL_ENEMY_INFO, [], _get_all_enemy_info),
+		CommandHandler.new(CommandType.GET_ENEMY_INFO, [], _get_enemy_info),
 		CommandHandler.new(CommandType.GET_AVAILABLE_ENEMIES, [], _get_available_enemies),
 		CommandHandler.new(
 			CommandType.GET_CLOSEST_ENEMIES, [TYPE_VECTOR2I, TYPE_INT], _get_closest_enemies
@@ -88,7 +92,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(
 			CommandType.GET_SPELL_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_spell_cooldown
 		),
-		CommandHandler.new(CommandType.GET_ALL_SPELL_COST, [], _get_all_spell_cost),
+		CommandHandler.new(CommandType.GET_SPELL_COST, [], _get_spell_cost),
 		CommandHandler.new(CommandType.GET_EFFECTIVE_SPELLS, [TYPE_BOOL], _get_effective_spells),
 		CommandHandler.new(CommandType.SEND_CHAT, [TYPE_STRING], _send_chat),
 		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history)
