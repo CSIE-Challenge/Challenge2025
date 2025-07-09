@@ -12,12 +12,12 @@ const RANGE_ATTACK_ANIMATION_TIME := 0.075
 @export var shockwave_scene: PackedScene  # The scene of generated effect/shockwave
 @export var movement_speed := 400.0
 @export var rotation_speed := 8.0
-@export var damage := 3
+@export var damage := 1
 @export var lifespan_seconds := 5
 @export var penetrating_time := 15
 
 @export var effect: Effect = Effect.NONE
-@export var effect_damage := 2
+@export var effect_damage := 1
 @export var effect_duration := 3  # The period of (burning) effect
 @export var effect_interval := 0.5  # The inverse of (burning) effect frequency
 

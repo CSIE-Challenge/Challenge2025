@@ -1,12 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://c15hbsg2p236o"]
 
 [ext_resource type="Script" uid="uid://cbmn0kdprupln" path="res://scripts/boomerang.gd" id="1_8otx2"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
-load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_40dh3"]
-radius = 7.0
+[ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="2_1ps6b"]
+[ext_resource type="Texture2D" uid="uid://d3w5eaa0sxeej" path="res://pixel_art/bullet/Dart.png" id="2_yb3hn"]
 
 [node name="Knife_2b" type="Area2D"]
 collision_layer = 10
@@ -18,8 +14,8 @@ is_penetrating = true
 
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708
-texture = SubResource("CompressedTexture2D_n5hp2")
+texture = ExtResource("2_yb3hn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = SubResource("CircleShape2D_40dh3")
+shape = ExtResource("2_1ps6b")
