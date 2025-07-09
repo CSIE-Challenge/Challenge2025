@@ -15,7 +15,6 @@ extends Area2D
 
 var game: Game
 var path_follow: PathFollow2D
-var speed_ratio: float = 1
 var knockback_ratio: float = 0.1
 var source: Game.EnemySource
 var health: int:
@@ -25,6 +24,7 @@ var health: int:
 		health = value
 		if health_bar != null:
 			health_bar.value = health / float(max_health) * 100.0
+var speed_rate: Array[float] = [1.0]  # store speed_rates and get minimum
 
 @onready var sprite = $AnimatedSprite2D
 @onready var health_bar := $HealthBar
@@ -57,6 +57,16 @@ func _on_area_entered(bullet: Bullet) -> void:
 	take_damage(bullet.damage)
 	bullet.call_deferred("_on_hit")
 
+	match bullet.effect:
+		bullet.Effect.FREEZE:
+			freeze(0.6)
+		bullet.Effect.DEEP_FREEZE:
+			freeze(0.3)
+		bullet.Effect.KNOCKBACK:
+			knockback(false)
+		bullet.Effect.FAR_KNOCKBACK:
+			knockback(true)
+
 
 #region Effect
 
@@ -73,9 +83,9 @@ func knockback(far: bool):
 
 
 func freeze(rate: float):
-	speed_ratio *= rate
+	speed_rate.append(rate)
 	await get_tree().create_timer(8).timeout
-	speed_ratio /= rate
+	speed_rate.erase(rate)
 
 
 #region Spells
@@ -111,7 +121,7 @@ func _ready():
 
 
 func _process(delta):
-	path_follow.progress += speed_ratio * max_speed * delta
+	path_follow.progress += speed_rate.min() * max_speed * delta
 	if path_follow.progress_ratio >= 0.99:
 		_on_reached()
 

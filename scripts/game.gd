@@ -34,11 +34,6 @@ func _ready() -> void:
 
 	buy_spell.connect(_on_buy_spell)
 
-	if self == $"/root/Round/Screen/Bottom/LeftGame":
-		op_game = $"/root/Round/Screen/Bottom/RightGame"
-	else:
-		op_game = $"/root/Round/Screen/Bottom/LeftGame"
-
 
 func spend(cost: int) -> bool:
 	if money >= cost:
@@ -134,7 +129,7 @@ func _handle_tower_selection(event: InputEvent) -> void:
 
 
 func _on_constant_income_timer_timeout() -> void:
-	money += income_rate * income_per_second
+	money += income_rate * income_per_second  # float to int
 
 
 #endregion

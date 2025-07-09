@@ -7,6 +7,8 @@ const GAME_DURATION = 180.0
 
 
 func _ready() -> void:
+	$Screen/Bottom/LeftGame.op_game = $Screen/Bottom/RightGame
+	$Screen/Bottom/RightGame.op_game = $Screen/Bottom/LeftGame
 	$GameTimer.wait_time = GAME_DURATION
 	$GameTimer.one_shot = true
 	$GameTimer.start()
