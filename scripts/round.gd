@@ -8,21 +8,37 @@ const GAME_DURATION = 180.0
 @export var game_1p: Game
 @export var game_2p: Game
 
+var manual_controlled: int
+
 
 func set_controllers(
 	_web_agent_1p: WebAgent, _web_agent_2p: WebAgent, _manual_controlled: int
 ) -> void:
-	pass
+	manual_controlled = _manual_controlled
 
 
 func _ready() -> void:
+	# start game timer
 	$GameTimer.wait_time = GAME_DURATION
 	$GameTimer.one_shot = true
 	$StageSwitchTimer.wait_time = GAME_DURATION * 0.7
 	$GameTimer.start()
-	$StageSwitchTimer.start()
 	game_1p.find_child("RemoteAgent").start_game(self, game_1p, game_2p)
 	game_2p.find_child("RemoteAgent").start_game(self, game_2p, game_1p)
+
+	# notify the shop and the chat
+	var shop = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop
+	var chat = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
+	match manual_controlled:
+		0:
+			shop.queue_free()
+			chat.always_visible = true
+		1:
+			shop.start_game(game_1p, game_2p)
+		2:
+			shop.start_game(game_2p, game_1p)
+
+	# setup signals for the games
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
 	game_2p.damage_taken.connect(game_1p.on_damage_dealt)
 	var chat_node = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
