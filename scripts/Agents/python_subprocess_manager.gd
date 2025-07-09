@@ -7,15 +7,13 @@ enum { NEVER_RUN, RUNNING, KILLED, EXITED, FAILED }
 @export var python_script_path: String = ""
 
 var _state: int = NEVER_RUN
-var _send_token: String
 var _current_pid: int
 var _current_stdio_pipe: FileAccess
 var _last_exit_code: int
 
 
-func _init(send_token: String) -> void:
+func _init() -> void:
 	OS.set_environment("IS_CHALLENGE_GAME_PROCESS", "TRUE")
-	_send_token = send_token + "\n"
 
 
 func set_python_interpreter(path: String) -> void:
@@ -65,8 +63,6 @@ func run_subprocess() -> void:
 		return
 	_state = RUNNING
 	_current_pid = dict["pid"]
-	_current_stdio_pipe = dict["stdio"]
-	_current_stdio_pipe.store_buffer(_send_token.to_ascii_buffer())
 
 
 # terminate the subprocess
