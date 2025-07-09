@@ -15,13 +15,13 @@ enum CommandType {
 	GET_TOWER = 103,
 	SPAWN_ENEMY = 201,
 	GET_ENEMY_COOLDOWN = 202,
-	GET_ALL_ENEMY_INFO = 203,
+	GET_ENEMY_INFO = 203,
 	GET_AVAILABLE_ENEMIES = 204,
 	GET_CLOSEST_ENEMIES = 205,
 	GET_ENEMIES_IN_RANGE = 206,
 	CAST_SPELL = 301,
 	GET_SPELL_COOLDOWN = 302,
-	GET_ALL_SPELL_COST = 303,
+	GET_SPELL_COST = 303,
 	GET_EFFECTIVE_SPELLS = 304,
 	SEND_CHAT = 401,
 	GET_CHAT_HISTORY = 402
@@ -75,7 +75,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(
 			CommandType.GET_ENEMY_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_enemy_cooldown
 		),
-		CommandHandler.new(CommandType.GET_ALL_ENEMY_INFO, [], _get_all_enemy_info),
+		CommandHandler.new(CommandType.GET_ENEMY_INFO, [], _get_enemy_info),
 		CommandHandler.new(CommandType.GET_AVAILABLE_ENEMIES, [], _get_available_enemies),
 		CommandHandler.new(
 			CommandType.GET_CLOSEST_ENEMIES, [TYPE_VECTOR2I, TYPE_INT], _get_closest_enemies
@@ -87,7 +87,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(
 			CommandType.GET_SPELL_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_spell_cooldown
 		),
-		CommandHandler.new(CommandType.GET_ALL_SPELL_COST, [], _get_all_spell_cost),
+		CommandHandler.new(CommandType.GET_SPELL_COST, [], _get_spell_cost),
 		CommandHandler.new(CommandType.GET_EFFECTIVE_SPELLS, [TYPE_BOOL], _get_effective_spells),
 		CommandHandler.new(CommandType.SEND_CHAT, [TYPE_STRING], _send_chat),
 		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history)

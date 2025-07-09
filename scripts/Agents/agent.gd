@@ -18,13 +18,16 @@ enum StatusCode {
 }
 
 const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
+const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 var type: AgentType = AgentType.NIL
 var money: int
 var score: int
+var player_id: int
 
 var ongoing_round: Round = null
 var game_self: Game = null
 var game_other: Game = null
+var chat_node: Node = null
 
 
 func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
@@ -187,7 +190,7 @@ func _get_enemy_cooldown(_owned: bool, _type: EnemyType) -> Array:
 	return [StatusCode.OK]
 
 
-func _get_all_enemy_info(_type: EnemyType) -> Array:
+func _get_enemy_info(_type: EnemyType) -> Array:
 	print("[GetAllEnemyInfo] Get request")
 	return [StatusCode.OK]
 
@@ -222,7 +225,7 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 	return [StatusCode.OK]
 
 
-func _get_all_spell_cost() -> Array:
+func _get_spell_cost() -> Array:
 	print("[GetAllSpellCost] Get request")
 	return [StatusCode.OK]
 
@@ -239,11 +242,25 @@ func _get_effective_spells(_owned: bool) -> Array:
 
 func _send_chat(_msg: String) -> Array:
 	print("[SendChat] Get request")
-	return [StatusCode.OK]
+	if chat_node == null:
+		print("[Error] TEXTBOX_SCENE not loaded")
+		return [StatusCode.INTERNAL_ERR, false]
+
+	if _msg.length() > 50:
+		print("[Error] too long")
+		return [StatusCode.ILLEGAL_ARGUMENT, false]
+
+	chat_node.send_chat_with_sender(player_id, _msg)
+	return [StatusCode.OK, true]
 
 
 func _get_chat_history(_num: int) -> Array:
 	print("[GetChatHistory] Get request")
-	return [StatusCode.OK]
+	if chat_node == null:
+		print("[Error] TEXTBOX_SCENE not loaded")
+		return [StatusCode.INTERNAL_ERR, false]
+
+	var history = chat_node.get_history(_num)
+	return [StatusCode.OK, history]
 
 #endregion
