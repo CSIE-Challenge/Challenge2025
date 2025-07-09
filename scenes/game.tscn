@@ -26,6 +26,10 @@ script = ExtResource("1_yqjtg")
 [node name="ConstantIncomeTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="InterestTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
 [node name="SpellManager" type="Node2D" parent="."]
 script = ExtResource("3_p57ef")
 
@@ -39,3 +43,4 @@ visible = false
 visible = false
 
 [connection signal="timeout" from="ConstantIncomeTimer" to="." method="_on_constant_income_timer_timeout"]
+[connection signal="timeout" from="InterestTimer" to="." method="_on_interest_timer_timeout"]

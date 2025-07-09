@@ -11,6 +11,8 @@ enum EnemySource { SYSTEM, OPPONENT }
 
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 const DEPRECIATION_RATE := 0.9
+const INTEREST_RATE := 1.04
+const MAX_MONEY := 2000
 
 @export var spawner: Spawner
 @export var status_panel: TextureRect
@@ -138,7 +140,11 @@ func _handle_tower_selection(event: InputEvent) -> void:
 
 
 func _on_constant_income_timer_timeout() -> void:
-	money += income_rate * income_per_second  # float to int
+	money = min(money + income_rate * income_per_second, MAX_MONEY)  # float to int
+
+
+func _on_interest_timer_timeout() -> void:
+	money = min(money * INTEREST_RATE, MAX_MONEY)
 
 
 #endregion
