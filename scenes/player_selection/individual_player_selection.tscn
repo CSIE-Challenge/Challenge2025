@@ -1,14 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://2vyhv0c7ehjb"]
+[gd_scene load_steps=3 format=3 uid="uid://2vyhv0c7ehjb"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_f28vv"]
+[ext_resource type="Script" uid="uid://b7jvynxasd754" path="res://scripts/player_selection/individual_player_selection.gd" id="2_t2jgp"]
 
 [node name="Panel1P" type="Panel"]
 custom_minimum_size = Vector2(450, 700)
 offset_right = 450.0
 offset_bottom = 700.0
 theme = ExtResource("1_f28vv")
+script = ExtResource("2_t2jgp")
 
-[node name="Label" type="Label" parent="."]
+[node name="PlayerIdentifierLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -20,7 +22,7 @@ text = "Player 1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Options" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -30,72 +32,57 @@ anchor_bottom = 0.95
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ManualControlContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="Options/ManualControlContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Manual Control"
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="ButtonOn" type="Button" parent="Options/ManualControlContainer"]
+visible = false
 layout_mode = 2
+theme_override_colors/font_color = Color(0.313726, 0.862745, 0.313726, 1)
 text = "ON"
 flat = true
 
-[node name="Panel6" type="Panel" parent="VBoxContainer"]
+[node name="ButtonOff" type="Button" parent="Options/ManualControlContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.862745, 0.313726, 0.313726, 1)
+text = "OFF"
+flat = true
+
+[node name="Panel6" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="PythonInterpreterContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="Options/PythonInterpreterContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Python Interpreter"
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="Options/PythonInterpreterContainer"]
 layout_mode = 2
 text = "Select"
 flat = true
 
-[node name="Label3" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
-text = "/home/nachoneko/Challenge2025/ai/.venv/bin/python"
-vertical_alignment = 1
-clip_text = true
-text_overrun_behavior = 3
+[node name="FileDialog" type="FileDialog" parent="Options/PythonInterpreterContainer"]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+access = 2
 
-[node name="Panel3" type="Panel" parent="VBoxContainer"]
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(0, 10)
-layout_mode = 2
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "Agent Script"
-vertical_alignment = 1
-
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer3"]
-layout_mode = 2
-text = "Select"
-flat = true
-
-[node name="Label6" type="Label" parent="VBoxContainer"]
+[node name="PythonInterpreterLabel" type="Label" parent="Options"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -105,57 +92,101 @@ vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Panel7" type="Panel" parent="VBoxContainer"]
+[node name="Panel3" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer"]
+[node name="AgentScriptContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer7"]
+[node name="Label" type="Label" parent="Options/AgentScriptContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Agent Script"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Options/AgentScriptContainer"]
+layout_mode = 2
+text = "Select"
+flat = true
+
+[node name="FileDialog" type="FileDialog" parent="Options/AgentScriptContainer"]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="AgentScriptLabel" type="Label" parent="Options"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
+text = "(empty)"
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Panel7" type="Panel" parent="Options"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="ProcessStatusContainer" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Options/ProcessStatusContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Process Status"
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer7"]
+[node name="ButtonRun" type="Button" parent="Options/ProcessStatusContainer"]
+visible = false
 layout_mode = 2
-text = "Kill"
+theme_override_colors/font_color = Color(0.313726, 0.862745, 0.313726, 1)
+text = "RUN"
 flat = true
 
-[node name="Label7" type="Label" parent="VBoxContainer"]
+[node name="ButtonKill" type="Button" parent="Options/ProcessStatusContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.862745, 0.313726, 0.313726, 1)
+text = "KILL"
+flat = true
+
+[node name="ProcessStatusLabel" type="Label" parent="Options"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
-text = "Running"
 vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Panel4" type="Panel" parent="VBoxContainer"]
+[node name="Panel4" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer"]
+[node name="TokenContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="Options/TokenContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Token"
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer5"]
+[node name="Button" type="Button" parent="Options/TokenContainer"]
 layout_mode = 2
 text = "Copy"
 flat = true
 
-[node name="Label5" type="Label" parent="VBoxContainer"]
+[node name="TokenLabel" type="Label" parent="Options"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -163,24 +194,35 @@ theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
 text = "48763abc"
 vertical_alignment = 1
 
-[node name="Panel5" type="Panel" parent="VBoxContainer"]
+[node name="Panel5" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+[node name="AgentStatusContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="Options/AgentStatusContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Agent Status"
 vertical_alignment = 1
 
-[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer4"]
+[node name="AgentStatusConnected" type="Label" parent="Options/AgentStatusContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.313726, 0.862745, 0.313726, 1)
+text = "Connected"
+vertical_alignment = 1
+
+[node name="AgentStatusDisconnected" type="Label" parent="Options/AgentStatusContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.862745, 0.313726, 0.313726, 1)
 text = "Disconnected"
 vertical_alignment = 1
