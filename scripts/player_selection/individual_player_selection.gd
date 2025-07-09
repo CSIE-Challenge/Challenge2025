@@ -25,8 +25,7 @@ var web_agent: WebAgent
 
 
 func _init() -> void:
-	# TODO: initialize python_subprocess and web_agent
-	python_subprocess = PythonSubprocessManager.new("asdflkj")
+	python_subprocess = PythonSubprocessManager.new()
 	add_child(python_subprocess)
 	web_agent = WebAgent.new()
 	add_child(web_agent)
