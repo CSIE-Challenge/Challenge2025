@@ -1,8 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://cbrul5lcfidfo"]
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_yr8mc"]
-[ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="2_gylbp"]
 [ext_resource type="Texture2D" uid="uid://dd5np3rao3t74" path="res://pixel_art/bullet/Fist.png" id="2_rap0f"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ky1gt"]
+radius = 17.0
+height = 50.0
 
 [node name="fist_2b" type="Area2D"]
 collision_layer = 2
@@ -12,8 +15,9 @@ is_tracking = false
 is_penetrating = true
 
 [node name="Body" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
 texture = ExtResource("2_rap0f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = ExtResource("2_gylbp")
+shape = SubResource("CapsuleShape2D_ky1gt")

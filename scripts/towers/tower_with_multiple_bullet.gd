@@ -17,7 +17,7 @@ func _ready():
 func _flip_sprite() -> void:
 	if target != null:
 		var desired_angle = (target.global_position - tower_body.global_position).angle()
-		sprite.flip_h = _determine_flipping(desired_angle)
+		sprite.flip_h = cos(desired_angle) < 0
 
 
 func _on_reload_timer_timeout() -> void:

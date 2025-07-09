@@ -2,7 +2,8 @@
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_m2v15"]
 [ext_resource type="Texture2D" uid="uid://df6h61mwoorfn" path="res://pixel_art/bullet/IceBall.png" id="2_m2v15"]
-[ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="3_v6pac"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gcfe"]
 
 [node name="Iceball_3a" type="Area2D"]
 collision_layer = 10
@@ -15,4 +16,4 @@ texture = ExtResource("2_m2v15")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = ExtResource("3_v6pac")
+shape = SubResource("CircleShape2D_4gcfe")

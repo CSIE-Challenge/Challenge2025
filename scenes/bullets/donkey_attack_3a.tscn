@@ -17,7 +17,6 @@ aoe_scale = 10.0
 movement_speed = 0.0
 lifespan_seconds = 0
 effect = 6
-effect_damage = 0
 effect_duration = 0
 effect_interval = 0.0
 

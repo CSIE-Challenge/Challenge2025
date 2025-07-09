@@ -2,7 +2,10 @@
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_aymp5"]
 [ext_resource type="Texture2D" uid="uid://bcuimnmosj4bm" path="res://pixel_art/bullet/Bomb.png" id="2_btgby"]
-[ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="2_eui0c"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kxxa2"]
+radius = 6.0
+height = 32.0
 
 [node name="Bullet_1" type="Area2D"]
 collision_layer = 2
@@ -16,4 +19,4 @@ texture = ExtResource("2_btgby")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
-shape = ExtResource("2_eui0c")
+shape = SubResource("CapsuleShape2D_kxxa2")
