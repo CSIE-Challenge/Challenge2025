@@ -38,7 +38,7 @@ class TerrainType(IntEnum):
 
 
 class TowerType(IntEnum):
-    BASIC = auto()
+    BASIC = 0
 
 
 class EnemyType(IntEnum):
@@ -95,7 +95,7 @@ class ApiException(Exception):
 class Tower:
     def __init__(self, _type: TowerType, position: Vector2, level: int, aim: bool = True, 
                  anti_air: bool = False, bullet_number: int = 1, reload: int = 60, 
-                 range: int = 100, damage: int = 10) -> None:
+                 range: int = 100, damage: int = 10, bullet_effect: str = 'none') -> None:
         self.type = _type
         self.position = position
         self.level = level
@@ -105,7 +105,7 @@ class Tower:
         self.reload = reload
         self.range = range
         self.damage = damage
-        self.bullet_effect = 'none'
+        self.bullet_effect = bullet_effect
 
     @classmethod
     def from_dict(cls, data: dict) -> 'Tower':
