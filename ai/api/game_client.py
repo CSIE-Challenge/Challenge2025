@@ -87,8 +87,8 @@ class GameClient(GameClientBase):
     def send_chat(self, msg: str) -> bool:
         raise NotImplementedError
     
-    @game_command(CommandType.GET_CHAT_HISTORY, [int], str)
-    def get_chat_history(self, num: int) -> str:
+    @game_command(CommandType.GET_CHAT_HISTORY, [int], list[tuple[int, str]])
+    def get_chat_history(self, num: int) -> list[tuple[int, str]]:
         raise NotImplementedError
 
     @game_command(CommandType.GET_MONEY, [bool], int)
