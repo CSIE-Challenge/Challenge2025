@@ -24,7 +24,8 @@ func set_controllers(
 
 
 func _ready() -> void:
-	# start game timer
+	$Screen/Bottom/LeftGame.op_game = $Screen/Bottom/RightGame
+	$Screen/Bottom/RightGame.op_game = $Screen/Bottom/LeftGame
 	$GameTimer.wait_time = GAME_DURATION
 	$GameTimer.one_shot = true
 	$StageSwitchTimer.wait_time = GAME_DURATION * 0.7

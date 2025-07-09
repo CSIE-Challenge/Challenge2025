@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://pixel_art/tower/BombPipe.png" id="3_efhko"]
 [ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://pixel_art/tower/BombPipeFire.png" id="4_ue8gv"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_xem8o"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_efhko"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -43,8 +43,13 @@ bullet_scene = ExtResource("2_efhko")
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+<<<<<<< HEAD
 >>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_xem8o")
+=======
+position = Vector2(0, 7.68246)
+sprite_frames = SubResource("SpriteFrames_efhko")
+>>>>>>> df94f02 (feat: updates on freeze effect, fort position)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

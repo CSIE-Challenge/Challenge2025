@@ -42,8 +42,13 @@ bullet_scene = ExtResource("2_7gee1")
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+<<<<<<< HEAD
 >>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
+=======
+position = Vector2(0, 7.68246)
+>>>>>>> df94f02 (feat: updates on freeze effect, fort position)
 sprite_frames = SubResource("SpriteFrames_5qvc3")
+frame_progress = 0.0636232
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
