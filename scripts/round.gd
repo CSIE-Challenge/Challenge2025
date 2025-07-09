@@ -1,7 +1,7 @@
 class_name Round
 extends Control
 
-const GAME_DURATION = 180.0
+const GAME_DURATION = 10.0
 
 @export var game_timer_label: Label
 @export var score_bar: ScoreBar
@@ -83,5 +83,4 @@ func _on_game_timer_timeout():
 	end_scene.player1_money = game_1p.money
 	end_scene.player2_money = game_2p.money
 	get_tree().get_root().add_child(end_scene)
-	get_tree().current_scene.queue_free()
-	get_tree().current_scene = end_scene
+	queue_free()
