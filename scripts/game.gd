@@ -61,10 +61,9 @@ func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	if not (_is_buildable(tower, cell_pos) and spend(tower.building_cost)):
 		return
 	var global_pos = _map.cell_to_global(cell_pos)
-
+	built_towers[cell_pos] = tower
 	self.add_child(tower)
 	tower.enable(global_pos)
-	built_towers[cell_pos] = tower
 
 
 func _on_buy_tower(tower_scene: PackedScene):
