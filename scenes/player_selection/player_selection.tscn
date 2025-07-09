@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://4n6lbd6ccvkh"]
+[gd_scene load_steps=6 format=3 uid="uid://4n6lbd6ccvkh"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vxqyd"]
 [ext_resource type="Texture2D" uid="uid://kpvbltopk254" path="res://assets/ui/background.png" id="2_0w1p3"]
+[ext_resource type="Script" uid="uid://c2y16xmq3qenw" path="res://scripts/player_selection/player_selection.gd" id="2_vo1kg"]
 [ext_resource type="PackedScene" uid="uid://2vyhv0c7ehjb" path="res://scenes/player_selection/individual_player_selection.tscn" id="4_vo1kg"]
 [ext_resource type="Texture2D" uid="uid://cnwky8dhvi1x" path="res://assets/ui/coin.png" id="5_rp0cw"]
 
@@ -13,6 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_vxqyd")
+script = ExtResource("2_vo1kg")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -51,7 +53,7 @@ theme_override_constants/separation = 30
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="Panel1P" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_vo1kg")]
+[node name="Selection1P" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_vo1kg")]
 layout_mode = 2
 
 [node name="PanelMap" type="Panel" parent="VBoxContainer/HBoxContainer"]
@@ -99,8 +101,9 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.212305, 0.212305, 0.212305, 1)
 
-[node name="Panel2P2" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_vo1kg")]
+[node name="Selection2P" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_vo1kg")]
 layout_mode = 2
+player_identifier = "Player 2"
 
 [node name="StartButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -108,3 +111,5 @@ size_flags_horizontal = 4
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 50
 text = "START"
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
