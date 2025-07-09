@@ -219,7 +219,6 @@ text = "Connected"
 vertical_alignment = 1
 
 [node name="AgentStatusDisconnected" type="Label" parent="Options/AgentStatusContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 1
