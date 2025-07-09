@@ -26,3 +26,11 @@ class GameClient(GameClientBase):
     @game_command(CommandType.GET_INCOME, [bool], int)
     def get_income(self, owned: bool) -> int:
         raise NotImplementedError
+    
+    @game_command(CommandType.GET_ALL_TOWERS, [bool], TowerType)
+    def get_all_towers(self, owned: bool) -> list[TowerType]:
+        raise NotImplementedError
+
+    @game_command(CommandType.GET_TOWER, [Vector2], TowerType)
+    def get_tower(self, coord: Vector2) -> TowerType:
+        raise NotImplementedError
