@@ -173,6 +173,7 @@ func _get_all_towers(_owned: bool) -> Array:
 	if _owned:
 		for val in game_self.built_towers.values():
 			towers.append(val)
+		print(towers)
 		return [StatusCode.OK, towers]
 	for val in game_other.built_towers.values():
 		towers.append(val)

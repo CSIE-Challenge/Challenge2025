@@ -97,12 +97,16 @@ func _place_tower(cell_pos: Vector2i, tower: Tower, map: Map) -> void:
 		_on_tower_sold(previous_tower, null, depreciation)
 
 	var global_pos = _map.cell_to_global(cell_pos)
-
+	built_towers[cell_pos] = tower
 	self.add_child(tower)
+<<<<<<< HEAD
 	tower.enable(global_pos, map)
 
 	money -= tower.building_cost
 	built_towers[cell_pos] = tower
+=======
+	tower.enable(global_pos)
+>>>>>>> b05bbd7 (fix: value type in dictionary)
 
 
 func _on_buy_tower(tower_scene: PackedScene):
