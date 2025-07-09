@@ -30,6 +30,7 @@ func enable(_global_position: Vector2) -> void:
 	enabled = true
 	global_position = _global_position
 	reload_timer.start(reload_seconds)
+	AudioManager.tower_place.play()
 
 
 func _refresh_target():

@@ -31,6 +31,7 @@ func _on_killed() -> void:
 
 func _on_reached() -> void:
 	game.damage_taken.emit(damage)
+	AudioManager.enemy_attack.play()
 	path_follow.queue_free()
 
 

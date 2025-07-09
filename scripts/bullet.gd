@@ -17,6 +17,7 @@ var timer = Timer.new()
 
 
 func init(origin, orientation, _target) -> void:
+	AudioManager.tower_shoot.play()
 	global_position = origin
 	start_position = origin
 	rotation = orientation

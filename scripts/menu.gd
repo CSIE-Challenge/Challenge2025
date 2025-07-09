@@ -2,10 +2,12 @@ extends Control
 
 
 func _on_start_pressed() -> void:
+	AudioManager.button_on_click.play()
 	get_tree().change_scene_to_file("res://scenes/round.tscn")
 
 
 func _on_about_pressed() -> void:
+	AudioManager.button_on_click.play()
 	get_tree().change_scene_to_file("res://scenes/about.tscn")
 
 
