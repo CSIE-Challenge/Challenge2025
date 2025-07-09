@@ -34,4 +34,14 @@ func _process(_delta: float) -> void:
 
 func _on_game_timer_timeout():
 	# load end scene
-	get_tree().change_scene_to_file("res://scenes/end.tscn")
+	var end_scene = preload("res://scenes/end.tscn").instantiate()
+	end_scene.player1_score = game_1p.score
+	end_scene.player2_score = game_2p.score
+	# TODO: send real kill count stats
+	end_scene.player1_kill_cnt = -1
+	end_scene.player2_kill_cnt = -1
+	end_scene.player1_money = game_1p.money
+	end_scene.player2_money = game_2p.money
+	get_tree().get_root().add_child(end_scene)
+	get_tree().current_scene.queue_free()
+	get_tree().current_scene = end_scene
