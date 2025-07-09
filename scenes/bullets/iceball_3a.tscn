@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bkocgekh6mgod"]
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_m2v15"]
-[ext_resource type="Texture2D" uid="uid://ck2spqdqr8fbc" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile297.png" id="2_6yhae"]
+[ext_resource type="Texture2D" uid="uid://df6h61mwoorfn" path="res://pixel_art/bullet/IceBall.png" id="2_m2v15"]
 [ext_resource type="Shape2D" uid="uid://clnn6uaphxpo4" path="res://assets/collision/bullet.tres" id="3_v6pac"]
 
 [node name="Iceball_3a" type="Area2D"]
@@ -11,8 +11,7 @@ script = ExtResource("1_m2v15")
 is_anti_air = true
 
 [node name="Body" type="Sprite2D" parent="."]
-rotation = -1.5708
-texture = ExtResource("2_6yhae")
+texture = ExtResource("2_m2v15")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
