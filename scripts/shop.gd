@@ -11,8 +11,13 @@ const TOWER_SCENES := [
 const SHOP_ITEM_SCENE := preload("res://scenes/ui/shop_item.tscn")
 
 @export var options_container: VBoxContainer
-@export var building_game: Game
-@export var opposing_game: Game
+var building_game: Game
+var opposing_game: Game
+
+
+func start_game(_building_game: Game, _opposing_game: Game) -> void:
+	building_game = _building_game
+	opposing_game = _opposing_game
 
 
 func _ready() -> void:
