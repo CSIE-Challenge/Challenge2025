@@ -12,6 +12,7 @@ is_tracking = false
 is_penetrating = true
 
 [node name="Body" type="Sprite2D" parent="."]
+position = Vector2(0, -2)
 texture = ExtResource("2_a6fd4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
