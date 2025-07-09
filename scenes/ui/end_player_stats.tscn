@@ -3,8 +3,10 @@
 [sub_resource type="CanvasTexture" id="CanvasTexture_yncrm"]
 
 [sub_resource type="SystemFont" id="SystemFont_mlimi"]
+subpixel_positioning = 0
 
 [sub_resource type="SystemFont" id="SystemFont_yncrm"]
+subpixel_positioning = 0
 
 [node name="EndPlayerStats" type="Node2D"]
 
@@ -13,7 +15,7 @@ offset_right = 658.0
 offset_bottom = 553.0
 texture = SubResource("CanvasTexture_yncrm")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="player_stats" type="RichTextLabel" parent="."]
 modulate = Color(0.0430392, 0.0430392, 0.0430392, 1)
 offset_left = 66.0
 offset_top = 160.0
@@ -21,18 +23,18 @@ offset_right = 577.0
 offset_bottom = 503.0
 theme_override_fonts/normal_font = SubResource("SystemFont_mlimi")
 theme_override_font_sizes/normal_font_size = 80
-text = "Score: 200
-Kill: 30
-Balance: 250"
+text = "Score: {score}
+Kill: {kill_cnt}
+Balance: {balance}"
 vertical_alignment = 3
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+[node name="player_name" type="RichTextLabel" parent="."]
 modulate = Color(0, 0, 0, 1)
 self_modulate = Color(0, 0, 0, 1)
 offset_right = 668.0
-offset_bottom = 132.0
+offset_bottom = 170.0
 theme_override_fonts/normal_font = SubResource("SystemFont_yncrm")
 theme_override_font_sizes/normal_font_size = 100
-text = "<Name>"
+text = "{name}"
 horizontal_alignment = 1
 vertical_alignment = 1
