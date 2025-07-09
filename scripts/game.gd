@@ -181,9 +181,9 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	var path: Path2D
 	match source:
 		EnemySource.SYSTEM:
-			path = _map.system_path
+			path = _map.flying_system_path if enemy.flying else _map.system_path
 		EnemySource.OPPONENT:
-			path = _map.opponent_path
+			path = _map.flying_opponent_path if enemy.flying else _map.opponent_path
 	path.add_child(enemy.path_follow)
 
 

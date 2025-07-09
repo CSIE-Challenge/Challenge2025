@@ -26,7 +26,7 @@
 		"max_health": 20,
 		"max_speed": 120,
 		"damage": 10,
-		"flying": true
+		"flying": false
 	}
   },
   "buzzy_beetle": {
