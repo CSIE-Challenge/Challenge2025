@@ -169,12 +169,23 @@ func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
 
 func _get_all_towers(_owned: bool) -> Array:
 	print("[GetAllTower] Get request")
-	return [StatusCode.OK]
+	var towers: Array = []
+	if _owned:
+		for val in game_self.built_towers.values():
+			towers.append(val)
+		return [StatusCode.OK, towers]
+	for val in game_other.built_towers.values():
+		towers.append(val)
+	return [StatusCode.OK, towers]
 
 
 func _get_tower(_coord: Vector2i) -> Array:
 	print("[GetTower] Get request")
-	return [StatusCode.OK]
+	if game_self.built_towers.has(_coord):
+		return [StatusCode.OK, game_self.built_towers[_coord]]
+	if game_other.built_towers.has(_coord):
+		return [StatusCode.OK, game_other.built_towers[_coord]]
+	return [StatusCode.INTERNAL_ERR, "[GetTower] Error: no tower found"]
 
 
 #endregion
