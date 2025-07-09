@@ -213,8 +213,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_ALL_TOWERS, [bool], list[TowerType])
-    def get_all_towers(self, owned: bool) -> list[TowerType]:
+    @game_command(CommandType.GET_ALL_TOWERS, [bool], list[Tower])
+    def get_all_towers(self, owned: bool) -> list[Tower]:
         """
         # Get All Towers
         取得所有塔的資訊。
@@ -234,8 +234,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_TOWER, [Vector2], TowerType)
-    def get_tower(self, coord: Vector2) -> TowerType:
+    @game_command(CommandType.GET_TOWER, [Vector2], Tower)
+    def get_tower(self, coord: Vector2) -> Tower:
         """
         # Get Tower
         取得指定位置的塔的資訊。

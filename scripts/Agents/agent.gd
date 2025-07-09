@@ -1,7 +1,6 @@
 class_name Agent
 extends Node
 
-enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
 enum TowerType { BASIC }
 enum EnemyType { BASIC }
@@ -22,7 +21,6 @@ enum StatusCode {
 const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 var type: AgentType = AgentType.NIL
-var game_status: GameStatus = GameStatus.PREPARE
 var money: int
 var score: int
 var player_id: int
@@ -39,7 +37,6 @@ func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
 	ongoing_round = _round
 	game_self = _game_self
 	game_other = _game_other
-	game_status = GameStatus.START
 
 
 #region MapInfo
@@ -140,10 +137,6 @@ func _get_income(_owned: bool) -> Array:
 	return [StatusCode.OK, income]
 
 
-func _get_game_status() -> Array:
-	return [StatusCode.OK, game_status]
-
-
 #endregion
 
 #region Tower
@@ -168,24 +161,29 @@ func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
 
 
 func _get_all_towers(_owned: bool) -> Array:
-	print("[GetAllTower] Get request")
+	print("[GetAllTowers] Get request")
 	var towers: Array = []
 	if _owned:
-		for val in game_self.built_towers.values():
-			towers.append(val)
-		print(towers)
+		for key in game_self.built_towers.keys():
+			var tower_dict = game_self.built_towers[key].to_dict(key)
+			tower_dict["type"] = TowerType.BASIC
+			towers.append(tower_dict)
 		return [StatusCode.OK, towers]
-	for val in game_other.built_towers.values():
-		towers.append(val)
+	for key in game_other.built_towers.keys():
+		var tower_dict = game_other.built_towers[key].to_dict(key)
+		tower_dict["type"] = TowerType.BASIC
+		towers.append(tower_dict)
 	return [StatusCode.OK, towers]
 
 
 func _get_tower(_coord: Vector2i) -> Array:
 	print("[GetTower] Get request")
 	if game_self.built_towers.has(_coord):
-		return [StatusCode.OK, game_self.built_towers[_coord]]
+		var dict = game_self.built_towers[_coord].to_dict(_coord)
+		return [StatusCode.OK, dict]
 	if game_other.built_towers.has(_coord):
-		return [StatusCode.OK, game_other.built_towers[_coord]]
+		var dict = game_other.built_towers[_coord].to_dict(_coord)
+		return [StatusCode.OK, dict]
 	return [StatusCode.INTERNAL_ERR, "[GetTower] Error: no tower found"]
 
 

@@ -8,9 +8,8 @@ print(api.get_scores(False))
 print(api.get_current_wave())
 start = time.perf_counter()
 for _ in range(10):
-    towers = api.get_all_towers(True)  # 獲取玩家自己的所有塔
-    for tower in towers:
-        print(tower)
+    exist = api.get_tower(Vector2(8, 4))
+    print(exist)
 
 end = time.perf_counter()
 elapsed = end - start
