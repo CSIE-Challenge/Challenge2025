@@ -1,0 +1,287 @@
+[gd_scene load_steps=14 format=3 uid="uid://cjayw2pm0713u"]
+
+[ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
+[ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
+[ext_resource type="PackedScene" uid="uid://cdv4tuh5x2nw2" path="res://scenes/player_status.tscn" id="3_g6yuj"]
+[ext_resource type="PackedScene" uid="uid://c2q3w8rb1e31l" path="res://scenes/score.tscn" id="3_snxki"]
+[ext_resource type="PackedScene" uid="uid://bgtv02vp8m02u" path="res://scenes/game.tscn" id="3_vxv1r"]
+[ext_resource type="Texture2D" uid="uid://b6pbjn41fp243" path="res://assets/ui/score.png" id="4_g6yuj"]
+[ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
+[ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scripts/chat.gd" id="5_vxv1r"]
+[ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
+[ext_resource type="Texture2D" uid="uid://bvlbsdkpegbiw" path="res://assets/ui/game-status.png" id="6_ojwvf"]
+[ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
+[ext_resource type="Texture2D" uid="uid://dp2dc15q5igfw" path="res://assets/ui/shop.png" id="8_p5kuw"]
+[ext_resource type="Texture2D" uid="uid://cmtdm1uj8hu0a" path="res://assets/ui/chat.png" id="11_i86cr"]
+
+[node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar", "game_1p", "game_2p")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_vfk7k")
+script = ExtResource("2_b0w8h")
+game_timer_label = NodePath("Screen/Bottom/Mid/GameStatus/Countdown")
+score_bar = NodePath("Screen/Top/TextureRect/Score")
+game_1p = NodePath("Screen/Bottom/Game1P")
+game_2p = NodePath("Screen/Bottom/Game2P")
+
+[node name="Screen" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Top" type="HBoxContainer" parent="Screen"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="Status1P" parent="Screen/Top" instance=ExtResource("3_g6yuj")]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Screen/Top"]
+custom_minimum_size = Vector2(1024, 80)
+layout_mode = 2
+texture = ExtResource("4_g6yuj")
+
+[node name="Score" parent="Screen/Top/TextureRect" instance=ExtResource("3_snxki")]
+custom_minimum_size = Vector2(1008, 60)
+layout_mode = 2
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 1016.0
+offset_bottom = 70.0
+
+[node name="Status2P" parent="Screen/Top" instance=ExtResource("3_g6yuj")]
+layout_mode = 2
+
+[node name="Bottom" type="HBoxContainer" parent="Screen"]
+custom_minimum_size = Vector2(0, 1000)
+layout_mode = 2
+
+[node name="Game1P" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
+layout_mode = 2
+spawner = NodePath("../../../Spawner")
+status_panel = NodePath("../../Top/Status1P")
+
+[node name="Mid" type="VBoxContainer" parent="Screen/Bottom"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GameStatus" type="TextureRect" parent="Screen/Bottom/Mid"]
+custom_minimum_size = Vector2(0, 152)
+layout_mode = 2
+texture = ExtResource("6_ojwvf")
+
+[node name="Countdown" type="Label" parent="Screen/Bottom/Mid/GameStatus"]
+layout_mode = 2
+offset_top = 16.0
+offset_right = 420.0
+offset_bottom = 100.0
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 72
+text = "03:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WaveInfo" type="Label" parent="Screen/Bottom/Mid/GameStatus"]
+layout_mode = 2
+offset_top = 78.0
+offset_right = 420.0
+offset_bottom = 154.0
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 24
+text = "Wave 10          00:24"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShopAndChat" type="Control" parent="Screen/Bottom/Mid"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="TabContainer" type="TabContainer" parent="Screen/Bottom/Mid/ShopAndChat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tab_alignment = 1
+current_tab = 0
+tabs_visible = false
+
+[node name="Shop" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer" node_paths=PackedStringArray("options_container")]
+layout_mode = 2
+texture = ExtResource("8_p5kuw")
+script = ExtResource("4_snxki")
+options_container = NodePath("MarginContainer/ScrollContainer/VBoxContainer")
+metadata/_tab_index = 0
+
+[node name="Switch" type="TextureButton" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 8.0
+offset_right = 194.0
+offset_bottom = 64.0
+grow_horizontal = 2
+
+[node name="Shop" type="Label" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -138.0
+offset_top = 13.0
+offset_right = -38.0
+offset_bottom = 69.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 36
+text = "Shop"
+
+[node name="Chat" type="Label" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 64.0
+offset_top = 13.0
+offset_right = 164.0
+offset_bottom = 69.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 36
+text = "Chat"
+
+[node name="MarginContainer" type="MarginContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop"]
+custom_minimum_size = Vector2(0, 784)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 1
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer"]
+layout_mode = 2
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Chat" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("11_i86cr")
+script = ExtResource("5_vxv1r")
+metadata/_tab_index = 1
+
+[node name="Switch" type="TextureButton" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -194.0
+offset_right = -8.0
+offset_bottom = 64.0
+grow_horizontal = 2
+
+[node name="Shop" type="Label" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -138.0
+offset_top = 13.0
+offset_right = -38.0
+offset_bottom = 69.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 36
+text = "Shop"
+
+[node name="Chat" type="Label" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 64.0
+offset_top = 13.0
+offset_right = 164.0
+offset_bottom = 69.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 36
+text = "Chat"
+
+[node name="MarginContainer" type="MarginContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="LineEdit" type="LineEdit" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -68.0
+offset_right = -28.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 0
+placeholder_text = "Chat something..."
+
+[node name="Game2P" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
+layout_mode = 2
+spawner = NodePath("../../../Spawner")
+status_panel = NodePath("../../Top/Status2P")
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("wave_info_label")]
+script = ExtResource("6_b1bvr")
+wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/WaveInfo")
+
+[node name="PauseMenu" parent="." instance=ExtResource("7_unjed")]
+visible = false
+layout_mode = 1
+
+[connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
+[connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]
+[connection signal="text_submitted" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/LineEdit" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_line_edit_text_submitted"]
+[connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]

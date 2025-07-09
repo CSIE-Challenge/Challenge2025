@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn0pas1ennupu"]
+
+[ext_resource type="Script" uid="uid://bmi6xloxalyfa" path="res://scripts/tower_ui.gd" id="1_gxmcb"]
+
+[node name="TowerUI" type="VBoxContainer"]
+z_index = 1
+offset_right = 75.0
+offset_bottom = 31.0
+script = ExtResource("1_gxmcb")
+
+[node name="SellButton" type="Button" parent="."]
+layout_mode = 2
+text = "Sell"
+
+[connection signal="pressed" from="SellButton" to="." method="_on_sell_button_pressed"]

@@ -1,0 +1,62 @@
+[
+  {
+    "wave_number": 1,
+    "wave_name": "Hello World",
+    "units": [{ "name": "goomba", "count": 4 }],
+    "method": "sequential",
+    "delay": 1.0
+  },
+  {
+    "wave_number": 2,
+    "wave_name": "The Beginning",
+    "units": [
+      { "name": "goomba", "count": 10 },
+      { "name": "koopa_paratroopa", "count": 5 },
+      { "name": "spiny_shell", "count": 3 }
+    ],
+    "method": "alternating",
+    "delay": 1.0
+  },
+  {
+    "wave_number": 3,
+    "wave_name": "The Challenge",
+    "units": [
+      { "name": "goomba", "count": 15 },
+      { "name": "koopa_paratroopa", "count": 10 },
+      { "name": "spiny_shell", "count": 5 },
+      { "name": "buzzy_beetle", "count": 3 },
+      { "name": "wiggler", "count": 2 }
+    ],
+    "method": "random",
+    "delay": 1.0
+  },
+  {
+    "wave_number": 4,
+    "wave_name": "The Gauntlet",
+    "units": [
+      { "name": "goomba", "count": 20 },
+      { "name": "koopa_paratroopa", "count": 15 },
+      { "name": "spiny_shell", "count": 10 },
+      { "name": "buzzy_beetle", "count": 5 },
+      { "name": "wiggler", "count": 3 },
+      { "name": "koopa_jr", "count": 2 }
+    ],
+    "method": "sequential",
+    "delay": 1.0
+  },
+  {
+    "wave_number": 5,
+    "wave_name": "The Final Stand",
+    "units": [
+      { "name": "goomba", "count": 25 },
+      { "name": "koopa_paratroopa", "count": 20 },
+      { "name": "spiny_shell", "count": 15 },
+      { "name": "buzzy_beetle", "count": 10 },
+      { "name": "wiggler", "count": 5 },
+      { "name": "koopa_jr", "count": 3 },
+      { "name": "koopa", "count": 1 }
+    ],
+    "method": "random",
+    "delay": 1.0
+  }
+]

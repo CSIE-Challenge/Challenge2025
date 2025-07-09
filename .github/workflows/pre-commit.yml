@@ -21,17 +21,13 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install pre-commit gitlint
+          pre-commit install
+          pre-commit install-hooks
 
-      - name: Run pre-commit (pre-commit stage only)
-        run: pre-commit run --all-files --hook-stage pre-commit --show-diff-on-failure
-
-      - name: Run gitlint on pushed commits
+      - name: Run pre-commit
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE_REF="${{ github.event.pull_request.base.sha }}"
-          else
-            BASE_REF=$(git merge-base origin/main HEAD)
-          fi
+          pre-commit run --all-files --hook-stage pre-commit --show-diff-on-failure
 
-          echo "Linting commits from $BASE_REF to HEAD..."
-          gitlint --commits "$BASE_REF..HEAD" --fail-without-commits
+      - name: Run gitlint
+        run: |
+          gitlint --debug

@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://biajjuyo25cg2"]
+
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_bkifg"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
+load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rxsrj"]
+radius = 7.0
+
+[node name="Donkey_attack_1" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_bkifg")
+is_tracking = false
+aoe_scale = 10.0
+movement_speed = 0.0
+lifespan_seconds = 0
+effect_duration = 0
+effect_interval = 0.0
+
+[node name="Body" type="Sprite2D" parent="."]
+rotation = -1.5708
+texture = SubResource("CompressedTexture2D_n5hp2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CircleShape2D_rxsrj")
