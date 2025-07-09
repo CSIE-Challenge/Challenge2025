@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://b0ol4aa2k4bhu"]
+[gd_scene load_steps=5 format=3 uid="uid://b0ol4aa2k4bhu"]
 
 [ext_resource type="Texture2D" uid="uid://bijh20l2fexgv" path="res://assets/background_image/end_scene.png" id="1_mwn6m"]
+[ext_resource type="PackedScene" uid="uid://cu6crct501l5t" path="res://scenes/ui/end_player_stats.tscn" id="2_3d26k"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_p7m4f"]
 
 [sub_resource type="SystemFont" id="SystemFont_mwn6m"]
 
@@ -10,6 +13,14 @@
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("1_mwn6m")
+
+[node name="box" type="TextureRect" parent="."]
+modulate = Color(0, 0, 0, 0.294118)
+offset_left = 69.0
+offset_top = 85.0
+offset_right = 1851.0
+offset_bottom = 1000.0
+texture = SubResource("CanvasTexture_p7m4f")
 
 [node name="winner_text" type="RichTextLabel" parent="."]
 offset_left = 75.0
@@ -21,3 +32,9 @@ theme_override_font_sizes/normal_font_size = 100
 text = "Winner: <Team name>"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="EndPlayerStats" parent="." instance=ExtResource("2_3d26k")]
+position = Vector2(243, 345)
+
+[node name="EndPlayerStats2" parent="." instance=ExtResource("2_3d26k")]
+position = Vector2(1030, 338)
