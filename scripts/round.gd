@@ -18,6 +18,10 @@ func set_controllers(
 ) -> void:
 	manual_controlled = _manual_controlled
 
+	# notify web agents
+	player_selection_1p.web_agent.start_game(self, game_1p, game_2p)
+	player_selection_2p.web_agent.start_game(self, game_2p, game_1p)
+
 
 func _ready() -> void:
 	# start game timer

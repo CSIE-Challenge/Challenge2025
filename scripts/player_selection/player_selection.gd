@@ -32,6 +32,6 @@ func _on_game_start_timer_timeout() -> void:
 		manual_controlled = 2
 
 	var the_round = ROUND_SCENE.instantiate()
-	the_round.set_controllers(selection_1p, selection_2p, manual_controlled)
 	get_tree().get_root().add_child(the_round)
+	the_round.set_controllers(selection_1p, selection_2p, manual_controlled)
 	queue_free()
