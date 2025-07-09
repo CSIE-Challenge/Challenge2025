@@ -9,6 +9,12 @@ const GAME_DURATION = 180.0
 @export var game_2p: Game
 
 
+func set_controllers(
+	_web_agent_1p: WebAgent, _web_agent_2p: WebAgent, _manual_controlled: int
+) -> void:
+	pass
+
+
 func _ready() -> void:
 	$GameTimer.wait_time = GAME_DURATION
 	$GameTimer.one_shot = true

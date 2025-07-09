@@ -89,6 +89,17 @@ func _process(_delta: float) -> void:
 #endregion
 
 
+func _remove_handlers(sig: Signal) -> void:
+	var conns = sig.get_connections()
+	for iter in conns:
+		sig.disconnect(iter["callable"])
+
+
+func freeze() -> void:
+	_remove_handlers(manual_control_off_button.pressed)
+	_remove_handlers(manual_control_on_button.pressed)
+
+
 func _display_fields() -> void:
 	# manual control
 	manual_control_off_button.visible = not manual_control
