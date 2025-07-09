@@ -1,3 +1,10 @@
+import os
+
+
+def is_auto_invoked() -> bool:
+    return os.environ.get("IS_CHALLENGE_GAME_PROCESS") == "TRUE"
+
+
 def enforce_type(name, obj, *args):
     if not isinstance(obj, args):
         types = " | ".join(list(map(lambda x: x.__name__, args)))
