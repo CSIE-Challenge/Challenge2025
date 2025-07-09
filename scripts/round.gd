@@ -49,6 +49,8 @@ func _ready() -> void:
 	# setup signals for the games
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
 	game_2p.damage_taken.connect(game_1p.on_damage_dealt)
+	game_1p.spawner.subsidize_loser.connect(game_1p.on_subsidization)
+	game_2p.spawner.subsidize_loser.connect(game_2p.on_subsidization)
 
 
 func get_formatted_time() -> String:

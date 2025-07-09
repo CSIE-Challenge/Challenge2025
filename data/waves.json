@@ -4,6 +4,7 @@
     "wave_name": "Hello World",
     "units": [{ "name": "goomba", "count": 4 }],
     "method": "sequential",
+	"subsidy": 0,
     "delay": 1.0
   },
   {
@@ -15,6 +16,7 @@
       { "name": "spiny_shell", "count": 3 }
     ],
     "method": "alternating",
+	"subsidy": 10,
     "delay": 1.0
   },
   {
@@ -28,6 +30,7 @@
       { "name": "wiggler", "count": 2 }
     ],
     "method": "random",
+	"subsidy": 50,
     "delay": 1.0
   },
   {
@@ -42,6 +45,7 @@
       { "name": "koopa_jr", "count": 2 }
     ],
     "method": "sequential",
+	"subsidy": 100,
     "delay": 1.0
   },
   {
@@ -57,6 +61,7 @@
       { "name": "koopa", "count": 1 }
     ],
     "method": "random",
+	"subsidy": 200,
     "delay": 1.0
   }
 ]
