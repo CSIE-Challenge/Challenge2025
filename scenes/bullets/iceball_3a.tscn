@@ -10,6 +10,7 @@ collision_layer = 10
 collision_mask = 0
 script = ExtResource("1_m2v15")
 is_anti_air = true
+effect = 4
 
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("2_m2v15")
