@@ -19,6 +19,8 @@ func _process(_delta: float) -> void:
 
 
 func _on_start_button_pressed() -> void:
+	if not game_start_timer.is_stopped():
+		return
 	selection_1p.freeze()
 	selection_2p.freeze()
 	game_start_timer.start()
