@@ -265,9 +265,28 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 	return [StatusCode.OK, spell_node.cooldown_timer.get_time_left()]
 
 
-func _get_spell_cost() -> Array:
+func _get_spell_cost(_type: SpellType) -> Array:
 	print("[GetAllSpellCost] Get request")
-	return [StatusCode.OK]
+	var spell_manager: Node = game_self.get_node("SpellManager")
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR, -1]
+
+	var spell_node: Node = null
+	match _type:
+		SpellType.DOUBLE_INCOME:
+			spell_node = spell_manager.get_node("DoubleIncome")
+		SpellType.POISON:
+			spell_node = spell_manager.get_node("Poison")
+		SpellType.TELEPORT:
+			spell_node = spell_manager.get_node("Teleport")
+
+	if spell_node == null:
+		print("[ERROR] node not found spell")
+		return [StatusCode.INTERNAL_ERR, -1]
+
+	return [StatusCode.OK, spell_node.metadata.stats.cost]
 
 
 func _get_effective_spells(_owned: bool) -> Array:
