@@ -18,7 +18,7 @@ func _on_line_edit_text_submitted(text: String) -> void:
 
 
 func _on_switch_pressed() -> void:
-    if not always_visible:
+	if not always_visible:
 		self.visible = false
 
 

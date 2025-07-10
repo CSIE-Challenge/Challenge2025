@@ -103,6 +103,7 @@ func transport():
 
 #endregion
 
+
 # _init not overridden because PackedScene.instantiate() does not accept arguments
 func init(_source: Game.EnemySource) -> void:
 	source = _source
@@ -119,6 +120,7 @@ func _ready():
 	add_to_group("enemies")
 	$AnimatedSprite2D.play("default")
 	self.z_index = 10  # For effect to be on the ground
+
 
 func _process(delta):
 	path_follow.progress += speed_rate.min() * max_speed * delta
