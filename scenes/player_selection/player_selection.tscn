@@ -61,13 +61,25 @@ layout_mode = 2
 custom_minimum_size = Vector2(450, 700)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/PanelMap"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PanelMap"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
 anchor_top = 0.05
 anchor_right = 0.9
 anchor_bottom = 0.15
+theme_override_font_sizes/font_size = 50
+text = "Map"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/PanelMap"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.2
+anchor_right = 0.9
+anchor_bottom = 0.2
 grow_horizontal = 2
 
 [node name="TextureButtonLeft" type="TextureButton" parent="VBoxContainer/HBoxContainer/PanelMap/HBoxContainer"]
@@ -84,7 +96,6 @@ flip_h = true
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PanelMap/HBoxContainer"]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
 text = "Random"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -105,10 +116,9 @@ clip_contents = true
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
-anchor_top = 0.2
+anchor_top = 0.28
 anchor_right = 0.9
-anchor_bottom = 0.9
-offset_bottom = -10.0
+anchor_bottom = 0.96
 grow_horizontal = 2
 grow_vertical = 2
 
