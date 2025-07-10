@@ -45,9 +45,10 @@ func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cell
 	self.add_child(previewed_node)
 
 
-# the previewed object intercepts input events before GUI, so that (for example)
-# when the player clicks on the GUI when previewing, he cancels the previewer
-# before the next interaction with the GUI
+# The previewed object should not intercepts input events before GUI since it will be otherwise not
+# intuitive. For example, when a tower preview is active and the player clicks to buy a (possibly
+# different) tower, the player should expect the button is pressed and the preview changed
+# accordingly. Therefore, this should use _unhandled_input.
 func _unhandled_input(event: InputEvent) -> void:
 	# left-clicked: select the current mouse position, or cancel if it is out of bounds
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
