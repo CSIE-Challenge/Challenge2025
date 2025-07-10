@@ -178,6 +178,17 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	enemy.max_health = stats.max_health
 	enemy.max_speed = stats.max_speed
 	enemy.damage = stats.damage
+	enemy.flying = stats.flying
+	enemy.armor = stats.armor
+	enemy.shield = stats.shield
+	enemy.knockback_resist = stats.knockback_resist
+	enemy.kill_reward = stats.kill_reward
+	if enemy.flying:
+		enemy.collision_layer = 4
+		enemy.collision_mask = 8
+	else:
+		enemy.collision_layer = 1
+		enemy.collision_mask = 2
 	return enemy
 
 
