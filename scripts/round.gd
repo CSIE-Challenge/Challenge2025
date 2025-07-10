@@ -27,6 +27,11 @@ func set_controllers(
 	player_selection_2p.web_agent.start_game(self, game_2p, game_1p)
 
 
+func set_maps(map: PackedScene):
+	game_1p.set_map(map)
+	game_2p.set_map(map)
+
+
 func _ready() -> void:
 	game_1p.op_game = game_2p
 	game_2p.op_game = game_1p
