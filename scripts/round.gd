@@ -90,3 +90,4 @@ func _on_game_timer_timeout():
 	end_scene.player2_money = game_2p.money
 	get_tree().get_root().add_child(end_scene)
 	queue_free()
+	Global.game_status = 4

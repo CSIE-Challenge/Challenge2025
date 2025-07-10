@@ -190,6 +190,10 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
+    @game_command(CommandType.GET_GAME_STATUS, [], GameStatus)
+    def get_game_status(self) -> GameStatus:
+        raise NotImplementedError
+    
     @game_command(CommandType.PLACE_TOWER, [TowerType, str, Vector2], None)
     def place_tower(self, type: TowerType, level: str, coord: Vector2) -> None:
         """

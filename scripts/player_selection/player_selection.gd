@@ -21,6 +21,7 @@ func _process(_delta: float) -> void:
 func _on_start_button_pressed() -> void:
 	if not game_start_timer.is_stopped():
 		return
+	Global.game_status = 1
 	selection_1p.freeze()
 	selection_2p.freeze()
 	game_start_timer.start()
@@ -37,3 +38,4 @@ func _on_game_start_timer_timeout() -> void:
 	the_round.set_controllers(selection_1p, selection_2p, manual_controlled)
 	get_tree().get_root().add_child(the_round)
 	queue_free()
+	Global.game_status = 2

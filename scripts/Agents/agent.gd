@@ -1,6 +1,6 @@
 class_name Agent
 extends Node
-enum GameStatus { PREPARE, START, READY, END }
+enum GameStatus { PREPARE, START, READY, PAUSE, END }
 enum AgentType { HUMAN, AI, NIL }
 enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 enum EnemyType { BASIC }
@@ -177,7 +177,19 @@ func _get_income(_owned: bool) -> Array:
 
 
 func _get_game_status() -> Array:
-	return [StatusCode.OK, game_status]
+	var status: GameStatus
+	match Global.game_status:
+		0:
+			status = GameStatus.PREPARE
+		1:
+			status = GameStatus.START
+		2:
+			status = GameStatus.READY
+		3:
+			status = GameStatus.PAUSE
+		4:
+			status = GameStatus.END
+	return [StatusCode.OK, status]
 
 
 #endregion

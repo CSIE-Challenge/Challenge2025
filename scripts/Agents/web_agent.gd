@@ -72,7 +72,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_TIME_UNTIL_NEXT_WAVE, [], _get_time_until_next_wave),
 		CommandHandler.new(CommandType.GET_MONEY, [TYPE_BOOL], _get_money),
 		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income),
-		#CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
+		CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
 		CommandHandler.new(
 			CommandType.PLACE_TOWER, [TYPE_INT, TYPE_STRING, TYPE_VECTOR2I], _place_tower
 		),
@@ -103,7 +103,7 @@ func _register_command_handlers() -> void:
 		if _command_handlers.has(handler.command_id):
 			pass  # error: duplicated handler id
 		_command_handlers[handler.command_id] = handler
-	_general_commands = {CommandType.GET_REMAIN_TIME: null}
+	_general_commands = {CommandType.GET_REMAIN_TIME: null, CommandType.GET_GAME_STATUS: null}
 
 
 func _init() -> void:

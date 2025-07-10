@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://b0ol4aa2k4bhu"]
 
 [ext_resource type="Texture2D" uid="uid://bijh20l2fexgv" path="res://assets/background_image/end_scene.png" id="1_mwn6m"]
-[ext_resource type="Script" uid="uid://2lonvhxt71ed" path="res://scripts/end.gd" id="1_p7m4f"]
+[ext_resource type="Script" path="res://scripts/end.gd" id="1_p7m4f"]
 [ext_resource type="PackedScene" uid="uid://cu6crct501l5t" path="res://scenes/ui/end_player_stats.tscn" id="2_3d26k"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_p7m4f"]

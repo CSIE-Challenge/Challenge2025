@@ -56,6 +56,13 @@ class SpellType(IntEnum):
     TELEPORT = auto()
 
 
+class GameStatus(IntEnum):
+    PREPARE = 0
+    START = 1
+    READY = 2
+    PAUSE = 3
+    END = 4
+
 class StatusCode(IntEnum):
     OK = 200
     ILLFORMED_COMMAND = 400
@@ -207,3 +214,15 @@ class Spell:
 
     def __repr__(self) -> str:
         return self.__str__()
+
+class Status:
+    def __init__(self, _type: GameStatus):
+        self.type = _type
+    
+    @classmethod
+    def from_int(cls, data: int) -> 'Status':
+        return cls(
+            _type = list(GameStatus)[data].name
+        )
+        
+    

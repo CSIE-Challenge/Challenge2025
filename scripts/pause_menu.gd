@@ -4,11 +4,13 @@ extends Control
 func pause():
 	get_tree().paused = true
 	self.visible = true
+	Global.game_status = 3
 
 
 func resume():
 	get_tree().paused = false
 	self.visible = false
+	Global.game_status = 2
 
 
 func _ready():
