@@ -5,10 +5,10 @@ const CONFIG_FILE_PATH = "user://settings.cfg"
 # array of: map name, cover image, scene
 # the random option MUST be the first one
 const MAP_LIST = [
-	["Random", preload("res://assets/background_image/random_map.png"), null],
-	["Map 1", preload("res://assets/maps/Map1.png"), preload("res://scenes/maps/map1.tscn")],
-	["Map 2", preload("res://assets/maps/Map2.png"), preload("res://scenes/maps/map2.tscn")],
-	["Map 3", preload("res://assets/maps/Map3.png"), preload("res://scenes/maps/map3.tscn")],
+	["隨機", preload("res://assets/background_image/random_map.png"), null],
+	["地圖一", preload("res://assets/maps/Map1.png"), preload("res://scenes/maps/map1.tscn")],
+	["小村探秘", preload("res://assets/maps/Map2.png"), preload("res://scenes/maps/map2.tscn")],
+	["椰林大道", preload("res://assets/maps/Map3.png"), preload("res://scenes/maps/map3.tscn")],
 ]
 
 var selected_map_idx: int
