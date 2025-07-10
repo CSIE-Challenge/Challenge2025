@@ -21,6 +21,8 @@ var web_agent: WebAgent
 @onready var process_status_run_button: Button = $Options/ProcessStatusContainer/ButtonRun
 @onready var process_status_kill_button: Button = $Options/ProcessStatusContainer/ButtonKill
 @onready var process_status_label: Label = $Options/ProcessStatusLabel
+@onready var token_copy_button: Button = $Options/TokenContainer/Button
+@onready var token_copied_timer: Timer = $Options/TokenContainer/CopiedTextTimer
 @onready var token_label: Label = $Options/TokenContentContainer/TokenLabel
 @onready var agent_connected_label: Label = $Options/AgentStatusContainer/AgentStatusConnected
 @onready var agent_disconnected_label: Label = $Options/AgentStatusContainer/AgentStatusDisconnected
@@ -62,10 +64,12 @@ func _ready() -> void:
 	process_status_kill_button.pressed.connect(python_subprocess.kill_subprocess)
 
 	# token
-	$Options/TokenContainer/Button.pressed.connect(
+	token_copied_timer.timeout.connect(func(): token_copy_button.text = "Copy")
+	token_copy_button.pressed.connect(
 		func():
 			DisplayServer.clipboard_set(web_agent._ws._token)
 			$Options/TokenContainer/Button.text = "Copied!"
+			token_copied_timer.start()
 	)
 	$Options/TokenContentContainer/Button.pressed.connect(
 		func(): ApiServer.update_token(web_agent._ws, ApiServer.generate_token())

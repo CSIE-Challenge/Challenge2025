@@ -192,6 +192,9 @@ layout_mode = 2
 text = "Copy"
 flat = true
 
+[node name="CopiedTextTimer" type="Timer" parent="Options/TokenContainer"]
+one_shot = true
+
 [node name="TokenContentContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
 
