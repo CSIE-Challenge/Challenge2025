@@ -172,7 +172,6 @@ grow_horizontal = 2
 grow_vertical = 0
 focus_mode = 2
 mouse_filter = 0
-mouse_default_cursor_shape = 1
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
