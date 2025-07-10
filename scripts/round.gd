@@ -21,6 +21,8 @@ func set_controllers(
 	game_1p.set_controller(player_selection_1p)
 	game_2p.set_controller(player_selection_2p)
 	manual_controlled = _manual_controlled
+	$Screen/Top/TextureRect/PlayerNameLeft.text = player_selection_1p.player_identifier
+	$Screen/Top/TextureRect/PlayerNameRight.text = player_selection_2p.player_identifier
 
 	# notify web agents
 	player_selection_1p.web_agent.start_game(self, game_1p, game_2p)
