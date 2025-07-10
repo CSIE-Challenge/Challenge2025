@@ -73,7 +73,9 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_MONEY, [TYPE_BOOL], _get_money),
 		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income),
 		#CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
-		CommandHandler.new(CommandType.PLACE_TOWER, [TYPE_INT, TYPE_VECTOR2I], _place_tower),
+		CommandHandler.new(
+			CommandType.PLACE_TOWER, [TYPE_INT, TYPE_INT, TYPE_INT, TYPE_VECTOR2I], _place_tower
+		),
 		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
 		CommandHandler.new(CommandType.GET_TOWER, [TYPE_VECTOR2I], _get_tower),
 		CommandHandler.new(CommandType.SPAWN_ENEMY, [TYPE_INT], _spawn_enemy),

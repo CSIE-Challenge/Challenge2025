@@ -190,25 +190,29 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.PLACE_TOWER, [TowerType, Vector2], None)
-    def place_tower(self, type: TowerType, coord: Vector2) -> None:
+    @game_command(CommandType.PLACE_TOWER, [TowerType, int, int, Vector2], None)
+    def place_tower(self, type: TowerType, level_a: int, level_b: int, coord: Vector2) -> None:
         """
         # Place Tower
         在指定位置放置一個塔。
 
         ## Parameters
         - `type` (TowerType): 要放置的塔的類型。
+        - `level_a` (int): 防禦塔一側的等級分支。
+        - `level_b` (int): 防禦塔另一側的等級分支。
+            - (level_a, level_b) = (1, 1): lv. 1
+            - (level_a, level_b) = (2, 1): lv. 2a
+            - (level_a, level_b) = (1, 2): lv. 2b
+            - (level_a, level_b) = (3, 1): lv. 3a
+            - (level_a, level_b) = (1, 3): lv. 3b
         - `coord` (Vector2): 要放置塔的位置。
 
         ## Returns
-        這個函數沒有返回值。如果放置成功，則塔會被放置在指定位置。
-
-        ## TowerType
-        - TODO
+        這個函數沒有返回值。如果放置成功，則塔會被放置在指定位置。若同位置已有塔，則該塔會被賣出取代。
         
         ## Example
         ```python
-        api.place_tower(TowerType.BASIC, Vector2(5, 10))  # 在 (5, 10) 的位置放置一個基本塔
+        api.place_tower(TowerType.DONKEY_KONG, 2, 1, Vector2(5, 10))  # 在 (5, 10) 的位置放置一隻等級2a的森喜剛
         ```
         """
         raise NotImplementedError
