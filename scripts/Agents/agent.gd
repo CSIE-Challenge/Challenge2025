@@ -234,6 +234,41 @@ func _get_enemies_in_range(_center: Vector2i, _radius: float) -> Array:
 
 func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 	print("[CastSpell] Get request")
+	var spell_manager: Node = game_self.get_node("SpellManager")
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR]
+
+	var spell_node: Node = null
+	match _type:
+		SpellType.DOUBLE_INCOME:
+			spell_node = spell_manager.get_node("DoubleIncome")
+		SpellType.POISON:
+			spell_node = spell_manager.get_node("Poison")
+		SpellType.TELEPORT:
+			spell_node = spell_manager.get_node("Teleport")
+		_:
+			print("[Error] Unknown spell type:", _type)
+			return [StatusCode.ILLEGAL_ARGUMENT]
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR]
+
+	if _type == SpellType.DOUBLE_INCOME:
+		var suc = spell_node.cast_spell()
+		print(suc)
+		if not suc:
+			print("[ERROR] cann't cast the spell")
+			return [StatusCode.CLIENT_ERR]
+
+	else:
+		var suc = spell_node.cast_spell(_coord)
+		if not suc:
+			print("[ERROR] cann't cast the spell")
+			return [StatusCode.CLIENT_ERR]
+
 	return [StatusCode.OK]
 
 
@@ -257,6 +292,9 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 			spell_node = spell_manager.get_node("Poison")
 		SpellType.TELEPORT:
 			spell_node = spell_manager.get_node("Teleport")
+		_:
+			print("[Error] Unknown spell type:", _type)
+			return [StatusCode.ILLEGAL_ARGUMENT]
 
 	if spell_node == null:
 		print("[ERROR] node not found spell")
@@ -281,6 +319,9 @@ func _get_spell_cost(_type: SpellType) -> Array:
 			spell_node = spell_manager.get_node("Poison")
 		SpellType.TELEPORT:
 			spell_node = spell_manager.get_node("Teleport")
+		_:
+			print("[Error] Unknown spell type:", _type)
+			return [StatusCode.ILLEGAL_ARGUMENT]
 
 	if spell_node == null:
 		print("[ERROR] node not found spell")

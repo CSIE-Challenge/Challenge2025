@@ -377,7 +377,7 @@ class GameClient(GameClientBase):
         raise NotImplementedError
 
     @game_command(CommandType.CAST_SPELL, [SpellType, Vector2], None)
-    def cast_spell(self, type: SpellType, position: Vector2) -> None:
+    def cast_spell(self, type: SpellType, position: Vector2 = Vector2(0, 0)) -> None:
         """
         # Cast Spell
         施放一個法術。
