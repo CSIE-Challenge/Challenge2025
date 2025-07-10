@@ -48,7 +48,7 @@ func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cell
 # the previewed object intercepts input events before GUI, so that (for example)
 # when the player clicks on the GUI when previewing, he cancels the previewer
 # before the next interaction with the GUI
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	# left-clicked: select the current mouse position, or cancel if it is out of bounds
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mouse_pos: Vector2 = _get_selected_position()
@@ -57,11 +57,6 @@ func _input(event: InputEvent) -> void:
 		else:
 			self.remove_child(_previewed_node)
 			selected.emit(mouse_pos)
-		get_viewport().set_input_as_handled()
-		self.queue_free()
-	# ESC pressed: preview cancelled
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		selected.emit(null)
 		get_viewport().set_input_as_handled()
 		self.queue_free()
 
