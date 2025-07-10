@@ -452,26 +452,26 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_EFFECTIVE_SPELLS, [bool], list)
-    def get_effective_spells(self, owned: bool) -> List[SpellType]:
-        """
-        # Get Effective Spells
-        取得當前生效的法術。
-
-        ## Parameters
-        - `owned` (bool): 是否查詢玩家自己的法術。
-
-        ## Returns
-        這個函數返回一個 `Spell` 物件的列表。
-
-        ## Example
-        ```python
-        effective_spells = api.get_effective_spells(True)  # 獲取玩家自己的生效法術
-        for spell in effective_spells:
-            print(spell)
-        ```
-        """
-        raise NotImplementedError
+#    @game_command(CommandType.GET_EFFECTIVE_SPELLS, [bool], list)
+#    def get_effective_spells(self, owned: bool) -> List[SpellType]:
+#        """
+#        # Get Effective Spells
+#        取得當前生效的法術。
+#
+#        ## Parameters
+#        - `owned` (bool): 是否查詢玩家自己的法術。
+#
+#        ## Returns
+#        這個函數返回一個 `Spell` 物件的列表。
+#
+#        ## Example
+#        ```python
+#        effective_spells = api.get_effective_spells(True)  # 獲取玩家自己的生效法術
+#        for spell in effective_spells:
+#            print(spell)
+#        ```
+#        """
+#        raise NotImplementedError
 
     @game_command(CommandType.SEND_CHAT, [str], bool)
     def send_chat(self, msg: str) -> bool:
