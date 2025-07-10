@@ -118,9 +118,12 @@ func _on_buy_tower(tower_scene: PackedScene):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
-	var new_previewer = Previewer.new(tower, preview_color_callback, _map, true)
-	new_previewer.selected.connect(self.place_tower.bind(tower))
-	self.add_child(new_previewer)
+	if previewer != null:
+		self.remove_child(previewer)
+		previewer.free()
+	previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	previewer.selected.connect(self.place_tower.bind(tower))
+	self.add_child(previewer)
 
 
 func _select_tower(tower: Tower):
@@ -257,11 +260,4 @@ func _process(_delta) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if (
-		event is InputEventMouseButton
-		and event.button_index == MOUSE_BUTTON_RIGHT
-		and event.pressed
-		and previewer != null
-	):
-		previewer.free()
 	_handle_tower_selection(event)

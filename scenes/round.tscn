@@ -115,11 +115,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 tab_alignment = 1
-current_tab = 1
+current_tab = 0
 tabs_visible = false
 
 [node name="Shop" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer" node_paths=PackedStringArray("options_container")]
-visible = false
 layout_mode = 2
 texture = ExtResource("8_p5kuw")
 script = ExtResource("4_snxki")
@@ -172,7 +171,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 focus_mode = 2
-mouse_filter = 0
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
@@ -188,6 +186,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Chat" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
+visible = false
 layout_mode = 2
 texture = ExtResource("11_i86cr")
 script = ExtResource("5_vxv1r")

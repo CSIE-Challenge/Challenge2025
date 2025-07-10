@@ -42,6 +42,7 @@ func _ready() -> void:
 	match manual_controlled:
 		0:
 			shop.queue_free()
+			chat.find_child("Shop").add_theme_color_override("font_color", Color(.6, .6, .6))
 			chat.always_visible = true
 		1:
 			shop.start_game(game_1p, game_2p)
@@ -54,11 +55,10 @@ func _ready() -> void:
 	game_1p.spawner.subsidize_loser.connect(game_1p.on_subsidization)
 	game_2p.spawner.subsidize_loser.connect(game_2p.on_subsidization)
 
-	var chat_node = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
 	var agent_1p = game_1p.player_selection.web_agent
 	var agent_2p = game_2p.player_selection.web_agent
-	agent_1p.chat_node = chat_node
-	agent_2p.chat_node = chat_node
+	agent_1p.chat_node = chat
+	agent_2p.chat_node = chat
 	agent_1p.player_id = 1
 	agent_2p.player_id = 2
 

@@ -23,6 +23,8 @@ func _create_section(title: String) -> GridContainer:
 	var tower_submenu := VBoxContainer.new()
 	var tower_label := Label.new()
 	var tower_grid := GridContainer.new()
+	tower_submenu.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	tower_grid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	tower_label.text = title
 	tower_grid.columns = 3
 	tower_grid.add_theme_constant_override("h_separation", 16)

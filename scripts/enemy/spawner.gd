@@ -91,10 +91,10 @@ func start_next_wave():
 	current_wave_data = wave_data.wave_data_list[current_wave_index]
 	subsidize_loser.emit(current_wave_data.subsidy)
 
-	print("Starting Wave ", current_wave_data.wave_number)
+	# print("Starting Wave ", current_wave_data.wave_number)
 
 	_prepare_unit_queue()
-	print("Unit queue prepared: ", unit_queue)
+	# print("Unit queue prepared: ", unit_queue)
 
 	wave_spawn_timer.wait_time = current_wave_data.delay
 	wave_spawn_timer.start()
@@ -109,7 +109,7 @@ func _on_wave_spawn_timer_timeout():
 	var unit_name = unit_queue.pop_front()
 
 	var unit_data = wave_data.unit_data_list[unit_name]
-	print("Spawning unit: ", unit_data)
+	# print("Spawning unit: ", unit_data)
 	spawn_enemy.emit(unit_data)
 
 	if unit_queue.size() == 0:
