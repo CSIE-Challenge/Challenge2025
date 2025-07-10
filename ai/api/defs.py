@@ -47,7 +47,13 @@ class TowerType(IntEnum):
 
 
 class EnemyType(IntEnum):
-    BASIC = auto()
+    BUZZY_BEETLE = 0
+    GOOMBA = 1
+    KOOPA_JR = 2
+    KOOPA_PARATROOPA = 3
+    KOOPA = 4
+    SPINY_SHELL = 5
+    WIGGLER = 6
 
 
 class SpellType(IntEnum):
