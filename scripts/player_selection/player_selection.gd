@@ -11,11 +11,7 @@ const ROUND_SCENE = preload("res://scenes/round.tscn")
 func _ready() -> void:
 	selection_1p.manual_control_enabled.connect(func(): selection_2p.manual_control = false)
 	selection_2p.manual_control_enabled.connect(func(): selection_1p.manual_control = false)
-
-
-func _process(_delta: float) -> void:
-	if not game_start_timer.is_stopped():
-		game_start_button.text = "Starting in %d" % ceil(game_start_timer.time_left)
+	selection_1p.manual_control = true
 
 
 func _on_start_button_pressed() -> void:
@@ -23,6 +19,7 @@ func _on_start_button_pressed() -> void:
 		return
 	selection_1p.freeze()
 	selection_2p.freeze()
+	game_start_button.text = "Starting..."
 	game_start_timer.start()
 
 

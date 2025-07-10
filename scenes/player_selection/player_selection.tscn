@@ -113,7 +113,6 @@ theme_override_font_sizes/font_size = 50
 text = "START"
 
 [node name="GameStartTimer" type="Timer" parent="."]
-wait_time = 3.0
 one_shot = true
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
