@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://cbxbq3tqvvn8j"]
+[gd_scene load_steps=9 format=4 uid="uid://cbxbq3tqvvn8j"]
 
 [ext_resource type="Texture2D" uid="uid://cpysa680w80kc" path="res://assets/tiles/tiles.png" id="1_c7s6e"]
 [ext_resource type="Script" uid="uid://djlm6hjsn4qss" path="res://scripts/map.gd" id="1_paxxb"]
@@ -31,6 +31,18 @@ _data = {
 }
 point_count = 9
 
+[sub_resource type="Curve2D" id="Curve2D_gldc4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 149, -1, 0, 0, 0, 0, 595, 842)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_0cso3"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 24, 451, 0, 0, 0, 0, 599, 848)
+}
+point_count = 2
+
 [node name="Map" type="Control"]
 custom_minimum_size = Vector2(750, 1000)
 layout_mode = 3
@@ -48,3 +60,9 @@ curve = SubResource("Curve2D_4xfga")
 
 [node name="SystemPath" type="Path2D" parent="."]
 curve = SubResource("Curve2D_paxxb")
+
+[node name="FlyingSystemPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_gldc4")
+
+[node name="FlyingOpponentPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_0cso3")

@@ -23,8 +23,7 @@ func _draw():
 func trigger() -> void:
 	var enemies: Array[Area2D] = get_overlapping_areas()
 	for enemy in enemies:
-		# TODO: replace with true poison logic
-		enemy.transport()
+		enemy.take_damage(spell.metadata.stats.trigger_damage)
 
 
 func _on_trigger():
