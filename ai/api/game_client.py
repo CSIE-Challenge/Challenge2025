@@ -194,18 +194,18 @@ class GameClient(GameClientBase):
     def place_tower(self, type: TowerType, level: str, coord: Vector2) -> None:
         """
         # Place Tower
-        在指定位置放置一個塔。
+        在指定位置放置或升級一個塔。
 
         ## Parameters
         - `type` (TowerType): 要放置的塔的類型。
-        - `level` (str): 要放置的塔的等級，可為"1", "2a", "2b", "3a", "3b"
+        - `level` (str): 要放置的塔的等級，可為"1", "2a", "2b", "3a", "3b"。數字表示等級，a和b是不同的升級分支，升級時不可以切換分支。
         - `coord` (Vector2): 要放置塔的位置。
 
         ## Returns
         這個函數沒有返回值。如果放置成功，則塔會被放置在指定位置。
 
         ## TowerType
-        - TODO
+        - 有FIRE_MARIO, ICE_LUIGI, DONKEY_KONG, FORT, SHY_GUY五種。
         
         ## Example
         ```python
