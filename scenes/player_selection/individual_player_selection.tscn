@@ -192,13 +192,31 @@ layout_mode = 2
 text = "Copy"
 flat = true
 
-[node name="TokenLabel" type="Label" parent="Options"]
+[node name="CopiedTextTimer" type="Timer" parent="Options/TokenContainer"]
+one_shot = true
+
+[node name="TokenContentContainer" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="TokenLabel" type="Label" parent="Options/TokenContentContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
 text = "48763abc"
 vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Options/TokenContentContainer"]
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_colors/font_hover_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_colors/font_outline_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_colors/font_focus_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_colors/font_pressed_color = Color(0.662745, 0.662745, 0.662745, 1)
+text = "Reset"
+flat = true
 
 [node name="Panel5" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)

@@ -17,25 +17,29 @@ const MAX_MONEY := 2000
 @export var spawner: Spawner
 @export var status_panel: TextureRect
 
+var player_selection: IndividualPlayerSelection = null
 var score: int = 0
 var money: int = 100
 var income_per_second = 10
 var kill_cnt = 0
-var player_selection: IndividualPlayerSelection = null
 var income_rate: int = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
 var op_game: Game
+var _map: Map = null
 var _enemy_scene_cache = {}
-
-@onready var _map: Map = $Map
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
 	player_selection = _player_selection
 	player_selection.get_parent().remove_child(player_selection)
 	status_panel.link_player_selection(player_selection)
+
+
+func set_map(map_scene: PackedScene):
+	_map = map_scene.instantiate()
+	add_child(_map)
 
 
 func _ready() -> void:
