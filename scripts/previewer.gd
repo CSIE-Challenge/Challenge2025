@@ -62,6 +62,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		self.queue_free()
 
 
+# Now right click should be over everything since it has nothing to do with the GUI
+func _input(event: InputEvent) -> void:
+	# right-clicked: cancel
+	if (
+		event is InputEventMouseButton
+		and event.pressed
+		and event.button_index == MOUSE_BUTTON_RIGHT
+	):
+		get_viewport().set_input_as_handled()
+		self.queue_free()
+
+
 func _process(_delta: float) -> void:
 	var mouse_pos = _get_global_mouse_snapped()
 	self.global_position = mouse_pos

@@ -260,11 +260,4 @@ func _process(_delta) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if (
-		event is InputEventMouseButton
-		and event.button_index == MOUSE_BUTTON_RIGHT
-		and event.pressed
-		and previewer != null
-	):
-		previewer.free()
 	_handle_tower_selection(event)

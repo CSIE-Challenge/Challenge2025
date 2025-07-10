@@ -4,7 +4,7 @@ extends Control
 signal sold
 
 
-# the tower's UI intercepts input events before GUI for the same reason as the previewer
+# the tower's UI intercepts input events before GUI (because it is impossible to trigger both)
 func _input(event):
 	if (
 		event is InputEventMouseButton
