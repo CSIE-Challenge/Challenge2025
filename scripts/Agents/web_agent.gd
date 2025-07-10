@@ -15,7 +15,6 @@ enum CommandType {
 	GET_ALL_TOWERS = 102,
 	GET_TOWER = 103,
 	SPAWN_ENEMY = 201,
-	GET_ENEMY_COOLDOWN = 202,
 	GET_ENEMY_INFO = 203,
 	GET_AVAILABLE_ENEMIES = 204,
 	GET_CLOSEST_ENEMIES = 205,
@@ -81,9 +80,6 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
 		CommandHandler.new(CommandType.GET_TOWER, [TYPE_VECTOR2I], _get_tower),
 		CommandHandler.new(CommandType.SPAWN_ENEMY, [TYPE_INT], _spawn_enemy),
-		CommandHandler.new(
-			CommandType.GET_ENEMY_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_enemy_cooldown
-		),
 		CommandHandler.new(CommandType.GET_ENEMY_INFO, [], _get_enemy_info),
 		CommandHandler.new(CommandType.GET_AVAILABLE_ENEMIES, [], _get_available_enemies),
 		CommandHandler.new(

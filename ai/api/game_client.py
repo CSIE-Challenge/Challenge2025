@@ -279,30 +279,6 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    # @game_command(CommandType.GET_ENEMY_COOLDOWN, [bool, EnemyType], int)
-    # def get_enemy_cooldown(self, owned: bool, type: EnemyType) -> int:
-    #     """
-    #     # Get Enemy Cooldown
-    #     取得指定類型敵人的冷卻時間。
-
-    #     ## Parameters
-    #     - `owned` (bool): 是否查詢玩家自己的冷卻時間。
-    #     - `type` (EnemyType): 要查詢的敵人類型。
-
-    #     ## Returns
-    #     這個函數返回一個整數，表示冷卻時間。
-
-    #     ## EnemyType
-    #     - TODO
-
-    #     ## Example
-    #     ```python
-    #     cooldown = api.get_enemy_cooldown(True, EnemyType.BASIC)  # 獲取玩家自己的基本敵人的冷卻時間
-    #     print(f"Cooldown for my BASIC enemy: {cooldown} seconds")
-    #     ```
-    #     """
-    #     raise NotImplementedError
-
     # @game_command(CommandType.GET_ENEMY_INFO, [EnemyType], EnemyType)
     # def get_enemy_info(self, type: EnemyType) -> EnemyType:
     #     """

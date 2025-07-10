@@ -227,11 +227,6 @@ func _spawn_enemy(_type: EnemyType) -> Array:
 	return [StatusCode.OK]
 
 
-func _get_enemy_cooldown(_owned: bool, _type: EnemyType) -> Array:
-	print("[GetEnemyCooldown] Get request")
-	return [StatusCode.OK]
-
-
 func _get_enemy_info(_type: EnemyType) -> Array:
 	print("[GetAllEnemyInfo] Get request")
 	return [StatusCode.OK]
