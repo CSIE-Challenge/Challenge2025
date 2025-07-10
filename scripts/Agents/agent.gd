@@ -4,7 +4,7 @@ enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
 enum TowerType { BASIC }
 enum EnemyType { BASIC }
-enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
+enum SpellType { POISON = 1, DOUBLE_INCOME = 2, TELEPORT = 3 }
 enum StatusCode {
 	OK = 200,
 	ILLFORMED_COMMAND = 400,
@@ -239,7 +239,30 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 
 func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 	print("[GetSpellCooldown] Get request")
-	return [StatusCode.OK]
+	var spell_manager: Node
+	if _owned:
+		spell_manager = game_self.get_node("SpellManager")
+	else:
+		spell_manager = game_other.get_node("SpellManager")
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR, -1]
+
+	var spell_node: Node = null
+	match _type:
+		SpellType.DOUBLE_INCOME:
+			spell_node = spell_manager.get_node("DoubleIncome")
+		SpellType.POISON:
+			spell_node = spell_manager.get_node("Poison")
+		SpellType.TELEPORT:
+			spell_node = spell_manager.get_node("Teleport")
+
+	if spell_node == null:
+		print("[ERROR] node not found spell")
+		return [StatusCode.INTERNAL_ERR, -1]
+
+	return [StatusCode.OK, spell_node.cooldown_timer.get_time_left()]
 
 
 func _get_spell_cost() -> Array:

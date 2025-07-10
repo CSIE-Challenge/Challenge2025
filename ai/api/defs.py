@@ -46,9 +46,9 @@ class EnemyType(IntEnum):
 
 
 class SpellType(IntEnum):
-    POISON = auto()
-    DOUBLE_INCOME = auto()
-    TELEPORT = auto()
+    POISON = 1
+    DOUBLE_INCOME = 2
+    TELEPORT = 3
 
 
 class StatusCode(IntEnum):
