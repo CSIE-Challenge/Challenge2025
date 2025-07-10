@@ -257,27 +257,27 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    # @game_command(CommandType.SPAWN_ENEMY, [EnemyType], None)
-    # def spawn_enemy(self, type: EnemyType) -> None:
-    #     """
-    #     # Spawn Enemy
-    #     派出一個指定類型的敵人。
+    @game_command(CommandType.SPAWN_ENEMY, [EnemyType], None)
+    def spawn_enemy(self, type: EnemyType) -> None:
+        """
+        # Spawn Enemy
+        派出一個指定類型的敵人。
 
-    #     ## Parameters
-    #     - `type` (EnemyType): 要派出的敵人的類型。
+        ## Parameters
+        - `type` (EnemyType): 要派出的敵人的類型。
 
-    #     ## Returns
-    #     這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
+        ## Returns
+        這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
 
-    #     ## EnemyType
-    #     - TODO
+        ## EnemyType
+        - TODO
         
-    #     ## Example
-    #     ```python
-    #     api.spawn_enemy(EnemyType.BASIC)  # 派出一個基本敵人
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Example
+        ```python
+        api.spawn_enemy(EnemyType.BASIC)  # 派出一個基本敵人
+        ```
+        """
+        raise NotImplementedError
 
     # @game_command(CommandType.GET_ENEMY_COOLDOWN, [bool, EnemyType], int)
     # def get_enemy_cooldown(self, owned: bool, type: EnemyType) -> int:

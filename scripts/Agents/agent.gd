@@ -4,7 +4,15 @@ enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
 # TODO: Remove BASIC legacy
 enum TowerType { BASIC, DONKEY_KONG, FIRE_MARIO, FORT, ICE_LUIGI, SHY_GUY }
-enum EnemyType { BASIC }
+enum EnemyType {
+	BUZZY_BEETLE,
+	GOOMBA,
+	KOOPA_JR,
+	KOOPA_PARATROOPA,
+	KOOPA,
+	SPINY_SHELL,
+	WIGGLER,
+}
 enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
 enum StatusCode {
 	OK = 200,
@@ -209,6 +217,13 @@ func _get_tower(_coord: Vector2i) -> Array:
 
 func _spawn_enemy(_type: EnemyType) -> Array:
 	print("[SpawnEnemy] Get request")
+	var enemy_name: Array = [
+		"buzzy_beetle", "goomba", "koopa_jr", "koopa_paratroopa", "koopa", "spiny_shell", "wiggler"
+	]
+	var unit_data = EnemyData.new()
+	var data = unit_data.unit_data_list[enemy_name[_type]]
+	print("api", data)
+	game_other.summon_enemy.emit(data)
 	return [StatusCode.OK]
 
 

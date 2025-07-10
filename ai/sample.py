@@ -1,7 +1,7 @@
 import time
 from api import *
 
-api = GameClient(7749, "3e025546")
+api = GameClient(7749, "TOKEN")
 
 print(api.get_scores(True))
 print(api.get_scores(False))
@@ -19,3 +19,7 @@ if not ret:
 print(api.get_tower(Vector2(8, 4)))
 print(api.place_tower(TowerType.ICE_LUIGI, Vector2(8, 4)))
 print(api.get_tower(Vector2(8, 4)))
+
+for i in range(5):
+    api.spawn_enemy(EnemyType.SPINY_SHELL)
+    time.sleep(3)
