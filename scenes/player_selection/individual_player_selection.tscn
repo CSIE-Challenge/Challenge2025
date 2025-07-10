@@ -78,9 +78,12 @@ flat = true
 
 [node name="FileDialog" type="FileDialog" parent="Options/PythonInterpreterContainer"]
 title = "Open a File"
+initial_position = 1
+size = Vector2i(1080, 720)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
+show_hidden_files = true
 
 [node name="PythonInterpreterLabel" type="Label" parent="Options"]
 layout_mode = 2
@@ -114,9 +117,12 @@ flat = true
 
 [node name="FileDialog" type="FileDialog" parent="Options/AgentScriptContainer"]
 title = "Open a File"
+initial_position = 1
+size = Vector2i(1080, 720)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
+show_hidden_files = true
 
 [node name="AgentScriptLabel" type="Label" parent="Options"]
 layout_mode = 2

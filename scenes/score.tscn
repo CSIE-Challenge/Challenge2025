@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2q3w8rb1e31l"]
+[gd_scene load_steps=8 format=3 uid="uid://c2q3w8rb1e31l"]
 
 [ext_resource type="Script" uid="uid://de8fbmtpnxj4r" path="res://scripts/enemy/score_bar.gd" id="1_8juob"]
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_bak1h"]
+[ext_resource type="FontFile" uid="uid://ccw18kx27c5q2" path="res://assets/font/PixelMplus12-Bold.ttf" id="3_plgac"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vxv1r"]
 
@@ -53,6 +54,8 @@ theme_override_constants/margin_right = 5
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ScoreDiff"]
 layout_mode = 2
+theme_override_fonts/bold_font = ExtResource("3_plgac")
+theme_override_font_sizes/bold_font_size = 32
 text = "100"
 scroll_active = false
 horizontal_alignment = 2
@@ -64,7 +67,10 @@ theme_override_constants/margin_right = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Score1P"]
 layout_mode = 2
+theme_override_fonts/bold_font = ExtResource("3_plgac")
+theme_override_font_sizes/bold_font_size = 32
 text = "100"
+scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -74,6 +80,8 @@ theme_override_constants/margin_left = 10
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Score2P"]
 layout_mode = 2
+theme_override_fonts/bold_font = ExtResource("3_plgac")
+theme_override_font_sizes/bold_font_size = 32
 text = "100
 "
 scroll_active = false
