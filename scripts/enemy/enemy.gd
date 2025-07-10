@@ -10,7 +10,7 @@ extends Area2D
 @export var armor: int = 0
 @export var shield: int = 0
 @export var knockback_resist: bool = false
-@export var kill_reward: int = 0
+@export var kill_reward: int = 1
 @export var income_impact: int = 0
 
 var game: Game
@@ -32,7 +32,8 @@ var speed_rate: Array[float] = [1.0]  # store speed_rates and get minimum
 
 func _on_killed() -> void:
 	game.kill_cnt += 1
-	game.income_per_second += kill_reward  # or game.money
+	if source == Game.EnemySource.SYSTEM:
+		game.money = min(game.money + kill_reward, game.MAX_MONEY)  # or game.money
 	path_follow.queue_free()
 
 

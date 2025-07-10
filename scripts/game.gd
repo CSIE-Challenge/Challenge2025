@@ -11,6 +11,8 @@ enum EnemySource { SYSTEM, OPPONENT }
 
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 const DEPRECIATION_RATE := 0.9
+const INTEREST_RATE := 1.02
+const MAX_MONEY := 2000
 
 @export var spawner: Spawner
 @export var status_panel: TextureRect
@@ -44,9 +46,10 @@ func _ready() -> void:
 	buy_spell.connect(_on_buy_spell)
 
 
-func spend(cost: int) -> bool:
+func spend(cost: int, income_impact: int = 0) -> bool:
 	if money >= cost:
 		money -= cost
+		income_per_second = max(income_per_second + income_impact, 0)
 		return true
 	return false
 
@@ -138,7 +141,16 @@ func _handle_tower_selection(event: InputEvent) -> void:
 
 
 func _on_constant_income_timer_timeout() -> void:
-	money += income_rate * income_per_second  # float to int
+	money = min(money + income_rate * income_per_second, MAX_MONEY)  # float to int
+
+
+func _on_interest_timer_timeout() -> void:
+	money = min(money * INTEREST_RATE, MAX_MONEY)
+
+
+func on_subsidization(subsidy) -> void:
+	if score < op_game.score:
+		money = min(money + subsidy, MAX_MONEY)
 
 
 #endregion
@@ -156,10 +168,10 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 
 	var enemy: Enemy = _enemy_scene_cache[scene_path].instantiate()
 	var stats: Dictionary = unit_data.get("stats", {})
+	enemy.income_impact = stats.income_impact
 	enemy.max_health = stats.max_health
 	enemy.max_speed = stats.max_speed
 	enemy.damage = stats.damage
-	enemy.flying = stats.flying
 	return enemy
 
 
