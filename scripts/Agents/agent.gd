@@ -171,12 +171,10 @@ func _get_all_towers(_owned: bool) -> Array:
 	if _owned:
 		for key in game_self.built_towers.keys():
 			var tower_dict = game_self.built_towers[key].to_dict(key)
-			tower_dict["type"] = TowerType.BASIC
 			towers.append(tower_dict)
 		return [StatusCode.OK, towers]
 	for key in game_other.built_towers.keys():
 		var tower_dict = game_other.built_towers[key].to_dict(key)
-		tower_dict["type"] = TowerType.BASIC
 		towers.append(tower_dict)
 	return [StatusCode.OK, towers]
 
@@ -189,7 +187,7 @@ func _get_tower(_coord: Vector2i) -> Array:
 	if game_other.built_towers.has(_coord):
 		var dict = game_other.built_towers[_coord].to_dict(_coord)
 		return [StatusCode.OK, dict]
-	return [StatusCode.INTERNAL_ERR, "[GetTower] Error: no tower found"]
+	return [StatusCode.OK, {}]
 
 
 #endregion
