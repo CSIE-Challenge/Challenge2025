@@ -15,7 +15,7 @@ extends Area2D
 
 var game: Game
 var path_follow: PathFollow2D
-var knockback_distance: int = 200
+var knockback_distance: int = 50
 var source: Game.EnemySource
 var health: int:
 	get:
