@@ -192,6 +192,13 @@ func _place_tower(_type: TowerType, _level: String, _coord: Vector2i) -> Array:
 		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
 	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
 		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
+
+	if (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
+		return [
+			StatusCode.ILLEGAL_ARGUMENT,
+			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
+		]
+
 	var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
 	if game_self.built_towers.has(_coord):
 		var previous_tower = game_self.built_towers[_coord]
@@ -213,7 +220,7 @@ func _place_tower(_type: TowerType, _level: String, _coord: Vector2i) -> Array:
 			)
 		):
 			print(previous_tower.building_cost, tower.building_cost)
-			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: No enough money"]
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: no enough money"]
 	game_self.place_tower(_coord, tower)
 	return [StatusCode.OK]
 

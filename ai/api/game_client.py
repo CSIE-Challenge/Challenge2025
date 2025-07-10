@@ -198,6 +198,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         - `type` (TowerType): 要放置的塔的類型。
+        - `level` (str): 要放置的塔的等級，可為"1", "2a", "2b", "3a", "3b"
         - `coord` (Vector2): 要放置塔的位置。
 
         ## Returns
@@ -208,7 +209,7 @@ class GameClient(GameClientBase):
         
         ## Example
         ```python
-        api.place_tower(TowerType.BASIC, Vector2(5, 10))  # 在 (5, 10) 的位置放置一個基本塔
+        api.place_tower(TowerType.FIRE_MARIO, "2a", Vector2(5, 10))  # 在 (5, 10) 的位置放置一個馬力歐塔
         ```
         """
         raise NotImplementedError
