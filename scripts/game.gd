@@ -58,13 +58,19 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 	if built_towers.has(cell_pos):
 		var previous_tower = built_towers[cell_pos]
 		if (
-			previous_tower.type == tower.type
-			and previous_tower.level_a <= tower.level_a
-			and previous_tower.level_b <= tower.level_b
-			and money + previous_tower.building_cost < tower.building_cost
+			(
+				previous_tower.type == tower.type
+				and (
+					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+				)
+			)
+			or money + previous_tower.building_cost < tower.building_cost
 		):
 			return false
-		if money + (previous_tower.building_cost * DEPRECIATION_RATE) < tower.building_cost:
+		if (
+			previous_tower.type != tower.type
+			and money + (previous_tower.building_cost * DEPRECIATION_RATE) < tower.building_cost
+		):
 			return false
 	if money < tower.building_cost:
 		return false
