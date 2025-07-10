@@ -10,3 +10,6 @@
 
 # misc
 .DS_Store
+
+# export
+/export/

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cifri0pqvayi6"]
+
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_y126u"]
+[ext_resource type="PackedScene" uid="uid://gy8yicwme446" path="res://scenes/bullets/fire.tscn" id="2_jch3c"]
+[ext_resource type="Texture2D" uid="uid://c1svtwm2u3fyu" path="res://pixel_art/bullet/FireBall.png" id="3_y126u"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i1k30"]
+radius = 7.0
+
+[node name="Fireball_2b" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_y126u")
+is_tracking = false
+aoe_scale = 0.0
+shockwave_scene = ExtResource("2_jch3c")
+spanning_speed = 0.262
+effect = 1
+
+[node name="Body" type="Sprite2D" parent="."]
+position = Vector2(-2, -7)
+rotation = -1.5708
+texture = ExtResource("3_y126u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CircleShape2D_i1k30")

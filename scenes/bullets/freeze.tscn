@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://cf3qsx2iqak3t"]
+
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_kgbwd"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
+load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4u68p"]
+radius = 7.0
+
+[node name="Freeze" type="Area2D"]
+collision_layer = 10
+collision_mask = 0
+script = ExtResource("1_kgbwd")
+is_tracking = false
+is_anti_air = true
+is_penetrating = true
+aoe_scale = 10.0
+movement_speed = 0.0
+damage = 0
+lifespan_seconds = 0
+effect = 3
+
+[node name="Body" type="Sprite2D" parent="."]
+rotation = -1.5708
+texture = SubResource("CompressedTexture2D_n5hp2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CircleShape2D_4u68p")

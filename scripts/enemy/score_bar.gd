@@ -3,8 +3,8 @@ extends Container
 
 const MAX_SCORE_DIFF = 1_000_000
 
-var left_score = 100
-var right_score = 200
+var left_score: int
+var right_score: int
 
 
 func _notification(what):

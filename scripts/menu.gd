@@ -1,8 +1,12 @@
 extends Control
 
 
+func _ready() -> void:
+	$Version.text = "v%s" % [ProjectSettings.get_setting("application/config/version")]
+
+
 func _on_start_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/round.tscn")
+	get_tree().change_scene_to_file("res://scenes/player_selection/player_selection.tscn")
 
 
 func _on_about_pressed() -> void:

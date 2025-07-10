@@ -1,5 +1,6 @@
 from typing import Any
 from enum import IntEnum
+import struct
 
 from .defs import *
 
@@ -36,11 +37,24 @@ def var_to_bytes(obj: Any) -> bytes:
             serialized.append(x & 255)
             x //= 256
 
+    def pushFloat32(x: float) -> None:
+        nonlocal serialized
+        packed_bytes = struct.pack('>f', x)
+        ieee_integer = struct.unpack('>I', packed_bytes)[0]
+        pushInt32(ieee_integer)
+
+    def pushFloat64(x: float) -> None:
+        nonlocal serialized
+        packed_bytes = struct.pack('>d', x)
+        ieee_integer = struct.unpack('>Q', packed_bytes)[0]
+        pushInt32(ieee_integer % (2 ** 32))
+        pushInt32(ieee_integer // (2 ** 32))
+
     def pushString(value: str) -> None:
         nonlocal serialized
         encoded = bytearray(value.encode("utf-8"))
         length = len(encoded)
-        while length % 4 == 0:
+        while length % 4 != 0:
             encoded.append(0)
             length += 1
         pushInt32(length)
@@ -63,6 +77,19 @@ def var_to_bytes(obj: Any) -> bytes:
             obj = obj if obj >= 0 else (obj + 2 ** 63)
             pushInt32(obj % (2 ** 32))
             pushInt32(obj // (2 ** 32))
+
+    elif isinstance(obj, float):
+        try:
+            packed_bytes = struct.pack('>f', obj)
+            obj_as_f32 = struct.unpack('>f', packed_bytes)[0]
+            if obj_as_f32 == obj:
+                pushInt32(TypeCode.FLOAT_TYPE)
+                pushFloat32(obj)
+            else:
+                raise Exception("Value cannot be represented as float32")
+        except:
+            pushInt32(TypeCode.FLOAT_TYPE + HEADER_DATA_FLAG_64)
+            pushFloat64(obj)
 
     elif isinstance(obj, str):
         pushInt32(TypeCode.STRING_TYPE)
@@ -102,6 +129,25 @@ def bytes_to_var(serialized: bytes) -> Any:
             result = result * 256 + serialized[idx + 3 - i]
         idx += 4
         return result
+
+    def popFloat32() -> float:
+        nonlocal idx
+        if len(serialized) - idx < 4:
+            raise ValueError(
+                f"[GdType] Unable to deserialize: insufficient data in sequence")
+        ieee_integer = popInt32()
+        return struct.unpack('>f', struct.pack('>I', ieee_integer))[0]
+
+    def popFloat64() -> float:
+        nonlocal idx
+        if len(serialized) - idx < 8:
+            raise ValueError(
+                f"[GdType] Unable to deserialize: insufficient data in sequence")
+        ieee_integer = 0
+        for i in range(8):
+            ieee_integer = ieee_integer * 256 + serialized[idx + 7 - i]
+        idx += 8
+        return struct.unpack('>d', struct.pack('>Q', ieee_integer))[0]
 
     def popString() -> str:
         nonlocal idx
@@ -147,6 +193,12 @@ def bytes_to_var(serialized: bytes) -> Any:
                 else:
                     lo = lo if lo < (2 ** 31) else (lo - 2 ** 31)
                 return lo
+
+            case TypeCode.FLOAT_TYPE:
+                if header & HEADER_DATA_FLAG_64 != 0:
+                    return popFloat64()
+                else:
+                    return popFloat32()
 
             case TypeCode.STRING_TYPE:
                 return popString()

@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0ol4aa2k4bhu"]
+
+[ext_resource type="Texture2D" uid="uid://bijh20l2fexgv" path="res://assets/background_image/end_scene.png" id="1_mwn6m"]
+[ext_resource type="Script" uid="uid://2lonvhxt71ed" path="res://scripts/end.gd" id="1_p7m4f"]
+[ext_resource type="PackedScene" uid="uid://cu6crct501l5t" path="res://scenes/ui/end_player_stats.tscn" id="2_3d26k"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_p7m4f"]
+
+[sub_resource type="SystemFont" id="SystemFont_mwn6m"]
+subpixel_positioning = 0
+
+[node name="End" type="Node2D"]
+script = ExtResource("1_p7m4f")
+
+[node name="background" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_mwn6m")
+
+[node name="box" type="TextureRect" parent="."]
+modulate = Color(0, 0, 0, 0.435294)
+offset_left = 69.0
+offset_top = 85.0
+offset_right = 1851.0
+offset_bottom = 1000.0
+texture = SubResource("CanvasTexture_p7m4f")
+
+[node name="winner_text" type="RichTextLabel" parent="."]
+offset_left = 75.0
+offset_top = 99.0
+offset_right = 1818.0
+offset_bottom = 260.0
+theme_override_fonts/normal_font = SubResource("SystemFont_mwn6m")
+theme_override_font_sizes/normal_font_size = 100
+text = "Winner: {name}"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="player_stats_1" parent="." instance=ExtResource("2_3d26k")]
+position = Vector2(243, 345)
+
+[node name="player_stats_2" parent="." instance=ExtResource("2_3d26k")]
+position = Vector2(1030, 338)
