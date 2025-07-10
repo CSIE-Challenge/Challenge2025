@@ -70,6 +70,7 @@ layout_mode = 2
 theme_override_fonts/bold_font = ExtResource("3_plgac")
 theme_override_font_sizes/bold_font_size = 32
 text = "100"
+scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 1
 
