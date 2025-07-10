@@ -22,7 +22,7 @@ var money: int = 100
 var income_per_second = 10
 var kill_cnt = 0
 var player_selection: IndividualPlayerSelection = null
-var income_rate: float = 1
+var income_rate: int = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
@@ -242,7 +242,7 @@ func _place_spell(cell_pos: Vector2i, spell_node) -> void:
 
 func _process(_delta) -> void:
 	status_panel.find_child("Money").text = "%d" % money
-	status_panel.find_child("Income").text = "+%d" % income_per_second
+	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
 
 
 func _unhandled_input(event: InputEvent) -> void:

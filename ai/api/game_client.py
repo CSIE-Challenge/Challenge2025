@@ -254,51 +254,27 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    # @game_command(CommandType.SPAWN_ENEMY, [EnemyType], None)
-    # def spawn_enemy(self, type: EnemyType) -> None:
-    #     """
-    #     # Spawn Enemy
-    #     派出一個指定類型的敵人。
+    @game_command(CommandType.SPAWN_UNIT, [EnemyType], None)
+    def spawn_unit(self, type: EnemyType) -> None:
+        """
+        # Spawn Enemy
+        派出一個指定類型的敵人。
 
-    #     ## Parameters
-    #     - `type` (EnemyType): 要派出的敵人的類型。
+        ## Parameters
+        - `type` (EnemyType): 要派出的敵人的類型。
 
-    #     ## Returns
-    #     這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
+        ## Returns
+        這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
 
-    #     ## EnemyType
-    #     - TODO
+        ## EnemyType
+        - TODO
         
-    #     ## Example
-    #     ```python
-    #     api.spawn_enemy(EnemyType.BASIC)  # 派出一個基本敵人
-    #     ```
-    #     """
-    #     raise NotImplementedError
-
-    # @game_command(CommandType.GET_ENEMY_COOLDOWN, [bool, EnemyType], int)
-    # def get_enemy_cooldown(self, owned: bool, type: EnemyType) -> int:
-    #     """
-    #     # Get Enemy Cooldown
-    #     取得指定類型敵人的冷卻時間。
-
-    #     ## Parameters
-    #     - `owned` (bool): 是否查詢玩家自己的冷卻時間。
-    #     - `type` (EnemyType): 要查詢的敵人類型。
-
-    #     ## Returns
-    #     這個函數返回一個整數，表示冷卻時間。
-
-    #     ## EnemyType
-    #     - TODO
-
-    #     ## Example
-    #     ```python
-    #     cooldown = api.get_enemy_cooldown(True, EnemyType.BASIC)  # 獲取玩家自己的基本敵人的冷卻時間
-    #     print(f"Cooldown for my BASIC enemy: {cooldown} seconds")
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Example
+        ```python
+        api.spawn_enemy(EnemyType.BASIC)  # 派出一個基本敵人
+        ```
+        """
+        raise NotImplementedError
 
     # @game_command(CommandType.GET_ENEMY_INFO, [EnemyType], EnemyType)
     # def get_enemy_info(self, type: EnemyType) -> EnemyType:
@@ -323,23 +299,27 @@ class GameClient(GameClientBase):
     #     """
     #     raise NotImplementedError
 
-    # @game_command(CommandType.GET_AVAILABLE_ENEMIES, [], list)
-    # def get_available_enemies(self) -> List[EnemyType]:
-    #     """
-    #     # Get Available Enemies
-    #     取得所有可用的敵人資訊。
+    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list)
+    def get_available_units(self) -> List[EnemyType]:
+        """
+        # Get Available Enemies
+        取得所有可用的敵人資訊。
 
-    #     ## Returns
-    #     這個函數返回一個 `Enemy` 物件的列表。
+        ## Returns
+        這個函數返回一個 `Enemy` 物件的列表。
 
-    #     ## Example
-    #     ```python
-    #     available_enemies = api.get_available_enemies()  # 獲取所有可用的敵人資訊
-    #     for enemy in available_enemies:
-    #         print(enemy)
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Example
+        ```python
+        available_enemies = api.get_available_enemies()  # 獲取所有可用的敵人資訊
+        for enemy in available_enemies:
+            print(enemy)
+        ```
+        """
+        raise NotImplementedError
+    
+    @game_command(CommandType.GET_ALL_ENEMIES, [], list)
+    def get_all_enemies(self) -> List[EnemyType]:
+        raise NotImplementedError
 
     # @game_command(CommandType.GET_CLOSEST_ENEMIES, [Vector2, int], list)
     # def get_closest_enemies(self, position: Vector2, count: int) -> List[EnemyType]:
