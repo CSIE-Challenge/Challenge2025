@@ -2,6 +2,7 @@ class_name Spawner
 extends Node
 
 signal spawn_enemy(unit_data: Dictionary)
+signal subsidize_loser(subsidy: int)
 
 @export var delay_between_waves: float = 5.0
 @export var wave_info_label: Label
@@ -82,11 +83,14 @@ func _prepare_unit_queue():
 
 func start_next_wave():
 	current_wave_index += 1
+
 	if current_wave_index >= wave_data.wave_data_list.size():
 		printerr("All waves completed ?!")
 		return
 
 	current_wave_data = wave_data.wave_data_list[current_wave_index]
+	subsidize_loser.emit(current_wave_data.subsidy)
+
 	print("Starting Wave ", current_wave_data.wave_number)
 
 	_prepare_unit_queue()

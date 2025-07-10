@@ -2,8 +2,17 @@ class_name Agent
 extends Node
 enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
-enum TowerType { BASIC }
-enum EnemyType { BASIC }
+# TODO: Remove BASIC legacy
+enum TowerType { BASIC, DONKEY_KONG, FIRE_MARIO, FORT, ICE_LUIGI, SHY_GUY }
+enum EnemyType {
+	BUZZY_BEETLE,
+	GOOMBA,
+	KOOPA_JR,
+	KOOPA_PARATROOPA,
+	KOOPA,
+	SPINY_SHELL,
+	WIGGLER,
+}
 enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
 enum StatusCode {
 	OK = 200,
@@ -18,8 +27,46 @@ enum StatusCode {
 	CLIENT_ERR = 501
 }
 
-const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
+const TOWER_SCENES = [
+	[preload("res://scenes/towers/twin_turret.tscn")],
+	[
+		preload("res://scenes/towers/fire_mario_1.tscn"),
+		preload("res://scenes/towers/fire_mario_2a.tscn"),
+		preload("res://scenes/towers/fire_mario_2b.tscn"),
+		preload("res://scenes/towers/fire_mario_3a.tscn"),
+		preload("res://scenes/towers/fire_mario_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/ice_luigi_1.tscn"),
+		preload("res://scenes/towers/ice_luigi_2a.tscn"),
+		preload("res://scenes/towers/ice_luigi_2b.tscn"),
+		preload("res://scenes/towers/ice_luigi_3a.tscn"),
+		preload("res://scenes/towers/ice_luigi_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/donkey_kong_1.tscn"),
+		preload("res://scenes/towers/donkey_kong_2a.tscn"),
+		preload("res://scenes/towers/donkey_kong_2b.tscn"),
+		preload("res://scenes/towers/donkey_kong_3a.tscn"),
+		preload("res://scenes/towers/donkey_kong_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/fort_1.tscn"),
+		preload("res://scenes/towers/fort_2a.tscn"),
+		preload("res://scenes/towers/fort_2b.tscn"),
+		preload("res://scenes/towers/fort_3a.tscn"),
+		preload("res://scenes/towers/fort_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/shy_guy_1.tscn"),
+		preload("res://scenes/towers/shy_guy_2a.tscn"),
+		preload("res://scenes/towers/shy_guy_2b.tscn"),
+		preload("res://scenes/towers/shy_guy_3a.tscn"),
+		preload("res://scenes/towers/shy_guy_3b.tscn")
+	]
+]
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
+const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
 var type: AgentType = AgentType.NIL
 var game_status: GameStatus = GameStatus.PREPARE
 var money: int
@@ -147,21 +194,43 @@ func _get_game_status() -> Array:
 #region Tower
 
 
-func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
+func _place_tower(_type: TowerType, _level: String, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
 	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
 	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
-		return [
-			StatusCode.INTERNAL_ERR, "[PlaceTower] Error: invalid coordinate for building tower"
-		]
-	if game_self.built_towers.has(_coord):
-		# TODO: check whether existing tower is upgrade-able
-		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: can't upgrade tower"]
+		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
 
-	# TODO: handle different type of tower
-	game_self.place_tower(_coord, TOWER_SCENE.instantiate())
+	if (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
+		return [
+			StatusCode.ILLEGAL_ARGUMENT,
+			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
+		]
+
+	var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
+	if game_self.built_towers.has(_coord):
+		var previous_tower = game_self.built_towers[_coord]
+		if (
+			(
+				previous_tower.type == tower.type
+				and (
+					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+				)
+			)
+			or money + previous_tower.building_cost < tower.building_cost
+		):
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
+		if (
+			previous_tower.type != tower.type
+			and (
+				game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
+				< tower.building_cost
+			)
+		):
+			print(previous_tower.building_cost, tower.building_cost)
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: no enough money"]
+	game_self.place_tower(_coord, tower)
 	return [StatusCode.OK]
 
 
@@ -171,12 +240,10 @@ func _get_all_towers(_owned: bool) -> Array:
 	if _owned:
 		for key in game_self.built_towers.keys():
 			var tower_dict = game_self.built_towers[key].to_dict(key)
-			tower_dict["type"] = TowerType.BASIC
 			towers.append(tower_dict)
 		return [StatusCode.OK, towers]
 	for key in game_other.built_towers.keys():
 		var tower_dict = game_other.built_towers[key].to_dict(key)
-		tower_dict["type"] = TowerType.BASIC
 		towers.append(tower_dict)
 	return [StatusCode.OK, towers]
 
@@ -189,7 +256,7 @@ func _get_tower(_coord: Vector2i) -> Array:
 	if game_other.built_towers.has(_coord):
 		var dict = game_other.built_towers[_coord].to_dict(_coord)
 		return [StatusCode.OK, dict]
-	return [StatusCode.INTERNAL_ERR, "[GetTower] Error: no tower found"]
+	return [StatusCode.OK, {}]
 
 
 #endregion
@@ -197,33 +264,29 @@ func _get_tower(_coord: Vector2i) -> Array:
 #region Enemy
 
 
-func _spawn_enemy(_type: EnemyType) -> Array:
-	print("[SpawnEnemy] Get request")
+func _get_enemy_dict(_type: EnemyType) -> Dictionary:
+	var enemy_name: Array = [
+		"buzzy_beetle", "goomba", "koopa_jr", "koopa_paratroopa", "koopa", "spiny_shell", "wiggler"
+	]
+	var unit_data = EnemyData.new()
+	var data = unit_data.unit_data_list[enemy_name[_type]]
+	return data
+
+
+func _spawn_unit(_type: EnemyType) -> Array:
+	print("[SpawnUnit] Get request")
+	var data = _get_enemy_dict(_type)
+	game_other.summon_enemy.emit(data)
 	return [StatusCode.OK]
 
 
-func _get_enemy_cooldown(_owned: bool, _type: EnemyType) -> Array:
-	print("[GetEnemyCooldown] Get request")
-	return [StatusCode.OK]
-
-
-func _get_enemy_info(_type: EnemyType) -> Array:
-	print("[GetAllEnemyInfo] Get request")
-	return [StatusCode.OK]
-
-
-func _get_available_enemies() -> Array:
+func _get_available_units() -> Array:
 	print("[GetAvailableEnemies] Get request")
 	return [StatusCode.OK]
 
 
-func _get_closest_enemies(_position: Vector2i, _count: int) -> Array:
-	print("[GetClosestEnemies] Get request")
-	return [StatusCode.OK]
-
-
-func _get_enemies_in_range(_center: Vector2i, _radius: float) -> Array:
-	print("[GetEnemiesInRange] Get request")
+func _get_all_enemies(_center: Vector2i, _radius: float) -> Array:
+	print("[GetAllEnemies] Get request")
 	return [StatusCode.OK]
 
 
