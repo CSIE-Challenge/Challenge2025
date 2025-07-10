@@ -3,10 +3,10 @@
 	"scene_path": "res://scenes/enemies/goomba.tscn",
 	"stats": {
 		"deploy_cost": 10,
+		"income_impact": 0,
 		"max_health": 10,
 		"max_speed": 50,
 		"damage": 5,
-		"income_impact": 0,
 		"flying": false,
 		"armor": 0,
 		"shield": 0,
@@ -18,11 +18,11 @@
 	"scene_path": "res://scenes/enemies/koopa_paratroopa.tscn",
 	"stats": {
 		"deploy_cost": 20,
+		"income_impact": 2,
 		"max_health": 15,
 		"max_speed": 80,
 		"damage": 7,
-		"income_impact": 2,
-		"flying": false,
+		"flying": true,
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": false,
@@ -55,7 +55,7 @@
 		"flying": false,
 		"armor": 0,
 		"shield": 0,
-		"knockback_resist": false,
+		"knockback_resist": true,
 		"kill_reward": 1
 	}
   },
@@ -82,7 +82,7 @@
 		"max_health": 40,
 		"max_speed": 70,
 		"damage": 25,
-		"flying": false,
+		"flying": true,
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": false,
@@ -100,7 +100,7 @@
 		"flying": false,
 		"armor": 0,
 		"shield": 0,
-		"knockback_resist": false,
+		"knockback_resist": true,
 		"kill_reward": 1
 	}
   }
