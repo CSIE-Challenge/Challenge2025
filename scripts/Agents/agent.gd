@@ -215,35 +215,29 @@ func _get_tower(_coord: Vector2i) -> Array:
 #region Enemy
 
 
-func _spawn_enemy(_type: EnemyType) -> Array:
-	print("[SpawnEnemy] Get request")
+func _get_enemy_dict(_type: EnemyType) -> Dictionary:
 	var enemy_name: Array = [
 		"buzzy_beetle", "goomba", "koopa_jr", "koopa_paratroopa", "koopa", "spiny_shell", "wiggler"
 	]
 	var unit_data = EnemyData.new()
 	var data = unit_data.unit_data_list[enemy_name[_type]]
-	print("api", data)
+	return data
+
+
+func _spawn_unit(_type: EnemyType) -> Array:
+	print("[SpawnUnit] Get request")
+	var data = _get_enemy_dict(_type)
 	game_other.summon_enemy.emit(data)
 	return [StatusCode.OK]
 
 
-func _get_enemy_info(_type: EnemyType) -> Array:
-	print("[GetAllEnemyInfo] Get request")
-	return [StatusCode.OK]
-
-
-func _get_available_enemies() -> Array:
+func _get_available_units() -> Array:
 	print("[GetAvailableEnemies] Get request")
 	return [StatusCode.OK]
 
 
-func _get_closest_enemies(_position: Vector2i, _count: int) -> Array:
-	print("[GetClosestEnemies] Get request")
-	return [StatusCode.OK]
-
-
-func _get_enemies_in_range(_center: Vector2i, _radius: float) -> Array:
-	print("[GetEnemiesInRange] Get request")
+func _get_all_enemies(_center: Vector2i, _radius: float) -> Array:
+	print("[GetAllEnemies] Get request")
 	return [StatusCode.OK]
 
 

@@ -14,11 +14,9 @@ class CommandType(IntEnum):
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103
-    SPAWN_ENEMY = 201
-    GET_ENEMY_INFO = 203
-    GET_AVAILABLE_ENEMIES = 204
-    GET_CLOSEST_ENEMIES = 205
-    GET_ENEMIES_IN_RANGE = 206
+    SPAWN_UNIT = 201
+    GET_AVAILABLE_UNITS = 202
+    GET_ALL_ENEMIES = 203
     CAST_SPELL = 301
     GET_SPELL_COOLDOWN = 302
     GET_SPELL_COST = 303
@@ -167,16 +165,17 @@ class Enemy:
         return cls(
             _type=EnemyType(data['type']),
             position=Vector2(data['position']['x'], data['position']['y']),
-            health=data['health'],
+            deploy_cost=data['deploy_cost'],
+            income_impact=data.get('income_impact'),
             max_hp=data.get('max_hp'),
-            flying=data.get('flying'),
             damage=data.get('damage'),
+            max_speed=data.get('max_speed'),
+            flying=data.get('flying'),
             armor=data.get('armor'),
             shield=data.get('shield'),
             knockback_resist=data.get('knockback_resist'),
             kill_reward=data.get('kill_reward'),
-            income_impact=data.get('income_impact'),
-            cool_down=data.get('cool_down')
+            cool_down=data.get('cool_down', 'none')
         )
 
     def __str__(self) -> str:

@@ -14,11 +14,9 @@ enum CommandType {
 	PLACE_TOWER = 101,
 	GET_ALL_TOWERS = 102,
 	GET_TOWER = 103,
-	SPAWN_ENEMY = 201,
-	GET_ENEMY_INFO = 203,
-	GET_AVAILABLE_ENEMIES = 204,
-	GET_CLOSEST_ENEMIES = 205,
-	GET_ENEMIES_IN_RANGE = 206,
+	SPAWN_UNIT = 201,
+	GET_AVAILABLE_UNITS = 202,
+	GET_ALL_ENEMIES = 203,
 	CAST_SPELL = 301,
 	GET_SPELL_COOLDOWN = 302,
 	GET_SPELL_COST = 303,
@@ -79,15 +77,9 @@ func _register_command_handlers() -> void:
 		),
 		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
 		CommandHandler.new(CommandType.GET_TOWER, [TYPE_VECTOR2I], _get_tower),
-		CommandHandler.new(CommandType.SPAWN_ENEMY, [TYPE_INT], _spawn_enemy),
-		CommandHandler.new(CommandType.GET_ENEMY_INFO, [], _get_enemy_info),
-		CommandHandler.new(CommandType.GET_AVAILABLE_ENEMIES, [], _get_available_enemies),
-		CommandHandler.new(
-			CommandType.GET_CLOSEST_ENEMIES, [TYPE_VECTOR2I, TYPE_INT], _get_closest_enemies
-		),
-		CommandHandler.new(
-			CommandType.GET_ENEMIES_IN_RANGE, [TYPE_VECTOR2I, TYPE_FLOAT], _get_enemies_in_range
-		),
+		CommandHandler.new(CommandType.SPAWN_UNIT, [TYPE_INT], _spawn_unit),
+		CommandHandler.new(CommandType.GET_AVAILABLE_UNITS, [], _get_available_units),
+		CommandHandler.new(CommandType.GET_ALL_ENEMIES, [], _get_all_enemies),
 		CommandHandler.new(CommandType.CAST_SPELL, [TYPE_INT, TYPE_VECTOR2I], _cast_spell),
 		CommandHandler.new(
 			CommandType.GET_SPELL_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_spell_cooldown
