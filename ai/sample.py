@@ -1,7 +1,7 @@
 import time
 from api import *
 
-api = GameClient(7749, "3e025546")
+api = GameClient(7749, "f04ea330")
 
 print(api.get_scores(True))
 print(api.get_scores(False))
@@ -17,5 +17,5 @@ if not ret:
     print("no tower found")
     
 print(api.get_tower(Vector2(8, 4)))
-print(api.place_tower(TowerType.ICE_LUIGI, Vector2(8, 4)))
+print(api.place_tower(TowerType.SHY_GUY, "3b", Vector2(8, 4)))
 print(api.get_tower(Vector2(8, 4)))

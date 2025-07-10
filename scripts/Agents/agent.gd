@@ -2,7 +2,7 @@ class_name Agent
 extends Node
 enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
-enum TowerType { BASIC }
+enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 enum EnemyType { BASIC }
 enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
 enum StatusCode {
@@ -18,8 +18,46 @@ enum StatusCode {
 	CLIENT_ERR = 501
 }
 
-const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
+const TOWER_SCENES = [
+	[preload("res://scenes/towers/twin_turret.tscn")],
+	[
+		preload("res://scenes/towers/fire_mario_1.tscn"),
+		preload("res://scenes/towers/fire_mario_2a.tscn"),
+		preload("res://scenes/towers/fire_mario_2b.tscn"),
+		preload("res://scenes/towers/fire_mario_3a.tscn"),
+		preload("res://scenes/towers/fire_mario_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/ice_luigi_1.tscn"),
+		preload("res://scenes/towers/ice_luigi_2a.tscn"),
+		preload("res://scenes/towers/ice_luigi_2b.tscn"),
+		preload("res://scenes/towers/ice_luigi_3a.tscn"),
+		preload("res://scenes/towers/ice_luigi_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/donkey_kong_1.tscn"),
+		preload("res://scenes/towers/donkey_kong_2a.tscn"),
+		preload("res://scenes/towers/donkey_kong_2b.tscn"),
+		preload("res://scenes/towers/donkey_kong_3a.tscn"),
+		preload("res://scenes/towers/donkey_kong_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/fort_1.tscn"),
+		preload("res://scenes/towers/fort_2a.tscn"),
+		preload("res://scenes/towers/fort_2b.tscn"),
+		preload("res://scenes/towers/fort_3a.tscn"),
+		preload("res://scenes/towers/fort_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/shy_guy_1.tscn"),
+		preload("res://scenes/towers/shy_guy_2a.tscn"),
+		preload("res://scenes/towers/shy_guy_2b.tscn"),
+		preload("res://scenes/towers/shy_guy_3a.tscn"),
+		preload("res://scenes/towers/shy_guy_3b.tscn")
+	]
+]
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
+const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
 var type: AgentType = AgentType.NIL
 var game_status: GameStatus = GameStatus.PREPARE
 var money: int
@@ -147,7 +185,7 @@ func _get_game_status() -> Array:
 #region Tower
 
 
-func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
+func _place_tower(_type: TowerType, _level: String, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
 	var map = game_self.get_node("Map")
 	if not map:
@@ -160,8 +198,8 @@ func _place_tower(_type: TowerType, _coord: Vector2i) -> Array:
 		# TODO: check whether existing tower is upgrade-able
 		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: can't upgrade tower"]
 
-	# TODO: handle different type of tower
-	game_self.place_tower(_coord, TOWER_SCENE.instantiate())
+	var tower_scene = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]]
+	game_self.place_tower(_coord, tower_scene.instantiate())
 	return [StatusCode.OK]
 
 
