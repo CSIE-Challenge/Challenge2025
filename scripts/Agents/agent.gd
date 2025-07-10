@@ -193,7 +193,7 @@ func _place_tower(_type: TowerType, _level: String, _coord: Vector2i) -> Array:
 	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
 		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
 
-	if (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
+	if (not _type in range(1, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
 		return [
 			StatusCode.ILLEGAL_ARGUMENT,
 			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
