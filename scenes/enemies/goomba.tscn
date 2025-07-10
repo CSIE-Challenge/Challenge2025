@@ -29,7 +29,6 @@ animations = [{
 radius = 15.0333
 
 [node name="Enemy" type="Area2D" groups=["EnemyGroup"]]
-collision_mask = 2
 script = ExtResource("1_emeqt")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
