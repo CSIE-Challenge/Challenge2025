@@ -61,11 +61,9 @@ func _ready() -> void:
 	process_status_kill_button.pressed.connect(python_subprocess.kill_subprocess)
 
 	# token
-	var the_token = web_agent._ws._token
-	$Options/TokenLabel.text = the_token
 	$Options/TokenContainer/Button.pressed.connect(
 		func():
-			DisplayServer.clipboard_set(the_token)
+			DisplayServer.clipboard_set(web_agent._ws._token)
 			$Options/TokenContainer/Button.text = "Copied!"
 	)
 
@@ -94,6 +92,8 @@ func load_config(config: ConfigFile, section: String) -> void:
 	manual_control = config.get_value(section, "manual_control", false)
 	python_subprocess.set_python_interpreter(config.get_value(section, "python_interpreter", ""))
 	python_subprocess.set_python_script(config.get_value(section, "agent_script", ""))
+	if config.has_section_key(section, "api_token"):
+		ApiServer.update_token(web_agent._ws, config.get_value(section, "api_token"))
 
 
 func save_config(config: ConfigFile, section: String) -> void:
@@ -101,6 +101,7 @@ func save_config(config: ConfigFile, section: String) -> void:
 	config.set_value(section, "manual_control", manual_control)
 	config.set_value(section, "python_interpreter", python_subprocess.python_interpreter_path)
 	config.set_value(section, "agent_script", python_subprocess.python_script_path)
+	config.set_value(section, "api_token", web_agent._ws._token)
 
 
 func _remove_handlers(sig: Signal) -> void:
@@ -132,6 +133,9 @@ func _display_fields() -> void:
 		agent_script_label.text = agent_script_path
 	else:
 		agent_script_label.text = "(empty)"
+
+	# token
+	$Options/TokenLabel.text = web_agent._ws._token
 
 	# process status
 	process_status_run_button.visible = python_subprocess.is_runnable()
