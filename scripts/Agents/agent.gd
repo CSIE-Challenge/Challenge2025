@@ -233,6 +233,7 @@ func _get_enemies_in_range(_center: Vector2i, _radius: float) -> Array:
 
 
 func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
+	var global_pos: Vector2 = game_self._map.cell_to_global(_coord)
 	print("[CastSpell] Get request")
 	var spell_manager: Node = game_self.get_node("SpellManager")
 
@@ -262,9 +263,8 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 		if not suc:
 			print("[ERROR] cann't cast the spell")
 			return [StatusCode.CLIENT_ERR]
-
 	else:
-		var suc = spell_node.cast_spell(_coord)
+		var suc = spell_node.cast_spell(global_pos)
 		if not suc:
 			print("[ERROR] cann't cast the spell")
 			return [StatusCode.CLIENT_ERR]
