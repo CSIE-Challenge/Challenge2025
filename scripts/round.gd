@@ -42,6 +42,7 @@ func _ready() -> void:
 	match manual_controlled:
 		0:
 			shop.queue_free()
+			chat.find_child("Shop").add_theme_color_override("font_color", Color(.6, .6, .6))
 			chat.always_visible = true
 		1:
 			shop.start_game(game_1p, game_2p)
