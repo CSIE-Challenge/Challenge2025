@@ -2,8 +2,7 @@ class_name Agent
 extends Node
 enum GameStatus { PREPARE, START, READY, END }
 enum AgentType { HUMAN, AI, NIL }
-# TODO: Remove BASIC legacy
-enum TowerType { BASIC, DONKEY_KONG, FIRE_MARIO, FORT, ICE_LUIGI, SHY_GUY }
+enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 enum EnemyType { BASIC }
 enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
 enum StatusCode {
@@ -19,8 +18,46 @@ enum StatusCode {
 	CLIENT_ERR = 501
 }
 
-const TOWER_SCENE := preload("res://scenes/towers/twin_turret.tscn")
+const TOWER_SCENES = [
+	[preload("res://scenes/towers/twin_turret.tscn")],
+	[
+		preload("res://scenes/towers/fire_mario_1.tscn"),
+		preload("res://scenes/towers/fire_mario_2a.tscn"),
+		preload("res://scenes/towers/fire_mario_2b.tscn"),
+		preload("res://scenes/towers/fire_mario_3a.tscn"),
+		preload("res://scenes/towers/fire_mario_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/ice_luigi_1.tscn"),
+		preload("res://scenes/towers/ice_luigi_2a.tscn"),
+		preload("res://scenes/towers/ice_luigi_2b.tscn"),
+		preload("res://scenes/towers/ice_luigi_3a.tscn"),
+		preload("res://scenes/towers/ice_luigi_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/donkey_kong_1.tscn"),
+		preload("res://scenes/towers/donkey_kong_2a.tscn"),
+		preload("res://scenes/towers/donkey_kong_2b.tscn"),
+		preload("res://scenes/towers/donkey_kong_3a.tscn"),
+		preload("res://scenes/towers/donkey_kong_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/fort_1.tscn"),
+		preload("res://scenes/towers/fort_2a.tscn"),
+		preload("res://scenes/towers/fort_2b.tscn"),
+		preload("res://scenes/towers/fort_3a.tscn"),
+		preload("res://scenes/towers/fort_3b.tscn")
+	],
+	[
+		preload("res://scenes/towers/shy_guy_1.tscn"),
+		preload("res://scenes/towers/shy_guy_2a.tscn"),
+		preload("res://scenes/towers/shy_guy_2b.tscn"),
+		preload("res://scenes/towers/shy_guy_3a.tscn"),
+		preload("res://scenes/towers/shy_guy_3b.tscn")
+	]
+]
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
+const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
 var type: AgentType = AgentType.NIL
 var game_status: GameStatus = GameStatus.PREPARE
 var money: int
@@ -148,32 +185,43 @@ func _get_game_status() -> Array:
 #region Tower
 
 
-func _place_tower(_type: TowerType, _level_a: int, _level_b: int, _coord: Vector2i) -> Array:
+func _place_tower(_type: TowerType, _level: String, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
-	if _type == TowerType.BASIC:
-		return [StatusCode.OK]
 	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
 	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
 		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
-	var index: int = -1
-	if _level_a == 1:
-		if _level_b == 1:
-			index = 0
-		elif _level_b == 2:
-			index = 2
-		elif _level_b == 3:
-			index = 4
-	elif _level_a == 2 and _level_b == 1:
-		index = 1
-	elif _level_a == 3 and _level_b == 1:
-		index = 3
-	if index == -1:
-		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid level"]
-	var tower_data = TowerData.new()
-	var new_tower_scene = load(tower_data.tower_data_list[(_type - 1) * 5 + index])
-	game_self.place_tower(_coord, new_tower_scene.instantiate())
+
+	if (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
+		return [
+			StatusCode.ILLEGAL_ARGUMENT,
+			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
+		]
+
+	var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
+	if game_self.built_towers.has(_coord):
+		var previous_tower = game_self.built_towers[_coord]
+		if (
+			(
+				previous_tower.type == tower.type
+				and (
+					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+				)
+			)
+			or money + previous_tower.building_cost < tower.building_cost
+		):
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
+		if (
+			previous_tower.type != tower.type
+			and (
+				game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
+				< tower.building_cost
+			)
+		):
+			print(previous_tower.building_cost, tower.building_cost)
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: no enough money"]
+	game_self.place_tower(_coord, tower)
 	return [StatusCode.OK]
 
 
