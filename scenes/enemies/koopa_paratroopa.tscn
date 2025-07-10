@@ -19,7 +19,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_55jtl"]
-radius = 17.0294
+radius = 20.0998
 
 [node name="Enemy" type="Area2D" groups=["EnemyGroup"]]
 collision_layer = 4
@@ -29,10 +29,10 @@ flying = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_772r1")
-frame_progress = 0.714216
+frame_progress = 0.0675438
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, -10)
+position = Vector2(0, -9)
 shape = SubResource("CircleShape2D_55jtl")
 
 [node name="HealthBar" type="ProgressBar" parent="."]

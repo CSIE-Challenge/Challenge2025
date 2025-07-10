@@ -21,6 +21,7 @@ func _draw():
 
 
 func trigger() -> void:
+	# TODO: trigger damage anytime instead of only at the end
 	var enemies: Array[Area2D] = get_overlapping_areas()
 	for enemy in enemies:
 		enemy.take_damage(spell.metadata.stats.trigger_damage)
