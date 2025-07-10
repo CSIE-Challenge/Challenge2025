@@ -89,6 +89,20 @@ func _process(_delta: float) -> void:
 #endregion
 
 
+func load_config(config: ConfigFile, section: String) -> void:
+	player_identifier = config.get_value(section, "player_identifier", section)
+	manual_control = config.get_value(section, "manual_control", false)
+	python_subprocess.set_python_interpreter(config.get_value(section, "python_interpreter", ""))
+	python_subprocess.set_python_script(config.get_value(section, "agent_script", ""))
+
+
+func save_config(config: ConfigFile, section: String) -> void:
+	config.set_value(section, "player_identifier", player_identifier)
+	config.set_value(section, "manual_control", manual_control)
+	config.set_value(section, "python_interpreter", python_subprocess.python_interpreter_path)
+	config.set_value(section, "agent_script", python_subprocess.python_script_path)
+
+
 func _remove_handlers(sig: Signal) -> void:
 	var conns = sig.get_connections()
 	for iter in conns:

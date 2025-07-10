@@ -1,5 +1,7 @@
 extends Control
 
+const CONFIG_FILE_PATH = "user://settings.cfg"
+
 # array of: map name, cover image, scene
 # the random option MUST be the first one
 const MAP_LIST = [
@@ -21,18 +23,44 @@ var selected_map_idx: int
 func _ready() -> void:
 	selection_1p.manual_control_enabled.connect(func(): selection_2p.manual_control = false)
 	selection_2p.manual_control_enabled.connect(func(): selection_1p.manual_control = false)
-	selection_1p.manual_control = true
 	map_panel.get_node(^"HBoxContainer/TextureButtonLeft").pressed.connect(
 		func(): _select_map(selected_map_idx - 1)
 	)
 	map_panel.get_node(^"HBoxContainer/TextureButtonRight").pressed.connect(
 		func(): _select_map(selected_map_idx + 1)
 	)
-	_select_map(1)
+
+	_load_config()
+	_select_map(selected_map_idx)
+
+	if selection_1p.manual_control and selection_2p.manual_control:
+		selection_2p.manual_control = false
+
+
+func _load_config() -> void:
+	var config = ConfigFile.new()
+	if config.load(CONFIG_FILE_PATH) != OK:
+		selected_map_idx = 1
+		config = ConfigFile.new()
+		selection_1p.load_config(config, "Player 1")
+		selection_2p.load_config(config, "Player 2")
+		return
+	selected_map_idx = config.get_value("Map", "index", 1)
+	selection_1p.load_config(config, "Player 1")
+	selection_2p.load_config(config, "Player 2")
+
+
+func _save_config() -> void:
+	var config = ConfigFile.new()
+	config.set_value("Map", "index", selected_map_idx)
+	selection_1p.save_config(config, "Player 1")
+	selection_2p.save_config(config, "Player 2")
+	config.save(CONFIG_FILE_PATH)
 
 
 func _select_map(new_map_idx: int) -> void:
-	selected_map_idx = (new_map_idx + len(MAP_LIST)) % len(MAP_LIST)
+	var num_maps = len(MAP_LIST)
+	selected_map_idx = (new_map_idx % num_maps + num_maps) % num_maps
 	var map_info = MAP_LIST[selected_map_idx]
 	map_panel.get_node(^"HBoxContainer/Label").text = map_info[0]
 	map_panel.get_node(^"Panel/TextureRect").texture = map_info[1]
@@ -45,6 +73,7 @@ func _on_start_button_pressed() -> void:
 	selection_2p.freeze()
 	game_start_button.text = "Starting..."
 	game_start_timer.start()
+	_save_config()
 
 
 func _on_game_start_timer_timeout() -> void:
