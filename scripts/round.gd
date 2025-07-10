@@ -80,13 +80,21 @@ func _on_game_timer_timeout():
 	game_1p.player_selection.web_agent.game_running = false
 	game_2p.player_selection.web_agent.game_running = false
 	# load end scene
-	var end_scene = preload("res://scenes/end.tscn").instantiate()
-	end_scene.player1_score = game_1p.score
-	end_scene.player2_score = game_2p.score
-	# TODO: send real kill count stats
-	end_scene.player1_kill_cnt = game_1p.kill_cnt
-	end_scene.player2_kill_cnt = game_2p.kill_cnt
-	end_scene.player1_money = game_1p.money
-	end_scene.player2_money = game_2p.money
+	var end_scene: EndScreen = preload("res://scenes/end.tscn").instantiate()
+
+	end_scene.statistics = [
+		EndScreen.Statistics.init("Score", [game_1p.score, game_2p.score], true),
+		EndScreen.Statistics.init("Kill Count", [game_1p.kill_count, game_2p.kill_count], false),
+		EndScreen.Statistics.init(
+			"Total Money Earned", [game_1p.money_earned, game_2p.money_earned], true
+		),
+		EndScreen.Statistics.init(
+			"Towers Built", [game_1p.tower_built, game_2p.tower_built], false
+		),
+		EndScreen.Statistics.init("Enemies Sent", [game_1p.enemy_sent, game_2p.enemy_sent], false),
+		EndScreen.Statistics.init(
+			"API Called", [game_1p.api_called, game_2p.api_called], false, true, false
+		),
+	]
 	get_tree().get_root().add_child(end_scene)
 	queue_free()

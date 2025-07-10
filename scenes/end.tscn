@@ -1,43 +1,76 @@
 [gd_scene load_steps=6 format=3 uid="uid://b0ol4aa2k4bhu"]
 
+[ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="1_bvfni"]
 [ext_resource type="Texture2D" uid="uid://bijh20l2fexgv" path="res://assets/background_image/end_scene.png" id="1_mwn6m"]
 [ext_resource type="Script" uid="uid://2lonvhxt71ed" path="res://scripts/end.gd" id="1_p7m4f"]
-[ext_resource type="PackedScene" uid="uid://cu6crct501l5t" path="res://scenes/ui/end_player_stats.tscn" id="2_3d26k"]
+
+[sub_resource type="Theme" id="Theme_s4tl2"]
+default_font = ExtResource("1_bvfni")
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_p7m4f"]
 
-[sub_resource type="SystemFont" id="SystemFont_mwn6m"]
-subpixel_positioning = 0
-
-[node name="End" type="Node2D"]
+[node name="End" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+theme = SubResource("Theme_s4tl2")
 script = ExtResource("1_p7m4f")
 
-[node name="background" type="TextureRect" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
 texture = ExtResource("1_mwn6m")
 
-[node name="box" type="TextureRect" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="ShadeBox" type="TextureRect" parent="MarginContainer"]
 modulate = Color(0, 0, 0, 0.435294)
-offset_left = 69.0
-offset_top = 85.0
-offset_right = 1851.0
-offset_bottom = 1000.0
+layout_mode = 2
 texture = SubResource("CanvasTexture_p7m4f")
 
-[node name="winner_text" type="RichTextLabel" parent="."]
-offset_left = 75.0
-offset_top = 99.0
-offset_right = 1818.0
-offset_bottom = 260.0
-theme_override_fonts/normal_font = SubResource("SystemFont_mwn6m")
-theme_override_font_sizes/normal_font_size = 100
-text = "Winner: {name}"
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 1000)
+layout_mode = 2
+
+[node name="PlayerRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="LeftPlayerIcon" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PlayerRow"]
+custom_minimum_size = Vector2(200, 160)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 84
+text = "Icon"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="player_stats_1" parent="." instance=ExtResource("2_3d26k")]
-position = Vector2(243, 345)
+[node name="LeftPlayerName" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PlayerRow"]
+custom_minimum_size = Vector2(720, 160)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 84
+text = "Player 1"
+vertical_alignment = 1
 
-[node name="player_stats_2" parent="." instance=ExtResource("2_3d26k")]
-position = Vector2(1030, 338)
+[node name="RightPlayerName" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PlayerRow"]
+custom_minimum_size = Vector2(720, 160)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 84
+text = "Player 2"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RightPlayerIcon" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PlayerRow"]
+custom_minimum_size = Vector2(200, 160)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 84
+text = "Icon"
+horizontal_alignment = 1
+vertical_alignment = 1

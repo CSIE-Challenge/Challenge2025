@@ -1,40 +1,112 @@
-[gd_scene load_steps=4 format=3 uid="uid://cu6crct501l5t"]
+[gd_scene load_steps=6 format=3 uid="uid://cu6crct501l5t"]
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_yncrm"]
+[ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="1_m1rlq"]
+[ext_resource type="Script" uid="uid://b7f86hn5ltfnx" path="res://ui/ending_stats.gd" id="2_ko3a1"]
+[ext_resource type="FontFile" uid="uid://ccw18kx27c5q2" path="res://assets/font/PixelMplus12-Bold.ttf" id="2_xhoaa"]
 
-[sub_resource type="SystemFont" id="SystemFont_mlimi"]
-subpixel_positioning = 0
+[sub_resource type="Theme" id="Theme_ko3a1"]
+default_font = ExtResource("1_m1rlq")
 
-[sub_resource type="SystemFont" id="SystemFont_yncrm"]
-subpixel_positioning = 0
+[sub_resource type="CanvasTexture" id="CanvasTexture_2kom4"]
 
-[node name="EndPlayerStats" type="Node2D"]
+[node name="EndPlayerStats" type="MarginContainer"]
+offset_right = 600.0
+offset_bottom = 690.0
+theme = SubResource("Theme_ko3a1")
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_right = 64
+script = ExtResource("2_ko3a1")
 
-[node name="background" type="TextureRect" parent="."]
-offset_right = 658.0
-offset_bottom = 553.0
-texture = SubResource("CanvasTexture_yncrm")
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(600, 650)
+layout_mode = 2
+texture = SubResource("CanvasTexture_2kom4")
 
-[node name="player_stats" type="RichTextLabel" parent="."]
-modulate = Color(0.0430392, 0.0430392, 0.0430392, 1)
-offset_left = 66.0
-offset_top = 160.0
-offset_right = 577.0
-offset_bottom = 503.0
-theme_override_fonts/normal_font = SubResource("SystemFont_mlimi")
-theme_override_font_sizes/normal_font_size = 80
-text = "Score: {score}
-Kill: {kill_cnt}
-Money: {money}"
-vertical_alignment = 3
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
 
-[node name="player_name" type="RichTextLabel" parent="."]
+[node name="Name" type="RichTextLabel" parent="Box"]
 modulate = Color(0, 0, 0, 1)
 self_modulate = Color(0, 0, 0, 1)
-offset_right = 668.0
-offset_bottom = 170.0
-theme_override_fonts/normal_font = SubResource("SystemFont_yncrm")
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
 theme_override_font_sizes/normal_font_size = 100
 text = "{name}"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Box"]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 20
+
+[node name="GridContainer" type="GridContainer" parent="Box/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 2
+
+[node name="ScoreText" type="RichTextLabel" parent="Box/MarginContainer/GridContainer"]
+modulate = Color(0.0430392, 0.0430392, 0.0430392, 1)
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+theme_override_fonts/bold_font = ExtResource("2_xhoaa")
+theme_override_font_sizes/normal_font_size = 60
+theme_override_font_sizes/bold_font_size = 60
+bbcode_enabled = true
+text = "[b]Score:[/b]
+"
+vertical_alignment = 1
+
+[node name="Score" type="RichTextLabel" parent="Box/MarginContainer/GridContainer"]
+modulate = Color(0.0430392, 0.0430392, 0.0430392, 1)
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 60
+text = "
+"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="KillText" type="RichTextLabel" parent="Box/MarginContainer/GridContainer"]
+modulate = Color(0.0430392, 0.0430392, 0.0430392, 1)
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+theme_override_fonts/bold_font = ExtResource("2_xhoaa")
+theme_override_font_sizes/normal_font_size = 60
+theme_override_font_sizes/bold_font_size = 60
+bbcode_enabled = true
+text = "[b]Kills:[/b]
+"
+vertical_alignment = 1
+
+[node name="Kill" type="RichTextLabel" parent="Box/MarginContainer/GridContainer"]
+modulate = Color(0.0430392, 0.0430392, 0.0430392, 1)
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 60
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MoneyText" type="RichTextLabel" parent="Box/MarginContainer/GridContainer"]
+modulate = Color(0.0430392, 0.0430392, 0.0430392, 1)
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+theme_override_fonts/bold_font = ExtResource("2_xhoaa")
+theme_override_font_sizes/normal_font_size = 60
+theme_override_font_sizes/bold_font_size = 60
+bbcode_enabled = true
+text = "[b]Money:[/b]
+"
+vertical_alignment = 1
+
+[node name="Money" type="RichTextLabel" parent="Box/MarginContainer/GridContainer"]
+modulate = Color(0.0430392, 0.0430392, 0.0430392, 1)
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 60
+horizontal_alignment = 2
 vertical_alignment = 1
