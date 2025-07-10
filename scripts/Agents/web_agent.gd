@@ -145,8 +145,6 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 				"[Receive Command] Error: cannot find command: %d" % command_id
 			]
 		elif not _command_handlers[command_id].check_argument_types(command):
-<<<<<<< HEAD
-<<<<<<< HEAD
 			response = [
 				request_id, StatusCode.ILLEGAL_ARGUMENT, "[Receive Command] Error: illegal argument"
 			]
@@ -156,14 +154,6 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 				StatusCode.NOT_STARTED,
 				"[Receive Command] Error: the game is not running"
 			]
-=======
-			response = [StatusCode.ILLEGAL_ARGUMENT, "[Receive Command] Error: illegal argument"]
->>>>>>> 54818ac (feat: fetch game status)
-=======
-			response = [
-				request_id, StatusCode.ILLEGAL_ARGUMENT, "[Receive Command] Error: illegal argument"
-			]
->>>>>>> 2d04961 (fix: wrong serialization, missing argument)
 		else:
 			response = _command_handlers[command_id].handle(command)
 			response.push_front(request_id)

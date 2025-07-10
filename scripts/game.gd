@@ -43,7 +43,7 @@ func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
-    
+
 	buy_spell.connect(_on_buy_spell)
 
 
@@ -99,14 +99,10 @@ func _place_tower(cell_pos: Vector2i, tower: Tower, map: Map) -> void:
 	var global_pos = _map.cell_to_global(cell_pos)
 	built_towers[cell_pos] = tower
 	self.add_child(tower)
-<<<<<<< HEAD
 	tower.enable(global_pos, map)
 
 	money -= tower.building_cost
 	built_towers[cell_pos] = tower
-=======
-	tower.enable(global_pos)
->>>>>>> b05bbd7 (fix: value type in dictionary)
 
 
 func _on_buy_tower(tower_scene: PackedScene):
