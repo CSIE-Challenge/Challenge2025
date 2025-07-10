@@ -1,5 +1,5 @@
+from __future__ import annotations
 from enum import IntEnum, auto
-
 
 class CommandType(IntEnum):
     GET_ALL_TERRAIN = 1
@@ -38,7 +38,12 @@ class TerrainType(IntEnum):
 
 
 class TowerType(IntEnum):
-    BASIC = 0
+    NONE = 0
+    FIRE_MARIO = 1
+    ICE_LUIGI = 2
+    DONEKEY_KONG = 3
+    FORT = 4
+    SHY_GUY = 5
 
 
 class EnemyType(IntEnum):
@@ -94,12 +99,13 @@ class ApiException(Exception):
 
 
 class Tower:
-    def __init__(self, _type: TowerType, position: Vector2, level: int, aim: bool = True, 
+    def __init__(self, _type: TowerType, position: Vector2, level_a: int, level_b: int, aim: bool = True, 
                  anti_air: bool = False, bullet_number: int = 1, reload: int = 60, 
                  range: int = 100, damage: int = 10, bullet_effect: str = 'none') -> None:
         self.type = _type
         self.position = position
-        self.level = level
+        self.level_a = level_a
+        self.level_b = level_b
         self.aim = aim
         self.anti_air = anti_air
         self.bullet_number = bullet_number
@@ -109,11 +115,14 @@ class Tower:
         self.bullet_effect = bullet_effect
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Tower':
+    def from_dict(cls, data: dict) -> 'Tower' | None:
+        if not data:
+            return None
         return cls(
             _type=TowerType(data['type']),
             position=Vector2(data['position']['x'], data['position']['y']),
-            level=data['level'],
+            level_a=data['level_a'],
+            level_b=data['level_b'],
             aim=data.get('aim'),
             anti_air=data.get('anti_air'),
             bullet_number=data.get('bullet_number'),
@@ -124,7 +133,7 @@ class Tower:
         )
 
     def __str__(self) -> str:
-        return f"Tower(type={self.type.name}, position={self.position}, level={self.level})"
+        return f"Tower(type={self.type.name}, position={self.position}, level_a={self.level_a}, level_b={self.level_b})"
 
     def __repr__(self) -> str:
         return self.__str__()
