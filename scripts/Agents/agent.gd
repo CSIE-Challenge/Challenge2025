@@ -1,7 +1,6 @@
 class_name Agent
 extends Node
 enum GameStatus { PREPARE, START, READY, END }
-enum AgentType { HUMAN, AI, NIL }
 # TODO: Remove BASIC legacy
 enum TowerType { BASIC, DONKEY_KONG, FIRE_MARIO, FORT, ICE_LUIGI, SHY_GUY }
 enum EnemyType {
@@ -67,7 +66,6 @@ const TOWER_SCENES = [
 ]
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
-var type: AgentType = AgentType.NIL
 var game_status: GameStatus = GameStatus.PREPARE
 var money: int
 var score: int

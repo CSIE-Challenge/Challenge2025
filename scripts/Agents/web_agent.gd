@@ -97,7 +97,6 @@ func _register_command_handlers() -> void:
 
 
 func _init() -> void:
-	type = AgentType.AI
 	_register_command_handlers()
 	_ws = ApiServer.register_connection()
 	add_child(_ws)
