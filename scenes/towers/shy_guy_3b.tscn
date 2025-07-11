@@ -36,6 +36,7 @@ collision_mask = 0
 script = ExtResource("1_3phi0")
 type = 5
 level_b = 3
+building_cost = 560
 anti_air = true
 bullet_scene = ExtResource("2_3phi0")
 

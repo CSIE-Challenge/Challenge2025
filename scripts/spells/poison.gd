@@ -6,12 +6,12 @@ static var metadata: Dictionary = {
 	"description": "Don't be toxic",
 	"stats":
 	{
-		"duration": 20,
-		"cooldown": 40,
-		"cost": 50,
+		"duration": 5,
+		"cooldown": 60,
+		"cost": 0,
 		"target": true,
-		"radius": 50.0,
-		"trigger_interval": 2,
+		"radius": 100.0,
+		"trigger_interval": 0.5,
 		"trigger_damage": 2,
 	}
 }
