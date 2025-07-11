@@ -115,7 +115,7 @@ func _get_terrain(_coord: Vector2i) -> Array:
 	print("[GetTerrain] Get request")
 	var map = game_self.get_node("Map")
 	if not map:
-		return [StatusCode.INTERNAL_ERR, "[GetAllTerrain] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "[GetTerrain] Error: cannot find map"]
 
 	return [StatusCode.OK, map.get_cell_terrain(_coord)]
 

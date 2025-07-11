@@ -20,6 +20,7 @@ class GameClient(GameClientBase):
         ## Returns
         這個函數返回一個二維陣列，表示地圖上所有地形的資訊。每個元素都是一個 `TerrainType` 枚舉類型，表示該位置的地形類型。
         
+        TODO: move to defs.py
         ## TerrainType
         
         - OUT_OF_BOUNDS: 表示超出邊界的區域。
@@ -48,6 +49,7 @@ class GameClient(GameClientBase):
         ## Returns
         這個函數返回一個 `TerrainType` 枚舉類型，表示指定位置的地形類型。
 
+        TODO: move to defs.py
         ## TerrainType
         - OUT_OF_BOUNDS: 表示超出邊界的區域。
         - EMPTY: 表示空地。可以放置塔。
@@ -95,8 +97,8 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        money = api.get_money(owned=True)  # 獲取玩家的金錢數量
-        opponent_money = api.get_money(owned=False)  # 獲取對手的金錢數量
+        money = api.get_money(True)  # 獲取玩家的金錢數量
+        opponent_money = api.get_money(False)  # 獲取對手的金錢數量
         ```
         """
         raise NotImplementedError
@@ -108,15 +110,15 @@ class GameClient(GameClientBase):
         取得玩家或對手的收入。
 
         ## Parameters
-        - `owned` (bool): 是否為玩家自己的收入。如果為 `True`，則差尋玩家的收入，如果為 `False`，則查詢對手的收入。
+        - `owned` (bool): 是否為玩家自己的收入。如果為 `True`，則查詢玩家的收入，如果為 `False`，則查詢對手的收入。
 
         ## Returns
         這個函數返回一個整數，表示指定玩家的收入。
 
         ## Example
         ```python
-        income = api.get_income(owned=True) # 獲取玩家的收入
-        opponent_income = api.get_income(owned=False)  # 獲取對手的收入
+        income = api.get_income(True) # 獲取玩家的收入
+        opponent_income = api.get_income(False)  # 獲取對手的收入
         ```
         """
         raise NotImplementedError
@@ -145,17 +147,17 @@ class GameClient(GameClientBase):
     def get_remain_time(self) -> float:
         """
         # Get Remain Time
-        取得當前波次剩餘的時間。
+        取得遊戲剩餘的時間。
 
         ## Parameters
         無參數
         
         ## Returns
-        這個函數返回一個浮點數，表示剩餘的時間，單位為秒。
+        這個函數返回一個浮點數，表示遊戲剩餘的時間，單位為秒。
 
         ## Example
         ```python
-        remain_time = api.get_remain_time()  # 獲取當前波次剩餘的時間
+        remain_time = api.get_remain_time()  # 獲取遊戲剩餘的時間
         print(f"Remaining time: {remain_time} seconds")
         """
         raise NotImplementedError

@@ -161,13 +161,13 @@ class GameClientBase:
                     source_fn, StatusCode.INTERNAL_ERR, f"unexpected return value")
         elif isinstance(ret, inner_ret_type):
             return ret
-        elif isinstance(ret, dict) and inner_ret_type in (Tower, Enemy, Spell):
+        elif isinstance(ret, dict) and inner_ret_type in (Tower, Enemy, SpellType):
             if inner_ret_type == Tower:
                 return Tower.from_dict(ret)
             elif inner_ret_type == Enemy:
                 return Enemy.from_dict(ret)
-            elif inner_ret_type == Spell:
-                return Spell.from_dict(ret)
+            elif inner_ret_type == SpellType:
+                return SpellType.from_dict(ret)
             elif inner_ret_type == dict:
                 return ret
             else:
