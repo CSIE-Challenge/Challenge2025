@@ -1,12 +1,32 @@
 from .defs import *
 from .game_client_base import GameClientBase, game_command
 
-from typing import List
-
 # the decorated member functions are dummy functions that never gets called
 # an NotImplementedError is raised because returning nothing violates return type checking
 
 class GameClient(GameClientBase):
+
+    @game_command(CommandType.GET_GAME_STATUS, [], GameStatus)
+    def get_game_status(self) -> GameStatus:
+        """
+        # Get Game Status
+        取得現在的遊戲狀態。
+
+        ## Parameters
+        無參數
+
+        ## Returns
+        這個函數返回一個 `GameStatus` 枚舉類型，表示目前的遊戲狀態。
+
+        ## Example
+        ```python
+        status = api.get_game_status()
+        while status != GameStatus.RUNNING:
+            time.sleep(1)
+            status = api.get_game_status()
+        ```
+        """
+        raise NotImplementedError
 
     @game_command(CommandType.GET_ALL_TERRAIN, [], list[list[TerrainType]])
     def get_all_terrain(self) -> list[list[TerrainType]]:
@@ -19,14 +39,6 @@ class GameClient(GameClientBase):
 
         ## Returns
         這個函數返回一個二維陣列，表示地圖上所有地形的資訊。每個元素都是一個 `TerrainType` 枚舉類型，表示該位置的地形類型。
-        
-        TODO: move to defs.py
-        ## TerrainType
-        
-        - OUT_OF_BOUNDS: 表示超出邊界的區域。
-        - EMPTY: 表示空地。可以放置塔。
-        - ROAD: 表示道路。是敵人行進的路徑。不可以放置塔。
-        - OBSTACLE: 表示障礙物。不可以放置塔。
 
         ## Example
         ```python
@@ -48,13 +60,6 @@ class GameClient(GameClientBase):
 
         ## Returns
         這個函數返回一個 `TerrainType` 枚舉類型，表示指定位置的地形類型。
-
-        TODO: move to defs.py
-        ## TerrainType
-        - OUT_OF_BOUNDS: 表示超出邊界的區域。
-        - EMPTY: 表示空地。可以放置塔。
-        - ROAD: 表示道路。是敵人行進的路徑。不可以放置塔。
-        - OBSTACLE: 表示障礙物。不可以放置塔。
 
         ## Example
         ```python
