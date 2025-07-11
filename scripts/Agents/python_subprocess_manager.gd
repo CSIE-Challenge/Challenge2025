@@ -57,12 +57,11 @@ func is_runnable() -> bool:
 func run_subprocess() -> void:
 	if not is_runnable():
 		return
-	var dict = OS.execute_with_pipe(python_interpreter_path, [python_script_path])
-	if dict.is_empty():
+	_current_pid = OS.create_process(python_interpreter_path, [python_script_path])
+	if _current_pid == -1:
 		_state = FAILED
 		return
 	_state = RUNNING
-	_current_pid = dict["pid"]
 
 
 # terminate the subprocess
