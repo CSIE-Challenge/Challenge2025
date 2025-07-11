@@ -83,14 +83,6 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.SEND_CHAT, [str], bool)
-    def send_chat(self, msg: str) -> bool:
-        raise NotImplementedError
-    
-    @game_command(CommandType.GET_CHAT_HISTORY, [int], list[tuple[int, str]])
-    def get_chat_history(self, num: int) -> list[tuple[int, str]]:
-        raise NotImplementedError
-
     @game_command(CommandType.GET_MONEY, [bool], int)
     def get_money(self, owned: bool) -> int:
         """
@@ -254,6 +246,7 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
+
     @game_command(CommandType.SPAWN_UNIT, [EnemyType], None)
     def spawn_unit(self, type: EnemyType) -> None:
         """
@@ -276,28 +269,6 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    # @game_command(CommandType.GET_ENEMY_INFO, [EnemyType], EnemyType)
-    # def get_enemy_info(self, type: EnemyType) -> EnemyType:
-    #     """
-    #     # Get Enemy Info
-    #     取得指定類型敵人的資訊。
-
-    #     ## Parameters
-    #     - `type` (EnemyType): 要查詢的敵人類型。
-
-    #     ## Returns
-    #     這個函數返回一個 `Enemy` 物件。
-
-    #     ## EnemyType
-    #     - TODO
-
-    #     ## Example
-    #     ```python
-    #     enemy_info = api.get_enemy_info(EnemyType.BASIC)  # 獲取基本敵人的資訊
-    #     print(enemy_info)
-    #     ```
-    #     """
-    #     raise NotImplementedError
 
     @game_command(CommandType.GET_AVAILABLE_UNITS, [], list)
     def get_available_units(self) -> List[EnemyType]:
@@ -316,233 +287,168 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.GET_ALL_ENEMIES, [], list)
     def get_all_enemies(self) -> List[EnemyType]:
         raise NotImplementedError
 
-    # @game_command(CommandType.GET_CLOSEST_ENEMIES, [Vector2, int], list)
-    # def get_closest_enemies(self, position: Vector2, count: int) -> List[EnemyType]:
-    #     """
-    #     # Get Closest Enemies
-    #     取得離指定位置最近的敵人。
+    @game_command(CommandType.CAST_SPELL, [SpellType, Vector2], None)
+    def cast_spell(self, type: SpellType, position: Vector2 = Vector2(0, 0)) -> None:
+        """
+        # Cast Spell
+        施放一個法術。
 
-    #     ## Parameters
-    #     - `position` (Vector2): 要查詢的位置。
-    #     - `count` (int): 要查詢的敵人數量。
+        ## Parameters
+        - `type` (SpellType): 要施放的法術類型。
+        - `position` (Vector2): 法術施放的位置。
 
-    #     ## Returns
-    #     這個函數返回一個 `Enemy` 物件的列表。
+        ## Returns
+        這個函數沒有返回值。如果施放成功，則法術會被施放到指定位置。
 
-    #     ## Example
-    #     ```python
-    #     closest_enemies = api.get_closest_enemies(Vector2(5, 10), 3)  # 獲取離 (5, 10) 最近的 3 個敵人
-    #     for enemy in closest_enemies:
-    #         print(enemy)
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## SpellType
+        - POISON: 毒藥法術，對範圍內的敵人造成持續傷害。
+        - DOUBLE_INCOME: 雙倍收入法術，在一段時間內使玩家的所有收入來源變為兩倍。
+        - TELEPORT: 傳送法術，將敵人傳送到對手的路線起點。
 
-    # @game_command(CommandType.GET_ENEMIES_IN_RANGE, [Vector2, float], list)
-    # def get_enemies_in_range(self, center: Vector2, radius: float) -> List[EnemyType]:
-    #     """
-    #     # Get Enemies in Range
-    #     取得在指定範圍內的敵人。
+        ## Example
+        ```python
+        api.cast_spell(SpellType.POISON, Vector2(5, 10))  # 在 (5, 10) 的位置施放毒藥法術
+        ```
+        """
+        raise NotImplementedError
 
-    #     ## Parameters
-    #     - `center` (Vector2): 範圍的中心點。
-    #     - `radius` (float): 範圍的半徑。
+    @game_command(CommandType.GET_SPELL_COOLDOWN, [bool, SpellType], float)
+    def get_spell_cooldown(self, owned: bool, type: SpellType) -> float:
+        """
+        # Get Spell Cooldown
+        取得法術的冷卻時間。
 
-    #     ## Returns
-    #     這個函數返回一個 `Enemy` 物件的列表。
+        ## Parameters
+        - `owned` (bool): 是否查詢玩家自己的冷卻時間。
+        - `type` (SpellType): 要查詢的法術類型。
 
-    #     ## Example
-    #     ```python
-    #     enemies_in_range = api.get_enemies_in_range(Vector2(5, 10), 5.0)  # 獲取在 (5, 10) 中心點，半徑為 5 的範圍內的敵人
-    #     for enemy in enemies_in_range:
-    #         print(enemy)
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Returns
+        這個函數返回一個浮點數，表示冷卻時間。
 
-    # @game_command(CommandType.CAST_SPELL, [SpellType, Vector2], None)
-    # def cast_spell(self, type: SpellType, position: Vector2) -> None:
-    #     """
-    #     # Cast Spell
-    #     施放一個法術。
+        ## SpellType
+        - POISON: 毒藥法術，對範圍內的敵人造成持續傷害。
+        - DOUBLE_INCOME: 雙倍收入法術，在一段時間內使玩家的所有收入來源變為兩倍。
+        - TELEPORT: 傳送法術，將敵人傳送到對手的路線起點。
 
-    #     ## Parameters
-    #     - `type` (SpellType): 要施放的法術類型。
-    #     - `position` (Vector2): 法術施放的位置。
+        ## Example
+        ```python
+        cooldown = api.get_spell_cooldown(True, SpellType.POISON)  # 獲取玩家自己的毒藥法術的冷卻時間
+        print(f"Cooldown for my POISON spell: {cooldown} seconds")
+        ```
+        """
+        raise NotImplementedError
 
-    #     ## Returns
-    #     這個函數沒有返回值。如果施放成功，則法術會被施放到指定位置。
+    @game_command(CommandType.GET_SPELL_COST, [SpellType], float)
+    def get_spell_cost(self, type: SpellType) -> float:
+        """
+        # Get Spell Cost
+        取得法術的消耗。
 
-    #     ## SpellType
-    #     - POISON: 毒藥法術，對範圍內的敵人造成持續傷害。
-    #     - DOUBLE_INCOME: 雙倍收入法術，在一段時間內使玩家的所有收入來源變為兩倍。
-    #     - TELEPORT: 傳送法術，將敵人傳送到對手的路線起點。
+        ## Parameters
+        - `type` (SpellType): 要查詢的法術類型。
 
-    #     ## Example
-    #     ```python
-    #     api.cast_spell(SpellType.POISON, Vector2(5, 10))  # 在 (5, 10) 的位置施放毒藥法術
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Returns
+        這個函數返回一個浮點數，表示法術的消耗。
 
-    # @game_command(CommandType.GET_SPELL_COOLDOWN, [bool, SpellType], float)
-    # def get_spell_cooldown(self, owned: bool, type: SpellType) -> float:
-    #     """
-    #     # Get Spell Cooldown
-    #     取得法術的冷卻時間。
+        ## SpellType
+        - POISON: 毒藥法術，對範圍內的敵人造成持續傷害。
+        - DOUBLE_INCOME: 雙倍收入法術，在一段時間內使玩家的所有收入來源變為兩倍。
+        - TELEPORT: 傳送法術，將敵人傳送到對手的路線起點。
 
-    #     ## Parameters
-    #     - `owned` (bool): 是否查詢玩家自己的冷卻時間。
-    #     - `type` (SpellType): 要查詢的法術類型。
+        ## Example
+        ```python
+        cost = api.get_spell_cost(SpellType.POISON)  # 獲取毒藥法術的消耗
+        print(f"Cost for POISON spell: {cost} money")
+        ```
+        """
+        raise NotImplementedError
 
-    #     ## Returns
-    #     這個函數返回一個浮點數，表示冷卻時間。
+    @game_command(CommandType.SEND_CHAT, [str], bool)
+    def send_chat(self, msg: str) -> bool:
+        """
+        # Send Chat
+        發送一條聊天訊息。
 
-    #     ## SpellType
-    #     - POISON: 毒藥法術，對範圍內的敵人造成持續傷害。
-    #     - DOUBLE_INCOME: 雙倍收入法術，在一段時間內使玩家的所有收入來源變為兩倍。
-    #     - TELEPORT: 傳送法術，將敵人傳送到對手的路線起點。
+        ## Parameters
+        - `msg` (str): 要發送的訊息。
 
-    #     ## Example
-    #     ```python
-    #     cooldown = api.get_spell_cooldown(True, SpellType.POISON)  # 獲取玩家自己的毒藥法術的冷卻時間
-    #     print(f"Cooldown for my POISON spell: {cooldown} seconds")
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Returns
+        這個函數返回一個布林值，表示訊息是否發送成功。
 
-    # @game_command(CommandType.GET_SPELL_COST, [SpellType], float)
-    # def get_spell_cost(self, type: SpellType) -> float:
-    #     """
-    #     # Get Spell Cost
-    #     取得法術的消耗。
+        ## Example
+        ```python
+        success = api.send_chat("Hello, my friend!")  # 發送聊天訊息
+        if success:
+            print("Message sent successfully!")
+        else:
+            print("Failed to send message.")
+        ```
+        """
+        raise NotImplementedError
 
-    #     ## Parameters
-    #     - `type` (SpellType): 要查詢的法術類型。
+    @game_command(CommandType.GET_CHAT_HISTORY, [int], list)
+    def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
+        """
+        # Get Chat History
+        取得聊天歷史紀錄。
 
-    #     ## Returns
-    #     這個函數返回一個浮點數，表示法術的消耗。
+        ## Parameters
+        - `num` (int): 要取得的訊息數量，預設為 15。
 
-    #     ## SpellType
-    #     - POISON: 毒藥法術，對範圍內的敵人造成持續傷害。
-    #     - DOUBLE_INCOME: 雙倍收入法術，在一段時間內使玩家的所有收入來源變為兩倍。
-    #     - TELEPORT: 傳送法術，將敵人傳送到對手的路線起點。
+        ## Returns
+        這個函數返回一個元組列表，每個元組包含傳訊人 ID 和訊息。
 
-    #     ## Example
-    #     ```python
-    #     cost = api.get_spell_cost(SpellType.POISON)  # 獲取毒藥法術的消耗
-    #     print(f"Cost for POISON spell: {cost} money")
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Example
+        ```python
+        chat_history = api.get_chat_history(10)  # 獲取最近的 10 條聊天訊息
+        for id, message in chat_history:
+            print(f"[{id}] {message}")
+        ```
+        """
+        raise NotImplementedError
 
-    # @game_command(CommandType.GET_EFFECTIVE_SPELLS, [bool], list)
-    # def get_effective_spells(self, owned: bool) -> List[SpellType]:
-    #     """
-    #     # Get Effective Spells
-    #     取得當前生效的法術。
+    @game_command(CommandType.PIXELCAT, [], str)
+    def pixelcat(self) -> str:
+        """
+        # Pixel Cat
+        取得一隻像素貓的圖像。
 
-    #     ## Parameters
-    #     - `owned` (bool): 是否查詢玩家自己的法術。
+        ## Parameters
+        無參數
 
-    #     ## Returns
-    #     這個函數返回一個 `Spell` 物件的列表。
+        ## Returns
+        這個函數返回一個字串，表示像素貓的 ASCII 藝術。
 
-    #     ## Example
-    #     ```python
-    #     effective_spells = api.get_effective_spells(True)  # 獲取玩家自己的生效法術
-    #     for spell in effective_spells:
-    #         print(spell)
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Example
+        ```python
+        pixel_cat = api.pixelcat()  # 獲取像素貓的 ASCII 藝術
+        print(pixel_cat)
+        ```
+        """
+        raise NotImplementedError
 
-    # @game_command(CommandType.SEND_CHAT, [str], bool)
-    # def send_chat(self, msg: str) -> bool:
-    #     """
-    #     # Send Chat
-    #     發送一條聊天訊息。
+    @game_command(CommandType.GET_DEVS, [], list[str])
+    def get_devs(self) -> list[str]:
+        """
+        # Get Devs
+        取得開發者名單。
 
-    #     ## Parameters
-    #     - `msg` (str): 要發送的訊息。
+        ## Parameters
+        無參數
 
-    #     ## Returns
-    #     這個函數返回一個布林值，表示訊息是否發送成功。
+        ## Returns
+        這個函數返回一個字串列表，表示開發者的名字。
 
-    #     ## Example
-    #     ```python
-    #     success = api.send_chat("Hello, my friend!")  # 發送聊天訊息
-    #     if success:
-    #         print("Message sent successfully!")
-    #     else:
-    #         print("Failed to send message.")
-    #     ```
-    #     """
-    #     raise NotImplementedError
-
-    # @game_command(CommandType.GET_CHAT_HISTORY, [int], list)
-    # def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
-    #     """
-    #     # Get Chat History
-    #     取得聊天歷史紀錄。
-
-    #     ## Parameters
-    #     - `num` (int): 要取得的訊息數量，預設為 15。
-
-    #     ## Returns
-    #     這個函數返回一個元組列表，每個元組包含傳訊人 ID 和訊息。
-
-    #     ## Example
-    #     ```python
-    #     chat_history = api.get_chat_history(10)  # 獲取最近的 10 條聊天訊息
-    #     for id, message in chat_history:
-    #         print(f"[{id}] {message}")
-    #     ```
-    #     """
-    #     raise NotImplementedError
-
-    # @game_command(CommandType.PIXELCAT, [], str)
-    # def pixelcat(self) -> str:
-    #     """
-    #     # Pixel Cat
-    #     取得一隻像素貓的圖像。
-
-    #     ## Parameters
-    #     無參數
-
-    #     ## Returns
-    #     這個函數返回一個字串，表示像素貓的 ASCII 藝術。
-
-    #     ## Example
-    #     ```python
-    #     pixel_cat = api.pixelcat()  # 獲取像素貓的 ASCII 藝術
-    #     print(pixel_cat)
-    #     ```
-    #     """
-    #     raise NotImplementedError
-
-    # @game_command(CommandType.GET_DEVS, [], list[str])
-    # def get_devs(self) -> list[str]:
-    #     """
-    #     # Get Devs
-    #     取得開發者名單。
-
-    #     ## Parameters
-    #     無參數
-
-    #     ## Returns
-    #     這個函數返回一個字串列表，表示開發者的名字。
-
-    #     ## Example
-    #     ```python
-    #     devs = api.get_devs()  # 獲取開發者名單
-    #     for dev in devs:
-    #         print(dev)
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Example
+        ```python
+        devs = api.get_devs()  # 獲取開發者名單
+        for dev in devs:
+            print(dev)
+        ```
+        """
+        raise NotImplementedError

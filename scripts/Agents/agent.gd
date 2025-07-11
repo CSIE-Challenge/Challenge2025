@@ -13,7 +13,7 @@ enum EnemyType {
 	SPINY_SHELL,
 	WIGGLER,
 }
-enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
+enum SpellType { POISON = 1, DOUBLE_INCOME = 2, TELEPORT = 3 }
 enum StatusCode {
 	OK = 200,
 	ILLFORMED_COMMAND = 400,
@@ -126,12 +126,12 @@ func _get_terrain(_owned: bool, _coord: Vector2i) -> Array:
 
 func _get_scores(_owned: bool) -> Array:
 	print("[GetScores] Get request")
-	var score: int
+	var result: int
 	if _owned == true:
-		score = game_self.score
+		result = game_self.score
 	else:
-		score = game_other.score
-	return [StatusCode.OK, score]
+		result = game_other.score
+	return [StatusCode.OK, result]
 
 
 func _get_current_wave() -> Array:
@@ -167,12 +167,12 @@ func _get_time_until_next_wave() -> Array:
 
 func _get_money(_owned: bool) -> Array:
 	print("[GetMoney] Get request")
-	var money: int
+	var result: int
 	if _owned == true:
-		money = int(game_self.status_panel.find_child("Money").text)
+		result = int(game_self.status_panel.find_child("Money").text)
 	else:
-		money = int(game_other.status_panel.find_child("Money").text)
-	return [StatusCode.OK, money]
+		result = int(game_other.status_panel.find_child("Money").text)
+	return [StatusCode.OK, result]
 
 
 func _get_income(_owned: bool) -> Array:
@@ -296,24 +296,119 @@ func _get_all_enemies(_center: Vector2i, _radius: float) -> Array:
 
 
 func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
+	var global_pos: Vector2 = game_self._map.cell_to_global(_coord)
 	print("[CastSpell] Get request")
+	var spell_manager: Node = game_self.get_node("SpellManager")
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR]
+
+	var spell_node: Node = null
+	match _type:
+		SpellType.DOUBLE_INCOME:
+			spell_node = spell_manager.get_node("DoubleIncome")
+		SpellType.POISON:
+			spell_node = spell_manager.get_node("Poison")
+		SpellType.TELEPORT:
+			spell_node = spell_manager.get_node("Teleport")
+		_:
+			print("[Error] Unknown spell type:", _type)
+			return [StatusCode.ILLEGAL_ARGUMENT]
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR]
+
+	if _type == SpellType.DOUBLE_INCOME:
+		var suc = spell_node.cast_spell()
+		print(suc)
+		if not suc:
+			print("[ERROR] cann't cast the spell")
+			return [StatusCode.CLIENT_ERR]
+	else:
+		var suc = spell_node.cast_spell(global_pos)
+		if not suc:
+			print("[ERROR] cann't cast the spell")
+			return [StatusCode.CLIENT_ERR]
+
 	return [StatusCode.OK]
 
 
 func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 	print("[GetSpellCooldown] Get request")
-	return [StatusCode.OK]
+	var spell_manager: Node
+	if _owned:
+		spell_manager = game_self.get_node("SpellManager")
+	else:
+		spell_manager = game_other.get_node("SpellManager")
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR, -1]
+
+	var spell_node: Node = null
+	match _type:
+		SpellType.DOUBLE_INCOME:
+			spell_node = spell_manager.get_node("DoubleIncome")
+		SpellType.POISON:
+			spell_node = spell_manager.get_node("Poison")
+		SpellType.TELEPORT:
+			spell_node = spell_manager.get_node("Teleport")
+		_:
+			print("[Error] Unknown spell type:", _type)
+			return [StatusCode.ILLEGAL_ARGUMENT]
+
+	if spell_node == null:
+		print("[ERROR] node not found spell")
+		return [StatusCode.INTERNAL_ERR, -1]
+
+	return [StatusCode.OK, spell_node.cooldown_timer.get_time_left()]
 
 
-func _get_spell_cost() -> Array:
+func _get_spell_cost(_type: SpellType) -> Array:
 	print("[GetAllSpellCost] Get request")
-	return [StatusCode.OK]
+	var spell_manager: Node = game_self.get_node("SpellManager")
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR, -1]
+
+	var spell_node: Node = null
+	match _type:
+		SpellType.DOUBLE_INCOME:
+			spell_node = spell_manager.get_node("DoubleIncome")
+		SpellType.POISON:
+			spell_node = spell_manager.get_node("Poison")
+		SpellType.TELEPORT:
+			spell_node = spell_manager.get_node("Teleport")
+		_:
+			print("[Error] Unknown spell type:", _type)
+			return [StatusCode.ILLEGAL_ARGUMENT]
+
+	if spell_node == null:
+		print("[ERROR] node not found spell")
+		return [StatusCode.INTERNAL_ERR, -1]
+
+	return [StatusCode.OK, spell_node.metadata.stats.cost]
 
 
-func _get_effective_spells(_owned: bool) -> Array:
-	print("[GetEffectiveSpells] Get request")
-	return [StatusCode.OK]
-
+#func _get_effective_spells(_owned: bool) -> Array:
+#	print("[GetEffectiveSpells] Get request")
+#	return [StatusCode.OK]
+#
+#
+#func spell_to_dict(spell_node:Node, type:SpellType) -> dict:
+#	var ret = {}
+#	if type == SpellType.DoubleIncome:
+#		ret["range"] = 0
+#		ret["damage"] = 0
+#	else:
+#		ret["range"] = spell_node.metadata.stats.radius
+#		ret["damage"] = spell_node.metadata.stats.
+#
+#	ret["type"] = type
+#	ret["duration"] = spell_node.metadata.stats.duration
 
 #endregion
 

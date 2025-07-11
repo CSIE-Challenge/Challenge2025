@@ -33,12 +33,13 @@ var speed_rate: Array[float] = [1.0]  # store speed_rates and get minimum
 func _on_killed() -> void:
 	game.kill_cnt += 1
 	if source == Game.EnemySource.SYSTEM:
-		game.money = min(game.money + kill_reward, game.MAX_MONEY)  # or game.money
+		game.money = game.money + kill_reward
 	path_follow.queue_free()
 
 
 func _on_reached() -> void:
 	game.damage_taken.emit(damage)
+	AudioManager.enemy_attack.play()
 	path_follow.queue_free()
 
 

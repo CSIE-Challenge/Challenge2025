@@ -59,6 +59,31 @@ offset_top = 8.0
 offset_right = 1016.0
 offset_bottom = 70.0
 
+[node name="PlayerNameLeft" type="Label" parent="Screen/Top/TextureRect"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 1
+offset_left = 20.0
+offset_top = 8.0
+offset_right = 520.0
+offset_bottom = 67.0
+theme_override_font_sizes/font_size = 50
+text = "Player 1"
+
+[node name="PlayerNameRight" type="Label" parent="Screen/Top/TextureRect"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -516.0
+offset_top = 8.0
+offset_right = -16.0
+offset_bottom = 67.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 50
+text = "Player 2"
+horizontal_alignment = 2
+
 [node name="Status2P" parent="Screen/Top" instance=ExtResource("3_g6yuj")]
 layout_mode = 2
 
@@ -115,11 +140,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 tab_alignment = 1
-current_tab = 1
+current_tab = 0
 tabs_visible = false
 
 [node name="Shop" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer" node_paths=PackedStringArray("options_container")]
-visible = false
 layout_mode = 2
 texture = ExtResource("8_p5kuw")
 script = ExtResource("4_snxki")
@@ -172,7 +196,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 focus_mode = 2
-mouse_filter = 0
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
@@ -188,6 +211,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Chat" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
+visible = false
 layout_mode = 2
 texture = ExtResource("11_i86cr")
 script = ExtResource("5_vxv1r")
@@ -280,6 +304,8 @@ wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/WaveInfo")
 [node name="PauseMenu" parent="." instance=ExtResource("7_unjed")]
 visible = false
 layout_mode = 1
+
+[node name="StageSwitchTimer" type="Timer" parent="."]
 
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]

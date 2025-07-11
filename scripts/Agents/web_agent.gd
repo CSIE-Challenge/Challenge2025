@@ -2,6 +2,7 @@ class_name WebAgent
 extends Agent
 
 enum CommandType {
+	UNKNOWN = 0,
 	GET_ALL_TERRAIN = 1,
 	GET_SCORES = 2,
 	GET_CURRENT_WAVE = 3,
@@ -29,7 +30,7 @@ enum CommandType {
 
 
 class CommandHandler:
-	var command_id: CommandType
+	var command_id: CommandType = CommandType.UNKNOWN
 	var _arg_types: Array[Variant.Type]
 	var _handler: Callable
 
@@ -84,8 +85,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(
 			CommandType.GET_SPELL_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_spell_cooldown
 		),
-		CommandHandler.new(CommandType.GET_SPELL_COST, [], _get_spell_cost),
-		CommandHandler.new(CommandType.GET_EFFECTIVE_SPELLS, [TYPE_BOOL], _get_effective_spells),
+		CommandHandler.new(CommandType.GET_SPELL_COST, [TYPE_INT], _get_spell_cost),
 		CommandHandler.new(CommandType.SEND_CHAT, [TYPE_STRING], _send_chat),
 		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history)
 	]

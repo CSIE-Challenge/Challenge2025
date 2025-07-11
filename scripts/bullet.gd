@@ -40,6 +40,7 @@ var penetrating: bool = false  # For bullet to disappear at certain time after i
 
 
 func init(origin, orientation, _target) -> void:
+	AudioManager.tower_shoot.play()
 	global_position = origin
 	start_position = origin
 	direction = orientation

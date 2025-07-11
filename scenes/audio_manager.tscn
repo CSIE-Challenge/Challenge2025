@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://dwewqj41wq8uf"]
+
+[ext_resource type="Script" uid="uid://xsselfn6s12u" path="res://scripts/audio_manager.gd" id="1_8qd8g"]
+[ext_resource type="AudioStream" uid="uid://djf63mbh4v5of" path="res://assets/audio/tower_place.wav" id="2_3asnw"]
+[ext_resource type="AudioStream" uid="uid://cfkljic87grob" path="res://assets/audio/tower_shoot.wav" id="2_liach"]
+[ext_resource type="AudioStream" uid="uid://txe81rba6n8y" path="res://assets/audio/enemy_attack.wav" id="2_m6ggh"]
+[ext_resource type="AudioStream" uid="uid://b043q2vdxa1gt" path="res://assets/audio/button_on_click.wav" id="3_aoitu"]
+[ext_resource type="AudioStream" uid="uid://bpos003h1x5hj" path="res://assets/audio/MainThemeStage1.mp3" id="3_njtn3"]
+[ext_resource type="AudioStream" uid="uid://b5gxkb00c474b" path="res://assets/audio/MainThemeStage2.mp3" id="4_02gw7"]
+[ext_resource type="AudioStream" uid="uid://vqr16ide5skg" path="res://assets/audio/MenuTheme.mp3" id="5_ujhup"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_8qd8g")
+
+[node name="EnemyAttack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_m6ggh")
+volume_db = -20.0
+
+[node name="EnemyDie" type="AudioStreamPlayer" parent="."]
+
+[node name="EnemyMove" type="AudioStreamPlayer" parent="."]
+
+[node name="BackgroundGameStage1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_njtn3")
+parameters/looping = true
+
+[node name="BackgroundGameStage2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_02gw7")
+parameters/looping = true
+
+[node name="BackgroundMenu" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ujhup")
+
+[node name="ButtonOnClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_aoitu")
+volume_db = -5.0
+
+[node name="TowerPlace" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_3asnw")
+
+[node name="TowerShoot" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_liach")
+volume_db = -20.0

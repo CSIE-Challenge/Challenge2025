@@ -54,9 +54,9 @@ class EnemyType(IntEnum):
 
 
 class SpellType(IntEnum):
-    POISON = auto()
-    DOUBLE_INCOME = auto()
-    TELEPORT = auto()
+    POISON = 1
+    DOUBLE_INCOME = 2
+    TELEPORT = 3
 
 
 class StatusCode(IntEnum):
@@ -184,30 +184,3 @@ class Enemy:
     def __repr__(self) -> str:
         return self.__str__()
 
-
-class Spell:
-    def __init__(self, _type: SpellType, position: Vector2, duration: int = 0, 
-                 damage: int = 0, range: int = 0, multiplier: float = 1.0) -> None:
-        self.type = _type
-        self.position = position
-        self.duration = duration
-        self.damage = damage
-        self.range = range
-        self.multiplier = multiplier
-
-    @classmethod
-    def from_dict(cls, data: dict) -> 'Spell':
-        return cls(
-            _type=SpellType(data['type']),
-            position=Vector2(data['position']),
-            duration=data.get('duration'),
-            damage=data.get('damage'),
-            range=data.get('range'),
-            multiplier=data.get('multiplier')
-        )
-
-    def __str__(self) -> str:
-        return f"Spell(type={self.type.name}, position={self.position}, duration={self.duration})"
-
-    def __repr__(self) -> str:
-        return self.__str__()
