@@ -99,7 +99,7 @@ func knockback(far: bool):
 		if not knockback_resist:
 			path_follow.progress -= knockback_distance
 	await get_tree().create_timer(3).timeout
-	knockback_invincibility = false
+	
 
 
 func freeze(rate: float):
