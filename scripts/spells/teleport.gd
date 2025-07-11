@@ -8,7 +8,7 @@ static var metadata: Dictionary = {
 	{
 		"duration": 1,
 		"cooldown": 60,
-		"cost": 0,
+		"cost": 100,
 		"target": true,
 		"radius": 30.0,
 	}
@@ -47,6 +47,7 @@ func activate_effect(global_pos: Vector2):
 
 	# Start timers
 	cooldown_timer.wait_time = stats.cooldown
+	is_on_cooldown = true
 	cooldown_timer.start()
 
 
