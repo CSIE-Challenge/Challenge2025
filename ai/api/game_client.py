@@ -15,7 +15,7 @@ class GameClient(GameClientBase):
         取得地圖上所有地形的資訊。
 
         ## Parameters
-        - `owned` (bool): 是否為玩家擁有的地圖。如果為 `True`，則查詢玩家擁有的地圖，如果為 `False`，則查詢對手擁有的地圖。
+        無參數
 
         ## Returns
         這個函數返回一個二維陣列，表示地圖上所有地形的資訊。每個元素都是一個 `TerrainType` 枚舉類型，表示該位置的地形類型。
@@ -29,21 +29,20 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        terrain_map = api.get_all_terrain(owned=True)  # 獲取整個地圖的地形資訊
+        terrain_map = api.get_all_terrain()  # 獲取整個地圖的地形資訊
         for row in terrain_map:
             print(row)
         ```
         """
         raise NotImplementedError
     
-    @game_command(CommandType.GET_TERRAIN, [bool, Vector2], TerrainType)
-    def get_terrain(self, owned: bool, pos: Vector2) -> TerrainType:
+    @game_command(CommandType.GET_TERRAIN, [Vector2], TerrainType)
+    def get_terrain(self, pos: Vector2) -> TerrainType:
         """
         # Get Terrain
         取得指定位置的地形資訊。
 
         ## Parameters
-        - `owned` (bool): 是否為玩家擁有的地圖。如果為 `True`，則查詢玩家擁有的地圖，如果為 `False`，則查詢對手擁有的地圖。
         - `pos` (Vector2): 要查詢的地形位置。
 
         ## Returns
@@ -57,8 +56,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        terrain = api.get_terrain(True, Vector2(5, 10))  # 獲取玩家擁有地圖上 (5, 10) 的地形
-        opponent_terrain = api.get_terrain(False, Vector2(3, 7))  # 獲取對手擁有地圖上 (3, 7) 的地形
+        terrain = api.get_terrain(Vector2(5, 10))  # 獲取玩家擁有地圖上 (5, 10) 的地形
         ```
         """
         raise NotImplementedError
