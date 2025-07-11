@@ -190,8 +190,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_GAME_STATUS, [], GameStatus)
-    def get_game_status(self) -> GameStatus:
+    @game_command(CommandType.GET_GAME_STATUS, [], Status)
+    def get_game_status(self) -> Status:
         raise NotImplementedError
     
     @game_command(CommandType.PLACE_TOWER, [TowerType, str, Vector2], None)

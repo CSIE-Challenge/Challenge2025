@@ -216,13 +216,19 @@ class Spell:
         return self.__str__()
 
 class Status:
-    def __init__(self, _type: GameStatus):
+    def __init__(self, _type: GameStatus) -> None:
         self.type = _type
     
     @classmethod
     def from_int(cls, data: int) -> 'Status':
         return cls(
-            _type = list(GameStatus)[data].name
+            _type = GameStatus(data)
         )
+        
+    def __str__(self) -> str:
+        return f"GameStatus(type={GameStatus(self.type).name})"
+    
+    def __repr__(self) -> str:
+        return self.__str__()
         
     

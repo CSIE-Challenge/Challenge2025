@@ -1,9 +1,8 @@
 import time
 from api import *
 
-api = GameClient(7749, "04350561")
+api = GameClient(7749, "31ceb514")
 
 while True:
-    status = api.get_game_status()
-    print(type(status), status, status.name)
+    print(api.get_game_status())
     time.sleep(2)

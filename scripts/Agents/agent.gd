@@ -177,19 +177,20 @@ func _get_income(_owned: bool) -> Array:
 
 
 func _get_game_status() -> Array:
-	var status: GameStatus
-	match Global.game_status:
-		0:
-			status = GameStatus.PREPARE
-		1:
-			status = GameStatus.START
-		2:
-			status = GameStatus.READY
-		3:
-			status = GameStatus.PAUSE
-		4:
-			status = GameStatus.END
-	return [StatusCode.OK, status]
+	# var status: GameStatus
+	# match Global.game_status:
+	# 	0:
+	# 		status = GameStatus.PREPARE
+	# 	1:
+	# 		status = GameStatus.START
+	# 	2:
+	# 		status = GameStatus.READY
+	# 	3:
+	# 		status = GameStatus.PAUSE
+	# 	4:
+	# 		status = GameStatus.END
+	# return [StatusCode.OK, status]
+	return [StatusCode.OK, Global.game_status]
 
 
 #endregion
