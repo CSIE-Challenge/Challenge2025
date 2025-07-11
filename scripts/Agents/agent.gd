@@ -436,23 +436,6 @@ func _get_spell_cost(_type: SpellType) -> Array:
 	return [StatusCode.OK, spell_node.metadata.stats.cost]
 
 
-#func _get_effective_spells(_owned: bool) -> Array:
-#	print("[GetEffectiveSpells] Get request")
-#	return [StatusCode.OK]
-#
-#
-#func spell_to_dict(spell_node:Node, type:SpellType) -> dict:
-#	var ret = {}
-#	if type == SpellType.DoubleIncome:
-#		ret["range"] = 0
-#		ret["damage"] = 0
-#	else:
-#		ret["range"] = spell_node.metadata.stats.radius
-#		ret["damage"] = spell_node.metadata.stats.
-#
-#	ret["type"] = type
-#	ret["duration"] = spell_node.metadata.stats.duration
-
 #endregion
 
 #region Chat

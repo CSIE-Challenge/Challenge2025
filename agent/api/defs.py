@@ -30,25 +30,33 @@ class CommandType(IntEnum):
 
 
 class GameStatus(IntEnum):
+    """遊戲運行狀態。"""
+
     PREPARING = 0
+    """遊戲尚未開始，正在準備中。"""
+
     RUNNING = 1
+    """遊戲已經開始且正在進行中。"""
+
     PAUSED = 2
+    """遊戲已經開始，但暫時被暫停中。"""
+
 
 
 class TerrainType(IntEnum):
     """地圖地形。"""
 
     OUT_OF_BOUNDS = 0
-    """界外。"""
+    """超出邊界的區域。"""
 
     EMPTY = 1
     """空地，可放置塔。"""
 
     ROAD = 2
-    """道路，角色可行走。"""
+    """道路，是敵人行進的路徑，不可以放置塔。"""
 
     OBSTACLE = 3
-    """障礙，不可行走也不能放塔。"""
+    """障礙物，不可行走也不能放塔。"""
 
 
 class TowerType(IntEnum):
@@ -153,10 +161,10 @@ class StatusCode(IntEnum):
     """遊戲尚未開始。"""
     
     INTERNAL_ERR = 500
-    """Godot server端出現問題（對不起！！！）。"""
-    
+    """Godot server端出現問題（請向開發組反映，對不起！！！）。"""
+
     CLIENT_ERR = 501
-    """Python client端出現問題（對不起！！！）。"""
+    """Python client端出現問題（請向開發組反映，對不起！！！）。"""
 
 
 class TypeCode(IntEnum):
