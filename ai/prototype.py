@@ -1,8 +1,5 @@
-# Temporarily written in a separate file to avoid merge conflict
-# will be added into defs.py and game_client.py
-
+from __future__ import annotations
 from enum import IntEnum, auto
-
 
 class CommandType(IntEnum):
     """每種API對應的編號，用於報錯訊息。"""
@@ -14,21 +11,22 @@ class CommandType(IntEnum):
     GET_TIME_UNTIL_NEXT_WAVE = 5
     GET_MONEY = 6
     GET_INCOME = 7
+    GET_GAME_STATUS = 8
+    GET_TERRAIN = 9
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103
-    SPAWN_ENEMY = 201
-    GET_ENEMY_COOLDOWN = 202
-    GET_ALL_ENEMY_INFO = 203
-    GET_AVAILABLE_ENEMIES = 204
-    GET_CLOSEST_ENEMIES = 205
-    GET_ENEMIES_IN_RANGE = 206
+    SPAWN_UNIT = 201
+    GET_AVAILABLE_UNITS = 202
+    GET_ALL_ENEMIES = 203
     CAST_SPELL = 301
     GET_SPELL_COOLDOWN = 302
-    GET_ALL_SPELL_COST = 303
+    GET_SPELL_COST = 303
     GET_EFFECTIVE_SPELLS = 304
     SEND_CHAT = 401
     GET_CHAT_HISTORY = 402
+    PIXELCAT = 501
+    GET_DEVS = 502
 
 
 class TerrainType(IntEnum):
@@ -49,35 +47,32 @@ class TerrainType(IntEnum):
 
 class TowerType(IntEnum):
     """塔的種類。"""
-
-    NONE = auto()
-    """無屬性。"""
-
-    FIRE_MARIO = auto()
+    
+    FIRE_MARIO = 1
     """
     火焰馬利歐，攻速快、範圍廣、可以瞄準飛行單位。  
     升級可選擇增加攻速、範圍、傷害或增加燃燒效果。
     """
 
-    ICE_LUIGI = auto()
+    ICE_LUIGI = 2
     """
     寒冰路易吉，攻擊附帶範圍緩速效果。  
     升級可選擇增加攻速、範圍、傷害或改為範圍攻擊。
     """
 
-    DONEKEY_KONG = auto()
+    DONEKEY_KONG = 3
     """
     森喜剛，原地範圍攻擊（以自身為中心的圓）。  
     升級可選擇擊退效果或瞄準直線攻擊。
     """
-
-    FORT = auto()
+    
+    FORT = 4
     """
     砲台，沿直線發射炮彈刺客。（穿透敵人）。  
     升級可選擇提高傷害並不穿透(碰到敵人即爆炸)或制空能力。
     """
-
-    SHY_GUY = auto()
+    
+    SHY_GUY = 5
     """
     嘿呵：分散投擲多把飛刀、可以瞄準飛行單位。  
     升級可選擇增加攻速、範圍、傷害、飛刀數量或改為投擲迴旋鏢。
@@ -86,19 +81,38 @@ class TowerType(IntEnum):
 
 class EnemyType(IntEnum):
     """敵人種類。"""
-    BASIC = auto()
 
+    BUZZY_BEETLE = 0
+    """鋼盔龜。"""
+
+    GOOMBA = 1
+    """栗寶寶。"""
+
+    KOOPA_JR = 2
+    """庫巴 Jr."""
+
+    KOOPA_PARATROOPA = 3
+    """飛行龜。"""
+
+    KOOPA = 4
+    """庫巴。"""
+    
+    SPINY_SHELL = 5
+    """龜殼。"""
+    
+    WIGGLER = 6
+    """花毛毛。"""
 
 class SpellType(IntEnum):
     """技能類別。"""
 
-    POISON = auto()
+    POISON = 1
     """毒藥，對範圍內的敵人造成持續傷害。"""
-    
-    DOUBLE_INCOME = auto()
+
+    DOUBLE_INCOME = 2
     """一段時間內收到的金錢變兩倍。"""
-    
-    TELEPORT = auto()
+
+    TELEPORT = 3
     """傳送我方地圖中一個區域的所有敵人到對手的場地內，重新從起點開始走。"""
 
 
@@ -109,16 +123,19 @@ class StatusCode(IntEnum):
     """成功。"""
 
     ILLFORMED_COMMAND = 400
-    """呼叫API的參數陣列不符格式。"""
+    """
+    呼叫API的參數陣列不符格式。  
+    ex: 參數數量錯誤。
+    """
 
     AUTH_FAIL = 401
-    """我沒有看到哪裡會噴這個錯(?)"""
+    """認證失敗。"""
 
     ILLEGAL_ARGUMENT = 402
-    """回傳值類型不符API規定。"""
+    """API傳入參數型別錯誤。"""
 
     COMMAND_ERR = 403
-    """也沒有看到哪裡會噴這個錯(?)"""
+    """指令施放失敗。"""
 
     NOT_FOUND = 404
     """CommandType不存在。"""
@@ -126,11 +143,14 @@ class StatusCode(IntEnum):
     TOO_FREQUENT = 405
     """最近兩次的API請求相隔時間過短。"""
 
+    NOT_STARTED = 406
+    """遊戲尚未開始。"""
+    
     INTERNAL_ERR = 500
     """Godot server端出現問題（對不起！！！）。"""
-
+    
     CLIENT_ERR = 501
-    """Python client端出現問題。"""
+    """Python client端出現問題（對不起！！！）。"""
 
 
 class TypeCode(IntEnum):
@@ -141,9 +161,12 @@ class TypeCode(IntEnum):
 
     BOOL_TYPE = 1
     """布林。"""
-
+    
     INT_TYPE = 2
     """整數。"""
+    
+    FLOAT_TYPE = 3
+    """浮點數。"""
 
     STRING_TYPE = 4
     """字串。"""
@@ -168,6 +191,9 @@ class Vector2:
         self.y = _y if _y is not None else 0
         """y座標，若傳None則設為0。"""
 
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y})"
+
 
 class ApiException(Exception):
     """API請求的錯誤訊息。"""
@@ -184,20 +210,32 @@ class ApiException(Exception):
         self.what = what
         """完整錯誤訊息內容。"""
 
-class Tower:
-    """塔。"""
 
-    def __init__(self, _type: TowerType, position: Vector2, level: int, aim: bool = True, 
+class Tower:
+    """防禦塔。"""
+    
+    def __init__(self, _type: TowerType, position: Vector2, level_a: int, level_b: int, aim: bool = True, 
                  anti_air: bool = False, bullet_number: int = 1, reload: int = 60, 
-                 range: int = 100, damage: int = 10) -> None:
+                 range: int = 100, damage: int = 10, bullet_effect: str = 'none') -> None:
         self.type = _type
         """塔的型別，見class TowerType"""
 
         self.position = position
         """塔的座標，地圖左上角為(0, 0)。"""
-        
-        self.level = level
-        """塔的等級。"""
+
+        self.level_a = level_a
+        """塔的等級分支一。"""
+
+        self.level_b = level_b
+        """
+        塔的等級分支二。  
+        (level_a, level_b) =
+        - (1, 1): 1
+        - (2, 1): 2a
+        - (1, 2): 2b
+        - (3, 1): 3a
+        - (1, 3): 3b
+        """
 
         self.aim = aim
         """是否能瞄準敵人。"""
@@ -217,16 +255,41 @@ class Tower:
         self.damage = damage
         """攻擊傷害。"""
 
-        self.bullet_effect = 'none'
+        self.bullet_effect = bullet_effect
         """
         特殊效果。
         - none: 無
         - fire: 燃燒的持續傷害
         - freeze: 緩速
         - deep_freeze: 強化緩速
-        - knockback: 擊退部分敵人
+        - knockback: 擊退 knockback_resist = False 的敵人
         - far_knockback: 擊退所有敵人
         """
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Tower' | None:
+        if not data:
+            return None
+        return cls(
+            _type=TowerType(data['type']),
+            position=Vector2(data['position']['x'], data['position']['y']),
+            level_a=data['level_a'],
+            level_b=data['level_b'],
+            aim=data.get('aim'),
+            anti_air=data.get('anti_air'),
+            bullet_number=data.get('bullet_number'),
+            reload=data.get('reload'),
+            range=data.get('range'),
+            damage=data.get('damage'),
+            bullet_effect=data.get('bullet_effect', 'none')
+        )
+
+    def __str__(self) -> str:
+        return f"Tower(type={self.type.name}, position={self.position}, level_a={self.level_a}, level_b={self.level_b})"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
 
 class Enemy:
     """敵人(士兵)。"""
@@ -253,18 +316,6 @@ class Enemy:
         self.damage = damage
         """對塔能造成的傷害。"""
 
-        self.armor = armor
-        """
-        護甲，
-        若self.shield為0，則受到的傷害為塔的攻擊之max(0.2 (20-a)/20)倍。
-        """
-
-        self.shield = shield
-        """
-        護盾，
-        若self.shield不為0，則受到的傷害為塔的攻擊與self.shield中較小者。
-        """
-
         self.knockback_resist = knockback_resist
         """擊退抵抗，若為true則不會被擊退。"""
 
@@ -276,3 +327,29 @@ class Enemy:
 
         self.cool_down = cool_down
         """派兵時間間隔。"""
+
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Enemy':
+        return cls(
+            _type=EnemyType(data['type']),
+            position=Vector2(data['position']['x'], data['position']['y']),
+            deploy_cost=data['deploy_cost'],
+            income_impact=data.get('income_impact'),
+            max_hp=data.get('max_hp'),
+            damage=data.get('damage'),
+            max_speed=data.get('max_speed'),
+            flying=data.get('flying'),
+            armor=data.get('armor'),
+            shield=data.get('shield'),
+            knockback_resist=data.get('knockback_resist'),
+            kill_reward=data.get('kill_reward'),
+            cool_down=data.get('cool_down', 'none')
+        )
+
+    def __str__(self) -> str:
+        return f"Enemy(type={self.type.name}, position={self.position}, health={self.health})"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
