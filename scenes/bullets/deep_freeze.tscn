@@ -1,7 +1,9 @@
 [gd_scene load_steps=4 format=3 uid="uid://dncvplv6wj4wm"]
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_uvkrg"]
-[ext_resource type="Texture2D" path="res://.godot/imported/tile_0001.png-fef6977aebcbecb1ff13f6940dc01e86.ctex" id="2_uvkrg"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vsod2"]
+load_path = "res://.godot/imported/tile_0001.png-fef6977aebcbecb1ff13f6940dc01e86.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vsod2"]
 radius = 7.28011
@@ -21,7 +23,7 @@ effect = 4
 
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708
-texture = ExtResource("2_uvkrg")
+texture = SubResource("CompressedTexture2D_vsod2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
