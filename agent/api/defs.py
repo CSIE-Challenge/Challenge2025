@@ -39,7 +39,7 @@ class TowerType(IntEnum):
     NONE = 0
     FIRE_MARIO = 1
     ICE_LUIGI = 2
-    DONEKEY_KONG = 3
+    DONKEY_KONG = 3
     FORT = 4
     SHY_GUY = 5
 
