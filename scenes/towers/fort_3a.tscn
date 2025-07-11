@@ -35,20 +35,10 @@ level_a = 3
 auto_aim = false
 bullet_scene = ExtResource("2_82o3m")
 
-<<<<<<< HEAD
-[node name="Turret" type="Node2D" parent="."]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Turret"]
-=======
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-<<<<<<< HEAD
->>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
-sprite_frames = SubResource("SpriteFrames_gah3o")
-=======
 sprite_frames = SubResource("SpriteFrames_3necw")
->>>>>>> 6faed4a (feat: add Marker2D to tower)
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 position = Vector2(0, -7.68246)

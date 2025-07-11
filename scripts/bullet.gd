@@ -84,6 +84,10 @@ func _process(delta):
 	if traverse_distance >= 10.0 and not exploding:
 		self.z_index = 20
 
+	# delete if bullet is out of screen
+	if position.x < -100 or position.x > 750 + 100 or position.y < -100 or position.y > 1000 + 100:
+		self.queue_free()
+
 
 func _on_hit() -> void:
 	if not is_penetrating:

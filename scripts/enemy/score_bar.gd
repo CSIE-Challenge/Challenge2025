@@ -34,7 +34,9 @@ func _process(_delta):
 		$ScoreBar1P.value = bar_progress
 		$ScoreBar2P.value = 0
 		$Score1P/RichTextLabel.push_bold()
+		$Score1P/RichTextLabel.push_font_size(36)
 		$Score1P/RichTextLabel.add_text("%d" % left_score)
+		$Score1P/RichTextLabel.pop()
 		$Score1P/RichTextLabel.pop()
 		$Score2P/RichTextLabel.add_text("%d" % right_score)
 		$ScoreDiff/RichTextLabel.add_text("-%d" % score_diff)
@@ -50,7 +52,9 @@ func _process(_delta):
 		$ScoreBar1P.value = 0
 		$Score1P/RichTextLabel.add_text("%d" % left_score)
 		$Score2P/RichTextLabel.push_bold()
+		$Score1P/RichTextLabel.push_font_size(36)
 		$Score2P/RichTextLabel.add_text("%d" % right_score)
+		$Score1P/RichTextLabel.pop()
 		$Score2P/RichTextLabel.pop()
 		$ScoreDiff/RichTextLabel.add_text("-%d" % score_diff)
 		$ScoreDiff/RichTextLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT

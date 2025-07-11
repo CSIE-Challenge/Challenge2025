@@ -9,34 +9,37 @@ signal buy_spell(spell_data)
 # TODO: add flying path for system and opponent to map
 enum EnemySource { SYSTEM, OPPONENT }
 
-# todo: move tower parameters into the tower classes
-const TOWER_SCENE := preload("res://scenes/towers/shy_guy_2a.tscn")
-const ENEMY_SCENE := preload("res://scenes/enemies/enemy.tscn")
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 const DEPRECIATION_RATE := 0.9
+const INTEREST_RATE := 1.02
+const MAX_MONEY := 2000
 
 @export var spawner: Spawner
 @export var status_panel: TextureRect
 
+var player_selection: IndividualPlayerSelection = null
 var score: int = 0
 var money: int = 100
 var income_per_second = 10
 var kill_cnt = 0
-var income_rate: float = 1
+var income_rate: int = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
-var player_selection: IndividualPlayerSelection = null
 var spell_dict: Dictionary
 var op_game: Game
+var _map: Map = null
 var _enemy_scene_cache = {}
-
-@onready var _map: Map = $Map
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
 	player_selection = _player_selection
 	player_selection.get_parent().remove_child(player_selection)
 	status_panel.link_player_selection(player_selection)
+
+
+func set_map(map_scene: PackedScene):
+	_map = map_scene.instantiate()
+	add_child(_map)
 
 
 func _ready() -> void:
@@ -47,9 +50,10 @@ func _ready() -> void:
 	buy_spell.connect(_on_buy_spell)
 
 
-func spend(cost: int) -> bool:
+func spend(cost: int, income_impact: int = 0) -> bool:
 	if money >= cost:
 		money -= cost
+		income_per_second = max(income_per_second + income_impact, 0)
 		return true
 	return false
 
@@ -61,13 +65,19 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 	if built_towers.has(cell_pos):
 		var previous_tower = built_towers[cell_pos]
 		if (
-			previous_tower.type == tower.type
-			and previous_tower.level_a <= tower.level_a
-			and previous_tower.level_b <= tower.level_b
-			and money + previous_tower.building_cost < tower.building_cost
+			(
+				previous_tower.type == tower.type
+				and (
+					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+				)
+			)
+			or money + previous_tower.building_cost < tower.building_cost
 		):
 			return false
-		if money + (previous_tower.building_cost * DEPRECIATION_RATE) < tower.building_cost:
+		if (
+			previous_tower.type != tower.type
+			and money + (previous_tower.building_cost * DEPRECIATION_RATE) < tower.building_cost
+		):
 			return false
 	if money < tower.building_cost:
 		return false
@@ -83,7 +93,7 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
 	built_towers.erase(cell_pos)
 
 
-func _place_tower(cell_pos: Vector2i, tower: Tower, map: Map) -> void:
+func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	if not _is_buildable(tower, cell_pos):
 		return
 
@@ -99,7 +109,7 @@ func _place_tower(cell_pos: Vector2i, tower: Tower, map: Map) -> void:
 	var global_pos = _map.cell_to_global(cell_pos)
 	built_towers[cell_pos] = tower
 	self.add_child(tower)
-	tower.enable(global_pos, map)
+	tower.enable(global_pos, _map)
 
 	money -= tower.building_cost
 	built_towers[cell_pos] = tower
@@ -112,9 +122,12 @@ func _on_buy_tower(tower_scene: PackedScene):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
-	var new_previewer = Previewer.new(tower, preview_color_callback, _map, true)
-	new_previewer.selected.connect(self._place_tower.bind(tower, _map))
-	self.add_child(new_previewer)
+	if previewer != null:
+		self.remove_child(previewer)
+		previewer.free()
+	previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	previewer.selected.connect(self.place_tower.bind(tower))
+	self.add_child(previewer)
 
 
 func _select_tower(tower: Tower):
@@ -141,7 +154,16 @@ func _handle_tower_selection(event: InputEvent) -> void:
 
 
 func _on_constant_income_timer_timeout() -> void:
-	money += income_rate * income_per_second  # float to int
+	money = min(money + income_rate * income_per_second, MAX_MONEY)  # float to int
+
+
+func _on_interest_timer_timeout() -> void:
+	money = min(money * INTEREST_RATE, MAX_MONEY)
+
+
+func on_subsidization(subsidy) -> void:
+	if score < op_game.score:
+		money = min(money + subsidy, MAX_MONEY)
 
 
 #endregion
@@ -159,10 +181,21 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 
 	var enemy: Enemy = _enemy_scene_cache[scene_path].instantiate()
 	var stats: Dictionary = unit_data.get("stats", {})
+	enemy.income_impact = stats.income_impact
 	enemy.max_health = stats.max_health
 	enemy.max_speed = stats.max_speed
 	enemy.damage = stats.damage
 	enemy.flying = stats.flying
+	enemy.armor = stats.armor
+	enemy.shield = stats.shield
+	enemy.knockback_resist = stats.knockback_resist
+	enemy.kill_reward = stats.kill_reward
+	if enemy.flying:
+		enemy.collision_layer = 4
+		enemy.collision_mask = 8
+	else:
+		enemy.collision_layer = 1
+		enemy.collision_mask = 2
 	return enemy
 
 
@@ -184,9 +217,9 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	var path: Path2D
 	match source:
 		EnemySource.SYSTEM:
-			path = _map.system_path
+			path = _map.flying_system_path if enemy.flying else _map.system_path
 		EnemySource.OPPONENT:
-			path = _map.opponent_path
+			path = _map.flying_opponent_path if enemy.flying else _map.opponent_path
 	path.add_child(enemy.path_follow)
 
 
@@ -227,15 +260,8 @@ func _place_spell(cell_pos: Vector2i, spell_node) -> void:
 
 func _process(_delta) -> void:
 	status_panel.find_child("Money").text = "%d" % money
-	status_panel.find_child("Income").text = "+%d" % income_per_second
+	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if (
-		event is InputEventMouseButton
-		and event.button_index == MOUSE_BUTTON_RIGHT
-		and event.pressed
-		and previewer != null
-	):
-		previewer.free()
 	_handle_tower_selection(event)

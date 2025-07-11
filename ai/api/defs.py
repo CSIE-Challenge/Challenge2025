@@ -1,5 +1,5 @@
+from __future__ import annotations
 from enum import IntEnum, auto
-
 
 class CommandType(IntEnum):
     GET_ALL_TERRAIN = 1
@@ -14,12 +14,9 @@ class CommandType(IntEnum):
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103
-    SPAWN_ENEMY = 201
-    GET_ENEMY_COOLDOWN = 202
-    GET_ENEMY_INFO = 203
-    GET_AVAILABLE_ENEMIES = 204
-    GET_CLOSEST_ENEMIES = 205
-    GET_ENEMIES_IN_RANGE = 206
+    SPAWN_UNIT = 201
+    GET_AVAILABLE_UNITS = 202
+    GET_ALL_ENEMIES = 203
     CAST_SPELL = 301
     GET_SPELL_COOLDOWN = 302
     GET_SPELL_COST = 303
@@ -38,11 +35,22 @@ class TerrainType(IntEnum):
 
 
 class TowerType(IntEnum):
-    BASIC = 0
+    NONE = 0
+    FIRE_MARIO = 1
+    ICE_LUIGI = 2
+    DONEKEY_KONG = 3
+    FORT = 4
+    SHY_GUY = 5
 
 
 class EnemyType(IntEnum):
-    BASIC = auto()
+    BUZZY_BEETLE = 0
+    GOOMBA = 1
+    KOOPA_JR = 2
+    KOOPA_PARATROOPA = 3
+    KOOPA = 4
+    SPINY_SHELL = 5
+    WIGGLER = 6
 
 
 class SpellType(IntEnum):
@@ -94,12 +102,13 @@ class ApiException(Exception):
 
 
 class Tower:
-    def __init__(self, _type: TowerType, position: Vector2, level: int, aim: bool = True, 
+    def __init__(self, _type: TowerType, position: Vector2, level_a: int, level_b: int, aim: bool = True, 
                  anti_air: bool = False, bullet_number: int = 1, reload: int = 60, 
                  range: int = 100, damage: int = 10, bullet_effect: str = 'none') -> None:
         self.type = _type
         self.position = position
-        self.level = level
+        self.level_a = level_a
+        self.level_b = level_b
         self.aim = aim
         self.anti_air = anti_air
         self.bullet_number = bullet_number
@@ -109,11 +118,14 @@ class Tower:
         self.bullet_effect = bullet_effect
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Tower':
+    def from_dict(cls, data: dict) -> 'Tower' | None:
+        if not data:
+            return None
         return cls(
             _type=TowerType(data['type']),
             position=Vector2(data['position']['x'], data['position']['y']),
-            level=data['level'],
+            level_a=data['level_a'],
+            level_b=data['level_b'],
             aim=data.get('aim'),
             anti_air=data.get('anti_air'),
             bullet_number=data.get('bullet_number'),
@@ -124,7 +136,10 @@ class Tower:
         )
 
     def __str__(self) -> str:
-        return f"Tower(type={self.type.name}, position={self.position}, level={self.level})"
+        return f"Tower(type={self.type.name}, position={self.position}, level_a={self.level_a}, level_b={self.level_b})"
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
 
 class Enemy:
@@ -150,20 +165,24 @@ class Enemy:
         return cls(
             _type=EnemyType(data['type']),
             position=Vector2(data['position']['x'], data['position']['y']),
-            health=data['health'],
+            deploy_cost=data['deploy_cost'],
+            income_impact=data.get('income_impact'),
             max_hp=data.get('max_hp'),
-            flying=data.get('flying'),
             damage=data.get('damage'),
+            max_speed=data.get('max_speed'),
+            flying=data.get('flying'),
             armor=data.get('armor'),
             shield=data.get('shield'),
             knockback_resist=data.get('knockback_resist'),
             kill_reward=data.get('kill_reward'),
-            income_impact=data.get('income_impact'),
-            cool_down=data.get('cool_down')
+            cool_down=data.get('cool_down', 'none')
         )
 
     def __str__(self) -> str:
         return f"Enemy(type={self.type.name}, position={self.position}, health={self.health})"
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
 
 class Spell:
@@ -189,3 +208,6 @@ class Spell:
 
     def __str__(self) -> str:
         return f"Spell(type={self.type.name}, position={self.position}, duration={self.duration})"
+
+    def __repr__(self) -> str:
+        return self.__str__()

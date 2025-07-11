@@ -21,6 +21,9 @@ var web_agent: WebAgent
 @onready var process_status_run_button: Button = $Options/ProcessStatusContainer/ButtonRun
 @onready var process_status_kill_button: Button = $Options/ProcessStatusContainer/ButtonKill
 @onready var process_status_label: Label = $Options/ProcessStatusLabel
+@onready var token_copy_button: Button = $Options/TokenContainer/Button
+@onready var token_copied_timer: Timer = $Options/TokenContainer/CopiedTextTimer
+@onready var token_label: Label = $Options/TokenContentContainer/TokenLabel
 @onready var agent_connected_label: Label = $Options/AgentStatusContainer/AgentStatusConnected
 @onready var agent_disconnected_label: Label = $Options/AgentStatusContainer/AgentStatusDisconnected
 
@@ -61,12 +64,15 @@ func _ready() -> void:
 	process_status_kill_button.pressed.connect(python_subprocess.kill_subprocess)
 
 	# token
-	var the_token = web_agent._ws._token
-	$Options/TokenLabel.text = the_token
-	$Options/TokenContainer/Button.pressed.connect(
+	token_copied_timer.timeout.connect(func(): token_copy_button.text = "Copy")
+	token_copy_button.pressed.connect(
 		func():
-			DisplayServer.clipboard_set(the_token)
+			DisplayServer.clipboard_set(web_agent._ws._token)
 			$Options/TokenContainer/Button.text = "Copied!"
+			token_copied_timer.start()
+	)
+	$Options/TokenContentContainer/Button.pressed.connect(
+		func(): ApiServer.update_token(web_agent._ws, ApiServer.generate_token())
 	)
 
 	# web agent status
@@ -87,6 +93,23 @@ func _process(_delta: float) -> void:
 
 
 #endregion
+
+
+func load_config(config: ConfigFile, section: String) -> void:
+	player_identifier = config.get_value(section, "player_identifier", section)
+	manual_control = config.get_value(section, "manual_control", false)
+	python_subprocess.set_python_interpreter(config.get_value(section, "python_interpreter", ""))
+	python_subprocess.set_python_script(config.get_value(section, "agent_script", ""))
+	if config.has_section_key(section, "api_token"):
+		ApiServer.update_token(web_agent._ws, config.get_value(section, "api_token"))
+
+
+func save_config(config: ConfigFile, section: String) -> void:
+	config.set_value(section, "player_identifier", player_identifier)
+	config.set_value(section, "manual_control", manual_control)
+	config.set_value(section, "python_interpreter", python_subprocess.python_interpreter_path)
+	config.set_value(section, "agent_script", python_subprocess.python_script_path)
+	config.set_value(section, "api_token", web_agent._ws._token)
 
 
 func _remove_handlers(sig: Signal) -> void:
@@ -118,6 +141,9 @@ func _display_fields() -> void:
 		agent_script_label.text = agent_script_path
 	else:
 		agent_script_label.text = "(empty)"
+
+	# token
+	token_label.text = web_agent._ws._token
 
 	# process status
 	process_status_run_button.visible = python_subprocess.is_runnable()

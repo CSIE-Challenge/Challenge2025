@@ -45,10 +45,11 @@ func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cell
 	self.add_child(previewed_node)
 
 
-# the previewed object intercepts input events before GUI, so that (for example)
-# when the player clicks on the GUI when previewing, he cancels the previewer
-# before the next interaction with the GUI
-func _input(event: InputEvent) -> void:
+# The previewed object should not intercepts input events before GUI since it will be otherwise not
+# intuitive. For example, when a tower preview is active and the player clicks to buy a (possibly
+# different) tower, the player should expect the button is pressed and the preview changed
+# accordingly. Therefore, this should use _unhandled_input.
+func _unhandled_input(event: InputEvent) -> void:
 	# left-clicked: select the current mouse position, or cancel if it is out of bounds
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var mouse_pos: Vector2 = _get_selected_position()
@@ -59,9 +60,16 @@ func _input(event: InputEvent) -> void:
 			selected.emit(mouse_pos)
 		get_viewport().set_input_as_handled()
 		self.queue_free()
-	# ESC pressed: preview cancelled
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		selected.emit(null)
+
+
+# Now right click should be over everything since it has nothing to do with the GUI
+func _input(event: InputEvent) -> void:
+	# right-clicked: cancel
+	if (
+		event is InputEventMouseButton
+		and event.pressed
+		and event.button_index == MOUSE_BUTTON_RIGHT
+	):
 		get_viewport().set_input_as_handled()
 		self.queue_free()
 

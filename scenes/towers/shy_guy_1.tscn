@@ -37,15 +37,9 @@ script = ExtResource("1_e75s1")
 anti_air = true
 bullet_scene = ExtResource("2_jc0fb")
 
-<<<<<<< HEAD
-[node name="Turret" type="Node2D" parent="."]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Turret"]
-=======
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
->>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_3f1wl")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]

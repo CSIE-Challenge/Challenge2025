@@ -18,11 +18,20 @@ func set_controllers(
 	player_selection_2p: IndividualPlayerSelection,
 	_manual_controlled: int
 ) -> void:
+	game_1p.set_controller(player_selection_1p)
+	game_2p.set_controller(player_selection_2p)
 	manual_controlled = _manual_controlled
+	$Screen/Top/TextureRect/PlayerNameLeft.text = player_selection_1p.player_identifier
+	$Screen/Top/TextureRect/PlayerNameRight.text = player_selection_2p.player_identifier
 
 	# notify web agents
 	player_selection_1p.web_agent.start_game(self, game_1p, game_2p)
 	player_selection_2p.web_agent.start_game(self, game_2p, game_1p)
+
+
+func set_maps(map: PackedScene):
+	game_1p.set_map(map)
+	game_2p.set_map(map)
 
 
 func _ready() -> void:
@@ -34,16 +43,13 @@ func _ready() -> void:
 	game_timer.one_shot = true
 	game_timer.start()
 
-	# notify web agents
-	game_1p.find_child("RemoteAgent").start_game(self, game_1p, game_2p)
-	game_2p.find_child("RemoteAgent").start_game(self, game_2p, game_1p)
-
 	# notify the shop and the chat
 	var shop = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop
 	var chat = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
 	match manual_controlled:
 		0:
 			shop.queue_free()
+			chat.find_child("Shop").add_theme_color_override("font_color", Color(.6, .6, .6))
 			chat.always_visible = true
 		1:
 			shop.start_game(game_1p, game_2p)
@@ -53,11 +59,13 @@ func _ready() -> void:
 	# setup signals for the games
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
 	game_2p.damage_taken.connect(game_1p.on_damage_dealt)
-	var chat_node = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
-	var agent_1p = game_1p.find_child("RemoteAgent")
-	var agent_2p = game_2p.find_child("RemoteAgent")
-	agent_1p.chat_node = chat_node
-	agent_2p.chat_node = chat_node
+	game_1p.spawner.subsidize_loser.connect(game_1p.on_subsidization)
+	game_2p.spawner.subsidize_loser.connect(game_2p.on_subsidization)
+
+	var agent_1p = game_1p.player_selection.web_agent
+	var agent_2p = game_2p.player_selection.web_agent
+	agent_1p.chat_node = chat
+	agent_2p.chat_node = chat
 	agent_1p.player_id = 1
 	agent_2p.player_id = 2
 	AudioManager.background_game_stage1.play()

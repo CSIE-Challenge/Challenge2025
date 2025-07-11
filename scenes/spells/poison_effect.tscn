@@ -9,6 +9,7 @@ radius = 32.1403
 [node name="Effect" type="Area2D"]
 z_index = 20
 collision_layer = 0
+collision_mask = 5
 script = ExtResource("1_g5jyx")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -18,10 +19,8 @@ texture = ExtResource("2_2p3g5")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_mxvwf")
 
-[node name="TriggerTimer" type="Timer" parent="."]
-one_shot = true
-autostart = true
-
 [node name="DurationTimer" type="Timer" parent="."]
 one_shot = true
 autostart = true
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -39,15 +39,10 @@ level_a = 2
 auto_aim = false
 bullet_scene = ExtResource("2_1a38i")
 
-<<<<<<< HEAD
-[node name="Turret" type="Node2D" parent="."]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Turret"]
-=======
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
->>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_ugl15")
 frame_progress = 0.220185
 

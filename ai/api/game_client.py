@@ -9,7 +9,7 @@ from typing import List
 class GameClient(GameClientBase):
 
     @game_command(CommandType.GET_ALL_TERRAIN, [], list[list[TerrainType]])
-    def get_all_terrain(self, owned: bool) -> list[list[TerrainType]]:
+    def get_all_terrain(self) -> list[list[TerrainType]]:
         """
         # Get All Terrain
         取得地圖上所有地形的資訊。
@@ -190,25 +190,26 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.PLACE_TOWER, [TowerType, Vector2], None)
-    def place_tower(self, type: TowerType, coord: Vector2) -> None:
+    @game_command(CommandType.PLACE_TOWER, [TowerType, str, Vector2], None)
+    def place_tower(self, type: TowerType, level: str, coord: Vector2) -> None:
         """
         # Place Tower
-        在指定位置放置一個塔。
+        在指定位置放置或升級一個塔。
 
         ## Parameters
         - `type` (TowerType): 要放置的塔的類型。
+        - `level` (str): 要放置的塔的等級，可為"1", "2a", "2b", "3a", "3b"。數字表示等級，a和b是不同的升級分支，升級時不可以切換分支。
         - `coord` (Vector2): 要放置塔的位置。
 
         ## Returns
         這個函數沒有返回值。如果放置成功，則塔會被放置在指定位置。
 
         ## TowerType
-        - TODO
+        - 有FIRE_MARIO, ICE_LUIGI, DONKEY_KONG, FORT, SHY_GUY五種。
         
         ## Example
         ```python
-        api.place_tower(TowerType.BASIC, Vector2(5, 10))  # 在 (5, 10) 的位置放置一個基本塔
+        api.place_tower(TowerType.FIRE_MARIO, "2a", Vector2(5, 10))  # 在 (5, 10) 的位置放置一個馬力歐塔
         ```
         """
         raise NotImplementedError
@@ -253,92 +254,51 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    # @game_command(CommandType.SPAWN_ENEMY, [EnemyType], None)
-    # def spawn_enemy(self, type: EnemyType) -> None:
-    #     """
-    #     # Spawn Enemy
-    #     派出一個指定類型的敵人。
 
-    #     ## Parameters
-    #     - `type` (EnemyType): 要派出的敵人的類型。
+    @game_command(CommandType.SPAWN_UNIT, [EnemyType], None)
+    def spawn_unit(self, type: EnemyType) -> None:
+        """
+        # Spawn Enemy
+        派出一個指定類型的敵人。
 
-    #     ## Returns
-    #     這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
+        ## Parameters
+        - `type` (EnemyType): 要派出的敵人的類型。
 
-    #     ## EnemyType
-    #     - TODO
+        ## Returns
+        這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
+
+        ## EnemyType
+        - TODO
         
-    #     ## Example
-    #     ```python
-    #     api.spawn_enemy(EnemyType.BASIC)  # 派出一個基本敵人
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Example
+        ```python
+        api.spawn_enemy(EnemyType.BASIC)  # 派出一個基本敵人
+        ```
+        """
+        raise NotImplementedError
 
-    # @game_command(CommandType.GET_ENEMY_COOLDOWN, [bool, EnemyType], int)
-    # def get_enemy_cooldown(self, owned: bool, type: EnemyType) -> int:
-    #     """
-    #     # Get Enemy Cooldown
-    #     取得指定類型敵人的冷卻時間。
 
-    #     ## Parameters
-    #     - `owned` (bool): 是否查詢玩家自己的冷卻時間。
-    #     - `type` (EnemyType): 要查詢的敵人類型。
+    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list)
+    def get_available_units(self) -> List[EnemyType]:
+        """
+        # Get Available Enemies
+        取得所有可用的敵人資訊。
 
-    #     ## Returns
-    #     這個函數返回一個整數，表示冷卻時間。
+        ## Returns
+        這個函數返回一個 `Enemy` 物件的列表。
 
-    #     ## EnemyType
-    #     - TODO
-
-    #     ## Example
-    #     ```python
-    #     cooldown = api.get_enemy_cooldown(True, EnemyType.BASIC)  # 獲取玩家自己的基本敵人的冷卻時間
-    #     print(f"Cooldown for my BASIC enemy: {cooldown} seconds")
-    #     ```
-    #     """
-    #     raise NotImplementedError
-
-    # @game_command(CommandType.GET_ENEMY_INFO, [EnemyType], EnemyType)
-    # def get_enemy_info(self, type: EnemyType) -> EnemyType:
-    #     """
-    #     # Get Enemy Info
-    #     取得指定類型敵人的資訊。
-
-    #     ## Parameters
-    #     - `type` (EnemyType): 要查詢的敵人類型。
-
-    #     ## Returns
-    #     這個函數返回一個 `Enemy` 物件。
-
-    #     ## EnemyType
-    #     - TODO
-
-    #     ## Example
-    #     ```python
-    #     enemy_info = api.get_enemy_info(EnemyType.BASIC)  # 獲取基本敵人的資訊
-    #     print(enemy_info)
-    #     ```
-    #     """
-    #     raise NotImplementedError
-
-    # @game_command(CommandType.GET_AVAILABLE_ENEMIES, [], list)
-    # def get_available_enemies(self) -> List[EnemyType]:
-    #     """
-    #     # Get Available Enemies
-    #     取得所有可用的敵人資訊。
-
-    #     ## Returns
-    #     這個函數返回一個 `Enemy` 物件的列表。
-
-    #     ## Example
-    #     ```python
-    #     available_enemies = api.get_available_enemies()  # 獲取所有可用的敵人資訊
-    #     for enemy in available_enemies:
-    #         print(enemy)
-    #     ```
-    #     """
-    #     raise NotImplementedError
+        ## Example
+        ```python
+        available_enemies = api.get_available_enemies()  # 獲取所有可用的敵人資訊
+        for enemy in available_enemies:
+            print(enemy)
+        ```
+        """
+        raise NotImplementedError
+    
+    @game_command(CommandType.GET_ALL_ENEMIES, [], list)
+    def get_all_enemies(self) -> List[EnemyType]:
+        raise NotImplementedError
 
     # @game_command(CommandType.GET_CLOSEST_ENEMIES, [Vector2, int], list)
     # def get_closest_enemies(self, position: Vector2, count: int) -> List[EnemyType]:
@@ -504,19 +464,11 @@ class GameClient(GameClientBase):
     #     """
     #     raise NotImplementedError
 
-<<<<<<< HEAD
-    @game_command(CommandType.GET_CHAT_HISTORY, [int], list[tuple[int, str]])
-    def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
-        """
-        # Get Chat History
-        取得聊天歷史紀錄。
-=======
     # @game_command(CommandType.GET_CHAT_HISTORY, [int], list)
     # def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
     #     """
     #     # Get Chat History
     #     取得聊天歷史紀錄。
->>>>>>> b05bbd7 (fix: value type in dictionary)
 
     #     ## Parameters
     #     - `num` (int): 要取得的訊息數量，預設為 15。

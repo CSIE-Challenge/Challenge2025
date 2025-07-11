@@ -38,15 +38,9 @@ type = 1
 level_b = 2
 bullet_scene = ExtResource("2_w5s8d")
 
-<<<<<<< HEAD
-[node name="Turret" type="Node2D" parent="."]
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Turret"]
-=======
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
->>>>>>> 88f7cf5 (fix: fix instantiation bug after merging)
 sprite_frames = SubResource("SpriteFrames_exnc2")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
