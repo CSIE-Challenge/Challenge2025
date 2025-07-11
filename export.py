@@ -1,13 +1,13 @@
 import os
 import zipfile
 
-AI_DIR = "./ai"
+AGENT_DIR = "./agent"
 EXPORT_DIR = "./export"
-ZIP_NAME = "ai.zip"
+ZIP_NAME = "agent.zip"
 ZIP_PATH = os.path.join(EXPORT_DIR, ZIP_NAME)
 
 EXCLUDE_PATHS = [
-    os.path.join(AI_DIR, "api", "__pycache__")
+    os.path.join(AGENT_DIR, "api", "__pycache__")
 ]
 
 
@@ -20,7 +20,7 @@ def zip_ai_folder():
         os.makedirs(EXPORT_DIR)
 
     with zipfile.ZipFile(ZIP_PATH, "w", zipfile.ZIP_DEFLATED) as zipf:
-        for root, dirs, files in os.walk(AI_DIR):
+        for root, dirs, files in os.walk(AGENT_DIR):
             dirs[:] = [d for d in dirs if not should_exclude(os.path.join(root, d))]
 
             for file in files:
@@ -28,10 +28,10 @@ def zip_ai_folder():
                 if should_exclude(full_path):
                     continue
 
-                relative_path = os.path.relpath(full_path, os.path.dirname(AI_DIR))
+                relative_path = os.path.relpath(full_path, os.path.dirname(AGENT_DIR))
                 zipf.write(full_path, arcname=relative_path)
 
-    print(f"Zipped {AI_DIR} to {ZIP_PATH}")
+    print(f"Zipped {AGENT_DIR} to {ZIP_PATH}")
 
 
 if __name__ == "__main__":

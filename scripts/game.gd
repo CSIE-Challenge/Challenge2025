@@ -179,13 +179,12 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 
 	var enemy: Enemy = _enemy_scene_cache[scene_path].instantiate()
 	var stats: Dictionary = unit_data.get("stats", {})
+	enemy.type = stats.type
 	enemy.income_impact = stats.income_impact
 	enemy.max_health = stats.max_health
 	enemy.max_speed = stats.max_speed
 	enemy.damage = stats.damage
 	enemy.flying = stats.flying
-	enemy.armor = stats.armor
-	enemy.shield = stats.shield
 	enemy.knockback_resist = stats.knockback_resist
 	enemy.kill_reward = stats.kill_reward
 	if enemy.flying:
@@ -219,6 +218,15 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 		EnemySource.OPPONENT:
 			path = _map.flying_opponent_path if enemy.flying else _map.opponent_path
 	path.add_child(enemy.path_follow)
+
+
+func get_all_enemies() -> Array:
+	var list: Array = []
+	for path in _map.system_path.get_children():
+		list.push_back(path.get_children()[0])
+	for path in _map.opponent_path.get_children():
+		list.push_back(path.get_children()[0])
+	return list
 
 
 #endregion

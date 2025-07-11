@@ -269,9 +269,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-
-    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list)
-    def get_available_units(self) -> List[EnemyType]:
+    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list[Enemy])
+    def get_available_units(self) -> list[Enemy]:
         """
         # Get Available Enemies
         取得所有可用的敵人資訊。
@@ -287,9 +286,9 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-
-    @game_command(CommandType.GET_ALL_ENEMIES, [], list)
-    def get_all_enemies(self) -> List[EnemyType]:
+    
+    @game_command(CommandType.GET_ALL_ENEMIES, [], list[Enemy])
+    def get_all_enemies(self) -> list[Enemy]:
         raise NotImplementedError
 
     @game_command(CommandType.CAST_SPELL, [SpellType, Vector2], None)

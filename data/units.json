@@ -1,107 +1,100 @@
 {
-  "goomba": {
-	"scene_path": "res://scenes/enemies/goomba.tscn",
-	"stats": {
-		"deploy_cost": 20,
-		"income_impact": 1,
-		"max_health": 10,
-		"max_speed": 40,
-		"damage": 30,
-		"flying": false,
-		"armor": 0,
-		"shield": 0,
-		"knockback_resist": false,
-		"kill_reward": 6
-	}
-  },
-  "koopa_paratroopa": {
-	"scene_path": "res://scenes/enemies/koopa_paratroopa.tscn",
-	"stats": {
-		"deploy_cost": 50,
-		"income_impact": 2,
-		"max_health": 20,
-		"max_speed": 40,
-		"damage": 80,
-		"flying": true,
-		"armor": 0,
-		"shield": 0,
-		"knockback_resist": false,
-		"kill_reward": 12
-	}
-  },
-  "spiny_shell": {
-	"scene_path": "res://scenes/enemies/spiny_shell.tscn",
-	"stats": {
-		"deploy_cost": 50,
-		"income_impact": 2,
-		"max_health": 10,
-		"max_speed": 80,
-		"damage": 80,
-		"flying": false,
-		"armor": 0,
-		"shield": 0,
-		"knockback_resist": false,
-		"kill_reward": 12
-	}
-  },
   "buzzy_beetle": {
 	"scene_path": "res://scenes/enemies/buzzy_beetle.tscn",
 	"stats": {
-		"deploy_cost": 50,
-		"income_impact": 1,
-		"max_health": 50,
-		"max_speed": 30,
-		"damage": 80,
+		"type": 0,
+		"deploy_cost": 40,
+		"income_impact": 4,
+		"max_health": 25,
+		"max_speed": 75,
+		"damage": 8,
 		"flying": false,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": true,
-		"kill_reward": 12
+		"kill_reward": 1
 	}
   },
-  "wiggler": {
-	"scene_path": "res://scenes/enemies/wiggler.tscn",
+  "goomba": {
+	"scene_path": "res://scenes/enemies/goomba.tscn",
 	"stats": {
-		"deploy_cost": 100,
-		"income_impact": 4,
-		"max_health": 100,
-		"max_speed": 40,
-		"damage": 200,
+		"type": 1,
+		"deploy_cost": 10,
+		"income_impact": 0,
+		"max_health": 10,
+		"max_speed": 50,
+		"damage": 5,
 		"flying": false,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": false,
-		"kill_reward": 30
+		"kill_reward": 1
 	}
   },
   "koopa_jr": {
 	"scene_path": "res://scenes/enemies/koopa_jr.tscn",
 	"stats": {
-		"deploy_cost": 400,
-		"income_impact": 0,
-		"max_health": 200,
-		"max_speed": 30,
-		"damage": 800,
+		"type": 2,
+		"deploy_cost": 60,
+		"income_impact": -1,
+		"max_health": 40,
+		"max_speed": 70,
+		"damage": 25,
 		"flying": true,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": false,
-		"kill_reward": 100
+		"kill_reward": 1
+	}
+  },
+  "koopa_paratroopa": {
+	"scene_path": "res://scenes/enemies/koopa_paratroopa.tscn",
+	"stats": {
+		"type": 3,
+		"deploy_cost": 20,
+		"income_impact": 2,
+		"max_health": 15,
+		"max_speed": 80,
+		"damage": 7,
+		"flying": true,
+		"knockback_resist": false,
+		"kill_reward": 1
 	}
   },
   "koopa": {
 	"scene_path": "res://scenes/enemies/koopa.tscn",
 	"stats": {
-		"deploy_cost": 600,
-		"income_impact": 0,
-		"max_health": 500,
-		"max_speed": 30,
-		"damage": 1600,
+		"type": 4,
+		"deploy_cost": 70,
+		"income_impact": -5,
+		"max_health": 100,
+		"max_speed": 20,
+		"damage": 60,
 		"flying": false,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": true,
-		"kill_reward": 100
+		"kill_reward": 1
+	}
+  },
+  "spiny_shell": {
+	"scene_path": "res://scenes/enemies/spiny_shell.tscn",
+	"stats": {
+		"type": 5,
+		"deploy_cost": 30,
+		"income_impact": 3,
+		"max_health": 20,
+		"max_speed": 120,
+		"damage": 10,
+		"flying": false,
+		"knockback_resist": false,
+		"kill_reward": 1
+	}
+  },
+  "wiggler": {
+	"scene_path": "res://scenes/enemies/wiggler.tscn",
+	"stats": {
+		"type": 6,
+		"deploy_cost": 50,
+		"income_impact": 5,
+		"max_health": 60,
+		"max_speed": 60,
+		"damage": 12,
+		"flying": false,
+		"knockback_resist": false,
+		"kill_reward": 1
 	}
   }
 }
