@@ -12,7 +12,7 @@ static var metadata: Dictionary = {
 		"target": true,
 		"radius": 100,
 		"trigger_interval": 0.5,
-		"trigger_damage": 2,
+		"trigger_damage": 3,
 	}
 }
 var game: Game
