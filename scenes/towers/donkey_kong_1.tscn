@@ -38,6 +38,7 @@ type = 3
 auto_aim = false
 bullet_scene = ExtResource("2_331pa")
 
+
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]

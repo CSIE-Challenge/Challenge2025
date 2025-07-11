@@ -9,7 +9,6 @@ var tcp_server: TCPServer = TCPServer.new()
 var pending_peers: Array[PendingPeer] = []
 var authing_peers: Array[WebSocketPeer] = []
 var used_token: Dictionary[String, WebSocketConnection] = {}
-var token_rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 #region Server singleton
 
@@ -117,15 +116,30 @@ func _process(_delta: float) -> void:
 
 
 #region Interface for registering/removing authorized connections
-func register_connection() -> WebSocketConnection:
+func generate_token() -> String:
 	var token: String
 	while true:
-		token = "%08x" % token_rng.randi()
+		token = "%08x" % randi()
 		if not used_token.has(token):
 			break
+	return token
+
+
+func register_connection() -> WebSocketConnection:
+	var token = generate_token()
 	var conn = WebSocketConnection.new(token)
 	used_token[token] = conn
 	return conn
+
+
+func update_token(conn: WebSocketConnection, new_token: String) -> void:
+	if conn._token == new_token:
+		return
+	if used_token.has(new_token):
+		update_token(used_token[new_token], generate_token())
+	used_token.erase(conn._token)
+	used_token[new_token] = conn
+	conn._token = new_token
 
 
 func auth_connection(ws: WebSocketPeer) -> WebSocketConnection:

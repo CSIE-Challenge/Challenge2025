@@ -6,36 +6,38 @@ signal buy_tower(tower_scene: PackedScene)
 signal summon_enemy(unit_data: Dictionary)
 signal buy_spell(spell_data)
 
-# TODO: add flying path for system and opponent to map
 enum EnemySource { SYSTEM, OPPONENT }
 
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 const DEPRECIATION_RATE := 0.9
 const INTEREST_RATE := 1.02
-const MAX_MONEY := 2000
 
 @export var spawner: Spawner
 @export var status_panel: TextureRect
 
+var player_selection: IndividualPlayerSelection = null
 var score: int = 0
 var money: int = 100
 var income_per_second = 10
 var kill_cnt = 0
-var player_selection: IndividualPlayerSelection = null
-var income_rate: float = 1
+var income_rate: int = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
 var op_game: Game
+var _map: Map = null
 var _enemy_scene_cache = {}
-
-@onready var _map: Map = $Map
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
 	player_selection = _player_selection
 	player_selection.get_parent().remove_child(player_selection)
 	status_panel.link_player_selection(player_selection)
+
+
+func set_map(map_scene: PackedScene):
+	_map = map_scene.instantiate()
+	add_child(_map)
 
 
 func _ready() -> void:
@@ -81,7 +83,7 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
-	money += tower.building_cost * DEPRECIATION_RATE if depreciation else tower.building_cost
+	money += int(tower.building_cost * DEPRECIATION_RATE) if depreciation else tower.building_cost
 	tower.queue_free()
 	if is_instance_valid(tower_ui):
 		tower_ui.queue_free()
@@ -113,14 +115,17 @@ func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 
 func _on_buy_tower(tower_scene: PackedScene):
 	var tower = tower_scene.instantiate() as Tower
-	var preview_color_callback = func(tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
-		if _is_buildable(tower, cell_pos):
+	var preview_color_callback = func(_tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
+		if _is_buildable(_tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
-	var new_previewer = Previewer.new(tower, preview_color_callback, _map, true)
-	new_previewer.selected.connect(self.place_tower.bind(tower))
-	self.add_child(new_previewer)
+	if previewer != null:
+		self.remove_child(previewer)
+		previewer.free()
+	previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	previewer.selected.connect(self.place_tower.bind(tower))
+	self.add_child(previewer)
 
 
 func _select_tower(tower: Tower):
@@ -147,16 +152,16 @@ func _handle_tower_selection(event: InputEvent) -> void:
 
 
 func _on_constant_income_timer_timeout() -> void:
-	money = min(money + income_rate * income_per_second, MAX_MONEY)  # float to int
+	money = int(money + income_rate * income_per_second)
 
 
 func _on_interest_timer_timeout() -> void:
-	money = min(money * INTEREST_RATE, MAX_MONEY)
+	money = int(money * INTEREST_RATE)
 
 
 func on_subsidization(subsidy) -> void:
 	if score < op_game.score:
-		money = min(money + subsidy, MAX_MONEY)
+		money = money + subsidy
 
 
 #endregion
@@ -178,6 +183,17 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	enemy.max_health = stats.max_health
 	enemy.max_speed = stats.max_speed
 	enemy.damage = stats.damage
+	enemy.flying = stats.flying
+	enemy.armor = stats.armor
+	enemy.shield = stats.shield
+	enemy.knockback_resist = stats.knockback_resist
+	enemy.kill_reward = stats.kill_reward
+	if enemy.flying:
+		enemy.collision_layer = 4
+		enemy.collision_mask = 8
+	else:
+		enemy.collision_layer = 1
+		enemy.collision_mask = 2
 	return enemy
 
 
@@ -242,15 +258,8 @@ func _place_spell(cell_pos: Vector2i, spell_node) -> void:
 
 func _process(_delta) -> void:
 	status_panel.find_child("Money").text = "%d" % money
-	status_panel.find_child("Income").text = "+%d" % income_per_second
+	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if (
-		event is InputEventMouseButton
-		and event.button_index == MOUSE_BUTTON_RIGHT
-		and event.pressed
-		and previewer != null
-	):
-		previewer.free()
 	_handle_tower_selection(event)

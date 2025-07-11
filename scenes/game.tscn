@@ -1,6 +1,5 @@
-[gd_scene load_steps=7 format=3 uid="uid://bgtv02vp8m02u"]
+[gd_scene load_steps=6 format=3 uid="uid://bgtv02vp8m02u"]
 
-[ext_resource type="PackedScene" uid="uid://cbxbq3tqvvn8j" path="res://scenes/map.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://b488pqxmi1nd" path="res://scripts/game.gd" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://fvm1tsrcr7ci" path="res://scenes/spells/poison.tscn" id="3_iywne"]
 [ext_resource type="Script" uid="uid://cljdvxbvnaaap" path="res://scripts/spells/spell_manager.gd" id="3_p57ef"]
@@ -20,8 +19,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_yqjtg")
-
-[node name="Map" parent="." instance=ExtResource("1_uwrxv")]
 
 [node name="ConstantIncomeTimer" type="Timer" parent="."]
 autostart = true

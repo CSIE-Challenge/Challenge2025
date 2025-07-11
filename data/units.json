@@ -3,10 +3,15 @@
 	"scene_path": "res://scenes/enemies/goomba.tscn",
 	"stats": {
 		"deploy_cost": 10,
-		"income_impact": 1,
+		"income_impact": 0,
 		"max_health": 10,
 		"max_speed": 50,
-		"damage": 5
+		"damage": 5,
+		"flying": false,
+		"armor": 0,
+		"shield": 0,
+		"knockback_resist": false,
+		"kill_reward": 1
 	}
   },
   "koopa_paratroopa": {
@@ -16,7 +21,12 @@
 		"income_impact": 2,
 		"max_health": 15,
 		"max_speed": 80,
-		"damage": 7
+		"damage": 7,
+		"flying": true,
+		"armor": 0,
+		"shield": 0,
+		"knockback_resist": false,
+		"kill_reward": 1
 	}
   },
   "spiny_shell": {
@@ -26,7 +36,12 @@
 		"income_impact": 3,
 		"max_health": 20,
 		"max_speed": 120,
-		"damage": 10
+		"damage": 10,
+		"flying": false,
+		"armor": 0,
+		"shield": 0,
+		"knockback_resist": false,
+		"kill_reward": 1
 	}
   },
   "buzzy_beetle": {
@@ -36,7 +51,12 @@
 		"income_impact": 4,
 		"max_health": 25,
 		"max_speed": 75,
-		"damage": 8
+		"damage": 8,
+		"flying": false,
+		"armor": 0,
+		"shield": 0,
+		"knockback_resist": true,
+		"kill_reward": 1
 	}
   },
   "wiggler": {
@@ -46,7 +66,12 @@
 		"income_impact": 5,
 		"max_health": 60,
 		"max_speed": 60,
-		"damage": 12
+		"damage": 12,
+		"flying": false,
+		"armor": 0,
+		"shield": 0,
+		"knockback_resist": false,
+		"kill_reward": 1
 	}
   },
   "koopa_jr": {
@@ -56,7 +81,12 @@
 		"income_impact": -1,
 		"max_health": 40,
 		"max_speed": 70,
-		"damage": 25
+		"damage": 25,
+		"flying": true,
+		"armor": 0,
+		"shield": 0,
+		"knockback_resist": false,
+		"kill_reward": 1
 	}
   },
   "koopa": {
@@ -66,7 +96,12 @@
 		"income_impact": -5,
 		"max_health": 100,
 		"max_speed": 20,
-		"damage": 60
+		"damage": 60,
+		"flying": false,
+		"armor": 0,
+		"shield": 0,
+		"knockback_resist": true,
+		"kill_reward": 1
 	}
   }
 }

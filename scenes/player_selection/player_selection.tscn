@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://4n6lbd6ccvkh"]
+[gd_scene load_steps=7 format=3 uid="uid://4n6lbd6ccvkh"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vxqyd"]
 [ext_resource type="Texture2D" uid="uid://kpvbltopk254" path="res://assets/ui/background.png" id="2_0w1p3"]
 [ext_resource type="Script" uid="uid://c2y16xmq3qenw" path="res://scripts/player_selection/player_selection.gd" id="2_vo1kg"]
 [ext_resource type="PackedScene" uid="uid://2vyhv0c7ehjb" path="res://scenes/player_selection/individual_player_selection.tscn" id="4_vo1kg"]
-[ext_resource type="Texture2D" uid="uid://cnwky8dhvi1x" path="res://assets/ui/coin.png" id="5_rp0cw"]
+[ext_resource type="Texture2D" uid="uid://dk74l88eou2lq" path="res://pixel_art/bullet/BigBomb.png" id="5_rp0cw"]
+[ext_resource type="Texture2D" uid="uid://bpvwad4fudbmq" path="res://assets/maps/Map3.png" id="6_rp0cw"]
 
 [node name="PlayerSelection" type="Control"]
 layout_mode = 3
@@ -60,25 +61,41 @@ layout_mode = 2
 custom_minimum_size = Vector2(450, 700)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/PanelMap"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PanelMap"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
 anchor_top = 0.05
 anchor_right = 0.9
 anchor_bottom = 0.15
+theme_override_font_sizes/font_size = 50
+text = "Map"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/PanelMap"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.2
+anchor_right = 0.9
+anchor_bottom = 0.2
 grow_horizontal = 2
 
 [node name="TextureButtonLeft" type="TextureButton" parent="VBoxContainer/HBoxContainer/PanelMap/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 texture_normal = ExtResource("5_rp0cw")
+texture_pressed = ExtResource("5_rp0cw")
+texture_hover = ExtResource("5_rp0cw")
+texture_disabled = ExtResource("5_rp0cw")
+texture_focused = ExtResource("5_rp0cw")
 stretch_mode = 5
+flip_h = true
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PanelMap/HBoxContainer"]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
 text = "Random"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -87,33 +104,48 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 texture_normal = ExtResource("5_rp0cw")
+texture_pressed = ExtResource("5_rp0cw")
+texture_hover = ExtResource("5_rp0cw")
+texture_disabled = ExtResource("5_rp0cw")
+texture_focused = ExtResource("5_rp0cw")
 stretch_mode = 5
 
-[node name="TextureRect" type="ColorRect" parent="VBoxContainer/HBoxContainer/PanelMap"]
-custom_minimum_size = Vector2(360, 480)
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/PanelMap"]
+self_modulate = Color(1, 1, 1, 0)
+clip_contents = true
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.55
-anchor_right = 0.5
-anchor_bottom = 0.55
+anchor_left = 0.1
+anchor_top = 0.28
+anchor_right = 0.9
+anchor_bottom = 0.96
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.212305, 0.212305, 0.212305, 1)
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/PanelMap/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_rp0cw")
+expand_mode = 5
+stretch_mode = 5
 
 [node name="Selection2P" parent="VBoxContainer/HBoxContainer" instance=ExtResource("4_vo1kg")]
 layout_mode = 2
 player_identifier = "Player 2"
 
 [node name="StartButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 50
-text = "START"
+text = "Start"
 
 [node name="GameStartTimer" type="Timer" parent="."]
-wait_time = 3.0
 one_shot = true
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

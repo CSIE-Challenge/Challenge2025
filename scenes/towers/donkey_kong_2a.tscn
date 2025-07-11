@@ -39,6 +39,7 @@ level_a = 2
 auto_aim = false
 bullet_scene = ExtResource("2_1a38i")
 
+
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]

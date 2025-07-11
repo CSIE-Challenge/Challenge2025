@@ -1,21 +1,21 @@
 class_name Enemy
 extends Area2D
 
+@export var income_impact: int = 0
 @export var max_health: int = 100
 # Note that the speed of enemy should never exceed that of explosion of effect,
 # error may occur otherwise
 @export var max_speed: int = 50
-@export var flying: bool = false
 @export var damage: int = 5
+@export var flying: bool = false
 @export var armor: int = 0
 @export var shield: int = 0
 @export var knockback_resist: bool = false
 @export var kill_reward: int = 1
-@export var income_impact: int = 0
 
 var game: Game
 var path_follow: PathFollow2D
-var knockback_ratio: float = 0.1
+var knockback_distance: int = 50
 var source: Game.EnemySource
 var health: int:
 	get:
@@ -33,12 +33,13 @@ var speed_rate: Array[float] = [1.0]  # store speed_rates and get minimum
 func _on_killed() -> void:
 	game.kill_cnt += 1
 	if source == Game.EnemySource.SYSTEM:
-		game.money = min(game.money + kill_reward, game.MAX_MONEY)  # or game.money
+		game.money = game.money + kill_reward
 	path_follow.queue_free()
 
 
 func _on_reached() -> void:
 	game.damage_taken.emit(damage)
+	AudioManager.enemy_attack.play()
 	path_follow.queue_free()
 
 
@@ -76,12 +77,12 @@ func _on_area_entered(bullet: Bullet) -> void:
 func knockback(far: bool):
 	if far:
 		if knockback_resist:
-			path_follow.progress_ratio -= knockback_ratio
+			path_follow.progress -= knockback_distance
 		else:
-			path_follow.progress_ratio -= knockback_ratio * 2
+			path_follow.progress -= knockback_distance * 2
 	else:
 		if not knockback_resist:
-			path_follow.progress_ratio -= knockback_ratio
+			path_follow.progress -= knockback_distance
 
 
 func freeze(rate: float):

@@ -14,12 +14,9 @@ class CommandType(IntEnum):
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103
-    SPAWN_ENEMY = 201
-    GET_ENEMY_COOLDOWN = 202
-    GET_ENEMY_INFO = 203
-    GET_AVAILABLE_ENEMIES = 204
-    GET_CLOSEST_ENEMIES = 205
-    GET_ENEMIES_IN_RANGE = 206
+    SPAWN_UNIT = 201
+    GET_AVAILABLE_UNITS = 202
+    GET_ALL_ENEMIES = 203
     CAST_SPELL = 301
     GET_SPELL_COOLDOWN = 302
     GET_SPELL_COST = 303
@@ -47,13 +44,19 @@ class TowerType(IntEnum):
 
 
 class EnemyType(IntEnum):
-    BASIC = auto()
+    BUZZY_BEETLE = 0
+    GOOMBA = 1
+    KOOPA_JR = 2
+    KOOPA_PARATROOPA = 3
+    KOOPA = 4
+    SPINY_SHELL = 5
+    WIGGLER = 6
 
 
 class SpellType(IntEnum):
-    POISON = auto()
-    DOUBLE_INCOME = auto()
-    TELEPORT = auto()
+    POISON = 1
+    DOUBLE_INCOME = 2
+    TELEPORT = 3
 
 
 class StatusCode(IntEnum):
@@ -162,16 +165,17 @@ class Enemy:
         return cls(
             _type=EnemyType(data['type']),
             position=Vector2(data['position']['x'], data['position']['y']),
-            health=data['health'],
+            deploy_cost=data['deploy_cost'],
+            income_impact=data.get('income_impact'),
             max_hp=data.get('max_hp'),
-            flying=data.get('flying'),
             damage=data.get('damage'),
+            max_speed=data.get('max_speed'),
+            flying=data.get('flying'),
             armor=data.get('armor'),
             shield=data.get('shield'),
             knockback_resist=data.get('knockback_resist'),
             kill_reward=data.get('kill_reward'),
-            income_impact=data.get('income_impact'),
-            cool_down=data.get('cool_down')
+            cool_down=data.get('cool_down', 'none')
         )
 
     def __str__(self) -> str:
@@ -180,30 +184,3 @@ class Enemy:
     def __repr__(self) -> str:
         return self.__str__()
 
-
-class Spell:
-    def __init__(self, _type: SpellType, position: Vector2, duration: int = 0, 
-                 damage: int = 0, range: int = 0, multiplier: float = 1.0) -> None:
-        self.type = _type
-        self.position = position
-        self.duration = duration
-        self.damage = damage
-        self.range = range
-        self.multiplier = multiplier
-
-    @classmethod
-    def from_dict(cls, data: dict) -> 'Spell':
-        return cls(
-            _type=SpellType(data['type']),
-            position=Vector2(data['position']),
-            duration=data.get('duration'),
-            damage=data.get('damage'),
-            range=data.get('range'),
-            multiplier=data.get('multiplier')
-        )
-
-    def __str__(self) -> str:
-        return f"Spell(type={self.type.name}, position={self.position}, duration={self.duration})"
-
-    def __repr__(self) -> str:
-        return self.__str__()

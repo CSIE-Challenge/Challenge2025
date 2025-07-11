@@ -21,10 +21,17 @@ func set_controllers(
 	game_1p.set_controller(player_selection_1p)
 	game_2p.set_controller(player_selection_2p)
 	manual_controlled = _manual_controlled
+	$Screen/Top/TextureRect/PlayerNameLeft.text = player_selection_1p.player_identifier
+	$Screen/Top/TextureRect/PlayerNameRight.text = player_selection_2p.player_identifier
 
 	# notify web agents
 	player_selection_1p.web_agent.start_game(self, game_1p, game_2p)
 	player_selection_2p.web_agent.start_game(self, game_2p, game_1p)
+
+
+func set_maps(map: PackedScene):
+	game_1p.set_map(map)
+	game_2p.set_map(map)
 
 
 func _ready() -> void:
@@ -42,6 +49,7 @@ func _ready() -> void:
 	match manual_controlled:
 		0:
 			shop.queue_free()
+			chat.find_child("Shop").add_theme_color_override("font_color", Color(.6, .6, .6))
 			chat.always_visible = true
 		1:
 			shop.start_game(game_1p, game_2p)
@@ -54,13 +62,13 @@ func _ready() -> void:
 	game_1p.spawner.subsidize_loser.connect(game_1p.on_subsidization)
 	game_2p.spawner.subsidize_loser.connect(game_2p.on_subsidization)
 
-	var chat_node = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
 	var agent_1p = game_1p.player_selection.web_agent
 	var agent_2p = game_2p.player_selection.web_agent
-	agent_1p.chat_node = chat_node
-	agent_2p.chat_node = chat_node
+	agent_1p.chat_node = chat
+	agent_2p.chat_node = chat
 	agent_1p.player_id = 1
 	agent_2p.player_id = 2
+	AudioManager.background_game_stage1.play()
 
 
 func get_formatted_time() -> String:
