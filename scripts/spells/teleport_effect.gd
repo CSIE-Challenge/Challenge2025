@@ -23,7 +23,9 @@ func _draw():
 
 func trigger() -> void:
 	var enemies: Array[Area2D] = get_overlapping_areas()
-	for enemy in enemies:
+	for enemy: Enemy in enemies:
+		if not enemy is Enemy:
+			return
 		enemy.transport()
 
 

@@ -114,6 +114,11 @@ func transport():
 		op_game._map.opponent_path.add_child(path_follow)
 	path_follow.progress_ratio = 0
 
+	# Swap games so scores are calculated correcrtly
+	var tmp_game = op_game
+	op_game = game
+	game = tmp_game
+
 
 #endregion
 
