@@ -174,6 +174,8 @@ class GameClientBase:
                 raise ApiException(
                     source_fn, StatusCode.INTERNAL_ERR,
                     f"unexpected return value of type {type(ret)} for {inner_ret_type}")
+        elif isinstance(ret, int) and isinstance(inner_ret_type, Status):
+            return Status.from_int(ret)
         try:
             return inner_ret_type(ret)
         except:
