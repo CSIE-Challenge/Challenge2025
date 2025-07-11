@@ -6,7 +6,6 @@ signal buy_tower(tower_scene: PackedScene)
 signal summon_enemy(unit_data: Dictionary)
 signal buy_spell(spell_data)
 
-# TODO: add flying path for system and opponent to map
 enum EnemySource { SYSTEM, OPPONENT }
 
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
@@ -84,7 +83,7 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
-	money += tower.building_cost * DEPRECIATION_RATE if depreciation else tower.building_cost
+	money += int(tower.building_cost * DEPRECIATION_RATE) if depreciation else tower.building_cost
 	tower.queue_free()
 	if is_instance_valid(tower_ui):
 		tower_ui.queue_free()
@@ -116,8 +115,8 @@ func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 
 func _on_buy_tower(tower_scene: PackedScene):
 	var tower = tower_scene.instantiate() as Tower
-	var preview_color_callback = func(tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
-		if _is_buildable(tower, cell_pos):
+	var preview_color_callback = func(_tower: Tower, cell_pos: Vector2i) -> Previewer.PreviewMode:
+		if _is_buildable(_tower, cell_pos):
 			return Previewer.PreviewMode.SUCCESS
 		return Previewer.PreviewMode.FAIL
 
@@ -157,7 +156,7 @@ func _on_constant_income_timer_timeout() -> void:
 
 
 func _on_interest_timer_timeout() -> void:
-	money = money * INTEREST_RATE
+	money = int(money * INTEREST_RATE)
 
 
 func on_subsidization(subsidy) -> void:
