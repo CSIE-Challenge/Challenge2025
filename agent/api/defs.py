@@ -292,6 +292,8 @@ class Tower:
 
 
 class Enemy:
+    """敵人。"""
+    
     def __init__(self, type: EnemyType, position: Vector2, progress_ratio: float, deploy_cost: int, health: int, max_health: int,
                  flying: bool, damage: int, max_speed: int, knockback_resist: bool, kill_reward: int,
                  income_impact: int, cool_down: int = None) -> None:
