@@ -405,7 +405,7 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_CHAT_HISTORY, [int], list)
+    @game_command(CommandType.GET_CHAT_HISTORY, [int], list[tuple[int, str]])
     def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
         """
         # Get Chat History
