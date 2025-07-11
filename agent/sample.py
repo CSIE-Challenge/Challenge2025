@@ -8,8 +8,8 @@ api = GameClient(7749, "ef80319c")
 
 # print(api.place_tower(TowerType.ICE_LUIGI, "1", Vector2(8, 5)))
 # print(api.place_tower(TowerType.ICE_LUIGI, "1", Vector2(9, 4)))
-print(api.spawn_unit(EnemyType.KOOPA))
-print(api.get_all_enemies())
+# print(api.spawn_unit(EnemyType.KOOPA))
+# print(api.get_all_enemies())
 
 # print(api.get_scores(True))
 # print(api.get_scores(False))
