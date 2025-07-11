@@ -276,7 +276,11 @@ func _get_enemy_dict(_type: EnemyType) -> Dictionary:
 func _spawn_unit(_type: EnemyType) -> Array:
 	print("[SpawnUnit] Get request")
 	var data = _get_enemy_dict(_type)
-	game_other.summon_enemy.emit(data)
+	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
+		game_other.summon_enemy.emit(data)
+	else:
+		print("[Error] doesn't have enough money")
+		return [StatusCode.CLIENT_ERR]
 	return [StatusCode.OK]
 
 
