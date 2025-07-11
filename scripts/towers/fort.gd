@@ -6,6 +6,7 @@ var _map: Map
 
 @onready var tower_body = $Tower
 @onready var sprite = $Tower/AnimatedSprite2D
+@onready var marker = $Tower/Marker2D
 @onready var enemy_detector = $AimRange/CollisionShape2D
 
 
@@ -15,6 +16,10 @@ func enable(_global_position: Vector2, map: Map) -> void:
 	_map = map
 	target_direction = _get_fort_direction()
 	sprite.flip_h = cos(target_direction) < 0
+	if sprite.flip_h:
+		marker.position.x = -abs(marker.position.x)
+	else:
+		marker.position.x = abs(marker.position.x)
 	reload_timer.start(reload_seconds)
 
 
@@ -29,11 +34,20 @@ func _flip_sprite() -> void:
 
 
 func _on_reload_timer_timeout() -> void:
+	if not anime.is_playing():
+		anime.play("default")
+	var attack_scene = sprite.sprite_frames.get_frame_count(sprite.animation) - 1
+	wait_for_animation_timer.timeout.connect(self._on_fire_bullet, CONNECT_ONE_SHOT)
+	wait_for_animation_timer.start(ANIMATION_FRAME_DURATION * attack_scene)
+
+
+func _on_fire_bullet() -> void:
 	var origin: Vector2 = $Tower/Marker2D.global_position
 	var direction: float = target_direction
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)
 	bullet.init(origin, direction, target)
+	#get_tree().paused = true
 
 
 func _get_fort_direction() -> float:
