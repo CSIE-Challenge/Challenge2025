@@ -17,10 +17,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_oqahg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_r6443")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -45,7 +48,7 @@ bullet_scene = ExtResource("2_obing")
 sprite_frames = SubResource("SpriteFrames_uo2qd")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(21.767, -12.8041)
+position = Vector2(48.6556, -12.8041)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

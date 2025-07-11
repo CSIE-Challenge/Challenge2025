@@ -5,6 +5,8 @@ enum TargetStrategy { FIRST, LAST, CLOSE }
 # NONE to compatible with twin_turret
 enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 
+const ANIMATION_FRAME_DURATION := 0.1
+
 @export var type: TowerType = TowerType.NONE
 @export var level_a: int = 1
 @export var level_b: int = 1
@@ -12,7 +14,7 @@ enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 @export var auto_aim: bool = true
 @export var anti_air: bool = false
 @export var bullet_scene: PackedScene
-@export var reload_seconds: float = 0.25
+@export var reload_seconds: float = 1
 @export var aim_range: float = 450
 @export var damage: int = 2
 # Should be a variable controlled otherwise later
@@ -20,6 +22,7 @@ enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 var target: Node2D = null
 var enabled: bool = false
 var reload_timer: Timer
+var wait_for_animation_timer: Timer
 
 @onready var anime = $Tower/AnimatedSprite2D
 
@@ -28,7 +31,9 @@ func _ready():
 	add_to_group("towers")
 	enabled = false
 	reload_timer = Timer.new()
+	wait_for_animation_timer = Timer.new()
 	self.add_child(reload_timer)
+	self.add_child(wait_for_animation_timer)
 	reload_timer.timeout.connect(self._on_reload_timer_timeout)
 	self.z_index = 10  # For effect to be on the ground
 
@@ -97,10 +102,17 @@ func _physics_process(_delta: float) -> void:
 func _on_reload_timer_timeout() -> void:
 	_refresh_target()
 	if target == null:
-		anime.stop()
 		return
 	if not anime.is_playing():
 		anime.play("default")
+	wait_for_animation_timer.timeout.connect(self._on_fire_bullet, CONNECT_ONE_SHOT)
+	wait_for_animation_timer.start(ANIMATION_FRAME_DURATION)
+
+
+func _on_fire_bullet() -> void:
+	_refresh_target()
+	if target == null:
+		return
 	var origin: Vector2 = $Tower/Marker2D.global_position
 	var direction: float = (target.global_position - origin).angle()
 	var bullet := bullet_scene.instantiate()

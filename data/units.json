@@ -1,100 +1,100 @@
 {
   "buzzy_beetle": {
-	"scene_path": "res://scenes/enemies/buzzy_beetle.tscn",
-	"stats": {
-		"type": 0,
-		"deploy_cost": 40,
-		"income_impact": 4,
-		"max_health": 25,
-		"max_speed": 75,
-		"damage": 8,
-		"flying": false,
-		"knockback_resist": true,
-		"kill_reward": 1
-	}
+    "scene_path": "res://scenes/enemies/buzzy_beetle.tscn",
+    "stats": {
+      "type": 0,
+      "deploy_cost": 40,
+      "income_impact": 4,
+      "max_health": 25,
+      "max_speed": 75,
+      "damage": 8,
+      "flying": false,
+      "knockback_resist": true,
+      "kill_reward": 1
+    }
   },
   "goomba": {
-	"scene_path": "res://scenes/enemies/goomba.tscn",
-	"stats": {
-		"type": 1,
-		"deploy_cost": 10,
-		"income_impact": 0,
-		"max_health": 10,
-		"max_speed": 50,
-		"damage": 5,
-		"flying": false,
-		"knockback_resist": false,
-		"kill_reward": 1
-	}
+    "scene_path": "res://scenes/enemies/goomba.tscn",
+    "stats": {
+      "type": 1,
+      "deploy_cost": 10,
+      "income_impact": 0,
+      "max_health": 10,
+      "max_speed": 50,
+      "damage": 5,
+      "flying": false,
+      "knockback_resist": false,
+      "kill_reward": 1
+    }
   },
   "koopa_jr": {
-	"scene_path": "res://scenes/enemies/koopa_jr.tscn",
-	"stats": {
-		"type": 2,
-		"deploy_cost": 60,
-		"income_impact": -1,
-		"max_health": 40,
-		"max_speed": 70,
-		"damage": 25,
-		"flying": true,
-		"knockback_resist": false,
-		"kill_reward": 1
-	}
+    "scene_path": "res://scenes/enemies/koopa_jr.tscn",
+    "stats": {
+      "type": 2,
+      "deploy_cost": 60,
+      "income_impact": -1,
+      "max_health": 40,
+      "max_speed": 70,
+      "damage": 25,
+      "flying": true,
+      "knockback_resist": false,
+      "kill_reward": 1
+    }
   },
   "koopa_paratroopa": {
-	"scene_path": "res://scenes/enemies/koopa_paratroopa.tscn",
-	"stats": {
-		"type": 3,
-		"deploy_cost": 20,
-		"income_impact": 2,
-		"max_health": 15,
-		"max_speed": 80,
-		"damage": 7,
-		"flying": true,
-		"knockback_resist": false,
-		"kill_reward": 1
-	}
+    "scene_path": "res://scenes/enemies/koopa_paratroopa.tscn",
+    "stats": {
+      "type": 3,
+      "deploy_cost": 20,
+      "income_impact": 2,
+      "max_health": 15,
+      "max_speed": 80,
+      "damage": 7,
+      "flying": true,
+      "knockback_resist": false,
+      "kill_reward": 1
+    }
   },
   "koopa": {
-	"scene_path": "res://scenes/enemies/koopa.tscn",
-	"stats": {
-		"type": 4,
-		"deploy_cost": 70,
-		"income_impact": -5,
-		"max_health": 100,
-		"max_speed": 20,
-		"damage": 60,
-		"flying": false,
-		"knockback_resist": true,
-		"kill_reward": 1
-	}
+    "scene_path": "res://scenes/enemies/koopa.tscn",
+    "stats": {
+      "type": 4,
+      "deploy_cost": 70,
+      "income_impact": -5,
+      "max_health": 100,
+      "max_speed": 20,
+      "damage": 60,
+      "flying": false,
+      "knockback_resist": true,
+      "kill_reward": 1
+    }
   },
   "spiny_shell": {
-	"scene_path": "res://scenes/enemies/spiny_shell.tscn",
-	"stats": {
-		"type": 5,
-		"deploy_cost": 30,
-		"income_impact": 3,
-		"max_health": 20,
-		"max_speed": 120,
-		"damage": 10,
-		"flying": false,
-		"knockback_resist": false,
-		"kill_reward": 1
-	}
+    "scene_path": "res://scenes/enemies/spiny_shell.tscn",
+    "stats": {
+      "type": 5,
+      "deploy_cost": 30,
+      "income_impact": 3,
+      "max_health": 20,
+      "max_speed": 120,
+      "damage": 10,
+      "flying": false,
+      "knockback_resist": false,
+      "kill_reward": 1
+    }
   },
   "wiggler": {
-	"scene_path": "res://scenes/enemies/wiggler.tscn",
-	"stats": {
-		"type": 6,
-		"deploy_cost": 50,
-		"income_impact": 5,
-		"max_health": 60,
-		"max_speed": 60,
-		"damage": 12,
-		"flying": false,
-		"knockback_resist": false,
-		"kill_reward": 1
-	}
+    "scene_path": "res://scenes/enemies/wiggler.tscn",
+    "stats": {
+      "type": 6,
+      "deploy_cost": 50,
+      "income_impact": 5,
+      "max_health": 60,
+      "max_speed": 60,
+      "damage": 12,
+      "flying": false,
+      "knockback_resist": false,
+      "kill_reward": 1
+    }
   }
 }
