@@ -77,6 +77,8 @@ func _on_start_button_pressed() -> void:
 
 
 func _on_game_start_timer_timeout() -> void:
+	AudioManager.background_menu.stop()
+
 	var manual_controlled = 0
 	if selection_1p.manual_control:
 		manual_controlled = 1
