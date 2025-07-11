@@ -11,6 +11,7 @@ class CommandType(IntEnum):
     GET_INCOME = 7
     GET_GAME_STATUS = 8
     GET_TERRAIN = 9
+    GET_SYSTEM_PATH = 10
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103

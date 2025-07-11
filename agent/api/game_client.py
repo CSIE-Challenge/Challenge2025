@@ -181,6 +181,27 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
+    
+    @game_command(CommandType.GET_SYSTEM_PATH, [], list[Vector2]) 
+    def get_system_path(self) -> list[Vector2]:
+        """
+        # Get System Path
+        取得系統派兵的路徑。
+        
+        ## Parameters
+        無參數。
+        
+        ## Returns
+        這個函式返回一個座標陣列，表示系統派兵從起點到終點經過的格點。
+        
+        ## Example
+        ```python
+        system_path = api.get_system_path() # 獲取系統派兵路徑
+        for cell in system_path:
+            print(f"x:{cell.x}, y:{cell.y}")
+        ```
+        """
+        raise NotImplementedError
 
     @game_command(CommandType.PLACE_TOWER, [TowerType, str, Vector2], None)
     def place_tower(self, type: TowerType, level: str, coord: Vector2) -> None:

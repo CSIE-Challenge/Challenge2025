@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://coto12i32ybdk" path="res://assets/ui/player-status.png" id="1_j2yv7"]
 [ext_resource type="Texture2D" uid="uid://cnwky8dhvi1x" path="res://assets/ui/coin.png" id="2_5cs0w"]
-[ext_resource type="Script" uid="uid://dbxhj2ra8afr3" path="res://scripts/player_status.gd" id="2_ys54m"]
+[ext_resource type="Script" path="res://scripts/player_status.gd" id="2_ys54m"]
 [ext_resource type="Texture2D" uid="uid://gvund60sjcnc" path="res://assets/ui/connected.png" id="3_ys54m"]
 [ext_resource type="Texture2D" uid="uid://cu5ib2v4yl0gq" path="res://assets/ui/disconnected.png" id="4_5cs0w"]
 
