@@ -276,31 +276,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    # @game_command(CommandType.GET_ENEMY_INFO, [EnemyType], EnemyType)
-    # def get_enemy_info(self, type: EnemyType) -> EnemyType:
-    #     """
-    #     # Get Enemy Info
-    #     取得指定類型敵人的資訊。
-
-    #     ## Parameters
-    #     - `type` (EnemyType): 要查詢的敵人類型。
-
-    #     ## Returns
-    #     這個函數返回一個 `Enemy` 物件。
-
-    #     ## EnemyType
-    #     - TODO
-
-    #     ## Example
-    #     ```python
-    #     enemy_info = api.get_enemy_info(EnemyType.BASIC)  # 獲取基本敵人的資訊
-    #     print(enemy_info)
-    #     ```
-    #     """
-    #     raise NotImplementedError
-
-    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list)
-    def get_available_units(self) -> List[EnemyType]:
+    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list[Enemy])
+    def get_available_units(self) -> list[Enemy]:
         """
         # Get Available Enemies
         取得所有可用的敵人資訊。
@@ -317,8 +294,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
     
-    @game_command(CommandType.GET_ALL_ENEMIES, [], list)
-    def get_all_enemies(self) -> List[EnemyType]:
+    @game_command(CommandType.GET_ALL_ENEMIES, [], list[Enemy])
+    def get_all_enemies(self) -> list[Enemy]:
         raise NotImplementedError
 
     # @game_command(CommandType.GET_CLOSEST_ENEMIES, [Vector2, int], list)

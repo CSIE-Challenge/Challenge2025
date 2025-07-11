@@ -143,16 +143,19 @@ class Tower:
 
 
 class Enemy:
-    def __init__(self, _type: EnemyType, position: Vector2, health: int, max_hp: int = None,
-                 flying: bool = False, damage: int = None, armor: int = None, 
-                 shield: int = None, knockback_resist: bool = False, kill_reward: int = None,
-                 income_impact: int = None, cool_down: int = None) -> None:
-        self.type = _type
+    def __init__(self, type: EnemyType, position: Vector2, progress_ratio: float, deploy_cost: int, health: int, max_health: int,
+                 flying: bool, damage: int, max_speed: int, armor: int, 
+                 shield: int, knockback_resist: bool, kill_reward: int,
+                 income_impact: int, cool_down: int = None) -> None:
+        self.type = type
         self.position = position
+        self.progress_ratio = progress_ratio
+        self.deploy_cost = deploy_cost
         self.health = health
-        self.max_hp = max_hp
+        self.max_health = max_health
         self.flying = flying
         self.damage = damage
+        self.max_speed = max_speed
         self.armor = armor
         self.shield = shield
         self.knockback_resist = knockback_resist
@@ -163,11 +166,13 @@ class Enemy:
     @classmethod
     def from_dict(cls, data: dict) -> 'Enemy':
         return cls(
-            _type=EnemyType(data['type']),
+            type=EnemyType(data['type']),
             position=Vector2(data['position']['x'], data['position']['y']),
-            deploy_cost=data['deploy_cost'],
+            progress_ratio=data.get('progress_ratio'),
+            deploy_cost=data.get('deploy_cost'),
             income_impact=data.get('income_impact'),
-            max_hp=data.get('max_hp'),
+            health=data.get('health'),
+            max_health=data.get('max_health'),
             damage=data.get('damage'),
             max_speed=data.get('max_speed'),
             flying=data.get('flying'),
@@ -179,7 +184,7 @@ class Enemy:
         )
 
     def __str__(self) -> str:
-        return f"Enemy(type={self.type.name}, position={self.position}, health={self.health})"
+        return f"Enemy(type={self.type.name}, position={self.position}, progress ratio={self.progress_ratio}, health={self.health}/{self.max_health})"
 
     def __repr__(self) -> str:
         return self.__str__()

@@ -1,6 +1,17 @@
 class_name Enemy
 extends Area2D
 
+enum EnemyType {
+	BUZZY_BEETLE,
+	GOOMBA,
+	KOOPA_JR,
+	KOOPA_PARATROOPA,
+	KOOPA,
+	SPINY_SHELL,
+	WIGGLER,
+}
+
+@export var type: EnemyType
 @export var income_impact: int = 0
 @export var max_health: int = 100
 # Note that the speed of enemy should never exceed that of explosion of effect,

@@ -2,7 +2,7 @@
   "buzzy_beetle": {
 	"scene_path": "res://scenes/enemies/buzzy_beetle.tscn",
 	"stats": {
-        "type": 0,
+		"type": 0,
 		"deploy_cost": 40,
 		"income_impact": 4,
 		"max_health": 25,
@@ -18,7 +18,7 @@
   "goomba": {
 	"scene_path": "res://scenes/enemies/goomba.tscn",
 	"stats": {
-        "type": 1,
+		"type": 1,
 		"deploy_cost": 10,
 		"income_impact": 0,
 		"max_health": 10,
@@ -34,7 +34,7 @@
   "koopa_jr": {
 	"scene_path": "res://scenes/enemies/koopa_jr.tscn",
 	"stats": {
-        "type": 2,
+		"type": 2,
 		"deploy_cost": 60,
 		"income_impact": -1,
 		"max_health": 40,
@@ -50,7 +50,7 @@
   "koopa_paratroopa": {
 	"scene_path": "res://scenes/enemies/koopa_paratroopa.tscn",
 	"stats": {
-        "type": 3,
+		"type": 3,
 		"deploy_cost": 20,
 		"income_impact": 2,
 		"max_health": 15,
@@ -66,7 +66,7 @@
   "koopa": {
 	"scene_path": "res://scenes/enemies/koopa.tscn",
 	"stats": {
-        "type": 4,
+		"type": 4,
 		"deploy_cost": 70,
 		"income_impact": -5,
 		"max_health": 100,
@@ -82,7 +82,7 @@
   "spiny_shell": {
 	"scene_path": "res://scenes/enemies/spiny_shell.tscn",
 	"stats": {
-        "type": 5,
+		"type": 5,
 		"deploy_cost": 30,
 		"income_impact": 3,
 		"max_health": 20,
@@ -98,7 +98,7 @@
   "wiggler": {
 	"scene_path": "res://scenes/enemies/wiggler.tscn",
 	"stats": {
-        "type": 6,
+		"type": 6,
 		"deploy_cost": 50,
 		"income_impact": 5,
 		"max_health": 60,
