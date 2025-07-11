@@ -1,8 +1,12 @@
 class_name TowerWithMultipleBullet
 extends Tower
 
-@export var expected_bullet_number: int = 5
+const SHOOTING_DURATION = 0.4
+
+@export var expected_bullet_number: int = 3
 @export var scattering_angle: float = PI / 6
+
+var shooting_timer: Timer
 
 @onready var tower_body = $Tower
 @onready var sprite = $Tower/AnimatedSprite2D
@@ -12,6 +16,8 @@ extends Tower
 func _ready():
 	super()
 	enemy_detector.shape.radius = 0.5 * aim_range
+	shooting_timer = Timer.new()
+	self.add_child(shooting_timer)
 
 
 func _flip_sprite() -> void:
@@ -27,11 +33,24 @@ func _on_reload_timer_timeout() -> void:
 		return
 	if not anime.is_playing():
 		anime.play("default")
-	for i in range(roundi(randfn(expected_bullet_number, 3) + 0.5)):
-		var origin: Vector2 = $Tower/Marker2D.global_position
-		var direction: float = (
-			(target.global_position - origin).angle() + randfn(0.0, scattering_angle / 6)
+	var bullet_to_shoot: int = roundi(randfn(expected_bullet_number, 3) + 0.5)
+	_spawn_bullet(bullet_to_shoot, SHOOTING_DURATION / bullet_to_shoot)
+
+
+func _spawn_bullet(bullet_left: int, shooting_interval: float) -> void:
+	_refresh_target()
+	if target == null:
+		anime.stop()
+		return
+	var origin: Vector2 = $Tower/Marker2D.global_position
+	var direction: float = (
+		(target.global_position - origin).angle() + randfn(0.0, scattering_angle / 6)
+	)
+	var bullet := bullet_scene.instantiate()
+	self.get_parent().add_child(bullet)
+	bullet.init(origin, direction, target)
+	if bullet_left > 1:
+		shooting_timer.timeout.connect(
+			self._spawn_bullet.bind(bullet_left - 1, shooting_interval), CONNECT_ONE_SHOT
 		)
-		var bullet := bullet_scene.instantiate()
-		self.get_parent().add_child(bullet)
-		bullet.init(origin, direction, target)
+		shooting_timer.start(shooting_interval)

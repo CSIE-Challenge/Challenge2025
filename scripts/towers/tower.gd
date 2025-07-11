@@ -12,7 +12,7 @@ enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 @export var auto_aim: bool = true
 @export var anti_air: bool = false
 @export var bullet_scene: PackedScene
-@export var reload_seconds: float = 0.25
+@export var reload_seconds: float = 1
 @export var aim_range: float = 450
 @export var damage: int = 2
 # Should be a variable controlled otherwise later
