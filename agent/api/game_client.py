@@ -15,11 +15,12 @@ class GameClient(GameClientBase):
         取得地圖上所有地形的資訊。
 
         ## Parameters
-        - `owned` (bool): 是否為玩家擁有的地圖。如果為 `True`，則查詢玩家擁有的地圖，如果為 `False`，則查詢對手擁有的地圖。
+        無參數
 
         ## Returns
         這個函數返回一個二維陣列，表示地圖上所有地形的資訊。每個元素都是一個 `TerrainType` 枚舉類型，表示該位置的地形類型。
         
+        TODO: move to defs.py
         ## TerrainType
         
         - OUT_OF_BOUNDS: 表示超出邊界的區域。
@@ -29,26 +30,26 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        terrain_map = api.get_all_terrain(owned=True)  # 獲取整個地圖的地形資訊
+        terrain_map = api.get_all_terrain()  # 獲取整個地圖的地形資訊
         for row in terrain_map:
             print(row)
         ```
         """
         raise NotImplementedError
     
-    @game_command(CommandType.GET_TERRAIN, [bool, Vector2], TerrainType)
-    def get_terrain(self, owned: bool, pos: Vector2) -> TerrainType:
+    @game_command(CommandType.GET_TERRAIN, [Vector2], TerrainType)
+    def get_terrain(self, pos: Vector2) -> TerrainType:
         """
         # Get Terrain
         取得指定位置的地形資訊。
 
         ## Parameters
-        - `owned` (bool): 是否為玩家擁有的地圖。如果為 `True`，則查詢玩家擁有的地圖，如果為 `False`，則查詢對手擁有的地圖。
         - `pos` (Vector2): 要查詢的地形位置。
 
         ## Returns
         這個函數返回一個 `TerrainType` 枚舉類型，表示指定位置的地形類型。
 
+        TODO: move to defs.py
         ## TerrainType
         - OUT_OF_BOUNDS: 表示超出邊界的區域。
         - EMPTY: 表示空地。可以放置塔。
@@ -57,8 +58,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        terrain = api.get_terrain(True, Vector2(5, 10))  # 獲取玩家擁有地圖上 (5, 10) 的地形
-        opponent_terrain = api.get_terrain(False, Vector2(3, 7))  # 獲取對手擁有地圖上 (3, 7) 的地形
+        terrain = api.get_terrain(Vector2(5, 10))  # 獲取玩家擁有地圖上 (5, 10) 的地形
         ```
         """
         raise NotImplementedError
@@ -97,8 +97,8 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        money = api.get_money(owned=True)  # 獲取玩家的金錢數量
-        opponent_money = api.get_money(owned=False)  # 獲取對手的金錢數量
+        money = api.get_money(True)  # 獲取玩家的金錢數量
+        opponent_money = api.get_money(False)  # 獲取對手的金錢數量
         ```
         """
         raise NotImplementedError
@@ -110,15 +110,15 @@ class GameClient(GameClientBase):
         取得玩家或對手的收入。
 
         ## Parameters
-        - `owned` (bool): 是否為玩家自己的收入。如果為 `True`，則差尋玩家的收入，如果為 `False`，則查詢對手的收入。
+        - `owned` (bool): 是否為玩家自己的收入。如果為 `True`，則查詢玩家的收入，如果為 `False`，則查詢對手的收入。
 
         ## Returns
         這個函數返回一個整數，表示指定玩家的收入。
 
         ## Example
         ```python
-        income = api.get_income(owned=True) # 獲取玩家的收入
-        opponent_income = api.get_income(owned=False)  # 獲取對手的收入
+        income = api.get_income(True) # 獲取玩家的收入
+        opponent_income = api.get_income(False)  # 獲取對手的收入
         ```
         """
         raise NotImplementedError
@@ -147,17 +147,17 @@ class GameClient(GameClientBase):
     def get_remain_time(self) -> float:
         """
         # Get Remain Time
-        取得當前波次剩餘的時間。
+        取得遊戲剩餘的時間。
 
         ## Parameters
         無參數
         
         ## Returns
-        這個函數返回一個浮點數，表示剩餘的時間，單位為秒。
+        這個函數返回一個浮點數，表示遊戲剩餘的時間，單位為秒。
 
         ## Example
         ```python
-        remain_time = api.get_remain_time()  # 獲取當前波次剩餘的時間
+        remain_time = api.get_remain_time()  # 獲取遊戲剩餘的時間
         print(f"Remaining time: {remain_time} seconds")
         """
         raise NotImplementedError
@@ -213,14 +213,14 @@ class GameClient(GameClientBase):
         取得所有塔的資訊。
 
         ## Parameters
-        - `owned` (bool): 是否查詢玩家自己的塔。
+        - `owned` (bool): 查詢自己 (True) 或對手 (False) 的塔。
 
         ## Returns
         這個函數返回一個 `Tower` 物件的列表。
 
         ## Example
         ```python
-        towers = api.get_all_towers(owned=True)  # 獲取玩家自己的所有塔
+        towers = api.get_all_towers(True)  # 獲取玩家自己的所有塔
         for tower in towers:
             print(tower)
         ```
@@ -231,7 +231,7 @@ class GameClient(GameClientBase):
     def get_tower(self, coord: Vector2) -> Tower:
         """
         # Get Tower
-        取得指定位置的塔的資訊。
+        取得自己的地圖中指定位置上塔的資訊。
 
         ## Parameters
         - `coord` (Vector2): 要查詢的位置。
@@ -260,11 +260,11 @@ class GameClient(GameClientBase):
         這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
 
         ## EnemyType
-        - TODO
-        
+        - 有 BUZZY_BEETLE, GOOMBA, KOOPA_JR, KOOPA_PARATROOPA, KOOPA, SPINY_SHELL, WIGGLER
+
         ## Example
         ```python
-        api.spawn_enemy(EnemyType.BASIC)  # 派出一個基本敵人
+        api.spawn_enemy(EnemyType.GOOMBA)  # 派出 GOOMBA
         ```
         """
         raise NotImplementedError
@@ -286,9 +286,23 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.GET_ALL_ENEMIES, [], list[Enemy])
     def get_all_enemies(self) -> list[Enemy]:
+        """
+        # Get All Enemies
+        取得自己地圖上所有敵人的資訊。
+
+        ## Returns
+        這個函數返回一個 `Enemy` 物件的列表。
+
+        ## Example
+        ```python
+        all_enemies = api.get_all_enemies()  # 獲取自己地圖上所有敵人的資訊
+        for enemy in all_enemies:
+            print(enemy)
+        ```
+        """
         raise NotImplementedError
 
     @game_command(CommandType.CAST_SPELL, [SpellType, Vector2], None)
@@ -390,7 +404,7 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_CHAT_HISTORY, [int], list)
+    @game_command(CommandType.GET_CHAT_HISTORY, [int], list[tuple[int, str]])
     def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
         """
         # Get Chat History
