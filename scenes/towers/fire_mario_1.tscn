@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://bc0ffxv5f5aev"]
 
-[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_skrhh"]
+[ext_resource type="Script" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_skrhh"]
 [ext_resource type="PackedScene" uid="uid://50ekpevpte64" path="res://scenes/bullets/fireball_1.tscn" id="2_pjfx8"]
 [ext_resource type="Texture2D" uid="uid://b77p5vt1t0gpf" path="res://pixel_art/tower/FireMarioStand.png" id="3_v14dp"]
 [ext_resource type="Texture2D" uid="uid://b47ltcag6vqkv" path="res://pixel_art/tower/FireMarioPrepare.png" id="4_trq0q"]
@@ -35,8 +35,12 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_skrhh")
 type = 1
+building_cost = 80
 anti_air = true
 bullet_scene = ExtResource("2_pjfx8")
+reload_seconds = 1.0
+aim_range = 200.0
+damage = 800
 
 [node name="Tower" type="Node2D" parent="."]
 

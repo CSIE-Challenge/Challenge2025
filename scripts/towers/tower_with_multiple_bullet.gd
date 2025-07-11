@@ -34,4 +34,4 @@ func _on_reload_timer_timeout() -> void:
 		)
 		var bullet := bullet_scene.instantiate()
 		self.get_parent().add_child(bullet)
-		bullet.init(origin, direction, target)
+		bullet.init(origin, direction, target, damage)
