@@ -1,6 +1,6 @@
 class_name Agent
 extends Node
-enum GameStatus { PREPARE, START, READY, END }
+enum GameStatus { PREPARING = 0, RUNNING = 1, PAUSED = 2 }
 # TODO: Remove BASIC legacy
 enum TowerType { BASIC, DONKEY_KONG, FIRE_MARIO, FORT, ICE_LUIGI, SHY_GUY }
 enum EnemyType {
@@ -66,7 +66,7 @@ const TOWER_SCENES = [
 ]
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
-var game_status: GameStatus = GameStatus.PREPARE
+
 var money: int
 var score: int
 var player_id: int
@@ -84,6 +84,19 @@ func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
 	game_self = _game_self
 	game_other = _game_other
 
+
+#region General
+
+
+func _get_game_status() -> Array:
+	if not game_running:
+		return [StatusCode.OK, GameStatus.PREPARING]
+	if get_tree().paused:
+		return [StatusCode.OK, GameStatus.PAUSED]
+	return [StatusCode.OK, GameStatus.RUNNING]
+
+
+#endregion
 
 #region MapInfo
 
@@ -177,10 +190,6 @@ func _get_income(_owned: bool) -> Array:
 	else:
 		income = int(game_other.status_panel.find_child("Income").text)
 	return [StatusCode.OK, income]
-
-
-func _get_game_status() -> Array:
-	return [StatusCode.OK, game_status]
 
 
 #endregion

@@ -8,6 +8,28 @@ from typing import List
 
 class GameClient(GameClientBase):
 
+    @game_command(CommandType.GET_GAME_STATUS, [], GameStatus)
+    def get_game_status(self) -> GameStatus:
+        """
+        # Get Game Status
+        取得現在的遊戲狀態。
+
+        ## Parameters
+        無參數
+
+        ## Returns
+        這個函數返回一個 `GameStatus` 枚舉類型，表示目前的遊戲狀態。
+
+        ## Example
+        ```python
+        status = api.get_game_status()
+        while status != GameStatus.RUNNING:
+            time.sleep(1)
+            status = api.get_game_status()
+        ```
+        """
+        raise NotImplementedError
+
     @game_command(CommandType.GET_ALL_TERRAIN, [], list[list[TerrainType]])
     def get_all_terrain(self) -> list[list[TerrainType]]:
         """

@@ -14,6 +14,8 @@ var _last_exit_code: int
 
 func _init() -> void:
 	OS.set_environment("IS_CHALLENGE_GAME_PROCESS", "TRUE")
+	# keep monitoring the subprocess when the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func set_python_interpreter(path: String) -> void:

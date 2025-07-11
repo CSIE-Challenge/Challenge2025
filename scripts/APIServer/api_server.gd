@@ -10,7 +10,12 @@ var pending_peers: Array[PendingPeer] = []
 var authing_peers: Array[WebSocketPeer] = []
 var used_token: Dictionary[String, WebSocketConnection] = {}
 
-#region Server singleton
+#region Server Node Initialization
+
+
+func _init() -> void:
+	# keep accepting new connections when the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func _ready() -> void:

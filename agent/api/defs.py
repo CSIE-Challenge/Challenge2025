@@ -29,6 +29,12 @@ class CommandType(IntEnum):
     GET_DEVS = 502
 
 
+class GameStatus(IntEnum):
+    PREPARING = 0
+    RUNNING = 1
+    PAUSED = 2
+
+
 class TerrainType(IntEnum):
     """地圖地形。"""
 

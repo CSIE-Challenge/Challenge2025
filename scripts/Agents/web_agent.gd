@@ -59,7 +59,7 @@ var _last_command: float = -1
 # command id -> command handler
 var _command_handlers: Dictionary = {}
 # the set of command types that may be called when the game is not running
-var _general_commands: Dictionary = {}
+var _general_commands: Dictionary = {CommandType.GET_GAME_STATUS: null}
 
 
 func _register_command_handlers() -> void:
@@ -72,7 +72,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_TIME_UNTIL_NEXT_WAVE, [], _get_time_until_next_wave),
 		CommandHandler.new(CommandType.GET_MONEY, [TYPE_BOOL], _get_money),
 		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income),
-		#CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
+		CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
 		CommandHandler.new(
 			CommandType.PLACE_TOWER, [TYPE_INT, TYPE_STRING, TYPE_VECTOR2I], _place_tower
 		),
@@ -93,7 +93,6 @@ func _register_command_handlers() -> void:
 		if _command_handlers.has(handler.command_id):
 			pass  # error: duplicated handler id
 		_command_handlers[handler.command_id] = handler
-	_general_commands = {CommandType.GET_REMAIN_TIME: null}
 
 
 func _init() -> void:
@@ -105,6 +104,8 @@ func _init() -> void:
 	_ws.client_disconnected.connect(
 		func(): print("[API Server] Remote agent %s disconnected" % name)
 	)
+	# keep processing requests when the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func _on_received_command(command_bytes: PackedByteArray) -> void:
