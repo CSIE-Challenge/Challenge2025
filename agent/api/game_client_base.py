@@ -53,23 +53,25 @@ class GameClientBase:
         self.last_command = time.time_ns()
         self.server_url = f"ws://{self.server_domain}:{self.port}"
         asyncio.get_event_loop().run_until_complete(self.__ws_connect())
-        logger.info(f"connected to {self.server_url}")
 
     async def __ws_connect(self) -> None:
         self.ws = await connect(self.server_url)
         authed = await self.__ws_authenticate()
         if not authed:
             raise ConnectionError(
-                "authentication failed. Is the provided token correct?")
+                "authentication failed. Is the token correct?")
+        logger.info(f"connected to {self.server_url}")
         # no need to disconnect by ws.close(); the socket is automatically disconnected on program exit
 
     async def __ws_authenticate(self) -> bool:
+        logger.info("Authenticating connection")
         try:
             await self.ws.send(self.token)
             response = await self.ws.recv()
         except Exception:
             raise ConnectionError(
                 "authentication failed due to connection error")
+        logger.info(f"Server says: {response}")
         return response == "Connection OK. Have Fun!"  # magic string from game server
 
     async def __ws_send_gdvars(self, deserialized: Any) -> None:
