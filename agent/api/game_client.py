@@ -250,7 +250,7 @@ class GameClient(GameClientBase):
     @game_command(CommandType.SPAWN_UNIT, [EnemyType], None)
     def spawn_unit(self, type: EnemyType) -> None:
         """
-        # Spawn Enemy
+        # Spawn Unit
         派出一個指定類型的敵人。
 
         ## Parameters
@@ -272,7 +272,7 @@ class GameClient(GameClientBase):
     @game_command(CommandType.GET_AVAILABLE_UNITS, [], list[Enemy])
     def get_available_units(self) -> list[Enemy]:
         """
-        # Get Available Enemies
+        # Get Available Units
         取得所有可用的敵人資訊。
 
         ## Returns
