@@ -292,29 +292,35 @@ class Tower:
 
 
 class Enemy:
-    """敵人(士兵)。"""
-
-    def __init__(self, _type: EnemyType, position: Vector2, health: int, max_hp: int = None,
-                 flying: bool = False, damage: int = None, armor: int = None, 
-                 shield: int = None, knockback_resist: bool = False, kill_reward: int = None,
-                 income_impact: int = None, cool_down: int = None) -> None:
-        self.type = _type
-        """敵人型別，見class EnemyType"""
+    def __init__(self, type: EnemyType, position: Vector2, progress_ratio: float, deploy_cost: int, health: int, max_health: int,
+                 flying: bool, damage: int, max_speed: int, knockback_resist: bool, kill_reward: int,
+                 income_impact: int, cool_down: int = None) -> None:
+        self.type = type
+        """敵人型別。"""
 
         self.position = position
-        """敵人座標。"""
+        """敵人位置。"""
+        
+        self.progress_ratio = progress_ratio
+        """敵人走完的路程比例。"""
+
+        self.deploy_cost = deploy_cost
+        """派遣敵人對持有金幣的影響。"""
 
         self.health = health
-        """現行血量。"""
-
-        self.max_hp = max_hp
-        """最大血量。"""
+        """敵人當前生命值。"""
+        
+        self.max_health = max_health
+        """敵人最大生命值。"""
 
         self.flying = flying
         """是不是空中單位。"""
 
         self.damage = damage
         """對塔能造成的傷害。"""
+
+        self.max_speed = max_speed
+        """最高速度。"""
 
         self.knockback_resist = knockback_resist
         """擊退抵抗，若為true則不會被擊退。"""
@@ -332,23 +338,23 @@ class Enemy:
     @classmethod
     def from_dict(cls, data: dict) -> 'Enemy':
         return cls(
-            _type=EnemyType(data['type']),
+            type=EnemyType(data['type']),
             position=Vector2(data['position']['x'], data['position']['y']),
-            deploy_cost=data['deploy_cost'],
+            progress_ratio=data.get('progress_ratio'),
+            deploy_cost=data.get('deploy_cost'),
             income_impact=data.get('income_impact'),
-            max_hp=data.get('max_hp'),
+            health=data.get('health'),
+            max_health=data.get('max_health'),
             damage=data.get('damage'),
             max_speed=data.get('max_speed'),
             flying=data.get('flying'),
-            armor=data.get('armor'),
-            shield=data.get('shield'),
             knockback_resist=data.get('knockback_resist'),
             kill_reward=data.get('kill_reward'),
             cool_down=data.get('cool_down', 'none')
         )
 
     def __str__(self) -> str:
-        return f"Enemy(type={self.type.name}, position={self.position}, health={self.health})"
+        return f"Enemy(type={self.type.name}, position={self.position}, progress ratio={self.progress_ratio}, health={self.health}/{self.max_health})"
 
     def __repr__(self) -> str:
         return self.__str__()

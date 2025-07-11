@@ -111,15 +111,11 @@ func _get_all_terrain() -> Array:
 	return [StatusCode.OK, all_terrain]
 
 
-func _get_terrain(_owned: bool, _coord: Vector2i) -> Array:
+func _get_terrain(_coord: Vector2i) -> Array:
 	print("[GetTerrain] Get request")
-	var map
-	if _owned == true:
-		map = game_self.get_node("Map")
-	else:
-		map = game_other.get_node("Map")
+	var map = game_self.get_node("Map")
 	if not map:
-		return [StatusCode.INTERNAL_ERR, "[GetAllTerrain] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "[GetTerrain] Error: cannot find map"]
 
 	return [StatusCode.OK, map.get_cell_terrain(_coord)]
 
@@ -264,7 +260,7 @@ func _get_tower(_coord: Vector2i) -> Array:
 #region Enemy
 
 
-func _get_enemy_dict(_type: EnemyType) -> Dictionary:
+func _get_unit_dict(_type: EnemyType) -> Dictionary:
 	var enemy_name: Array = [
 		"buzzy_beetle", "goomba", "koopa_jr", "koopa_paratroopa", "koopa", "spiny_shell", "wiggler"
 	]
@@ -275,9 +271,37 @@ func _get_enemy_dict(_type: EnemyType) -> Dictionary:
 
 func _spawn_unit(_type: EnemyType) -> Array:
 	print("[SpawnUnit] Get request")
-	var data = _get_enemy_dict(_type)
-	game_other.summon_enemy.emit(data)
+	var data = _get_unit_dict(_type)
+	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
+		game_other.summon_enemy.emit(data)
+	else:
+		print("[Error] doesn't have enough money")
+		return [StatusCode.COMMAND_ERR]
 	return [StatusCode.OK]
+
+
+func _get_enemy_info(enemy: Area2D) -> Dictionary:
+	var type: EnemyType = enemy.type
+	var data: Dictionary = {}
+	var map = game_self.get_node("Map")
+	if not map:
+		return {}
+
+	data["type"] = type
+	data["income_impact"] = enemy.income_impact
+	data["max_health"] = enemy.max_health
+	data["max_speed"] = enemy.max_speed
+	data["damage"] = enemy.damage
+	data["flying"] = enemy.flying
+	data["knockback_resist"] = enemy.knockback_resist
+	data["kill_reward"] = enemy.kill_reward
+	data["health"] = enemy.health
+	data["progress_ratio"] = enemy.path_follow.progress_ratio
+
+	var pos: Vector2i = map.global_to_cell(enemy.path_follow.global_position)
+	data["position"] = {"x": pos[0], "y": pos[1]}
+	print(data)
+	return data
 
 
 func _get_available_units() -> Array:
@@ -285,9 +309,18 @@ func _get_available_units() -> Array:
 	return [StatusCode.OK]
 
 
-func _get_all_enemies(_center: Vector2i, _radius: float) -> Array:
+func _get_all_enemies() -> Array:
 	print("[GetAllEnemies] Get request")
-	return [StatusCode.OK]
+	var enemies: Array = game_self.get_all_enemies()
+	var enemies_info: Array = []
+
+	for enemy in enemies:
+		var enemy_info: Dictionary = _get_enemy_info(enemy)
+		if enemy_info == {}:
+			return [StatusCode.INTERNAL_ERR, []]
+		enemies_info.push_back(enemy_info)
+
+	return [StatusCode.OK, enemies_info]
 
 
 #endregion
