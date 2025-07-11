@@ -280,7 +280,7 @@ func _spawn_unit(_type: EnemyType) -> Array:
 		game_other.summon_enemy.emit(data)
 	else:
 		print("[Error] doesn't have enough money")
-		return [StatusCode.CLIENT_ERR]
+		return [StatusCode.COMMAND_ERR]
 	return [StatusCode.OK]
 
 
