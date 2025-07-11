@@ -8,7 +8,7 @@ static var metadata: Dictionary = {
 	{
 		"duration": 1,
 		"cooldown": 60,
-		"cost": 100,
+		"cost": 0,
 		"target": true,
 		"radius": 30.0,
 	}
