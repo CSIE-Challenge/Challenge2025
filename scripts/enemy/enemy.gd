@@ -8,8 +8,6 @@ extends Area2D
 @export var max_speed: int = 50
 @export var damage: int = 5
 @export var flying: bool = false
-@export var armor: int = 0
-@export var shield: int = 0
 @export var knockback_resist: bool = false
 @export var kill_reward: int = 1
 
@@ -43,10 +41,7 @@ func _on_reached() -> void:
 
 
 func take_damage(amount: int):
-	if shield == 0:
-		health -= amount * max(0.2, (20.0 - armor) / 20.0)
-	else:
-		shield -= min(amount, shield)
+	health -= amount
 
 	if health <= 0:
 		_on_killed()
