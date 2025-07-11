@@ -8,11 +8,21 @@ enum CellTerrain {
 	OBSTACLE = 3,
 }
 
+var game: Game
+
 @onready var terrain: TileMapLayer = $Terrain
 @onready var opponent_path: Path2D = $OpponentPath
 @onready var system_path: Path2D = $SystemPath
 @onready var flying_opponent_path: Path2D = $FlyingOpponentPath
 @onready var flying_system_path: Path2D = $FlyingSystemPath
+
+
+func _ready():
+	pass
+
+
+func get_enemy_z_index(_enemy: Enemy) -> int:
+	return 10  # enemy default z-index for effect
 
 
 func global_to_local(global_pos: Vector2) -> Vector2:

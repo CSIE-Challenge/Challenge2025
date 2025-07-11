@@ -296,7 +296,7 @@ func _get_all_enemies(_center: Vector2i, _radius: float) -> Array:
 
 
 func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
-	var global_pos: Vector2 = game_self._map.cell_to_global(_coord)
+	var global_pos: Vector2 = game_self.map.cell_to_global(_coord)
 	print("[CastSpell] Get request")
 	var spell_manager: Node = game_self.get_node("SpellManager")
 

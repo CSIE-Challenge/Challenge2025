@@ -98,9 +98,9 @@ func transport():
 	var op_game = game.op_game
 	path_follow.get_parent().remove_child(path_follow)
 	if flying:
-		op_game._map.flying_opponent_path.add_child(path_follow)
+		op_game.map.flying_opponent_path.add_child(path_follow)
 	else:
-		op_game._map.opponent_path.add_child(path_follow)
+		op_game.map.opponent_path.add_child(path_follow)
 	path_follow.progress_ratio = 0
 
 
@@ -122,13 +122,14 @@ func _ready():
 		path_follow.progress_ratio = 0
 	add_to_group("enemies")
 	$AnimatedSprite2D.play("default")
-	self.z_index = 10  # For effect to be on the ground
 
 
 func _process(delta):
 	path_follow.progress += speed_rate.min() * max_speed * delta
 	if path_follow.progress_ratio >= 0.99:
 		_on_reached()
+
+	self.z_index = game.map.get_enemy_z_index(self)
 
 	self.rotation = -path_follow.rotation
 	if cos(path_follow.rotation) > 0:
