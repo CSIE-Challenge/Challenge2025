@@ -9,4 +9,3 @@ extends Node
 @onready var button_on_click: AudioStreamPlayer = $ButtonOnClick
 @onready var tower_place: AudioStreamPlayer = $TowerPlace
 @onready var tower_shoot: AudioStreamPlayer = $TowerShoot
-@onready var upgrade: AudioStreamPlayer = $Upgrade

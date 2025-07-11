@@ -2,6 +2,7 @@ class_name WebAgent
 extends Agent
 
 enum CommandType {
+	UNKNOWN = 0,
 	GET_ALL_TERRAIN = 1,
 	GET_SCORES = 2,
 	GET_CURRENT_WAVE = 3,
@@ -29,7 +30,7 @@ enum CommandType {
 
 
 class CommandHandler:
-	var command_id: CommandType
+	var command_id: CommandType = CommandType.UNKNOWN
 	var _arg_types: Array[Variant.Type]
 	var _handler: Callable
 

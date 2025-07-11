@@ -126,12 +126,12 @@ func _get_terrain(_owned: bool, _coord: Vector2i) -> Array:
 
 func _get_scores(_owned: bool) -> Array:
 	print("[GetScores] Get request")
-	var score: int
+	var result: int
 	if _owned == true:
-		score = game_self.score
+		result = game_self.score
 	else:
-		score = game_other.score
-	return [StatusCode.OK, score]
+		result = game_other.score
+	return [StatusCode.OK, result]
 
 
 func _get_current_wave() -> Array:
@@ -167,12 +167,12 @@ func _get_time_until_next_wave() -> Array:
 
 func _get_money(_owned: bool) -> Array:
 	print("[GetMoney] Get request")
-	var money: int
+	var result: int
 	if _owned == true:
-		money = int(game_self.status_panel.find_child("Money").text)
+		result = int(game_self.status_panel.find_child("Money").text)
 	else:
-		money = int(game_other.status_panel.find_child("Money").text)
-	return [StatusCode.OK, money]
+		result = int(game_other.status_panel.find_child("Money").text)
+	return [StatusCode.OK, result]
 
 
 func _get_income(_owned: bool) -> Array:
