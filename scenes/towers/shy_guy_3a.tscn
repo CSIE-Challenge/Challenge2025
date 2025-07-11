@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ddc73100y5t64" path="res://pixel_art/tower/ShyGuyPrepare.png" id="4_jfmn4"]
 [ext_resource type="Texture2D" uid="uid://bym1xfjew7tgo" path="res://pixel_art/tower/ShyGuyAttack.png" id="5_cvrao"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_lvens"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_2iofe"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -17,8 +17,11 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_cvrao")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_2iofe")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 5.0
 }]
@@ -42,7 +45,7 @@ bullet_scene = ExtResource("2_beykr")
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_lvens")
+sprite_frames = SubResource("SpriteFrames_2iofe")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 position = Vector2(17.9257, -20.4866)
