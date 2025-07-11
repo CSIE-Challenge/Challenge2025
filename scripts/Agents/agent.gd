@@ -276,6 +276,9 @@ func _get_unit_dict(_type: EnemyType) -> Dictionary:
 func _spawn_unit(_type: EnemyType) -> Array:
 	print("[SpawnUnit] Get request")
 	var data = _get_unit_dict(_type)
+	if game_other.enemy_cooldown.has(_type):
+		print("[Error] cooldown hasn't finished")
+		return [StatusCode.COMMAND_ERR]
 	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
 		game_other.summon_enemy.emit(data)
 	else:
