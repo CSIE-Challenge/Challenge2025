@@ -15,8 +15,7 @@ const ROTATION_SPEED := 8.0
 @export var movement_speed := 400.0
 @export var damage := 1
 
-@export var lifespan_seconds := 5
-@export var penetrating_time := 15  # The lifetime after the its first hit
+@export var lifespan_seconds: float = 5
 @export var spanning_speed: float = 0  # For spanning animation
 
 @export var effect: Effect = Effect.NONE
@@ -31,9 +30,8 @@ var alive: bool = true
 var timer = Timer.new()
 var effect_timer = Timer.new()
 var respawn_effect_timer = Timer.new()  # Half of the period of (burning) effect
-# Whether the bullet is exploding/penetrating
+# Whether the bullet is exploding
 var exploding: bool = false  # Effect explode after time_out (actually 0 for all cases) if AOE > 0
-var penetrating: bool = false  # For bullet to disappear at certain time after its first hit
 
 @onready var sprite := $Body
 @onready var collider := $CollisionShape2D
@@ -95,16 +93,9 @@ func _on_hit() -> void:
 		timer.stop()
 		self.alive = false
 		self.call_deferred("destroy")
-	elif not penetrating:
-		penetrating = true
-		timer.stop()
-		timer.start(max(penetrating_time, effect_duration))  # Take maximum to prevent incorrect setting
 
 
 # Explode or spawn a descending effect
-# It may be better to seperate "effect" into another class,
-# since the logic is quite different
-# (especially about the layer, respawning effect and penetrating effect.)
 func destroy() -> void:
 	if aoe_scale == 1:  # Normal bullet
 		self.queue_free()
