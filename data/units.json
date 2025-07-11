@@ -9,8 +9,6 @@
 		"max_speed": 75,
 		"damage": 8,
 		"flying": false,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": true,
 		"kill_reward": 1
 	}
@@ -25,8 +23,6 @@
 		"max_speed": 50,
 		"damage": 5,
 		"flying": false,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": false,
 		"kill_reward": 1
 	}
@@ -41,8 +37,6 @@
 		"max_speed": 70,
 		"damage": 25,
 		"flying": true,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": false,
 		"kill_reward": 1
 	}
@@ -57,8 +51,6 @@
 		"max_speed": 80,
 		"damage": 7,
 		"flying": true,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": false,
 		"kill_reward": 1
 	}
@@ -73,8 +65,6 @@
 		"max_speed": 20,
 		"damage": 60,
 		"flying": false,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": true,
 		"kill_reward": 1
 	}
@@ -89,8 +79,6 @@
 		"max_speed": 120,
 		"damage": 10,
 		"flying": false,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": false,
 		"kill_reward": 1
 	}
@@ -105,8 +93,6 @@
 		"max_speed": 60,
 		"damage": 12,
 		"flying": false,
-		"armor": 0,
-		"shield": 0,
 		"knockback_resist": false,
 		"kill_reward": 1
 	}

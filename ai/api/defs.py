@@ -144,8 +144,7 @@ class Tower:
 
 class Enemy:
     def __init__(self, type: EnemyType, position: Vector2, progress_ratio: float, deploy_cost: int, health: int, max_health: int,
-                 flying: bool, damage: int, max_speed: int, armor: int, 
-                 shield: int, knockback_resist: bool, kill_reward: int,
+                 flying: bool, damage: int, max_speed: int, knockback_resist: bool, kill_reward: int,
                  income_impact: int, cool_down: int = None) -> None:
         self.type = type
         self.position = position
@@ -156,8 +155,6 @@ class Enemy:
         self.flying = flying
         self.damage = damage
         self.max_speed = max_speed
-        self.armor = armor
-        self.shield = shield
         self.knockback_resist = knockback_resist
         self.kill_reward = kill_reward
         self.income_impact = income_impact
@@ -176,8 +173,6 @@ class Enemy:
             damage=data.get('damage'),
             max_speed=data.get('max_speed'),
             flying=data.get('flying'),
-            armor=data.get('armor'),
-            shield=data.get('shield'),
             knockback_resist=data.get('knockback_resist'),
             kill_reward=data.get('kill_reward'),
             cool_down=data.get('cool_down', 'none')

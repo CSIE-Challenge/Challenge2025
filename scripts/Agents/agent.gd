@@ -293,8 +293,6 @@ func _get_enemy_info(enemy: Area2D) -> Dictionary:
 	data["max_speed"] = enemy.max_speed
 	data["damage"] = enemy.damage
 	data["flying"] = enemy.flying
-	data["armor"] = enemy.armor
-	data["shield"] = enemy.shield
 	data["knockback_resist"] = enemy.knockback_resist
 	data["kill_reward"] = enemy.kill_reward
 	data["health"] = enemy.health
