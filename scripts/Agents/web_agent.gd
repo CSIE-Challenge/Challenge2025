@@ -13,6 +13,7 @@ enum CommandType {
 	GET_GAME_STATUS = 8,
 	GET_TERRAIN = 9,
 	GET_SYSTEM_PATH = 10,
+	GET_OPPONENT_PATH = 11,
 	PLACE_TOWER = 101,
 	GET_ALL_TOWERS = 102,
 	GET_TOWER = 103,
@@ -75,6 +76,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income),
 		#CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
 		CommandHandler.new(CommandType.GET_SYSTEM_PATH, [], _get_system_path),
+		CommandHandler.new(CommandType.GET_OPPONENT_PATH, [], _get_opponent_path),
 		CommandHandler.new(
 			CommandType.PLACE_TOWER, [TYPE_INT, TYPE_STRING, TYPE_VECTOR2I], _place_tower
 		),

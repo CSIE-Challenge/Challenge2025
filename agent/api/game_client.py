@@ -203,6 +203,27 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
+    @game_command(CommandType.GET_OPPONENT_PATH, [], list[Vector2]) 
+    def get_opponent_path(self) -> list[Vector2]:
+        """
+        # Get Opponent Path
+        取得對手派兵的路徑。
+        
+        ## Parameters
+        無參數。
+        
+        ## Returns
+        這個函式返回一個座標陣列，表示對手派兵從起點到終點經過的格點。
+        
+        ## Example
+        ```python
+        opp_path = api.get_opponent_path() # 獲取對手派兵路徑
+        for cell in opp_path:
+            print(f"x:{cell.x}, y:{cell.y}")
+        ```
+        """
+        raise NotImplementedError
+    
     @game_command(CommandType.PLACE_TOWER, [TowerType, str, Vector2], None)
     def place_tower(self, type: TowerType, level: str, coord: Vector2) -> None:
         """

@@ -215,6 +215,32 @@ func _get_system_path() -> Array:
 	return [StatusCode.OK, cells]
 
 
+func _get_opponent_path() -> Array:
+	var map: Map = game_self._map
+	if not map:
+		return [StatusCode.INTERNAL_ERR, "[GetSystemPath] Error: cannot find map"]
+
+	var curve: Curve2D = map.opponent_path.curve
+	var cells := []
+	var length := curve.get_baked_length()
+	var interval := 2.0
+	var t := 0.0
+
+	while t < length:
+		var pos: Vector2 = curve.sample_baked(t)
+		var cell: Vector2i = map.global_to_cell(map.local_to_global(pos))
+		if 1 <= cell[0] and cell[0] <= 14 and 1 <= cell[1] and cell[1] <= 19:
+			if cell not in cells:
+				cells.append(cell)
+		t += interval
+
+	var end_pos: Vector2 = curve.sample_baked(length)
+	var end_cell: Vector2i = map.global_to_cell(map.local_to_global(end_pos))
+	if end_cell not in cells:
+		cells.append(end_cell)
+	return [StatusCode.OK, cells]
+
+
 #endregion
 
 #region Tower
