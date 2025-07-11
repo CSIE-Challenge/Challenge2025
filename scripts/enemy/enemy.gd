@@ -23,6 +23,7 @@ enum EnemyType {
 @export var shield: int = 0
 @export var knockback_resist: bool = false
 @export var kill_reward: int = 1
+@export var summon_cooldown: float = 2.0
 
 var game: Game
 var path_follow: PathFollow2D
