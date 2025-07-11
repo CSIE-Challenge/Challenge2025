@@ -213,14 +213,14 @@ class GameClient(GameClientBase):
         取得所有塔的資訊。
 
         ## Parameters
-        - `owned` (bool): 是否查詢玩家自己的塔。
+        - `owned` (bool): 查詢自己 (True) 或對手 (False) 的塔。
 
         ## Returns
         這個函數返回一個 `Tower` 物件的列表。
 
         ## Example
         ```python
-        towers = api.get_all_towers(owned=True)  # 獲取玩家自己的所有塔
+        towers = api.get_all_towers(True)  # 獲取玩家自己的所有塔
         for tower in towers:
             print(tower)
         ```
@@ -231,7 +231,7 @@ class GameClient(GameClientBase):
     def get_tower(self, coord: Vector2) -> Tower:
         """
         # Get Tower
-        取得指定位置的塔的資訊。
+        取得自己的地圖中指定位置上塔的資訊。
 
         ## Parameters
         - `coord` (Vector2): 要查詢的位置。
@@ -260,18 +260,18 @@ class GameClient(GameClientBase):
         這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
 
         ## EnemyType
-        - TODO
-        
+        - 有 BUZZY_BEETLE, GOOMBA, KOOPA_JR, KOOPA_PARATROOPA, KOOPA, SPINY_SHELL, WIGGLER
+
         ## Example
         ```python
-        api.spawn_enemy(EnemyType.BASIC)  # 派出一個基本敵人
+        api.spawn_enemy(EnemyType.GOOMBA)  # 派出 GOOMBA
         ```
         """
         raise NotImplementedError
 
 
-    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list)
-    def get_available_units(self) -> List[EnemyType]:
+    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list) # TODO
+    def get_available_units(self) -> list[Enemy]:
         """
         # Get Available Enemies
         取得所有可用的敵人資訊。
@@ -288,8 +288,22 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_ALL_ENEMIES, [], list)
-    def get_all_enemies(self) -> List[EnemyType]:
+    @game_command(CommandType.GET_ALL_ENEMIES, [], list[Enemy])
+    def get_all_enemies(self) -> list[Enemy]:
+        """
+        # Get All Enemies
+        取得自己地圖上所有敵人的資訊。
+
+        ## Returns
+        這個函數返回一個 `Enemy` 物件的列表。
+
+        ## Example
+        ```python
+        all_enemies = api.get_all_enemies()  # 獲取自己地圖上所有敵人的資訊
+        for enemy in all_enemies:
+            print(enemy)
+        ```
+        """
         raise NotImplementedError
 
     @game_command(CommandType.CAST_SPELL, [SpellType, Vector2], None)
