@@ -117,7 +117,7 @@ func _on_fire_bullet() -> void:
 	var direction: float = (target.global_position - origin).angle()
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)
-	bullet.init(origin, direction, target)
+	bullet.init(origin, direction, target, damage)
 
 
 func to_dict(coord: Vector2i) -> Dictionary:

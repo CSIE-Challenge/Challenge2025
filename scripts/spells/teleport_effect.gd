@@ -12,6 +12,7 @@ func _ready():
 	# Create duration timer
 	duration_timer.timeout.connect(_on_duration_ended)
 	duration_timer.wait_time = spell.metadata.stats.duration
+	duration_timer.start()
 	# Create trigger timer
 	# trigger_timer.timeout.connect(_on_trigger)
 	# trigger_timer.wait_time = spell.metadata.stats.trigger_interval

@@ -6,13 +6,13 @@ static var metadata: Dictionary = {
 	"description": "Don't be toxic",
 	"stats":
 	{
-		"duration": 20,
-		"cooldown": 40,
-		"cost": 50,
+		"duration": 5,
+		"cooldown": 60,
+		"cost": 0,
 		"target": true,
-		"radius": 50.0,
-		"trigger_interval": 2,
-		"trigger_damage": 2,
+		"radius": 100,
+		"trigger_interval": 0.5,
+		"trigger_damage": 3,
 	}
 }
 var game: Game
@@ -49,6 +49,7 @@ func activate_effect(global_pos: Vector2):
 
 	# Start timers
 	cooldown_timer.wait_time = stats.cooldown
+	is_on_cooldown = true
 	cooldown_timer.start()
 
 

@@ -6,11 +6,11 @@ static var metadata: Dictionary = {
 	"description": "I need some ender pearls",
 	"stats":
 	{
-		"duration": 5,
-		"cooldown": 40,
-		"cost": 100,
+		"duration": 1,
+		"cooldown": 60,
+		"cost": 0,
 		"target": true,
-		"radius": 50.0,
+		"radius": 30.0,
 	}
 }
 var game: Game
@@ -47,6 +47,7 @@ func activate_effect(global_pos: Vector2):
 
 	# Start timers
 	cooldown_timer.wait_time = stats.cooldown
+	is_on_cooldown = true
 	cooldown_timer.start()
 
 

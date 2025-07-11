@@ -58,7 +58,7 @@ func _spawn_bullet(bullet_left: int, shooting_interval: float) -> void:
 	)
 	var bullet := bullet_scene.instantiate()
 	self.get_parent().add_child(bullet)
-	bullet.init(origin, direction, target)
+	bullet.init(origin, direction, target, damage)
 	if bullet_left > 1:
 		shooting_timer.timeout.connect(
 			self._spawn_bullet.bind(bullet_left - 1, shooting_interval), CONNECT_ONE_SHOT

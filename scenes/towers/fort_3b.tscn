@@ -35,8 +35,11 @@ collision_mask = 0
 script = ExtResource("1_efhko")
 type = 4
 level_b = 3
+building_cost = 560
 auto_aim = false
 bullet_scene = ExtResource("2_efhko")
+reload_seconds = 3.0
+damage = 9
 
 [node name="Tower" type="Node2D" parent="."]
 

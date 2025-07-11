@@ -21,6 +21,7 @@ enum EnemyType {
 @export var flying: bool = false
 @export var knockback_resist: bool = false
 @export var kill_reward: int = 1
+@export var summon_cooldown: float = 2.0
 
 var game: Game
 var path_follow: PathFollow2D
@@ -34,6 +35,7 @@ var health: int:
 		if health_bar != null:
 			health_bar.value = health / float(max_health) * 100.0
 var speed_rate: Array[float] = [1.0]  # store speed_rates and get minimum
+var knockback_invincibility = false
 
 @onready var sprite = $AnimatedSprite2D
 @onready var health_bar := $HealthBar
@@ -81,6 +83,9 @@ func _on_area_entered(bullet: Bullet) -> void:
 
 
 func knockback(far: bool):
+	if knockback_invincibility or ((not knockback_resist) and (not far)):
+		return
+	knockback_invincibility = true
 	if far:
 		if knockback_resist:
 			path_follow.progress -= knockback_distance
@@ -89,6 +94,8 @@ func knockback(far: bool):
 	else:
 		if not knockback_resist:
 			path_follow.progress -= knockback_distance
+	await get_tree().create_timer(3).timeout
+	knockback_invincibility = false
 
 
 func freeze(rate: float):

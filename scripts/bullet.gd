@@ -39,11 +39,12 @@ var penetrating: bool = false  # For bullet to disappear at certain time after i
 @onready var collider := $CollisionShape2D
 
 
-func init(origin, orientation, _target) -> void:
+func init(origin, orientation, _target, _damage) -> void:
 	AudioManager.tower_shoot.play()
 	global_position = origin
 	start_position = origin
 	direction = orientation
+	damage = _damage
 	if cos(direction) < 0:
 		sprite.flip_h = true
 		rotation = PI + direction
@@ -110,7 +111,7 @@ func destroy() -> void:
 	elif aoe_scale == 0:  # Generate a shockwave
 		var shockwave := shockwave_scene.instantiate()
 		self.get_parent().add_child(shockwave)
-		shockwave.init(global_position, direction, null)
+		shockwave.init(global_position, direction, null, effect_damage)
 		self.queue_free()
 	else:  # Shockwave that expand
 		_explode()

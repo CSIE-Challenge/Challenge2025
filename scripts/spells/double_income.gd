@@ -7,9 +7,9 @@ static var metadata: Dictionary = {
 	"description": "I am rich",
 	"stats":
 	{
-		"duration": 8,
-		"cooldown": 20,
-		"cost": 20,
+		"duration": 10,
+		"cooldown": 60,
+		"cost": 0,
 		"target": false,
 	}
 }

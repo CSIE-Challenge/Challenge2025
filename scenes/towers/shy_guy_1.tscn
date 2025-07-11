@@ -37,8 +37,11 @@ scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_e75s1")
+building_cost = 80
 anti_air = true
 bullet_scene = ExtResource("2_jc0fb")
+reload_seconds = 1.0
+aim_range = 200.0
 
 [node name="Tower" type="Node2D" parent="."]
 
