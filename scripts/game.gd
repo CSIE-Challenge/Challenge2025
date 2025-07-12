@@ -189,6 +189,7 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	enemy.flying = stats.flying
 	enemy.knockback_resist = stats.knockback_resist
 	enemy.kill_reward = stats.kill_reward
+	enemy.summon_cooldown = stats.cooldown
 	if enemy.flying:
 		enemy.collision_layer = 4
 		enemy.collision_mask = 8

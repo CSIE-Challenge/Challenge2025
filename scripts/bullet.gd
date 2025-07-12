@@ -43,6 +43,7 @@ func init(origin, orientation, _target, _damage) -> void:
 	start_position = origin
 	direction = orientation
 	damage = _damage
+	effect_damage = _damage
 	if cos(direction) < 0:
 		sprite.flip_h = true
 		rotation = PI + direction
@@ -91,7 +92,6 @@ func _process(delta):
 func _on_hit() -> void:
 	if not is_penetrating:
 		timer.stop()
-		self.alive = false
 		self.call_deferred("destroy")
 
 
