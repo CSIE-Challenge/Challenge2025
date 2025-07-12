@@ -495,11 +495,8 @@ func _is_available_name(_name: String) -> bool:
 	var alp: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	var count: int = 0
 	for n in _name:
-		if n in alp:
-			count += 1
-		else:
-			count += 2
-	print(count)
+		count += 1 if n in alp else 2
+
 	if count > 10:
 		return false
 	return true
