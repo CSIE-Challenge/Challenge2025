@@ -3,18 +3,24 @@ extends TextureRect
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 
 var always_visible: bool = false
+var chat_name_color: String = "ffffff"
 
 
-func send_chat_with_sender(sender_id: int, text: String) -> void:
+func send_chat_with_sender(sender_id: int, player_name: String, text: String) -> void:
 	var textbox: MarginContainer = TEXTBOX_SCENE.instantiate()
-	textbox.set_text(text)
+
+	if sender_id == 0:
+		textbox.set_text(text)
+	else:
+		textbox.set_text("[color=%s]%s[/color]: %s" % [chat_name_color, player_name, text])
 	textbox.set_meta("sender", sender_id)
+
 	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
 	$LineEdit.clear()
 
 
 func _on_line_edit_text_submitted(text: String) -> void:
-	send_chat_with_sender(0, text)
+	send_chat_with_sender(0, "", text)
 
 
 func _on_switch_pressed() -> void:

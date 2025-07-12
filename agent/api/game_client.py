@@ -416,6 +416,11 @@ class GameClient(GameClientBase):
         ## Returns
         這個函數返回一個元組列表，每個元組包含傳訊人 ID 和訊息。
 
+        ## ID
+        - 0: 系統傳送的訊息
+        - 1: 左邊玩家傳送的訊息
+        - 2: 右邊玩家傳送的訊息
+
         ## Example
         ```python
         chat_history = api.get_chat_history(10)  # 獲取最近的 10 條聊天訊息
@@ -439,7 +444,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        api.set_chat_name_color("#ffffff") # 設定對話框的玩家名字顏色為白色
+        api.set_chat_name_color("ffffff") # 設定對話框的玩家名字顏色為白色
         ```
         """
         raise NotImplementedError
