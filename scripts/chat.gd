@@ -11,8 +11,12 @@ func send_chat_with_sender(sender_id: int, player_name: String, text: String) ->
 
 	if sender_id == 0:
 		textbox.set_text(text)
+	elif chat_name_color == "rainbow":
+		textbox.set_text(
+			"[rainbow freq=4.0 sat=0.8 val=0.8 speed=0.3]%s[/rainbow]: %s" % [player_name, text]
+		)
 	else:
-		textbox.set_text("|[color=%s][%s][/color]%s" % [chat_name_color, player_name, text])
+		textbox.set_text("[color=%s][%s][/color]: %s" % [chat_name_color, player_name, text])
 	textbox.set_meta("sender", sender_id)
 
 	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
