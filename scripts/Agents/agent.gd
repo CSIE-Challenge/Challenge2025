@@ -271,6 +271,15 @@ func _get_tower(_coord: Vector2i) -> Array:
 	return [StatusCode.OK, {}]
 
 
+func _sell_tower(_coord: Vector2i) -> Array:
+	print("[SellTower] Get request")
+	if not game_self.built_towers.has(_coord):
+		return [StatusCode.ILLEGAL_ARGUMENT, "[SellTower] No built tower on designated coordinate"]
+	var tower: Tower = game_self.built_towers[_coord]
+	game_self._on_tower_sold(tower, null, true)
+	return [StatusCode.OK]
+
+
 #endregion
 
 #region Enemy

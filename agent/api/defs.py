@@ -16,6 +16,7 @@ class CommandType(IntEnum):
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103
+    SELL_TOWER = 104
     SPAWN_UNIT = 201
     GET_AVAILABLE_UNITS = 202
     GET_ALL_ENEMIES = 203

@@ -250,7 +250,23 @@ class GameClient(GameClientBase):
         print(tower)
         """
         raise NotImplementedError
+    
+    @game_command(CommandType.SELL_TOWER, [Vector2], None)
+    def sell_tower(self, coord: Vector2) -> None:
+        """
+        # Sell Tower
+        賣掉地圖中指定位置上的一座防禦塔。
 
+        ## Parameters
+        - `coord` (Vector2): 要賣掉的防禦塔的位置。
+
+        ## Returns
+        這個函數沒有返回值。如果成功的話，指定位置上的防禦塔會被賣掉。
+
+        ## Example
+        api.sell_tower(Vector2(5, 10))  # 賣掉 (5, 10) 的位置上的防禦塔
+        """
+        raise NotImplementedError
 
     @game_command(CommandType.SPAWN_UNIT, [EnemyType], None)
     def spawn_unit(self, type: EnemyType) -> None:
