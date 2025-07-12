@@ -4,7 +4,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from time import sleep
 from api import *
 
-api = GameClient(7749, "350a5458")
+api = GameClient(7749, "TOKEN")
 
 def place_towers(tower_type, x, y):
     lvls = ["1", "2a", "2b", "3a", "3b"]

@@ -1,3 +1,6 @@
+import sys, os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
 from api import *
 
 api = GameClient(7749, "TOKEN")
