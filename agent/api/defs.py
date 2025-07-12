@@ -16,13 +16,13 @@ class CommandType(IntEnum):
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103
+    SELL_TOWER = 104
     SPAWN_UNIT = 201
     GET_AVAILABLE_UNITS = 202
     GET_ALL_ENEMIES = 203
     CAST_SPELL = 301
     GET_SPELL_COOLDOWN = 302
     GET_SPELL_COST = 303
-    GET_EFFECTIVE_SPELLS = 304
     SEND_CHAT = 401
     GET_CHAT_HISTORY = 402
     PIXELCAT = 501
@@ -228,9 +228,8 @@ class ApiException(Exception):
 class Tower:
     """防禦塔。"""
     
-    def __init__(self, _type: TowerType, position: Vector2, level_a: int, level_b: int, aim: bool = True, 
-                 anti_air: bool = False, bullet_number: int = 1, reload: int = 60, 
-                 range: int = 100, damage: int = 10, bullet_effect: str = 'none') -> None:
+    def __init__(self, _type: TowerType, position: Vector2, level_a: int, level_b: int, aim: bool, 
+                 anti_air: bool, reload: int, range: int, damage: int, bullet_effect: str) -> None:
         self.type = _type
         """塔的型別，見class TowerType"""
 
@@ -257,9 +256,6 @@ class Tower:
         self.anti_air = anti_air
         """是否能攻擊空中單位。"""
 
-        self.bullet_number = bullet_number
-        """每次攻擊的子彈數量。"""
-
         self.reload = reload
         """每分鐘攻擊次數。"""
 
@@ -281,7 +277,7 @@ class Tower:
         """
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Tower' | None:
+    def from_dict(cls, data: dict) -> 'Tower | None':
         if not data:
             return None
         return cls(
@@ -289,13 +285,12 @@ class Tower:
             position=Vector2(data['position']['x'], data['position']['y']),
             level_a=data['level_a'],
             level_b=data['level_b'],
-            aim=data.get('aim'),
-            anti_air=data.get('anti_air'),
-            bullet_number=data.get('bullet_number'),
-            reload=data.get('reload'),
-            range=data.get('range'),
-            damage=data.get('damage'),
-            bullet_effect=data.get('bullet_effect', 'none')
+            aim=data['aim'],
+            anti_air=data['anti_air'],
+            reload=data['reload'],
+            range=data['range'],
+            damage=data['damage'],
+            bullet_effect=data['bullet_effect'],
         )
 
     def __str__(self) -> str:
