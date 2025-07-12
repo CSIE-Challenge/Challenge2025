@@ -225,6 +225,9 @@ class GameClientBase:
             except ApiException as e:
                 if e.code == StatusCode.TOO_FREQUENT:
                     should_resend = True
+                elif e.code == StatusCode.NOT_STARTED or e.code == StatusCode.PAUSED:
+                    time.sleep(0.1)  # poll the game every 0.1 second until it starts again
+                    should_resend = True
                 else:
                     return e
             except Exception as e:
