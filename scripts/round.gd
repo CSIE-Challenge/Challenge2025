@@ -89,7 +89,10 @@ func _on_game_timer_timeout():
 	game_2p.player_selection.web_agent.game_running = false
 	# load end scene
 	var end_scene: EndScreen = preload("res://scenes/end.tscn").instantiate()
-
+	end_scene.player_names = [
+		$Screen/Top/TextureRect/PlayerNameLeft.text,
+		$Screen/Top/TextureRect/PlayerNameRight.text,
+	]
 	end_scene.statistics = [
 		EndScreen.Statistics.init("Score", [game_1p.score, game_2p.score], true),
 		EndScreen.Statistics.init("Kill Count", [game_1p.kill_count, game_2p.kill_count], false),

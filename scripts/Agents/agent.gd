@@ -530,6 +530,12 @@ func _get_spell_cost(_type: SpellType) -> Array:
 #region Chat
 
 
+func _get_screen_name_label() -> Label:
+	if player_id == 1:
+		return get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameLeft")
+	return get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameRight")
+
+
 func _send_chat(_msg: String) -> Array:
 	print("[SendChat] Get request")
 	if chat_node == null:
@@ -540,7 +546,9 @@ func _send_chat(_msg: String) -> Array:
 		print("[Error] too long")
 		return [StatusCode.ILLEGAL_ARGUMENT, false]
 
-	chat_node.send_chat_with_sender(player_id, _msg)
+	var chat_name_color = game_self.chat_name_color
+	var player_name = _get_screen_name_label().text
+	chat_node.send_chat_with_sender(player_id, chat_name_color, player_name, _msg)
 	return [StatusCode.OK, true]
 
 
@@ -549,8 +557,41 @@ func _get_chat_history(_num: int) -> Array:
 	if chat_node == null:
 		print("[Error] TEXTBOX_SCENE not loaded")
 		return [StatusCode.INTERNAL_ERR, false]
-
-	var history = chat_node.get_history(_num)
+	var history = chat_node.get_history(player_id, _num)
 	return [StatusCode.OK, history]
+
+
+func _set_chat_name_color(_color: String) -> Array:
+	print("[SetColor] Get request")
+	game_self.chat_name_color = _color
+	return [StatusCode.OK]
+
+
+#endregion
+
+#regionmisc
+
+
+func _is_available_name(_name: String) -> bool:
+	var alp: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	var count: int = 0
+	for n in _name:
+		count += 1 if n in alp else 2
+
+	if count > 10:
+		return false
+	return true
+
+
+func _set_name(_name: String) -> Array:
+	print("[SetName] Get request")
+	print(len(_name))
+	if len(_name) > 10 or not _is_available_name(_name):
+		return [StatusCode.ILLEGAL_ARGUMENT, "Name is too long"]
+
+	_get_screen_name_label().text = _name
+	game_self.player_selection.get_node("PlayerIdentifierLabel").text = _name
+
+	return [StatusCode.OK]
 
 #endregion

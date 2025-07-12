@@ -47,14 +47,17 @@ alignment = 1
 [node name="LeftPlayerName" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PlayerRow"]
 custom_minimum_size = Vector2(720, 160)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/normal_font_size = 84
 text = "Player 1"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="RightPlayerName" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PlayerRow"]
 custom_minimum_size = Vector2(720, 160)
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/normal_font_size = 84
 text = "Player 2"
-horizontal_alignment = 2
+horizontal_alignment = 1
 vertical_alignment = 1

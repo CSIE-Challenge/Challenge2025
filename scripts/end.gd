@@ -14,6 +14,7 @@ const ROW_STATS_WIDTH = 400
 const ROW_DIFF_STATS_WIDTH = 160
 const ROW_TITLE_WIDTH = 720
 
+var player_names: Array[String] = []
 var statistics: Array[Statistics] = []
 
 @onready var remaining_height = (
@@ -72,6 +73,7 @@ class RichTextLabelBuilder:
 		label.custom_minimum_size = Vector2(self.width, self.height)
 		label.horizontal_alignment = self.align
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		label.size_flags_horizontal = Control.SizeFlags.SIZE_FILL | Control.SizeFlags.SIZE_EXPAND
 		label.add_theme_stylebox_override("normal", stylebox)
 		label.push_color(self.font_color)
 		label.push_font_size(self.font_size)
@@ -211,6 +213,11 @@ func _build():
 
 
 func _ready() -> void:
+	# fill in player names
+	$MarginContainer/VBoxContainer/PlayerRow/LeftPlayerName.text = player_names[0]
+	$MarginContainer/VBoxContainer/PlayerRow/RightPlayerName.text = player_names[1]
+
+	# setup stat entries
 	_build()
 
 

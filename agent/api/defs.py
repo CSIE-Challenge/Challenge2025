@@ -27,8 +27,10 @@ class CommandType(IntEnum):
     GET_SPELL_COST = 303
     SEND_CHAT = 401
     GET_CHAT_HISTORY = 402
+    SET_CHAT_NAME_COLOR = 403
     PIXELCAT = 501
     GET_DEVS = 502
+    SET_NAME = 503
 
 
 class GameStatus(IntEnum):
@@ -118,6 +120,12 @@ class EnemyType(IntEnum):
     
     WIGGLER = 6
     """花毛毛。"""
+
+class ChatSource(IntEnum):
+    SYSTEM = 0
+    PLAYER_SELF = 1
+    PLAYER_OTHER = 2
+
 
 class SpellType(IntEnum):
     """技能類別。"""

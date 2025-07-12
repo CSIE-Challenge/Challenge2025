@@ -29,5 +29,6 @@ theme_override_constants/margin_bottom = 18
 layout_mode = 2
 theme_override_constants/line_separation = 8
 theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
 text = "PixelCat is so cute <3 hahaha this is a test message"
 fit_content = true

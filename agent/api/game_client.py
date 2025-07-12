@@ -468,8 +468,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_CHAT_HISTORY, [int], list[tuple[int, str]])
-    def get_chat_history(self, num: int = 15) -> list[tuple[int, str]]:
+    @game_command(CommandType.GET_CHAT_HISTORY, [int], list[tuple[ChatSource, str]])
+    def get_chat_history(self, num: int = 15) -> list[tuple[ChatSource, str]]:
         """
         # Get Chat History
         取得聊天歷史紀錄。
@@ -485,6 +485,25 @@ class GameClient(GameClientBase):
         chat_history = api.get_chat_history(10)  # 獲取最近的 10 條聊天訊息
         for id, message in chat_history:
             print(f"[{id}] {message}")
+        ```
+        """
+        raise NotImplementedError
+    
+    @game_command(CommandType.SET_CHAT_NAME_COLOR, [str], None)
+    def set_chat_name_color(self, color: str) -> None:
+        """
+        # Set Name
+        設定對話框的玩家名字顏色
+
+        ## Parameters
+        - `color` (str): 表示顏色的十六進位制。
+
+        ## Returns
+        這個函數沒有回傳值。
+
+        ## Example
+        ```python
+        api.set_chat_name_color("ffffff") # 設定對話框的玩家名字顏色為白色
         ```
         """
         raise NotImplementedError
@@ -526,6 +545,25 @@ class GameClient(GameClientBase):
         devs = api.get_devs()  # 獲取開發者名單
         for dev in devs:
             print(dev)
+        ```
+        """
+        raise NotImplementedError
+
+    @game_command(CommandType.SET_NAME, [str], None)
+    def set_name(self, name: str) -> None:
+        """
+        # Set Name
+        設定玩家名稱
+
+        ## Parameters
+        - `name` (str): 玩家名稱，限制十個字元以內，一個中文字算兩個字元。
+
+        ## Returns
+        這個函數沒有回傳值。
+
+        ## Example
+        ```python
+        api.set_name("PixelCat") # 設定玩家名稱為 PixelCat
         ```
         """
         raise NotImplementedError
