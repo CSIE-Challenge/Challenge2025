@@ -1,67 +1,132 @@
 [
   {
     "wave_number": 1,
-    "wave_name": "Hello World",
-    "units": [{ "name": "goomba", "count": 4 }],
+    "wave_name": "Wave 1",
+    "units": [
+      { "name": "goomba", "count": 15 },
+      { "name": "koopa_paratroopa", "count": 3 },
+      { "name": "spiny_shell", "count": 3 },
+      { "name": "buzzy_beetle", "count": 3 }
+    ],
     "method": "sequential",
-	"subsidy": 0,
+    "subsidy": 0,
     "delay": 1.0
   },
   {
     "wave_number": 2,
-    "wave_name": "The Beginning",
+    "wave_name": "Wave 2",
     "units": [
-      { "name": "goomba", "count": 10 },
+      { "name": "goomba", "count": 8 },
       { "name": "koopa_paratroopa", "count": 5 },
-      { "name": "spiny_shell", "count": 3 }
+      { "name": "spiny_shell", "count": 5 },
+      { "name": "buzzy_beetle", "count": 5 },
+      { "name": "wiggler", "count": 1 }
     ],
     "method": "alternating",
-	"subsidy": 10,
+    "subsidy": 10,
     "delay": 1.0
   },
   {
     "wave_number": 3,
-    "wave_name": "The Challenge",
+    "wave_name": "Wave 3",
     "units": [
-      { "name": "goomba", "count": 15 },
-      { "name": "koopa_paratroopa", "count": 10 },
+      { "name": "goomba", "count": 13 },
+      { "name": "koopa_paratroopa", "count": 5 },
       { "name": "spiny_shell", "count": 5 },
-      { "name": "buzzy_beetle", "count": 3 },
+      { "name": "buzzy_beetle", "count": 5 },
       { "name": "wiggler", "count": 2 }
     ],
     "method": "random",
-	"subsidy": 50,
-    "delay": 1.0
+    "subsidy": 50,
+    "delay": 0.8
   },
   {
     "wave_number": 4,
-    "wave_name": "The Gauntlet",
+    "wave_name": "Wave 4",
     "units": [
-      { "name": "goomba", "count": 20 },
-      { "name": "koopa_paratroopa", "count": 15 },
-      { "name": "spiny_shell", "count": 10 },
-      { "name": "buzzy_beetle", "count": 5 },
-      { "name": "wiggler", "count": 3 },
-      { "name": "koopa_jr", "count": 2 }
+      { "name": "goomba", "count": 6 },
+      { "name": "koopa_paratroopa", "count": 7 },
+      { "name": "spiny_shell", "count": 7 },
+      { "name": "buzzy_beetle", "count": 7 },
+      { "name": "wiggler", "count": 3 }
     ],
     "method": "sequential",
-	"subsidy": 100,
-    "delay": 1.0
+    "subsidy": 80,
+    "delay": 0.8
   },
   {
     "wave_number": 5,
-    "wave_name": "The Final Stand",
+    "wave_name": "Wave 5",
     "units": [
-      { "name": "goomba", "count": 25 },
-      { "name": "koopa_paratroopa", "count": 20 },
-      { "name": "spiny_shell", "count": 15 },
+      { "name": "goomba", "count": 6 },
+      { "name": "koopa_paratroopa", "count": 6 },
+      { "name": "spiny_shell", "count": 6 },
+      { "name": "buzzy_beetle", "count": 6 },
+      { "name": "wiggler", "count": 6 }
+    ],
+    "method": "alternating",
+    "subsidy": 120,
+    "delay": 0.8
+  },
+  {
+    "wave_number": 6,
+    "wave_name": "Wave 6",
+    "units": [
+      { "name": "goomba", "count": 13 },
+      { "name": "koopa_paratroopa", "count": 10 },
+      { "name": "spiny_shell", "count": 10 },
       { "name": "buzzy_beetle", "count": 10 },
-      { "name": "wiggler", "count": 5 },
-      { "name": "koopa_jr", "count": 3 },
+      { "name": "wiggler", "count": 6 },
+      { "name": "koopa_jr", "count": 1 }
+    ],
+    "method": "random",
+    "subsidy": 180,
+    "delay": 0.6
+  },
+  {
+    "wave_number": 7,
+    "wave_name": "Stampede",
+    "units": [
+      { "name": "goomba", "count": 100 }
+    ],
+    "method": "sequential",
+    "subsidy": 220,
+    "delay": 0.1
+  },
+  {
+    "wave_number": 8,
+    "wave_name": "Twisted Forest",
+    "units": [
+      { "name": "goomba", "count": 3 },
+      { "name": "koopa_paratroopa", "count": 8 },
+      { "name": "spiny_shell", "count": 8 },
+      { "name": "buzzy_beetle", "count": 8 },
+      { "name": "wiggler", "count": 10 },
+      { "name": "koopa_jr", "count": 2 },
       { "name": "koopa", "count": 1 }
     ],
     "method": "random",
-	"subsidy": 200,
-    "delay": 1.0
+    "subsidy": 300,
+    "delay": 0.5
+  },
+  {
+    "wave_number": 9,
+    "wave_name": "Sky Attack",
+    "units": [
+      { "name": "koopa_paratroopa", "count": 100 }
+    ],
+    "method": "alternating",
+    "subsidy": 300,
+    "delay": 0.1
+  },
+  {
+    "wave_number": 10,
+    "wave_name": "Shellstorm",
+    "units": [
+      { "name": "spiny_shell", "count": 100 }
+    ],
+    "method": "alternating",
+    "subsidy": 300,
+    "delay": 0.1
   }
 ]
