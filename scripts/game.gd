@@ -17,8 +17,8 @@ const INTEREST_RATE := 1.02
 
 var player_selection: IndividualPlayerSelection = null
 var score: int = 0
-var money: int = 1000
-var income_per_second = 30
+var money: int = 300
+var income_per_second = 50
 var kill_cnt = 0
 var income_rate: int = 1
 var built_towers: Dictionary = {}

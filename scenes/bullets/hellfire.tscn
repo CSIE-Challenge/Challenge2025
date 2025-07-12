@@ -19,6 +19,8 @@ movement_speed = 0.0
 damage = 4
 lifespan_seconds = 0
 effect = 2
+effect_duration = 1
+effect_interval = 0.3
 
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708

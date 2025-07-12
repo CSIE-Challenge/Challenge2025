@@ -37,14 +37,15 @@ scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_s5vor")
+expected_bullet_number = 5
 type = 5
 level_b = 3
-building_cost = 9600
+building_cost = 2800
 anti_air = true
 bullet_scene = ExtResource("2_3phi0")
-reload_seconds = 0.8
+reload_seconds = 1.5
 aim_range = 300.0
-damage = 4
+damage = 20
 
 [node name="Tower" type="Node2D" parent="."]
 

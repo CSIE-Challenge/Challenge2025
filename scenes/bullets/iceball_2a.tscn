@@ -12,7 +12,7 @@ script = ExtResource("1_mye8v")
 is_anti_air = true
 lifespan_seconds = 0.75
 effect = 3
-effect_duration = 2
+effect_duration = 1
 
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("2_mye8v")

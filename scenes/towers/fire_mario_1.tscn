@@ -38,11 +38,11 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_skrhh")
 type = 1
-building_cost = 800
+building_cost = 400
 anti_air = true
 bullet_scene = ExtResource("2_pjfx8")
 aim_range = 200.0
-damage = 4
+damage = 40
 
 [node name="Tower" type="Node2D" parent="."]
 

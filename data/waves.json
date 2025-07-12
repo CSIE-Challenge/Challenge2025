@@ -1,148 +1,148 @@
 [
   {
-    "wave_number": 1,
-    "wave_name": "Wave 1",
-    "units": [
-      { "name": "goomba", "count": 20 },
-      { "name": "koopa_paratroopa", "count": 1 },
-      { "name": "spiny_shell", "count": 1 },
-      { "name": "buzzy_beetle", "count": 1 }
-    ],
-    "method": "sequential",
-    "subsidy": 0,
-    "delay": 1.0
+	"wave_number": 1,
+	"wave_name": "Wave 1",
+	"units": [
+	  { "name": "goomba", "count": 15 },
+	  { "name": "koopa_paratroopa", "count": 3 },
+	  { "name": "spiny_shell", "count": 3 },
+	  { "name": "buzzy_beetle", "count": 3 }
+	],
+	"method": "random",
+	"subsidy": 0,
+	"delay": 1.0
   },
   {
-    "wave_number": 2,
-    "wave_name": "Wave 2",
-    "units": [
-      { "name": "goomba", "count": 8 },
-      { "name": "koopa_paratroopa", "count": 3 },
-      { "name": "spiny_shell", "count": 2 },
-      { "name": "buzzy_beetle", "count": 1 },
-      { "name": "wiggler", "count": 1 }
-    ],
-    "method": "alternating",
-    "subsidy": 10,
-    "delay": 1.0
+	"wave_number": 2,
+	"wave_name": "Wave 2",
+	"units": [
+	  { "name": "goomba", "count": 8 },
+	  { "name": "koopa_paratroopa", "count": 5 },
+	  { "name": "spiny_shell", "count": 5 },
+	  { "name": "buzzy_beetle", "count": 5 },
+	  { "name": "wiggler", "count": 1 }
+	],
+	"method": "random",
+	"subsidy": 0,
+	"delay": 1.0
   },
   {
-    "wave_number": 3,
-    "wave_name": "Wave 3",
-    "units": [
-      { "name": "goomba", "count": 13 },
-      { "name": "koopa_paratroopa", "count": 3 },
-      { "name": "spiny_shell", "count": 2 },
-      { "name": "buzzy_beetle", "count": 3 },
-      { "name": "wiggler", "count": 2 }
-    ],
-    "method": "random",
-    "subsidy": 50,
-    "delay": 0.8
+	"wave_number": 3,
+	"wave_name": "Wave 3",
+	"units": [
+	  { "name": "goomba", "count": 13 },
+	  { "name": "koopa_paratroopa", "count": 5 },
+	  { "name": "spiny_shell", "count": 5 },
+	  { "name": "buzzy_beetle", "count": 5 },
+	  { "name": "wiggler", "count": 2 }
+	],
+	"method": "random",
+	"subsidy": 0,
+	"delay": 0.8
   },
   {
-    "wave_number": 4,
-    "wave_name": "Wave 4",
-    "units": [
-      { "name": "goomba", "count": 6 },
-      { "name": "koopa_paratroopa", "count": 4 },
-      { "name": "spiny_shell", "count": 5 },
-      { "name": "buzzy_beetle", "count": 2 },
-      { "name": "wiggler", "count": 3 }
-    ],
-    "method": "sequential",
-    "subsidy": 80,
-    "delay": 0.8
+	"wave_number": 4,
+	"wave_name": "Wave 4",
+	"units": [
+	  { "name": "goomba", "count": 6 },
+	  { "name": "koopa_paratroopa", "count": 7 },
+	  { "name": "spiny_shell", "count": 7 },
+	  { "name": "buzzy_beetle", "count": 7 },
+	  { "name": "wiggler", "count": 3 }
+	],
+	"method": "sequential",
+	"subsidy": 0,
+	"delay": 0.8
   },
   {
-    "wave_number": 5,
-    "wave_name": "Wave 5",
-    "units": [
-      { "name": "goomba", "count": 6 },
-      { "name": "koopa_paratroopa", "count": 2 },
-      { "name": "spiny_shell", "count": 3 },
-      { "name": "buzzy_beetle", "count": 4 },
-      { "name": "wiggler", "count": 2 }
-    ],
-    "method": "alternating",
-    "subsidy": 120,
-    "delay": 0.8
+	"wave_number": 5,
+	"wave_name": "Wave 5",
+	"units": [
+	  { "name": "goomba", "count": 6 },
+	  { "name": "koopa_paratroopa", "count": 6 },
+	  { "name": "spiny_shell", "count": 6 },
+	  { "name": "buzzy_beetle", "count": 6 },
+	  { "name": "wiggler", "count": 6 }
+	],
+	"method": "alternating",
+	"subsidy": 0,
+	"delay": 0.8
   },
   {
-    "wave_number": 6,
-    "wave_name": "Wave 6",
-    "units": [
-      { "name": "goomba", "count": 13 },
-      { "name": "koopa_paratroopa", "count": 10 },
-      { "name": "spiny_shell", "count": 10 },
-      { "name": "buzzy_beetle", "count": 10 },
-      { "name": "wiggler", "count": 6 },
-      { "name": "koopa_jr", "count": 1 }
-    ],
-    "method": "random",
-    "subsidy": 180,
-    "delay": 0.6
+	"wave_number": 6,
+	"wave_name": "Wave 6",
+	"units": [
+	  { "name": "goomba", "count": 13 },
+	  { "name": "koopa_paratroopa", "count": 10 },
+	  { "name": "spiny_shell", "count": 10 },
+	  { "name": "buzzy_beetle", "count": 10 },
+	  { "name": "wiggler", "count": 6 },
+	  { "name": "koopa_jr", "count": 1 }
+	],
+	"method": "random",
+	"subsidy": 0,
+	"delay": 0.6
   },
   {
-    "wave_number": 7,
-    "wave_name": "Stampede",
-    "units": [
-      { "name": "goomba", "count": 100 }
-    ],
-    "method": "sequential",
-    "subsidy": 220,
-    "delay": 0.1
+	"wave_number": 7,
+	"wave_name": "Stampede",
+	"units": [
+	  { "name": "goomba", "count": 50 }
+	],
+	"method": "sequential",
+	"subsidy": 0,
+	"delay": 0.2
   },
   {
-    "wave_number": 8,
-    "wave_name": "Twisted Forest",
-    "units": [
-      { "name": "goomba", "count": 3 },
-      { "name": "koopa_paratroopa", "count": 8 },
-      { "name": "spiny_shell", "count": 8 },
-      { "name": "buzzy_beetle", "count": 8 },
-      { "name": "wiggler", "count": 10 },
-      { "name": "koopa_jr", "count": 2 },
-      { "name": "koopa", "count": 1 }
-    ],
-    "method": "random",
-    "subsidy": 300,
-    "delay": 0.5
+	"wave_number": 8,
+	"wave_name": "Twisted Forest",
+	"units": [
+	  { "name": "goomba", "count": 3 },
+	  { "name": "koopa_paratroopa", "count": 8 },
+	  { "name": "spiny_shell", "count": 8 },
+	  { "name": "buzzy_beetle", "count": 8 },
+	  { "name": "wiggler", "count": 10 },
+	  { "name": "koopa_jr", "count": 2 },
+	  { "name": "koopa", "count": 1 }
+	],
+	"method": "random",
+	"subsidy": 0,
+	"delay": 0.5
   },
   {
-    "wave_number": 9,
-    "wave_name": "Sky Attack",
-    "units": [
-      { "name": "koopa_paratroopa", "count": 300 }
-    ],
-    "method": "alternating",
-    "subsidy": 300,
-    "delay": 0.03
+	"wave_number": 9,
+	"wave_name": "Sky Attack",
+	"units": [
+	  { "name": "koopa_paratroopa", "count": 50 }
+	],
+	"method": "sequential",
+	"subsidy": 0,
+	"delay": 0.2
   },
   {
-    "wave_number": 10,
-    "wave_name": "Shellstorm",
-    "units": [
-      { "name": "spiny_shell", "count": 200 }
-    ],
-    "method": "alternating",
-    "subsidy": 300,
-    "delay": 0.05
+	"wave_number": 10,
+	"wave_name": "Shellstorm",
+	"units": [
+	  { "name": "spiny_shell", "count": 50 }
+	],
+	"method": "sequential",
+	"subsidy": 0,
+	"delay": 0.2
   },
   {
-    "wave_number": 11,
-    "wave_name": "Final Wave",
-    "units": [
-      { "name": "goomba", "count": 200 },
-      { "name": "koopa_paratroopa", "count": 200 },
-      { "name": "spiny_shell", "count": 200 },
-      { "name": "buzzy_beetle", "count": 200 },
-      { "name": "wiggler", "count": 200 },
-      { "name": "koopa_jr", "count": 200 },
-      { "name": "koopa", "count": 200 }
-    ],
-    "method": "alternating",
-    "subsidy": 500,
-    "delay": 0.03
+	"wave_number": 11,
+	"wave_name": "Final Wave",
+	"units": [
+	  { "name": "goomba", "count": 200 },
+	  { "name": "koopa_paratroopa", "count": 200 },
+	  { "name": "spiny_shell", "count": 200 },
+	  { "name": "buzzy_beetle", "count": 200 },
+	  { "name": "wiggler", "count": 200 },
+	  { "name": "koopa_jr", "count": 200 },
+	  { "name": "koopa", "count": 200 }
+	],
+	"method": "random",
+	"subsidy": 0,
+	"delay": 0.5
   }
 ]

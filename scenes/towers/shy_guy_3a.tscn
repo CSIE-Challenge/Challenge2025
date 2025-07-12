@@ -40,11 +40,12 @@ script = ExtResource("1_38ckp")
 expected_bullet_number = 9
 type = 5
 level_a = 3
-building_cost = 9600
+building_cost = 2800
 anti_air = true
 bullet_scene = ExtResource("2_beykr")
-reload_seconds = 0.5
+reload_seconds = 1.5
 aim_range = 400.0
+damage = 20
 
 [node name="Tower" type="Node2D" parent="."]
 
