@@ -277,20 +277,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="LineEdit" type="LineEdit" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 28.0
-offset_top = -68.0
-offset_right = -28.0
-offset_bottom = -26.0
-grow_horizontal = 2
-grow_vertical = 0
-placeholder_text = "Chat something..."
-
 [node name="Game2P" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
 spawner = NodePath("../../../Spawner")
@@ -310,5 +296,4 @@ layout_mode = 1
 
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]
-[connection signal="text_submitted" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/LineEdit" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_line_edit_text_submitted"]
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]
