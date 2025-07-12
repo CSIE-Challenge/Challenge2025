@@ -65,10 +65,7 @@ const TOWER_SCENES = [
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
 
-var money: int
-var score: int
 var player_id: int
-
 var game_running: bool = false
 var ongoing_round: Round = null
 var game_self: Game = null
@@ -197,42 +194,56 @@ func _get_income(_owned: bool) -> Array:
 
 func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
-	var map = game_self.get_node("Map")
-	if not map:
-		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
-	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
-		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
 
-	if (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
-		return [
+	# the return value. not returning early because of the linter
+	var result: Array = []
+	var map = game_self.get_node("Map")
+
+	if not map:
+		result = [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
+
+	elif map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
+		result = [
+			StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"
+		]
+
+	elif (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
+		result = [
 			StatusCode.ILLEGAL_ARGUMENT,
 			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
 		]
 
-	var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
-	if game_self.built_towers.has(_coord):
-		var previous_tower = game_self.built_towers[_coord]
-		if (
-			(
-				previous_tower.type == tower.type
-				and (
-					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+	else:
+		var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
+		if game_self.built_towers.has(_coord):
+			var previous_tower = game_self.built_towers[_coord]
+			if (
+				(
+					previous_tower.type == tower.type
+					and (
+						previous_tower.level_a > tower.level_a
+						or previous_tower.level_b > tower.level_b
+					)
 				)
-			)
-			or money + previous_tower.building_cost < tower.building_cost
-		):
-			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
-		if (
-			previous_tower.type != tower.type
-			and (
-				game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
-				< tower.building_cost
-			)
-		):
-			print(previous_tower.building_cost, tower.building_cost)
-			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: no enough money"]
-	game_self.place_tower(_coord, tower)
-	return [StatusCode.OK]
+				or game_self.money + previous_tower.building_cost < tower.building_cost
+			):
+				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
+			elif (
+				previous_tower.type != tower.type
+				and (
+					game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
+					< tower.building_cost
+				)
+			):
+				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
+		if len(result) == 0:
+			if game_self.money < tower.building_cost:
+				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
+			else:
+				game_self.place_tower(_coord, tower)
+				result = [StatusCode.OK]
+
+	return result
 
 
 func _get_all_towers(_owned: bool) -> Array:
