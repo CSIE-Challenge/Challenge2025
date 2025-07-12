@@ -281,7 +281,7 @@ class Tower:
         """
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Tower' | None:
+    def from_dict(cls, data: dict) -> 'Tower | None':
         if not data:
             return None
         return cls(
@@ -289,13 +289,13 @@ class Tower:
             position=Vector2(data['position']['x'], data['position']['y']),
             level_a=data['level_a'],
             level_b=data['level_b'],
-            aim=data.get('aim'),
-            anti_air=data.get('anti_air'),
-            bullet_number=data.get('bullet_number'),
-            reload=data.get('reload'),
-            range=data.get('range'),
-            damage=data.get('damage'),
-            bullet_effect=data.get('bullet_effect', 'none')
+            aim=data['aim'],
+            anti_air=data['anti_air'],
+            bullet_number=data['bullet_number'],
+            reload=data['reload'],
+            range=data['range'],
+            damage=data['damage'],
+            # bullet_effect=data['bullet_effect'],
         )
 
     def __str__(self) -> str:

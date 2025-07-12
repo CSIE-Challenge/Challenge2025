@@ -1,8 +1,6 @@
 class_name Agent
 extends Node
 enum GameStatus { PREPARING = 0, RUNNING = 1, PAUSED = 2 }
-# TODO: Remove BASIC legacy
-enum TowerType { BASIC, DONKEY_KONG, FIRE_MARIO, FORT, ICE_LUIGI, SHY_GUY }
 enum EnemyType {
 	BUZZY_BEETLE,
 	GOOMBA,
@@ -197,7 +195,7 @@ func _get_income(_owned: bool) -> Array:
 #region Tower
 
 
-func _place_tower(_type: TowerType, _level: String, _coord: Vector2i) -> Array:
+func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
 	var map = game_self.get_node("Map")
 	if not map:

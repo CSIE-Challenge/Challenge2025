@@ -121,7 +121,6 @@ func _on_fire_bullet() -> void:
 
 
 func to_dict(coord: Vector2i) -> Dictionary:
-	# todo: fill in the actual data
 	var dict: Dictionary = {}
 	dict["type"] = type
 	dict["position"] = {"x": coord[0], "y": coord[1]}
@@ -129,7 +128,7 @@ func to_dict(coord: Vector2i) -> Dictionary:
 	dict["level_b"] = level_b
 	dict["aim"] = auto_aim
 	dict["anti_air"] = anti_air
-	dict["bullet_number"] = 0
+	dict["bullet_number"] = 1
 	dict["reload"] = reload_seconds
 	dict["range"] = aim_range
 	dict["damage"] = damage

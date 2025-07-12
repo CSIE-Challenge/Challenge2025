@@ -64,3 +64,9 @@ func _spawn_bullet(bullet_left: int, shooting_interval: float) -> void:
 			self._spawn_bullet.bind(bullet_left - 1, shooting_interval), CONNECT_ONE_SHOT
 		)
 		shooting_timer.start(shooting_interval)
+
+
+func to_dict(coord: Vector2i) -> Dictionary:
+	var dict: Dictionary = super(coord)
+	dict["bullet_number"] = expected_bullet_number
+	return dict
