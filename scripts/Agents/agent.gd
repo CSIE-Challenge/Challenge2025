@@ -464,8 +464,9 @@ func _send_chat(_msg: String) -> Array:
 		print("[Error] too long")
 		return [StatusCode.ILLEGAL_ARGUMENT, false]
 
+	var chat_name_color = game_self.chat_name_color
 	var player_name = _get_screen_name_label().text
-	chat_node.send_chat_with_sender(player_id, player_name, _msg)
+	chat_node.send_chat_with_sender(player_id, chat_name_color, player_name, _msg)
 	return [StatusCode.OK, true]
 
 
@@ -481,10 +482,7 @@ func _get_chat_history(_num: int) -> Array:
 
 func _set_chat_name_color(_color: String) -> Array:
 	print("[SetColor] Get request")
-	if chat_node == null:
-		print("[Error] TEXTBOX_SCENE not loaded")
-		return [StatusCode.INTERNAL_ERR]
-	chat_node.chat_name_color = _color
+	game_self.chat_name_color = _color
 	return [StatusCode.OK]
 
 

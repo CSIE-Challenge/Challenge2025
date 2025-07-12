@@ -3,17 +3,18 @@ extends TextureRect
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 
 var always_visible: bool = false
-var chat_name_color: String = "ffffff"
 
 
-func send_chat_with_sender(sender_id: int, player_name: String, text: String) -> void:
+func send_chat_with_sender(
+	sender_id: int, chat_name_color: String, player_name: String, text: String
+) -> void:
 	var textbox: MarginContainer = TEXTBOX_SCENE.instantiate()
 
 	if sender_id == 0:
 		textbox.set_text(text)
-	elif chat_name_color == "rainbow":
+	elif chat_name_color == "hyper":
 		textbox.set_text(
-			"[rainbow freq=4.0 sat=0.8 val=0.8 speed=0.3]%s[/rainbow]: %s" % [player_name, text]
+			"[rainbow freq=1.0 sat=0.8 val=0.8 speed=0.3][%s][/rainbow]: %s" % [player_name, text]
 		)
 	else:
 		textbox.set_text("[color=%s][%s][/color]: %s" % [chat_name_color, player_name, text])

@@ -21,6 +21,7 @@ var money: int = 100
 var income_per_second = 10
 var kill_cnt = 0
 var income_rate: int = 1
+var chat_name_color: String = "ffffff"
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
