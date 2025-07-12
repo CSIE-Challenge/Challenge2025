@@ -169,6 +169,9 @@ class StatusCode(IntEnum):
 
     NOT_STARTED = 406
     """遊戲尚未開始。"""
+
+    PAUSED = 407
+    """遊戲暫停中。"""
     
     INTERNAL_ERR = 500
     """Godot server端出現問題（請向開發組反映，對不起！！！）。"""

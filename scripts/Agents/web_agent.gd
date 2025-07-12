@@ -155,6 +155,10 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 				StatusCode.NOT_STARTED,
 				"[Receive Command] Error: the game is not running"
 			]
+		elif game_running and get_tree().paused and not _general_commands.has(command_id):
+			response = [
+				request_id, StatusCode.PAUSED, "[Receive Command] Error: the game is paused"
+			]
 		else:
 			game_self.api_called += 1
 			response = _command_handlers[command_id].handle(command)

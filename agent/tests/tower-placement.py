@@ -4,7 +4,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from time import sleep
 from api import *
 
-api = GameClient(7749, "TOKEN")
+api = GameClient(7749, "350a5458")
 
 def place_towers(tower_type, x, y):
     lvls = ["1", "2a", "2b", "3a", "3b"]
@@ -13,14 +13,14 @@ def place_towers(tower_type, x, y):
 
 # set initial money to a large number before running this
 # works on map 椰林大道
-place_towers(TowerType.DONEKEY_KONG, 11, 8)
+place_towers(TowerType.DONKEY_KONG, 11, 8)
 place_towers(TowerType.FIRE_MARIO, 12, 8)
 place_towers(TowerType.FORT, 13, 8)
 place_towers(TowerType.ICE_LUIGI, 11, 13)
 place_towers(TowerType.SHY_GUY, 12, 13)
 
-print(api.place_tower(TowerType.DONEKEY_KONG, "1", Vector2(1, 3)))
-print(api.place_tower(TowerType.DONEKEY_KONG, "1", Vector2(0, 3)))
+print(api.place_tower(TowerType.DONKEY_KONG, "1", Vector2(1, 3)))
+print(api.place_tower(TowerType.DONKEY_KONG, "1", Vector2(0, 3)))
 
 towers = api.get_all_towers(True)
 if isinstance(towers, ApiException):
