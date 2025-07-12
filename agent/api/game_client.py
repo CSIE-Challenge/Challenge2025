@@ -1,11 +1,22 @@
-from .defs import *
+from .defs import (
+    CommandType,
+    GameStatus,
+    TerrainType,
+    TowerType,
+    EnemyType,
+    ChatSource,
+    SpellType,
+    Vector2,
+    Tower,
+    Enemy,
+)
 from .game_client_base import GameClientBase, game_command
 
 # the decorated member functions are dummy functions that never gets called
 # an NotImplementedError is raised because returning nothing violates return type checking
 
-class GameClient(GameClientBase):
 
+class GameClient(GameClientBase):
     @game_command(CommandType.GET_GAME_STATUS, [], GameStatus)
     def get_game_status(self) -> GameStatus:
         """
@@ -48,7 +59,7 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.GET_TERRAIN, [Vector2], TerrainType)
     def get_terrain(self, pos: Vector2) -> TerrainType:
         """
@@ -96,7 +107,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         - `owned` (bool): 是否為玩家擁有的金錢。如果為 `True`，則查詢玩家的金錢，如果為 `False`，則查詢對手的金錢。
-        
+
         ## Returns
         這個函數返回一個整數，表示指定玩家的金錢數量。
 
@@ -136,7 +147,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數返回一個整數，表示當前的波數。
 
@@ -156,7 +167,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數返回一個浮點數，表示遊戲剩餘的時間，單位為秒。
 
@@ -175,7 +186,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數返回一個浮點數，表示距離下一波的時間，單位為秒。
 
@@ -186,19 +197,19 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
-    @game_command(CommandType.GET_SYSTEM_PATH, [bool], list[Vector2]) 
+
+    @game_command(CommandType.GET_SYSTEM_PATH, [bool], list[Vector2])
     def get_system_path(self, fly: bool) -> list[Vector2]:
         """
         # Get System Path
         取得系統派兵的路徑。
-        
+
         ## Parameters
         - `fly` (bool): 是否為飛行兵的路徑。
-        
+
         ## Returns
         這個函式返回一個座標陣列，表示系統派兵從起點到終點經過的格點。
-        
+
         ## Example
         ```python
         system_path = api.get_system_path(False) # 獲取系統派地面兵路徑
@@ -208,18 +219,18 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_OPPONENT_PATH, [bool], list[Vector2]) 
+    @game_command(CommandType.GET_OPPONENT_PATH, [bool], list[Vector2])
     def get_opponent_path(self, fly: bool) -> list[Vector2]:
         """
         # Get Opponent Path
         取得對手派兵的路徑。
-        
+
         ## Parameters
         - `fly` (bool): 是否為飛行兵的路徑。
-        
+
         ## Returns
         這個函式返回一個座標陣列，表示對手派兵從起點到終點經過的格點。
-        
+
         ## Example
         ```python
         opp_path = api.get_opponent_path(True) # 獲取對手派飛行兵路徑
@@ -228,7 +239,7 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.PLACE_TOWER, [TowerType, str, Vector2], None)
     def place_tower(self, type: TowerType, level: str, coord: Vector2) -> None:
         """
@@ -245,7 +256,7 @@ class GameClient(GameClientBase):
 
         ## TowerType
         - 有FIRE_MARIO, ICE_LUIGI, DONKEY_KONG, FORT, SHY_GUY五種。
-        
+
         ## Example
         ```python
         api.place_tower(TowerType.FIRE_MARIO, "2a", Vector2(5, 10))  # 在 (5, 10) 的位置放置一個馬力歐塔
@@ -293,7 +304,7 @@ class GameClient(GameClientBase):
         print(tower)
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.SELL_TOWER, [Vector2], None)
     def sell_tower(self, coord: Vector2) -> None:
         """
@@ -488,7 +499,7 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.SET_CHAT_NAME_COLOR, [str], None)
     def set_chat_name_color(self, color: str) -> None:
         """

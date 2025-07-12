@@ -1,6 +1,7 @@
 from __future__ import annotations
 from enum import IntEnum, auto
 
+
 class CommandType(IntEnum):
     """每種API對應的編號，用於報錯訊息。"""
 
@@ -46,7 +47,6 @@ class GameStatus(IntEnum):
     """遊戲已經開始，但暫時被暫停中。"""
 
 
-
 class TerrainType(IntEnum):
     """地圖地形。"""
 
@@ -65,7 +65,7 @@ class TerrainType(IntEnum):
 
 class TowerType(IntEnum):
     """塔的種類。"""
-    
+
     FIRE_MARIO = 1
     """
     火焰馬利歐，攻速快、範圍廣、可以瞄準飛行單位。  
@@ -83,13 +83,13 @@ class TowerType(IntEnum):
     森喜剛，原地範圍攻擊（以自身為中心的圓）。  
     升級可選擇擊退效果或瞄準直線攻擊。
     """
-    
+
     FORT = 4
     """
     砲台，沿直線發射炮彈刺客。（穿透敵人）。  
     升級可選擇提高傷害並不穿透(碰到敵人即爆炸)或制空能力。
     """
-    
+
     SHY_GUY = 5
     """
     嘿呵：分散投擲多把飛刀、可以瞄準飛行單位。  
@@ -114,12 +114,13 @@ class EnemyType(IntEnum):
 
     KOOPA = 4
     """庫巴。"""
-    
+
     SPINY_SHELL = 5
     """龜殼。"""
-    
+
     WIGGLER = 6
     """花毛毛。"""
+
 
 class ChatSource(IntEnum):
     SYSTEM = 0
@@ -172,40 +173,12 @@ class StatusCode(IntEnum):
 
     PAUSED = 407
     """遊戲暫停中。"""
-    
+
     INTERNAL_ERR = 500
     """Godot server端出現問題（請向開發組反映，對不起！！！）。"""
 
     CLIENT_ERR = 501
     """Python client端出現問題（請向開發組反映，對不起！！！）。"""
-
-
-class TypeCode(IntEnum):
-    """基本型別代號。"""
-
-    NULL_TYPE = 0
-    """空值。"""
-
-    BOOL_TYPE = 1
-    """布林。"""
-    
-    INT_TYPE = 2
-    """整數。"""
-    
-    FLOAT_TYPE = 3
-    """浮點數。"""
-
-    STRING_TYPE = 4
-    """字串。"""
-
-    VECTOR2I_TYPE = 6
-    """二維向量。"""
-
-    DICTIONARY_TYPE = 27
-    """字典。"""
-
-    LIST_TYPE = 28
-    """串列。"""
 
 
 class Vector2:
@@ -227,7 +200,8 @@ class ApiException(Exception):
 
     def __init__(self, source_fn: CommandType, code: StatusCode, what: str) -> None:
         super().__init__(
-            f"API call {source_fn.name}({source_fn.value}) fails with status code {code.name}({code.value}): {what}")
+            f"API call {source_fn.name}({source_fn.value}) fails with status code {code.name}({code.value}): {what}"
+        )
         self.source_fn = source_fn
         """見class CommandType。"""
 
@@ -240,9 +214,20 @@ class ApiException(Exception):
 
 class Tower:
     """防禦塔。"""
-    
-    def __init__(self, _type: TowerType, position: Vector2, level_a: int, level_b: int, aim: bool, 
-                 anti_air: bool, reload: int, range: int, damage: int, bullet_effect: str) -> None:
+
+    def __init__(
+        self,
+        _type: TowerType,
+        position: Vector2,
+        level_a: int,
+        level_b: int,
+        aim: bool,
+        anti_air: bool,
+        reload: int,
+        range: int,
+        damage: int,
+        bullet_effect: str,
+    ) -> None:
         self.type = _type
         """塔的型別，見class TowerType"""
 
@@ -290,20 +275,20 @@ class Tower:
         """
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'Tower | None':
+    def from_dict(cls, data: dict) -> "Tower | None":
         if not data:
             return None
         return cls(
-            _type=TowerType(data['type']),
-            position=Vector2(data['position']['x'], data['position']['y']),
-            level_a=data['level_a'],
-            level_b=data['level_b'],
-            aim=data['aim'],
-            anti_air=data['anti_air'],
-            reload=data['reload'],
-            range=data['range'],
-            damage=data['damage'],
-            bullet_effect=data['bullet_effect'],
+            _type=TowerType(data["type"]),
+            position=Vector2(data["position"]["x"], data["position"]["y"]),
+            level_a=data["level_a"],
+            level_b=data["level_b"],
+            aim=data["aim"],
+            anti_air=data["anti_air"],
+            reload=data["reload"],
+            range=data["range"],
+            damage=data["damage"],
+            bullet_effect=data["bullet_effect"],
         )
 
     def __str__(self) -> str:
@@ -315,16 +300,29 @@ class Tower:
 
 class Enemy:
     """敵人。"""
-    
-    def __init__(self, type: EnemyType, position: Vector2, progress_ratio: float, deploy_cost: int, health: int, max_health: int,
-                 flying: bool, damage: int, max_speed: int, knockback_resist: bool, kill_reward: int,
-                 income_impact: int, cool_down: int = None) -> None:
+
+    def __init__(
+        self,
+        type: EnemyType,
+        position: Vector2,
+        progress_ratio: float,
+        deploy_cost: int,
+        health: int,
+        max_health: int,
+        flying: bool,
+        damage: int,
+        max_speed: int,
+        knockback_resist: bool,
+        kill_reward: int,
+        income_impact: int,
+        cool_down: int = None,
+    ) -> None:
         self.type = type
         """敵人型別。"""
 
         self.position = position
         """敵人位置。"""
-        
+
         self.progress_ratio = progress_ratio
         """敵人走完的路程比例。"""
 
@@ -333,7 +331,7 @@ class Enemy:
 
         self.health = health
         """敵人當前生命值。"""
-        
+
         self.max_health = max_health
         """敵人最大生命值。"""
 
@@ -358,23 +356,22 @@ class Enemy:
         self.cool_down = cool_down
         """派兵時間間隔。"""
 
-
     @classmethod
-    def from_dict(cls, data: dict) -> 'Enemy':
+    def from_dict(cls, data: dict) -> "Enemy":
         return cls(
-            type=EnemyType(data['type']),
-            position=Vector2(data['position']['x'], data['position']['y']),
-            progress_ratio=data.get('progress_ratio'),
-            deploy_cost=data.get('deploy_cost'),
-            income_impact=data.get('income_impact'),
-            health=data.get('health'),
-            max_health=data.get('max_health'),
-            damage=data.get('damage'),
-            max_speed=data.get('max_speed'),
-            flying=data.get('flying'),
-            knockback_resist=data.get('knockback_resist'),
-            kill_reward=data.get('kill_reward'),
-            cool_down=data.get('cool_down', 'none')
+            type=EnemyType(data["type"]),
+            position=Vector2(data["position"]["x"], data["position"]["y"]),
+            progress_ratio=data.get("progress_ratio"),
+            deploy_cost=data.get("deploy_cost"),
+            income_impact=data.get("income_impact"),
+            health=data.get("health"),
+            max_health=data.get("max_health"),
+            damage=data.get("damage"),
+            max_speed=data.get("max_speed"),
+            flying=data.get("flying"),
+            knockback_resist=data.get("knockback_resist"),
+            kill_reward=data.get("kill_reward"),
+            cool_down=data.get("cool_down", "none"),
         )
 
     def __str__(self) -> str:
@@ -382,4 +379,3 @@ class Enemy:
 
     def __repr__(self) -> str:
         return self.__str__()
-

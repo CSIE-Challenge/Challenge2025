@@ -1,10 +1,7 @@
-import sys, os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
 import time
-import api
+import api_importer as api
 
-agent = api.GameClient(7749, "TOKEN")
+agent = api.GameClient(7749, "350a5458")
 
 while True:
     print(agent.get_scores(True))
