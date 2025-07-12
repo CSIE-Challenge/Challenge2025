@@ -15,11 +15,17 @@ const INTEREST_RATE := 1.02
 @export var spawner: Spawner
 @export var status_panel: TextureRect
 
-var player_selection: IndividualPlayerSelection = null
-var score: int = 0
+# Various statistics
+var score := 0
+var kill_count := 0
+var money_earned := 0
+var tower_built := 0
+var enemy_sent := 0
+var api_called := 0
+
 var money: int = 100
 var income_per_second = 10
-var kill_cnt = 0
+var player_selection: IndividualPlayerSelection = null
 var income_rate: int = 1
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
@@ -85,7 +91,9 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
-	money += int(tower.building_cost * DEPRECIATION_RATE) if depreciation else tower.building_cost
+	money += (
+		(tower.building_cost * DEPRECIATION_RATE) as int if depreciation else tower.building_cost
+	)
 	tower.queue_free()
 	if is_instance_valid(tower_ui):
 		tower_ui.queue_free()
@@ -110,6 +118,7 @@ func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	built_towers[cell_pos] = tower
 	self.add_child(tower)
 	tower.enable(global_pos, map)
+	tower_built += 1
 
 	money -= tower.building_cost
 	built_towers[cell_pos] = tower
@@ -154,16 +163,22 @@ func _handle_tower_selection(event: InputEvent) -> void:
 
 
 func _on_constant_income_timer_timeout() -> void:
-	money = int(money + income_rate * income_per_second)
+	var next_money = (money + income_rate * income_per_second) as int
+	money_earned += next_money - money
+	money = next_money
 
 
 func _on_interest_timer_timeout() -> void:
-	money = int(money * INTEREST_RATE)
+	var next_money = (money * INTEREST_RATE) as int
+	money_earned += next_money - money
+	money = next_money
 
 
 func on_subsidization(subsidy) -> void:
 	if score < op_game.score:
-		money = money + subsidy
+		var next_money = money + subsidy
+		money_earned += next_money - money
+		money = next_money
 
 
 #endregion
@@ -203,6 +218,7 @@ func _on_enemy_spawn(unit_data: Dictionary) -> void:
 
 
 func _on_enemy_summon(unit_data: Dictionary) -> void:
+	op_game.enemy_sent += 1
 	_deploy_enemy(_initialize_enemy_from_data(unit_data), EnemySource.OPPONENT)
 
 

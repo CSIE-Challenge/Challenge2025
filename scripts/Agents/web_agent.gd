@@ -148,6 +148,7 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 				"[Receive Command] Error: the game is not running"
 			]
 		else:
+			game_self.api_called += 1
 			response = _command_handlers[command_id].handle(command)
 			response.push_front(request_id)
 
