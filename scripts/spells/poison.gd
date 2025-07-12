@@ -10,9 +10,9 @@ static var metadata: Dictionary = {
 		"cooldown": 60,
 		"cost": 0,
 		"target": true,
-		"radius": 100,
+		"radius": 50,
 		"trigger_interval": 0.5,
-		"trigger_damage": 3,
+		"trigger_damage": 20,
 	}
 }
 var game: Game

@@ -25,7 +25,7 @@ enum EnemyType {
 
 var game: Game
 var path_follow: PathFollow2D
-var knockback_distance: int = 50
+var knockback_distance: int = 25
 var source: Game.EnemySource
 var health: int:
 	get:
@@ -70,9 +70,9 @@ func _on_area_entered(bullet: Bullet) -> void:
 
 	match bullet.effect:
 		bullet.Effect.FREEZE:
-			freeze(0.6)
+			freeze(0.5)
 		bullet.Effect.DEEP_FREEZE:
-			freeze(0.3)
+			freeze(0.25)
 		bullet.Effect.KNOCKBACK:
 			knockback(false)
 		bullet.Effect.FAR_KNOCKBACK:

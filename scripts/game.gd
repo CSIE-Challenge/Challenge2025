@@ -23,9 +23,9 @@ var tower_built := 0
 var enemy_sent := 0
 var api_called := 0
 
-var money: int = 100
-var income_per_second = 10
 var player_selection: IndividualPlayerSelection = null
+var money: int = 300
+var income_per_second = 50
 var income_rate: int = 1
 var chat_name_color: String = "ffffff"
 var built_towers: Dictionary = {}
@@ -205,6 +205,7 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	enemy.flying = stats.flying
 	enemy.knockback_resist = stats.knockback_resist
 	enemy.kill_reward = stats.kill_reward
+	enemy.summon_cooldown = stats.cooldown
 	if enemy.flying:
 		enemy.collision_layer = 4
 		enemy.collision_mask = 8

@@ -42,12 +42,11 @@ collision_mask = 0
 script = ExtResource("1_e6lh2")
 type = 3
 level_a = 3
-building_cost = 560
+building_cost = 2800
 auto_aim = false
 bullet_scene = ExtResource("2_e6lh2")
-reload_seconds = 1.0
 aim_range = 400.0
-damage = 8
+damage = 80
 
 [node name="Tower" type="Node2D" parent="."]
 

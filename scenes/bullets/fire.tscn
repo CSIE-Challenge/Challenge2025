@@ -6,7 +6,7 @@
 load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ycnnj"]
-radius = 7.0
+radius = 2.0
 
 [node name="Fire" type="Area2D"]
 collision_layer = 2
@@ -19,9 +19,12 @@ movement_speed = 0.0
 damage = 4
 lifespan_seconds = 0
 effect = 1
+effect_duration = 1
+effect_interval = 0.3
 
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708
+scale = Vector2(0.26, 0.26)
 texture = SubResource("CompressedTexture2D_n5hp2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
