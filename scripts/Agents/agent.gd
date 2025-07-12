@@ -472,6 +472,11 @@ func _get_chat_history(_num: int) -> Array:
 	return [StatusCode.OK, history]
 
 
+func _set_chat_name_color(_color: String) -> Array:
+	print("[SetColor] Get request")
+	return [StatusCode.OK]
+
+
 #endregion
 
 #regionmisc
@@ -491,8 +496,8 @@ func _is_available_name(_name: String) -> bool:
 	return true
 
 
-func _set_name_and_color(_name: String, _color: String) -> Array:
-	print("[SetNameAndColor] Get request")
+func _set_name(_name: String) -> Array:
+	print("[SetName] Get request")
 	print(len(_name))
 	if len(_name) > 10 or not _is_available_name(_name):
 		return [StatusCode.ILLEGAL_ARGUMENT]

@@ -24,9 +24,10 @@ enum CommandType {
 	GET_EFFECTIVE_SPELLS = 304,
 	SEND_CHAT = 401,
 	GET_CHAT_HISTORY = 402,
+	SET_CHAT_NAME_COLOR = 403,
 	PIXELCAT = 501,
 	GET_DEVS = 502,
-	SET_NAME_AND_COLOR = 503
+	SET_NAME = 503
 }
 
 
@@ -89,9 +90,8 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_SPELL_COST, [TYPE_INT], _get_spell_cost),
 		CommandHandler.new(CommandType.SEND_CHAT, [TYPE_STRING], _send_chat),
 		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history),
-		CommandHandler.new(
-			CommandType.SET_NAME_AND_COLOR, [TYPE_STRING, TYPE_STRING], _set_name_and_color
-		),
+		CommandHandler.new(CommandType.SET_CHAT_NAME_COLOR, [TYPE_STRING], _set_chat_name_color),
+		CommandHandler.new(CommandType.SET_NAME, [TYPE_STRING], _set_name),
 	]
 	for handler in handlers:
 		if _command_handlers.has(handler.command_id):

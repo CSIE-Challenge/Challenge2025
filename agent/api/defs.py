@@ -23,9 +23,10 @@ class CommandType(IntEnum):
     GET_EFFECTIVE_SPELLS = 304
     SEND_CHAT = 401
     GET_CHAT_HISTORY = 402
+    SET_CHAT_NAME_COLOR = 403
     PIXELCAT = 501
     GET_DEVS = 502
-    SET_NAME_AND_COLOR = 503
+    SET_NAME = 503
 
 
 class TerrainType(IntEnum):
