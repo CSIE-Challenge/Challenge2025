@@ -55,6 +55,12 @@ class EnemyType(IntEnum):
     WIGGLER = 6
 
 
+class ChatSource(IntEnum):
+    SYSTEM = 0
+    PLAYER_SELF = 1
+    PLAYER_OTHER = 2
+
+
 class SpellType(IntEnum):
     POISON = 1
     DOUBLE_INCOME = 2

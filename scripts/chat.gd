@@ -1,10 +1,14 @@
+class_name Chat
 extends TextureRect
+
+enum ChatSource { SYSTEM, PLAYER_SELF, PLAYER_OTHER }
 
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 
 var always_visible: bool = false
 
 
+# sender id: 0 = system, 1 = left player (1p), 2 = right player (2p)
 func send_chat_with_sender(
 	sender_id: int, chat_name_color: String, player_name: String, text: String
 ) -> void:
@@ -28,7 +32,7 @@ func _on_switch_pressed() -> void:
 		self.visible = false
 
 
-func get_history(num: int) -> Array:
+func get_history(player_id: int, num: int) -> Array:
 	var container = $MarginContainer/ScrollContainer/VBoxContainer
 	var msgs: Array = []
 	var all_msgs: Array = container.get_children()
@@ -37,6 +41,13 @@ func get_history(num: int) -> Array:
 		var box = all_msgs[-i]
 		var sender_id = int(box.get_meta("sender"))
 		var label = box.get_node("MarginContainer/RichTextLabel")
+		match sender_id:
+			0:
+				sender_id = ChatSource.SYSTEM
+			player_id:
+				sender_id = ChatSource.PLAYER_SELF
+			_:
+				sender_id = ChatSource.PLAYER_OTHER
 		msgs.append([sender_id, label.text])
 
 	return msgs

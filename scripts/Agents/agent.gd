@@ -475,8 +475,7 @@ func _get_chat_history(_num: int) -> Array:
 	if chat_node == null:
 		print("[Error] TEXTBOX_SCENE not loaded")
 		return [StatusCode.INTERNAL_ERR, false]
-
-	var history = chat_node.get_history(_num)
+	var history = chat_node.get_history(player_id, _num)
 	return [StatusCode.OK, history]
 
 
@@ -506,7 +505,7 @@ func _set_name(_name: String) -> Array:
 	print("[SetName] Get request")
 	print(len(_name))
 	if len(_name) > 10 or not _is_available_name(_name):
-		return [StatusCode.ILLEGAL_ARGUMENT]
+		return [StatusCode.ILLEGAL_ARGUMENT, "Name is too long"]
 
 	_get_screen_name_label().text = _name
 	game_self.player_selection.get_node("PlayerIdentifierLabel").text = _name
