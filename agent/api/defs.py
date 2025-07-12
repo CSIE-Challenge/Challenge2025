@@ -229,8 +229,8 @@ class Tower:
     """防禦塔。"""
     
     def __init__(self, _type: TowerType, position: Vector2, level_a: int, level_b: int, aim: bool = True, 
-                 anti_air: bool = False, bullet_number: int = 1, reload: int = 60, 
-                 range: int = 100, damage: int = 10, bullet_effect: str = 'none') -> None:
+                 anti_air: bool = False, reload: int = 60, range: int = 100, damage: int = 10,
+                 bullet_effect: str = 'none') -> None:
         self.type = _type
         """塔的型別，見class TowerType"""
 
@@ -256,9 +256,6 @@ class Tower:
 
         self.anti_air = anti_air
         """是否能攻擊空中單位。"""
-
-        self.bullet_number = bullet_number
-        """每次攻擊的子彈數量。"""
 
         self.reload = reload
         """每分鐘攻擊次數。"""
@@ -291,7 +288,6 @@ class Tower:
             level_b=data['level_b'],
             aim=data['aim'],
             anti_air=data['anti_air'],
-            bullet_number=data['bullet_number'],
             reload=data['reload'],
             range=data['range'],
             damage=data['damage'],

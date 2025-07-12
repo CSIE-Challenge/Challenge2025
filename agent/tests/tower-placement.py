@@ -18,18 +18,19 @@ place_towers(TowerType.FORT, 13, 8)
 place_towers(TowerType.ICE_LUIGI, 11, 13)
 place_towers(TowerType.SHY_GUY, 12, 13)
 
+# exit(0)
+
 towers = api.get_all_towers(True)
 if isinstance(towers, ApiException):
     print(repr(towers))
 else:
     print(f"{len(towers)} towers")
     for tower in towers:
-        print(f"{tower.position} Tower {tower.type.name}:")
+        print(f"{tower.position} Tower {tower.type.name}: {repr(tower)}")
         # print(f"    level_a = {tower.level_a}")
         # print(f"    level_b = {tower.level_b}")
         # print(f"    aim = {tower.aim}")
         # print(f"    anti_air = {tower.anti_air}")
-        # print(f"    bullet_number = {tower.bullet_number}")
         # print(f"    reload = {tower.reload}")
         # print(f"    range = {tower.range}")
         # print(f"    damage = {tower.damage}")

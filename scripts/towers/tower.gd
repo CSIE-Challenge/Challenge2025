@@ -128,7 +128,6 @@ func to_dict(coord: Vector2i) -> Dictionary:
 	dict["level_b"] = level_b
 	dict["aim"] = auto_aim
 	dict["anti_air"] = anti_air
-	dict["bullet_number"] = 1
 	dict["reload"] = reload_seconds
 	dict["range"] = aim_range
 	dict["damage"] = damage
