@@ -213,6 +213,7 @@ func _get_system_path(_fly: bool) -> Array:
 	while t < length:
 		var pos: Vector2 = curve.sample_baked(t)
 		var cell: Vector2i = map.global_to_cell(map.local_to_global(pos))
+		print(cell)
 		if 1 <= cell[0] and cell[0] <= 14 and 1 <= cell[1] and cell[1] <= 19:
 			if cell not in sys_paths[index]:
 				sys_paths[index].append(cell)
@@ -253,7 +254,6 @@ func _get_opponent_path(_fly: bool) -> Array:
 
 	var end_pos: Vector2 = curve.sample_baked(length)
 	var end_cell: Vector2i = map.global_to_cell(map.local_to_global(end_pos))
-	print(end_cell)
 	if end_cell not in opp_paths[index]:
 		opp_paths[index].append(end_cell)
 	return [StatusCode.OK, opp_paths[index]]

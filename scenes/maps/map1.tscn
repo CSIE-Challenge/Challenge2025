@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=4 uid="uid://cbxbq3tqvvn8j"]
 
-[ext_resource type="Script" uid="uid://djlm6hjsn4qss" path="res://scripts/map.gd" id="1_f488b"]
+[ext_resource type="Script" path="res://scripts/map.gd" id="1_f488b"]
 [ext_resource type="Texture2D" uid="uid://b8hkqaed5k2dv" path="res://assets/maps/Map1.png" id="2_7lk03"]
 [ext_resource type="Texture2D" uid="uid://cpysa680w80kc" path="res://assets/tiles/tiles.png" id="3_37bq5"]
 
@@ -18,13 +18,13 @@ point_count = 9
 
 [sub_resource type="Curve2D" id="Curve2D_gldc4"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 149, -1, 0, 0, 0, 0, 595, 842)
+"points": PackedVector2Array(0, 0, 0, 0, 149, -1, 0, 0, 0, 0, 603, 850)
 }
 point_count = 2
 
 [sub_resource type="Curve2D" id="Curve2D_0cso3"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 24, 451, 0, 0, 0, 0, 599, 848)
+"points": PackedVector2Array(0, 0, 0, 0, 24, 451, 0, 0, 0, 0, 608, 856)
 }
 point_count = 2
 

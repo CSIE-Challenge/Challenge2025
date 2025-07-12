@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://m5pri5w1yw26"]
 
-[ext_resource type="Script" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_lbtex"]
+[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_lbtex"]
 [ext_resource type="PackedScene" uid="uid://cifri0pqvayi6" path="res://scenes/bullets/fireball_2b.tscn" id="2_w5s8d"]
 [ext_resource type="Texture2D" uid="uid://b77p5vt1t0gpf" path="res://pixel_art/tower/FireMarioStand.png" id="3_w5s8d"]
 [ext_resource type="Texture2D" uid="uid://b47ltcag6vqkv" path="res://pixel_art/tower/FireMarioPrepare.png" id="4_rei8k"]
