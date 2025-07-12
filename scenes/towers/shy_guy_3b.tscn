@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ddc73100y5t64" path="res://pixel_art/tower/ShyGuyPrepare.png" id="4_eut8s"]
 [ext_resource type="Texture2D" uid="uid://bym1xfjew7tgo" path="res://pixel_art/tower/ShyGuyAttack.png" id="5_40np8"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_3hk4r"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_s5vor"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -17,10 +17,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_40np8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_s5vor")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -46,7 +49,7 @@ damage = 4
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_3hk4r")
+sprite_frames = SubResource("SpriteFrames_s5vor")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 position = Vector2(17.9257, -20.4866)

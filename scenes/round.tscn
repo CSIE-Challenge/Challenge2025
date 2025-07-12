@@ -9,10 +9,10 @@
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
 [ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scripts/chat.gd" id="5_vxv1r"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
-[ext_resource type="Texture2D" uid="uid://bvlbsdkpegbiw" path="res://assets/ui/game-status.png" id="6_ojwvf"]
+[ext_resource type="Texture2D" uid="uid://m13gswneptc" path="res://assets/ui/game-status.png" id="6_ojwvf"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
-[ext_resource type="Texture2D" uid="uid://dp2dc15q5igfw" path="res://assets/ui/shop.png" id="8_p5kuw"]
-[ext_resource type="Texture2D" uid="uid://cmtdm1uj8hu0a" path="res://assets/ui/chat.png" id="11_i86cr"]
+[ext_resource type="Texture2D" uid="uid://dpb6xajj515sy" path="res://assets/ui/shop.png" id="8_p5kuw"]
+[ext_resource type="Texture2D" uid="uid://btahr8i011mlt" path="res://assets/ui/chat.png" id="11_i86cr"]
 
 [node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar", "game_1p", "game_2p")]
 layout_mode = 3
@@ -133,6 +133,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="TabContainer" type="TabContainer" parent="Screen/Bottom/Mid/ShopAndChat"]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -140,10 +141,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 tabs_visible = false
 
 [node name="Shop" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer" node_paths=PackedStringArray("options_container")]
+visible = false
 layout_mode = 2
 texture = ExtResource("8_p5kuw")
 script = ExtResource("4_snxki")
@@ -211,7 +213,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Chat" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
-visible = false
 layout_mode = 2
 texture = ExtResource("11_i86cr")
 script = ExtResource("5_vxv1r")

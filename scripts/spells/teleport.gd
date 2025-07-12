@@ -47,6 +47,7 @@ func activate_effect(global_pos: Vector2):
 
 	# Start timers
 	cooldown_timer.wait_time = stats.cooldown
+	is_on_cooldown = true
 	cooldown_timer.start()
 
 

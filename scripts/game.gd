@@ -25,7 +25,8 @@ var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
 var op_game: Game
-var _map: Map = null
+var enemy_cooldown: Dictionary[int, SceneTreeTimer] = {}
+var map: Map = null
 var _enemy_scene_cache = {}
 
 
@@ -36,8 +37,9 @@ func set_controller(_player_selection: IndividualPlayerSelection) -> void:
 
 
 func set_map(map_scene: PackedScene):
-	_map = map_scene.instantiate()
-	add_child(_map)
+	map = map_scene.instantiate()
+	add_child(map)
+	map.game = self
 
 
 func _ready() -> void:
@@ -79,7 +81,7 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 			return false
 	if money < tower.building_cost:
 		return false
-	return _map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
+	return map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
@@ -87,7 +89,7 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
 	tower.queue_free()
 	if is_instance_valid(tower_ui):
 		tower_ui.queue_free()
-	var cell_pos = _map.global_to_cell(tower.global_position)
+	var cell_pos = map.global_to_cell(tower.global_position)
 	built_towers.erase(cell_pos)
 
 
@@ -104,10 +106,10 @@ func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 		)
 		_on_tower_sold(previous_tower, null, depreciation)
 
-	var global_pos = _map.cell_to_global(cell_pos)
+	var global_pos = map.cell_to_global(cell_pos)
 	built_towers[cell_pos] = tower
 	self.add_child(tower)
-	tower.enable(global_pos, _map)
+	tower.enable(global_pos, map)
 
 	money -= tower.building_cost
 	built_towers[cell_pos] = tower
@@ -123,7 +125,7 @@ func _on_buy_tower(tower_scene: PackedScene):
 	if previewer != null:
 		self.remove_child(previewer)
 		previewer.free()
-	previewer = Previewer.new(tower, preview_color_callback, _map, true)
+	previewer = Previewer.new(tower, preview_color_callback, map, true)
 	previewer.selected.connect(self.place_tower.bind(tower))
 	self.add_child(previewer)
 
@@ -140,7 +142,7 @@ func _handle_tower_selection(event: InputEvent) -> void:
 		event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed
 	):
 		return
-	var clicked_cell = _map.global_to_cell(get_global_mouse_position())
+	var clicked_cell = map.global_to_cell(get_global_mouse_position())
 	if built_towers.has(clicked_cell):
 		_select_tower(built_towers[clicked_cell])
 		get_viewport().set_input_as_handled()
@@ -179,13 +181,12 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 
 	var enemy: Enemy = _enemy_scene_cache[scene_path].instantiate()
 	var stats: Dictionary = unit_data.get("stats", {})
+	enemy.type = stats.type
 	enemy.income_impact = stats.income_impact
 	enemy.max_health = stats.max_health
 	enemy.max_speed = stats.max_speed
 	enemy.damage = stats.damage
 	enemy.flying = stats.flying
-	enemy.armor = stats.armor
-	enemy.shield = stats.shield
 	enemy.knockback_resist = stats.knockback_resist
 	enemy.kill_reward = stats.kill_reward
 	if enemy.flying:
@@ -215,10 +216,25 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	var path: Path2D
 	match source:
 		EnemySource.SYSTEM:
-			path = _map.flying_system_path if enemy.flying else _map.system_path
+			path = map.flying_system_path if enemy.flying else map.system_path
 		EnemySource.OPPONENT:
-			path = _map.flying_opponent_path if enemy.flying else _map.opponent_path
+			enemy_cooldown[enemy.type] = get_tree().create_timer(enemy.summon_cooldown)
+			enemy_cooldown[enemy.type].timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
+			path = map.flying_opponent_path if enemy.flying else map.opponent_path
 	path.add_child(enemy.path_follow)
+
+
+func get_all_enemies() -> Array:
+	var list: Array = []
+	for path in map.system_path.get_children():
+		list.push_back(path.get_children()[0])
+	for path in map.opponent_path.get_children():
+		list.push_back(path.get_children()[0])
+	return list
+
+
+func _enemy_cooldown_ended(enemy_type: Enemy.EnemyType):
+	enemy_cooldown.erase(enemy_type)
 
 
 #endregion
@@ -242,14 +258,14 @@ func _on_buy_spell(spell) -> void:
 		if previewer != null:
 			previewer.free()
 
-		previewer = Previewer.new(preview_spell_node, preview_color_callback, _map, true)
+		previewer = Previewer.new(preview_spell_node, preview_color_callback, map, true)
 		previewer.selected.connect(self._place_spell.bind(original_spell_node))
 		self.add_child(previewer)
 		preview_spell_node.range_indicator.show()
 
 
 func _place_spell(cell_pos: Vector2i, spell_node) -> void:
-	var global_pos: Vector2 = _map.cell_to_global(cell_pos)
+	var global_pos: Vector2 = map.cell_to_global(cell_pos)
 	spell_node.cast_spell(global_pos)
 
 

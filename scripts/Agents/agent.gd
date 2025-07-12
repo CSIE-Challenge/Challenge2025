@@ -1,7 +1,6 @@
 class_name Agent
 extends Node
-enum GameStatus { PREPARE, START, READY, END }
-enum AgentType { HUMAN, AI, NIL }
+enum GameStatus { PREPARING = 0, RUNNING = 1, PAUSED = 2 }
 # TODO: Remove BASIC legacy
 enum TowerType { BASIC, DONKEY_KONG, FIRE_MARIO, FORT, ICE_LUIGI, SHY_GUY }
 enum EnemyType {
@@ -67,8 +66,7 @@ const TOWER_SCENES = [
 ]
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
-var type: AgentType = AgentType.NIL
-var game_status: GameStatus = GameStatus.PREPARE
+
 var money: int
 var score: int
 var player_id: int
@@ -86,6 +84,19 @@ func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
 	game_self = _game_self
 	game_other = _game_other
 
+
+#region General
+
+
+func _get_game_status() -> Array:
+	if not game_running:
+		return [StatusCode.OK, GameStatus.PREPARING]
+	if get_tree().paused:
+		return [StatusCode.OK, GameStatus.PAUSED]
+	return [StatusCode.OK, GameStatus.RUNNING]
+
+
+#endregion
 
 #region MapInfo
 
@@ -111,15 +122,11 @@ func _get_all_terrain() -> Array:
 	return [StatusCode.OK, all_terrain]
 
 
-func _get_terrain(_owned: bool, _coord: Vector2i) -> Array:
+func _get_terrain(_coord: Vector2i) -> Array:
 	print("[GetTerrain] Get request")
-	var map
-	if _owned == true:
-		map = game_self.get_node("Map")
-	else:
-		map = game_other.get_node("Map")
+	var map = game_self.get_node("Map")
 	if not map:
-		return [StatusCode.INTERNAL_ERR, "[GetAllTerrain] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "[GetTerrain] Error: cannot find map"]
 
 	return [StatusCode.OK, map.get_cell_terrain(_coord)]
 
@@ -183,10 +190,6 @@ func _get_income(_owned: bool) -> Array:
 	else:
 		income = int(game_other.status_panel.find_child("Income").text)
 	return [StatusCode.OK, income]
-
-
-func _get_game_status() -> Array:
-	return [StatusCode.OK, game_status]
 
 
 #endregion
@@ -264,7 +267,7 @@ func _get_tower(_coord: Vector2i) -> Array:
 #region Enemy
 
 
-func _get_enemy_dict(_type: EnemyType) -> Dictionary:
+func _get_unit_dict(_type: EnemyType) -> Dictionary:
 	var enemy_name: Array = [
 		"buzzy_beetle", "goomba", "koopa_jr", "koopa_paratroopa", "koopa", "spiny_shell", "wiggler"
 	]
@@ -275,9 +278,40 @@ func _get_enemy_dict(_type: EnemyType) -> Dictionary:
 
 func _spawn_unit(_type: EnemyType) -> Array:
 	print("[SpawnUnit] Get request")
-	var data = _get_enemy_dict(_type)
-	game_other.summon_enemy.emit(data)
+	var data = _get_unit_dict(_type)
+	if game_other.enemy_cooldown.has(_type):
+		print("[Error] cooldown hasn't finished")
+		return [StatusCode.COMMAND_ERR]
+	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
+		game_other.summon_enemy.emit(data)
+	else:
+		print("[Error] doesn't have enough money")
+		return [StatusCode.COMMAND_ERR]
 	return [StatusCode.OK]
+
+
+func _get_enemy_info(enemy: Area2D) -> Dictionary:
+	var type: EnemyType = enemy.type
+	var data: Dictionary = {}
+	var map = game_self.get_node("Map")
+	if not map:
+		return {}
+
+	data["type"] = type
+	data["income_impact"] = enemy.income_impact
+	data["max_health"] = enemy.max_health
+	data["max_speed"] = enemy.max_speed
+	data["damage"] = enemy.damage
+	data["flying"] = enemy.flying
+	data["knockback_resist"] = enemy.knockback_resist
+	data["kill_reward"] = enemy.kill_reward
+	data["health"] = enemy.health
+	data["progress_ratio"] = enemy.path_follow.progress_ratio
+
+	var pos: Vector2i = map.global_to_cell(enemy.path_follow.global_position)
+	data["position"] = {"x": pos[0], "y": pos[1]}
+	print(data)
+	return data
 
 
 func _get_available_units() -> Array:
@@ -285,9 +319,18 @@ func _get_available_units() -> Array:
 	return [StatusCode.OK]
 
 
-func _get_all_enemies(_center: Vector2i, _radius: float) -> Array:
+func _get_all_enemies() -> Array:
 	print("[GetAllEnemies] Get request")
-	return [StatusCode.OK]
+	var enemies: Array = game_self.get_all_enemies()
+	var enemies_info: Array = []
+
+	for enemy in enemies:
+		var enemy_info: Dictionary = _get_enemy_info(enemy)
+		if enemy_info == {}:
+			return [StatusCode.INTERNAL_ERR, []]
+		enemies_info.push_back(enemy_info)
+
+	return [StatusCode.OK, enemies_info]
 
 
 #endregion
@@ -296,7 +339,7 @@ func _get_all_enemies(_center: Vector2i, _radius: float) -> Array:
 
 
 func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
-	var global_pos: Vector2 = game_self._map.cell_to_global(_coord)
+	var global_pos: Vector2 = game_self.map.cell_to_global(_coord)
 	print("[CastSpell] Get request")
 	var spell_manager: Node = game_self.get_node("SpellManager")
 
@@ -392,23 +435,6 @@ func _get_spell_cost(_type: SpellType) -> Array:
 
 	return [StatusCode.OK, spell_node.metadata.stats.cost]
 
-
-#func _get_effective_spells(_owned: bool) -> Array:
-#	print("[GetEffectiveSpells] Get request")
-#	return [StatusCode.OK]
-#
-#
-#func spell_to_dict(spell_node:Node, type:SpellType) -> dict:
-#	var ret = {}
-#	if type == SpellType.DoubleIncome:
-#		ret["range"] = 0
-#		ret["damage"] = 0
-#	else:
-#		ret["range"] = spell_node.metadata.stats.radius
-#		ret["damage"] = spell_node.metadata.stats.
-#
-#	ret["type"] = type
-#	ret["duration"] = spell_node.metadata.stats.duration
 
 #endregion
 

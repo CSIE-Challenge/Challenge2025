@@ -10,7 +10,12 @@ var pending_peers: Array[PendingPeer] = []
 var authing_peers: Array[WebSocketPeer] = []
 var used_token: Dictionary[String, WebSocketConnection] = {}
 
-#region Server singleton
+#region Server Node Initialization
+
+
+func _init() -> void:
+	# keep accepting new connections when the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func _ready() -> void:
@@ -151,8 +156,11 @@ func auth_connection(ws: WebSocketPeer) -> WebSocketConnection:
 		if used_token.has(token):
 			var conn = used_token[token]
 			if is_instance_valid(conn):
-				ws.send_text("Connection OK. Have Fun!")
-				return conn
+				if not conn.is_client_connected():
+					ws.send_text("Connection OK. Have Fun!")
+					return conn
+				ws.send_text("Already connected.")
+				return null
 	ws.send_text("Authentication failed.")
 	return null
 #endregion

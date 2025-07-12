@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bnjhw6guw63b3" path="res://pixel_art/tower/IceLuigiPrepare.png" id="4_x4v8l"]
 [ext_resource type="Texture2D" uid="uid://co7fm38thq084" path="res://pixel_art/tower/IceLuigiAttack.png" id="5_d84au"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_wbc6e"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_8c1gd"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -17,10 +17,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_d84au")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_8c1gd")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -46,7 +49,7 @@ damage = 4
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_wbc6e")
+sprite_frames = SubResource("SpriteFrames_8c1gd")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 position = Vector2(21.767, -12.8041)

@@ -13,10 +13,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("4_ue8gv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_efhko")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -44,7 +47,7 @@ damage = 9
 sprite_frames = SubResource("SpriteFrames_efhko")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(0, -7.68246)
+position = Vector2(49.936, -7.68246)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

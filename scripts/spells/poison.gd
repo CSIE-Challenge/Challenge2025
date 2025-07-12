@@ -10,9 +10,9 @@ static var metadata: Dictionary = {
 		"cooldown": 60,
 		"cost": 0,
 		"target": true,
-		"radius": 100.0,
+		"radius": 100,
 		"trigger_interval": 0.5,
-		"trigger_damage": 2,
+		"trigger_damage": 3,
 	}
 }
 var game: Game
@@ -49,6 +49,7 @@ func activate_effect(global_pos: Vector2):
 
 	# Start timers
 	cooldown_timer.wait_time = stats.cooldown
+	is_on_cooldown = true
 	cooldown_timer.start()
 
 

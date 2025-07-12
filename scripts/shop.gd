@@ -63,7 +63,10 @@ func _create_unit_options() -> void:
 		var data = unit_data.unit_data_list[unit]
 		var scene = load(data.get("scene_path"))
 		shop_item.callback = func():
-			if building_game.spend(data.stats.deploy_cost, data.stats.income_impact):
+			if (
+				(not opposing_game.enemy_cooldown.has(int(data.stats.type)))
+				and building_game.spend(data.stats.deploy_cost, data.stats.income_impact)
+			):
 				opposing_game.summon_enemy.emit(data)
 		shop_item.display_cost = data.stats.deploy_cost
 		shop_item.display_scene = scene
