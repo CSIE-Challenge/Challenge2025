@@ -23,6 +23,7 @@ var target: Node2D = null
 var enabled: bool = false
 var reload_timer: Timer
 var wait_for_animation_timer: Timer
+var bullet_effect: String  # only used in to_dict
 
 @onready var anime = $Tower/AnimatedSprite2D
 
@@ -36,6 +37,7 @@ func _ready():
 	self.add_child(wait_for_animation_timer)
 	reload_timer.timeout.connect(self._on_reload_timer_timeout)
 	self.z_index = 10  # For effect to be on the ground
+	bullet_effect = bullet_scene.instantiate().get_effect_name()
 
 
 # Take in the map so the the fort can decide which direction to face
@@ -131,4 +133,5 @@ func to_dict(coord: Vector2i) -> Dictionary:
 	dict["reload"] = reload_seconds
 	dict["range"] = aim_range
 	dict["damage"] = damage
+	dict["bullet_effect"] = bullet_effect
 	return dict
