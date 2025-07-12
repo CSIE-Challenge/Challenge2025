@@ -140,7 +140,7 @@ func register_connection() -> WebSocketConnection:
 func update_token(conn: WebSocketConnection, new_token: String) -> void:
 	if conn._token == new_token:
 		return
-	if used_token.has(new_token):
+	if used_token.has(new_token) and is_instance_valid(used_token[new_token]):
 		update_token(used_token[new_token], generate_token())
 	used_token.erase(conn._token)
 	used_token[new_token] = conn
