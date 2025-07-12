@@ -189,12 +189,16 @@ func _get_game_status() -> Array:
 	return [StatusCode.OK, game_status]
 
 
-func _get_system_path() -> Array:
+func _get_system_path(_fly: bool) -> Array:
 	var map: Map = game_self._map
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[GetSystemPath] Error: cannot find map"]
 
-	var curve: Curve2D = map.system_path.curve
+	var curve: Curve2D
+	if _fly:
+		curve = map.flying_system_path.curve
+	else:
+		curve = map.system_path.curve
 	var cells := []
 	var length := curve.get_baked_length()
 	var interval := 2.0
@@ -215,12 +219,16 @@ func _get_system_path() -> Array:
 	return [StatusCode.OK, cells]
 
 
-func _get_opponent_path() -> Array:
+func _get_opponent_path(_fly: bool) -> Array:
 	var map: Map = game_self._map
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[GetSystemPath] Error: cannot find map"]
 
-	var curve: Curve2D = map.opponent_path.curve
+	var curve: Curve2D
+	if _fly:
+		curve = map.flying_opponent_path.curve
+	else:
+		curve = map.opponent_path.curve
 	var cells := []
 	var length := curve.get_baked_length()
 	var interval := 2.0
@@ -236,6 +244,7 @@ func _get_opponent_path() -> Array:
 
 	var end_pos: Vector2 = curve.sample_baked(length)
 	var end_cell: Vector2i = map.global_to_cell(map.local_to_global(end_pos))
+	print(end_cell)
 	if end_cell not in cells:
 		cells.append(end_cell)
 	return [StatusCode.OK, cells]
