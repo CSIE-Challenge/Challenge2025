@@ -41,9 +41,8 @@ type = 1
 building_cost = 80
 anti_air = true
 bullet_scene = ExtResource("2_pjfx8")
-reload_seconds = 1.0
 aim_range = 200.0
-damage = 800
+damage = 4
 
 [node name="Tower" type="Node2D" parent="."]
 

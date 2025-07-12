@@ -15,6 +15,7 @@ script = ExtResource("1_bxmyc")
 is_tracking = false
 aoe_scale = 10.0
 movement_speed = 0.0
+lifespan_seconds = 0.15
 effect = 5
 effect_duration = 0
 effect_interval = 0.0

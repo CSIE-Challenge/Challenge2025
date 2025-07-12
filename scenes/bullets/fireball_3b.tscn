@@ -16,6 +16,8 @@ aoe_scale = 0.0
 shockwave_scene = ExtResource("2_lryqa")
 spanning_speed = 0.262
 effect = 2
+effect_damage = 3
+effect_duration = 2
 
 [node name="Body" type="Sprite2D" parent="."]
 position = Vector2(-2, -7)
