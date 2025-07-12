@@ -72,6 +72,9 @@ var game_self: Game = null
 var game_other: Game = null
 var chat_node: Node = null
 
+var sys_paths: Array = [[], []]
+var opp_paths: Array = [[], []]
+
 
 func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
 	game_running = true
@@ -185,6 +188,72 @@ func _get_income(_owned: bool) -> Array:
 	else:
 		income = int(game_other.status_panel.find_child("Income").text)
 	return [StatusCode.OK, income]
+
+
+func _get_system_path(_fly: bool) -> Array:
+	var map: Map = game_self.map
+	if not map:
+		return [StatusCode.INTERNAL_ERR, "[GetSystemPath] Error: cannot find map"]
+
+	var index = int(_fly)
+	if not sys_paths[index].is_empty():
+		return [StatusCode.OK, sys_paths[index]]
+
+	var curve: Curve2D
+	if _fly:
+		curve = map.flying_system_path.curve
+	else:
+		curve = map.system_path.curve
+	var length := curve.get_baked_length()
+	var interval := 2.0
+	var t := 0.0
+
+	while t < length:
+		var pos: Vector2 = curve.sample_baked(t)
+		var cell: Vector2i = map.global_to_cell(map.local_to_global(pos))
+		if 1 <= cell[0] and cell[0] <= 14 and 1 <= cell[1] and cell[1] <= 19:
+			if cell not in sys_paths[index]:
+				sys_paths[index].append(cell)
+		t += interval
+
+	var end_pos: Vector2 = curve.sample_baked(length)
+	var end_cell: Vector2i = map.global_to_cell(map.local_to_global(end_pos))
+	if end_cell not in sys_paths[index]:
+		sys_paths[index].append(end_cell)
+	return [StatusCode.OK, sys_paths[index]]
+
+
+func _get_opponent_path(_fly: bool) -> Array:
+	var map: Map = game_self.map
+	if not map:
+		return [StatusCode.INTERNAL_ERR, "[GetSystemPath] Error: cannot find map"]
+
+	var index = int(_fly)
+	if not opp_paths[index].is_empty():
+		return [StatusCode.OK, opp_paths[index]]
+
+	var curve: Curve2D
+	if _fly:
+		curve = map.flying_opponent_path.curve
+	else:
+		curve = map.opponent_path.curve
+	var length := curve.get_baked_length()
+	var interval := 2.0
+	var t := 0.0
+
+	while t < length:
+		var pos: Vector2 = curve.sample_baked(t)
+		var cell: Vector2i = map.global_to_cell(map.local_to_global(pos))
+		if 1 <= cell[0] and cell[0] <= 14 and 1 <= cell[1] and cell[1] <= 19:
+			if cell not in opp_paths[index]:
+				opp_paths[index].append(cell)
+		t += interval
+
+	var end_pos: Vector2 = curve.sample_baked(length)
+	var end_cell: Vector2i = map.global_to_cell(map.local_to_global(end_pos))
+	if end_cell not in opp_paths[index]:
+		opp_paths[index].append(end_cell)
+	return [StatusCode.OK, opp_paths[index]]
 
 
 #endregion

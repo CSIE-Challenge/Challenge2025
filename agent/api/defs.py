@@ -13,6 +13,8 @@ class CommandType(IntEnum):
     GET_INCOME = 7
     GET_GAME_STATUS = 8
     GET_TERRAIN = 9
+    GET_SYSTEM_PATH = 10
+    GET_OPPONENT_PATH = 11
     PLACE_TOWER = 101
     GET_ALL_TOWERS = 102
     GET_TOWER = 103
@@ -74,7 +76,7 @@ class TowerType(IntEnum):
     升級可選擇增加攻速、範圍、傷害或改為範圍攻擊。
     """
 
-    DONEKEY_KONG = 3
+    DONKEY_KONG = 3
     """
     森喜剛，原地範圍攻擊（以自身為中心的圓）。  
     升級可選擇擊退效果或瞄準直線攻擊。

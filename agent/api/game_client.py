@@ -186,7 +186,49 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
+    
+    @game_command(CommandType.GET_SYSTEM_PATH, [bool], list[Vector2]) 
+    def get_system_path(self, fly: bool) -> list[Vector2]:
+        """
+        # Get System Path
+        取得系統派兵的路徑。
+        
+        ## Parameters
+        - `fly` (bool): 是否為飛行兵的路徑。
+        
+        ## Returns
+        這個函式返回一個座標陣列，表示系統派兵從起點到終點經過的格點。
+        
+        ## Example
+        ```python
+        system_path = api.get_system_path(False) # 獲取系統派地面兵路徑
+        for cell in system_path:
+            print(f"x:{cell.x}, y:{cell.y}")
+        ```
+        """
+        raise NotImplementedError
 
+    @game_command(CommandType.GET_OPPONENT_PATH, [bool], list[Vector2]) 
+    def get_opponent_path(self, fly: bool) -> list[Vector2]:
+        """
+        # Get Opponent Path
+        取得對手派兵的路徑。
+        
+        ## Parameters
+        - `fly` (bool): 是否為飛行兵的路徑。
+        
+        ## Returns
+        這個函式返回一個座標陣列，表示對手派兵從起點到終點經過的格點。
+        
+        ## Example
+        ```python
+        opp_path = api.get_opponent_path(True) # 獲取對手派飛行兵路徑
+        for cell in opp_path:
+            print(f"x:{cell.x}, y:{cell.y}")
+        ```
+        """
+        raise NotImplementedError
+    
     @game_command(CommandType.PLACE_TOWER, [TowerType, str, Vector2], None)
     def place_tower(self, type: TowerType, level: str, coord: Vector2) -> None:
         """
