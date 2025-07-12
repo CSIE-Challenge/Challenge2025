@@ -1,10 +1,12 @@
 extends Node2D
 
 # TODO: replace names and stats with real data
+var player1_name = "Player 1"
 var player1_score = 11
 var player1_kill_cnt = 4
 var player1_money = 514
 
+var player2_name = "Player 2"
 var player2_score = 19
 var player2_kill_cnt = 19
 var player2_money = 810
@@ -12,19 +14,19 @@ var player2_money = 810
 
 func _ready():
 	# set winner
-	var winner_name = "player1"
+	var winner_name = player1_name
 	if player2_score > player1_score:
-		winner_name = "player2"
+		winner_name = player2_name
 	elif player2_score == player1_score && player2_money > player1_money:
-		winner_name = "player2"
+		winner_name = player2_name
 	$winner_text.text = $winner_text.text.format({"name": winner_name})
 	# set player 1 name
 	var player1_name_str = $player_stats_1.get_node("player_name").text
-	player1_name_str = player1_name_str.format({"name": "player1"})
+	player1_name_str = player1_name_str.format({"name": player1_name})
 	$player_stats_1.get_node("player_name").text = player1_name_str
 	# set player 2 name
 	var player2_name_str = $player_stats_2.get_node("player_name").text
-	player2_name_str = player2_name_str.format({"name": "player2"})
+	player2_name_str = player2_name_str.format({"name": player2_name})
 	$player_stats_2.get_node("player_name").text = player2_name_str
 	# set player 1 stats
 	var player1_stats_str = $player_stats_1.get_node("player_stats").text

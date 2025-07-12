@@ -465,3 +465,23 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
+
+    @game_command(CommandType.SET_NAME_AND_COLOR, [str, str], None)
+    def set_name_and_color(self, name: str, color: str) -> None:
+        """
+        # Set Name and Color
+        設定玩家名稱與顏色
+
+        ## Parameters
+        - `name` (str): 玩家名稱，限制 10 個字元以內。
+        - `color` (str): 表示顏色的十六進位制。
+
+        ## Returns
+        這個函數沒有回傳值。
+
+        ## Example
+        ```python
+        api.set_name_and_color("PixelCat", "#ffffe0") # 設定玩家名稱與顏色
+        ```
+        """
+        raise NotImplementedError

@@ -6,8 +6,9 @@ api = GameClient(7749, "891d429c")
 # print(api.get_all_terrain())
 # print(api.get_terrain(Vector2(4, 4)))
 
-print(api.get_remain_time())
-print(api.get_time_until_next_wave())
+api.set_name_and_color("聒聒", "")
+# print(api.get_remain_time())
+# print(api.get_time_until_next_wave())
 
 # print(api.get_scores(True))
 # print(api.get_scores(False))

@@ -25,6 +25,7 @@ class CommandType(IntEnum):
     GET_CHAT_HISTORY = 402
     PIXELCAT = 501
     GET_DEVS = 502
+    SET_NAME_AND_COLOR = 503
 
 
 class TerrainType(IntEnum):

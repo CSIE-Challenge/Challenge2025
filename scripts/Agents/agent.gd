@@ -471,4 +471,38 @@ func _get_chat_history(_num: int) -> Array:
 	var history = chat_node.get_history(_num)
 	return [StatusCode.OK, history]
 
+
+#endregion
+
+#regionmisc
+
+
+func _is_available_name(_name: String) -> bool:
+	var alp: String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	var count: int = 0
+	for n in _name:
+		if n in alp:
+			count += 1
+		else:
+			count += 2
+	print(count)
+	if count > 10:
+		return false
+	return true
+
+
+func _set_name_and_color(_name: String, _color: String) -> Array:
+	print("[SetNameAndColor] Get request")
+	print(len(_name))
+	if len(_name) > 10 or not _is_available_name(_name):
+		return [StatusCode.ILLEGAL_ARGUMENT]
+
+	if player_id == 1:
+		get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameLeft").text = _name
+	else:
+		get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameRight").text = _name
+	game_self.player_selection.get_node("PlayerIdentifierLabel").text = _name
+
+	return [StatusCode.OK]
+
 #endregion

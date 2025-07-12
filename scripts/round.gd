@@ -92,6 +92,8 @@ func _on_game_timer_timeout():
 	end_scene.player1_score = game_1p.score
 	end_scene.player2_score = game_2p.score
 	# TODO: send real kill count stats
+	end_scene.player1_name = game_1p.player_selection.get_node("PlayerIdentifierLabel").text
+	end_scene.player2_name = game_2p.player_selection.get_node("PlayerIdentifierLabel").text
 	end_scene.player1_kill_cnt = game_1p.kill_cnt
 	end_scene.player2_kill_cnt = game_2p.kill_cnt
 	end_scene.player1_money = game_1p.money
