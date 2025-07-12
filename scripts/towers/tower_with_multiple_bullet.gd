@@ -1,7 +1,9 @@
 class_name TowerWithMultipleBullet
 extends Tower
 
-const SHOOTING_DURATION = 0.4
+const DIVIATE_ANGLES = [
+	0, PI / 6, -PI / 6, PI / 12, -PI / 12, 3 * PI / 12, -3 * PI / 12, PI / 3, -PI / 3
+]
 
 @export var expected_bullet_number: int = 3
 @export var scattering_angle: float = PI / 6
@@ -44,23 +46,12 @@ func _on_reload_timer_timeout() -> void:
 
 
 func _on_fire_bullet() -> void:
-	var bullet_to_shoot: int = roundi(randfn(expected_bullet_number, 3) + 0.5)
-	_spawn_bullet(bullet_to_shoot, SHOOTING_DURATION / bullet_to_shoot)
-
-
-func _spawn_bullet(bullet_left: int, shooting_interval: float) -> void:
-	_refresh_target()
 	if target == null:
 		return
 	var origin: Vector2 = $Tower/Marker2D.global_position
-	var direction: float = (
-		(target.global_position - origin).angle() + randfn(0.0, scattering_angle / 2)
-	)
-	var bullet := bullet_scene.instantiate()
-	self.get_parent().add_child(bullet)
-	bullet.init(origin, direction, target, damage)
-	if bullet_left > 1:
-		shooting_timer.timeout.connect(
-			self._spawn_bullet.bind(bullet_left - 1, shooting_interval), CONNECT_ONE_SHOT
-		)
-		shooting_timer.start(shooting_interval)
+	var direction: float = (target.global_position - origin).angle()
+
+	for i in range(expected_bullet_number):
+		var bullet := bullet_scene.instantiate()
+		self.get_parent().add_child(bullet)
+		bullet.init(origin, direction + DIVIATE_ANGLES[i], target, damage)

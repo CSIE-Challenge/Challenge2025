@@ -12,6 +12,7 @@ collision_mask = 0
 script = ExtResource("1_fpd1q")
 is_tracking = false
 is_anti_air = true
+lifespan_seconds = 1.0
 spanning_speed = 1.047
 
 [node name="Body" type="Sprite2D" parent="."]

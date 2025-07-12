@@ -11,6 +11,7 @@ collision_layer = 10
 collision_mask = 0
 script = ExtResource("1_bj3r6")
 is_anti_air = true
+lifespan_seconds = 0.75
 spanning_speed = 0.262
 
 [node name="Body" type="Sprite2D" parent="."]

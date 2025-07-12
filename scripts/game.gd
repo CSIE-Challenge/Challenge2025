@@ -17,8 +17,8 @@ const INTEREST_RATE := 1.02
 
 var player_selection: IndividualPlayerSelection = null
 var score: int = 0
-var money: int = 100
-var income_per_second = 10
+var money: int = 1000
+var income_per_second = 30
 var kill_cnt = 0
 var income_rate: int = 1
 var built_towers: Dictionary = {}
@@ -189,6 +189,7 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	enemy.flying = stats.flying
 	enemy.knockback_resist = stats.knockback_resist
 	enemy.kill_reward = stats.kill_reward
+	enemy.summon_cooldown = stats.cooldown
 	if enemy.flying:
 		enemy.collision_layer = 4
 		enemy.collision_mask = 8

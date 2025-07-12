@@ -6,7 +6,7 @@
 load_path = "res://.godot/imported/tile_0001.png-fef6977aebcbecb1ff13f6940dc01e86.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vsod2"]
-radius = 7.28011
+radius = 4.12311
 
 [node name="Deep_freeze" type="Area2D"]
 collision_layer = 10
@@ -18,11 +18,13 @@ is_penetrating = true
 aoe_scale = 10.0
 movement_speed = 0.0
 damage = 0
-lifespan_seconds = 0
+lifespan_seconds = 0.02
 effect = 4
+effect_duration = 2
 
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708
+scale = Vector2(0.5, 0.5)
 texture = SubResource("CompressedTexture2D_vsod2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
