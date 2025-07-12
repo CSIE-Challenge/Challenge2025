@@ -2,6 +2,7 @@ import asyncio
 import os
 import re
 import time
+import inspect
 from typing import Any, Callable, cast
 
 from api.defs import *
@@ -193,7 +194,6 @@ class GameClientBase:
                 request_id = self.sent_command_count
                 try:
                     self.__check_arg_types(command_id, arg_types, list(args))
-                    self.__wait_for_next_command()
                     wrapped_args = [request_id, int(command_id), *args]
                     asyncio.get_event_loop().run_until_complete(self.__ws_send_gdvars(wrapped_args))
                     self.last_command = time.time_ns()
@@ -238,8 +238,19 @@ class GameClientBase:
 # decorator for command handlers
 # the decorated function itself is just a dummy function that never gets called
 def game_command(command_id: CommandType, arg_types: list[type], inner_ret_type: type | None) -> Callable:
-    def decorator(_: Callable) -> Callable:
+    def decorator(fn: Callable) -> Callable:
+        sig = inspect.signature(fn)
         def wrapped(client: GameClientBase, *args) -> Any:
-            return client.await_send_command(command_id, list(args), arg_types, inner_ret_type)
+            full_args = list(args)
+            parameters = list(sig.parameters.values())[1:]
+            for i in range(len(full_args), len(parameters)):
+                param = parameters[i]
+                if param.default is inspect.Parameter.empty:
+                    raise ApiException(command_id, StatusCode.ILLFORMED_COMMAND,
+                                       f"{command_id.name} expected argument {param.name}")
+
+                full_args.append(param.default)
+
+            return client.await_send_command(command_id, list(full_args), arg_types, inner_ret_type)
         return wrapped
     return decorator
