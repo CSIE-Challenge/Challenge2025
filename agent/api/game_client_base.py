@@ -192,6 +192,7 @@ class GameClientBase:
                 request_id = self.sent_command_count
                 try:
                     self.__check_arg_types(command_id, arg_types, list(args))
+                    self.__wait_for_next_command()
                     wrapped_args = [request_id, int(command_id), *args]
                     asyncio.get_event_loop().run_until_complete(self.__ws_send_gdvars(wrapped_args))
                     self.last_command = time.time_ns()
