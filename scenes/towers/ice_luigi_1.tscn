@@ -41,7 +41,6 @@ type = 2
 building_cost = 80
 anti_air = true
 bullet_scene = ExtResource("2_vpyy1")
-reload_seconds = 1.0
 aim_range = 200.0
 
 [node name="Tower" type="Node2D" parent="."]

@@ -138,3 +138,23 @@ func _on_respawn() -> void:
 func _on_effect_end() -> void:
 	respawn_effect_timer.stop()
 	self.queue_free()
+
+
+func get_effect_name() -> String:
+	var result: String
+	match effect:
+		Effect.NONE:
+			result = "none"
+		Effect.FIRE:
+			result = "fire"
+		Effect.HELLFIRE:
+			result = "hellfire"
+		Effect.FREEZE:
+			result = "freeze"
+		Effect.DEEP_FREEZE:
+			result = "deep_freeze"
+		Effect.KNOCKBACK:
+			result = "knockback"
+		Effect.FAR_KNOCKBACK:
+			result = "far_knockback"
+	return result

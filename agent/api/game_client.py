@@ -232,13 +232,14 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_TOWER, [Vector2], Tower)
-    def get_tower(self, coord: Vector2) -> Tower:
+    @game_command(CommandType.GET_TOWER, [bool, Vector2], Tower)
+    def get_tower(self, owned: bool, coord: Vector2) -> Tower:
         """
         # Get Tower
         取得自己的地圖中指定位置上塔的資訊。
 
         ## Parameters
+        - `owned` (bool): 查詢自己 (True) 或對手 (False) 的塔。
         - `coord` (Vector2): 要查詢的位置。
 
         ## Returns
@@ -250,7 +251,23 @@ class GameClient(GameClientBase):
         print(tower)
         """
         raise NotImplementedError
+    
+    @game_command(CommandType.SELL_TOWER, [Vector2], None)
+    def sell_tower(self, coord: Vector2) -> None:
+        """
+        # Sell Tower
+        賣掉地圖中指定位置上的一座防禦塔。
 
+        ## Parameters
+        - `coord` (Vector2): 要賣掉的防禦塔的位置。
+
+        ## Returns
+        這個函數沒有返回值。如果成功的話，指定位置上的防禦塔會被賣掉。
+
+        ## Example
+        api.sell_tower(Vector2(5, 10))  # 賣掉 (5, 10) 的位置上的防禦塔
+        """
+        raise NotImplementedError
 
     @game_command(CommandType.SPAWN_UNIT, [EnemyType], None)
     def spawn_unit(self, type: EnemyType) -> None:
