@@ -38,11 +38,11 @@ else:
         # print(f"    damage = {tower.damage}")
         # print(f"    bullet_effect = {tower.bullet_effect}")
 
-print(f"( 11,   9) -- {repr(api.get_tower(Vector2( 11,   9)))}")
-print(f"( 13,  10) -- {repr(api.get_tower(Vector2( 13,  10)))}")
-print(f"( 13,  14) -- {repr(api.get_tower(Vector2( 13,  14)))}")  # empty
-print(f"(100, 100) -- {repr(api.get_tower(Vector2(100, 100)))}")  # out of bound
-print(f"( -1,  -1) -- {repr(api.get_tower(Vector2( -1,  -1)))}")  # out of bound
+print(f"( 11,   9) -- {repr(api.get_tower(True, Vector2( 11,   9)))}")
+print(f"( 13,  10) -- {repr(api.get_tower(True, Vector2( 13,  10)))}")
+print(f"( 13,  14) -- {repr(api.get_tower(True, Vector2( 13,  14)))}")  # empty
+print(f"(100, 100) -- {repr(api.get_tower(True, Vector2(100, 100)))}")  # out of bound
+print(f"( -1,  -1) -- {repr(api.get_tower(True, Vector2( -1,  -1)))}")  # out of bound
 
 sleep(5)
 

@@ -77,7 +77,7 @@ func _register_command_handlers() -> void:
 			CommandType.PLACE_TOWER, [TYPE_INT, TYPE_STRING, TYPE_VECTOR2I], _place_tower
 		),
 		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
-		CommandHandler.new(CommandType.GET_TOWER, [TYPE_VECTOR2I], _get_tower),
+		CommandHandler.new(CommandType.GET_TOWER, [TYPE_BOOL, TYPE_VECTOR2I], _get_tower),
 		CommandHandler.new(CommandType.SELL_TOWER, [TYPE_VECTOR2I], _sell_tower),
 		CommandHandler.new(CommandType.SPAWN_UNIT, [TYPE_INT], _spawn_unit),
 		CommandHandler.new(CommandType.GET_AVAILABLE_UNITS, [], _get_available_units),

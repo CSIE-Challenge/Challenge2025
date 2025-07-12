@@ -232,13 +232,14 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_TOWER, [Vector2], Tower)
-    def get_tower(self, coord: Vector2) -> Tower:
+    @game_command(CommandType.GET_TOWER, [bool, Vector2], Tower)
+    def get_tower(self, owned: bool, coord: Vector2) -> Tower:
         """
         # Get Tower
         取得自己的地圖中指定位置上塔的資訊。
 
         ## Parameters
+        - `owned` (bool): 查詢自己 (True) 或對手 (False) 的塔。
         - `coord` (Vector2): 要查詢的位置。
 
         ## Returns

@@ -260,13 +260,15 @@ func _get_all_towers(_owned: bool) -> Array:
 	return [StatusCode.OK, towers]
 
 
-func _get_tower(_coord: Vector2i) -> Array:
+func _get_tower(_owned: bool, _coord: Vector2i) -> Array:
 	print("[GetTower] Get request")
-	if game_self.built_towers.has(_coord):
-		var dict = game_self.built_towers[_coord].to_dict(_coord)
-		return [StatusCode.OK, dict]
-	if game_other.built_towers.has(_coord):
-		var dict = game_other.built_towers[_coord].to_dict(_coord)
+	var towers_dict: Dictionary
+	if _owned:
+		towers_dict = game_self.built_towers
+	else:
+		towers_dict = game_other.built_towers
+	if towers_dict.has(_coord):
+		var dict = towers_dict[_coord].to_dict(_coord)
 		return [StatusCode.OK, dict]
 	return [StatusCode.OK, {}]
 
