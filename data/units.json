@@ -11,7 +11,8 @@
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": false,
-		"kill_reward": 6
+		"kill_reward": 6,
+		"cooldown": 0.1
 	}
   },
   "koopa_paratroopa": {
@@ -26,7 +27,8 @@
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": false,
-		"kill_reward": 12
+		"kill_reward": 12,
+		"cooldown": 0.2
 	}
   },
   "spiny_shell": {
@@ -41,7 +43,8 @@
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": false,
-		"kill_reward": 12
+		"kill_reward": 12,
+		"cooldown": 0.2
 	}
   },
   "buzzy_beetle": {
@@ -56,7 +59,8 @@
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": true,
-		"kill_reward": 12
+		"kill_reward": 12,
+		"cooldown": 0.2
 	}
   },
   "wiggler": {
@@ -71,7 +75,8 @@
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": false,
-		"kill_reward": 30
+		"kill_reward": 30,
+		"cooldown": 0.6
 	}
   },
   "koopa_jr": {
@@ -86,7 +91,8 @@
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": false,
-		"kill_reward": 100
+		"kill_reward": 100,
+		"cooldown": 2
 	}
   },
   "koopa": {
@@ -101,7 +107,8 @@
 		"armor": 0,
 		"shield": 0,
 		"knockback_resist": true,
-		"kill_reward": 100
+		"kill_reward": 100,
+		"cooldown": 2
 	}
   }
 }
