@@ -31,7 +31,7 @@ func get_enemy_z_index(enemy: Enemy) -> int:
 
 func _process(_delta):
 	if !is_overlay_enabled:
-		if game.internal_score > OVERLAY_SCORE_THRESHOLD:
+		if game.score > OVERLAY_SCORE_THRESHOLD:
 			is_overlay_enabled = true
 			self.overlay_start_us = Time.get_ticks_usec()
 	if is_overlay_enabled:
