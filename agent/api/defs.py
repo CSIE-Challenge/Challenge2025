@@ -324,7 +324,6 @@ class Enemy:
         type: EnemyType,
         position: Vector2,
         progress_ratio: float,
-        deploy_cost: int,
         income_impact: int,
         health: int,
         max_health: int,
@@ -333,7 +332,6 @@ class Enemy:
         flying: bool,
         knockback_resist: bool,
         kill_reward: int,
-        cool_down: int,
     ) -> None:
         self.type = type
         """敵人型別。"""
@@ -343,9 +341,6 @@ class Enemy:
 
         self.progress_ratio = progress_ratio
         """敵人走完的路程比例。"""
-
-        self.deploy_cost = deploy_cost
-        """派遣敵人對持有金幣的影響。"""
 
         self.health = health
         """敵人當前生命值。"""
@@ -371,16 +366,12 @@ class Enemy:
         self.income_impact = income_impact
         """派兵到對手場地後對 income 的影響，可正可負。"""
 
-        self.cool_down = cool_down
-        """派兵時間間隔。"""
-
     @classmethod
     def from_dict(cls, data: dict) -> "Enemy":
         return cls(
             type=EnemyType(data["type"]),
             position=Vector2(data["position"]["x"], data["position"]["y"]),
             progress_ratio=data["progress_ratio"],
-            deploy_cost=0,  # data["deploy_cost"],
             income_impact=data["income_impact"],
             health=data["health"],
             max_health=data["max_health"],
@@ -389,7 +380,6 @@ class Enemy:
             flying=data["flying"],
             knockback_resist=data["knockback_resist"],
             kill_reward=data["kill_reward"],
-            cool_down=0,  # data["cool_down"],
         )
 
     def __str__(self) -> str:
