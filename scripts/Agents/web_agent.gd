@@ -97,6 +97,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history),
 		CommandHandler.new(CommandType.SET_CHAT_NAME_COLOR, [TYPE_STRING], _set_chat_name_color),
 		CommandHandler.new(CommandType.SET_NAME, [TYPE_STRING], _set_name),
+		CommandHandler.new(CommandType.PIXELCAT, [], _pixel_cat),
 	]
 	for handler in handlers:
 		if _command_handlers.has(handler.command_id):

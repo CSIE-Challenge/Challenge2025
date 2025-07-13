@@ -66,8 +66,10 @@ const TOWER_SCENES = [
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
 
+var pixelcat_cnt: int = 1
 var player_id: int
 var game_running: bool = false
+var send_pixelcat: bool = false
 var ongoing_round: Round = null
 var game_self: Game = null
 var game_other: Game = null
@@ -75,6 +77,10 @@ var chat_node: Node = null
 
 var sys_paths: Array = [[], []]
 var opp_paths: Array = [[], []]
+
+@onready var pixel_cat_str: String = (
+	FileAccess.open("res://data/pixelcat.txt", FileAccess.READ).get_as_text()
+)
 
 
 func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
@@ -530,7 +536,7 @@ func _send_chat(msg: String) -> Array:
 		print("[Error] TEXTBOX_SCENE not loaded")
 		return [StatusCode.INTERNAL_ERR, false]
 
-	if msg.length() > 50:
+	if !send_pixelcat and msg.length() > 50:
 		print("[Error] too long")
 		return [StatusCode.ILLEGAL_ARGUMENT, false]
 
@@ -538,6 +544,16 @@ func _send_chat(msg: String) -> Array:
 	var player_name = _get_screen_name_label().text
 	chat_node.send_chat_with_sender(player_id, msg, chat_name_color, player_name)
 	return [StatusCode.OK, true]
+
+
+func _pixel_cat() -> Array:
+	print("[PixelCat] Get request")
+	if pixelcat_cnt == 0:
+		return [StatusCode.COMMAND_ERR, "[Error] No more pixel cat!"]
+	pixelcat_cnt -= 1
+	send_pixelcat = true
+	self._send_chat("[font_size=8]" + pixel_cat_str + "[/font_size]")
+	return [StatusCode.OK, pixel_cat_str]
 
 
 func _get_chat_history(_num: int) -> Array:
