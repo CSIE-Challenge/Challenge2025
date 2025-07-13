@@ -3,6 +3,7 @@ extends Control
 
 const GAME_DURATION = 300.0
 const FREEZE_TIME = 60.0
+const FREEZE_ANIMATION = 2.5
 
 @export var game_timer_label: Label
 @export var score_bar: ScoreBar
@@ -83,9 +84,13 @@ func _process(_delta: float) -> void:
 	game_timer_label.text = get_formatted_time()
 	score_bar.left_score = game_1p.score
 	score_bar.right_score = game_2p.score
-	if $GameTimer.time_left <= FREEZE_TIME:
-		$Screen/Top/TextureRect/FrozenOverlay.visible = true
-		$Screen/Top/TextureRect/Score.process_mode = Node.PROCESS_MODE_DISABLED
+
+	var time_after_freeze = FREEZE_TIME - $GameTimer.time_left
+	if time_after_freeze >= 0:
+		var frozen_overlay = $Screen/Top/TextureRect/FrozenOverlay
+		frozen_overlay.visible = true
+		frozen_overlay.modulate = Color(1, 1, 1, min(1.0, time_after_freeze / FREEZE_ANIMATION))
+		$Screen/Top/TextureRect/Score.freeze()
 
 
 func _on_game_timer_timeout():
