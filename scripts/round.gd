@@ -98,6 +98,7 @@ func _on_game_timer_timeout():
 	game_1p.player_selection.web_agent.game_running = false
 	game_2p.player_selection.web_agent.game_running = false
 	# load end scene
+	ApiServer.stop()
 	var end_scene: EndScreen = preload("res://scenes/end.tscn").instantiate()
 	end_scene.player_names = [
 		$Screen/Top/TextureRect/PlayerNameLeft.text,
@@ -118,7 +119,7 @@ func _on_game_timer_timeout():
 		),
 		EndScreen.Statistics.init(
 			"API Call Failures",
-			[game_1p.api_called - game_1p.api_succeed, game_2p.api_calledd - game_2p.api_succeed],
+			[game_1p.api_called - game_1p.api_succeed, game_2p.api_called - game_2p.api_succeed],
 			false,
 			true,
 			true

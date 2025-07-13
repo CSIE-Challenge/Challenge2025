@@ -101,7 +101,6 @@ func _get_game_status() -> Array:
 
 
 func _get_all_terrain() -> Array:
-	print("[GetAllTerrain] Get request")
 	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[GetAllTerrain] Error: cannot find map"]
@@ -122,7 +121,6 @@ func _get_all_terrain() -> Array:
 
 
 func _get_terrain(_coord: Vector2i) -> Array:
-	print("[GetTerrain] Get request")
 	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "[GetTerrain] Error: cannot find map"]
@@ -131,7 +129,6 @@ func _get_terrain(_coord: Vector2i) -> Array:
 
 
 func _get_scores(_owned: bool) -> Array:
-	print("[GetScores] Get request")
 	var result: int
 	if _owned == true:
 		result = game_self.internal_score
@@ -141,7 +138,6 @@ func _get_scores(_owned: bool) -> Array:
 
 
 func _get_current_wave() -> Array:
-	print("[GetCurrentWave] Get request")
 	var wave = ongoing_round.get_node("Spawner")
 	if not wave:
 		return [StatusCode.INTERNAL_ERR, "[GetCurrentWave] Error: cannot find wave"]
@@ -150,7 +146,6 @@ func _get_current_wave() -> Array:
 
 
 func _get_remain_time() -> Array:
-	print("[GetRemainTime] Get request")
 	if not game_running:
 		# TODO: get remaining time from player_selection when counting down
 		return [StatusCode.OK, 1]
@@ -161,7 +156,6 @@ func _get_remain_time() -> Array:
 
 
 func _get_time_until_next_wave() -> Array:
-	print("[GetTimeUntilNextWave] Get request")
 	var time_left = ongoing_round.get_node("Spawner").next_wave_timer.time_left
 	if time_left == null:
 		return [
@@ -172,7 +166,6 @@ func _get_time_until_next_wave() -> Array:
 
 
 func _get_money(_owned: bool) -> Array:
-	print("[GetMoney] Get request")
 	var result: int
 	if _owned == true:
 		result = int(game_self.status_panel.find_child("Money").text)
@@ -182,7 +175,6 @@ func _get_money(_owned: bool) -> Array:
 
 
 func _get_income(_owned: bool) -> Array:
-	print("[GetIncome] Get request")
 	var income: int
 	if _owned == true:
 		income = int(game_self.status_panel.find_child("Income").text)
@@ -264,8 +256,6 @@ func _get_opponent_path(_fly: bool) -> Array:
 
 #gdlint: disable=max-returns
 func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> Array:
-	print("[PlaceTower] Get request")
-
 	var map = game_self.get_node("Map")
 
 	if not map:
@@ -309,7 +299,6 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 
 
 func _get_all_towers(_owned: bool) -> Array:
-	print("[GetAllTowers] Get request")
 	var towers: Array = []
 	if _owned:
 		for key in game_self.built_towers.keys():
@@ -323,7 +312,6 @@ func _get_all_towers(_owned: bool) -> Array:
 
 
 func _get_tower(_owned: bool, _coord: Vector2i) -> Array:
-	print("[GetTower] Get request")
 	var towers_dict: Dictionary
 	if _owned:
 		towers_dict = game_self.built_towers
@@ -336,7 +324,6 @@ func _get_tower(_owned: bool, _coord: Vector2i) -> Array:
 
 
 func _sell_tower(_coord: Vector2i) -> Array:
-	print("[SellTower] Get request")
 	if not game_self.built_towers.has(_coord):
 		return [StatusCode.COMMAND_ERR, "[SellTower] No built tower on designated coordinate"]
 	var tower: Tower = game_self.built_towers[_coord]
@@ -345,7 +332,6 @@ func _sell_tower(_coord: Vector2i) -> Array:
 
 
 func _set_strategy(_coord: Vector2i, new_strategy: Tower.TargetStrategy) -> Array:
-	print("[SetStrategy] Get request")
 	if (not game_self.built_towers.has(_coord)) or (not new_strategy in range(3)):
 		return [
 			StatusCode.ILLEGAL_ARGUMENT,
@@ -371,21 +357,17 @@ func _get_unit_dict(_type: EnemyType) -> Dictionary:
 
 
 func _spawn_unit(_type: EnemyType) -> Array:
-	print("[SpawnUnit] Get request")
 	var data = _get_unit_dict(_type)
 	if game_other.enemy_cooldown.has(_type):
-		print("[Error] cooldown hasn't finished")
 		return [StatusCode.COMMAND_ERR, "[SpawnUnit] cooldown hasn't finished"]
 	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
 		game_other.summon_enemy.emit(data)
 	else:
-		print("[Error] doesn't have enough money")
 		return [StatusCode.COMMAND_ERR, "[SpawnUnit] doesn't have enough money"]
 	return [StatusCode.OK]
 
 
 func _get_unit_cooldown(_type: EnemyType) -> Array:
-	print("[GetUnitCooldown] Get request")
 	var result: float = 0
 	if game_other.enemy_cooldown.has(_type):
 		result = game_other.enemy_cooldown[_type].get_time_left()
@@ -416,7 +398,6 @@ func _get_enemy_info(enemy: Area2D) -> Dictionary:
 
 
 func _get_all_enemies(_owned: bool) -> Array:
-	print("[GetAllEnemies] Get request")
 	var enemies: Array
 	if _owned:
 		enemies = game_self.get_all_enemies()
@@ -441,11 +422,10 @@ func _get_all_enemies(_owned: bool) -> Array:
 #gdlint: disable=max-returns
 func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 	var global_pos: Vector2 = game_self.map.cell_to_global(_coord)
-	print("[CastSpell] Get request")
 	var spell_manager: Node = game_self.get_node("SpellManager")
 
 	if spell_manager == null:
-		print("[ERROR] node not found spell_manager")
+		push_error("[ERROR] node not found spell_manager")
 		return [StatusCode.INTERNAL_ERR]
 
 	var spell_node: Node = null
@@ -457,11 +437,11 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 		SpellType.TELEPORT:
 			spell_node = spell_manager.get_node("Teleport")
 		_:
-			print("[Error] Unknown spell type:", _type)
+			push_error("[ERROR] Unknown spell type:", _type)
 			return [StatusCode.ILLEGAL_ARGUMENT]
 
 	if spell_manager == null:
-		print("[ERROR] node not found spell_manager")
+		push_error("[ERROR] node not found spell_manager")
 		return [StatusCode.INTERNAL_ERR, "node not found spell_manager"]
 
 	if _type == SpellType.DOUBLE_INCOME:
@@ -469,21 +449,20 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 			return [StatusCode.CLIENT_ERR, "Spell is on cooldown"]
 		var suc = spell_node.cast_spell()
 		if not suc:
-			print("[ERROR] cann't cast the spell for unknown reason")
+			push_error("[ERROR] cann't cast the spell for unknown reason")
 			return [StatusCode.INTERNAL_ERR, "Cannot cast spell for unknown reason"]
 	else:
 		if spell_node.is_on_cooldown or not spell_node.game:
 			return [StatusCode.CLIENT_ERR, "Spell is on cooldown"]
 		var suc = spell_node.cast_spell(global_pos)
 		if not suc:
-			print("[ERROR] cann't cast the spell for unknown reason")
+			push_error("[ERROR] cann't cast the spell for unknown reason")
 			return [StatusCode.INTERNAL_ERR, "Cannot cast spell for unknown reason"]
 
 	return [StatusCode.OK]
 
 
 func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
-	print("[GetSpellCooldown] Get request")
 	var spell_manager: Node
 	if _owned:
 		spell_manager = game_self.get_node("SpellManager")
@@ -491,7 +470,7 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 		spell_manager = game_other.get_node("SpellManager")
 
 	if spell_manager == null:
-		print("[ERROR] node not found spell_manager")
+		push_error("[ERROR] node not found spell_manager")
 		return [StatusCode.INTERNAL_ERR, -1]
 
 	var spell_node: Node = null
@@ -503,11 +482,11 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 		SpellType.TELEPORT:
 			spell_node = spell_manager.get_node("Teleport")
 		_:
-			print("[Error] Unknown spell type:", _type)
+			push_error("[Error] Unknown spell type:", _type)
 			return [StatusCode.ILLEGAL_ARGUMENT]
 
 	if spell_node == null:
-		print("[ERROR] node not found spell")
+		push_error("[ERROR] node not found spell")
 		return [StatusCode.INTERNAL_ERR, -1]
 
 	return [StatusCode.OK, spell_node.cooldown_timer.get_time_left()]
@@ -525,13 +504,11 @@ func _get_screen_name_label() -> Label:
 
 
 func _send_chat(msg: String) -> Array:
-	print("[SendChat] Get request")
 	if chat_node == null:
-		print("[Error] TEXTBOX_SCENE not loaded")
+		push_error("[Error] TEXTBOX_SCENE not loaded")
 		return [StatusCode.INTERNAL_ERR, false]
 
 	if msg.length() > 50:
-		print("[Error] too long")
 		return [StatusCode.ILLEGAL_ARGUMENT, false]
 
 	var chat_name_color = game_self.chat_name_color
@@ -542,16 +519,14 @@ func _send_chat(msg: String) -> Array:
 
 
 func _get_chat_history(_num: int) -> Array:
-	print("[GetChatHistory] Get request")
 	if chat_node == null:
-		print("[Error] TEXTBOX_SCENE not loaded")
+		push_error("[Error] TEXTBOX_SCENE not loaded")
 		return [StatusCode.INTERNAL_ERR, false]
 	var history = chat_node.get_history(player_id, _num)
 	return [StatusCode.OK, history]
 
 
 func _set_chat_name_color(_color: String) -> Array:
-	print("[SetColor] Get request")
 	game_self.chat_name_color = _color
 	return [StatusCode.OK]
 
@@ -567,7 +542,6 @@ func get_label_str_len(label: Label, str: String, font_size: int) -> Vector2:
 
 
 func _set_name(name: String) -> Array:
-	print("[SetName] Get request")
 	var label = _get_screen_name_label()
 	if get_label_str_len(label, name, 50).x > 340:
 		return [StatusCode.ILLEGAL_ARGUMENT, "Name is too long"]
