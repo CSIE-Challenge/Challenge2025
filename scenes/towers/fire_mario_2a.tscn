@@ -42,6 +42,7 @@ level_a = 2
 building_cost = 1200
 anti_air = true
 bullet_scene = ExtResource("2_4wmw7")
+reload_seconds = 0.75
 aim_range = 300.0
 damage = 60
 

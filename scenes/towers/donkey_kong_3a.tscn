@@ -54,7 +54,6 @@ damage = 80
 sprite_frames = SubResource("SpriteFrames_s45hl")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(24.3278, 39.6927)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

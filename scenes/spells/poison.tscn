@@ -16,3 +16,5 @@ script = ExtResource("3_2mcrc")
 
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="TriggerTimer" type="Timer" parent="."]

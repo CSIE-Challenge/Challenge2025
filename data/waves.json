@@ -9,7 +9,6 @@
 	  { "name": "buzzy_beetle", "count": 3 }
 	],
 	"method": "random",
-	"subsidy": 0,
 	"delay": 1.0
   },
   {
@@ -23,7 +22,6 @@
 	  { "name": "wiggler", "count": 1 }
 	],
 	"method": "random",
-	"subsidy": 0,
 	"delay": 1.0
   },
   {
@@ -37,7 +35,6 @@
 	  { "name": "wiggler", "count": 2 }
 	],
 	"method": "random",
-	"subsidy": 0,
 	"delay": 0.8
   },
   {
@@ -51,7 +48,6 @@
 	  { "name": "wiggler", "count": 3 }
 	],
 	"method": "sequential",
-	"subsidy": 0,
 	"delay": 0.8
   },
   {
@@ -65,7 +61,6 @@
 	  { "name": "wiggler", "count": 6 }
 	],
 	"method": "alternating",
-	"subsidy": 0,
 	"delay": 0.8
   },
   {
@@ -80,18 +75,16 @@
 	  { "name": "koopa_jr", "count": 1 }
 	],
 	"method": "random",
-	"subsidy": 0,
 	"delay": 0.6
   },
   {
 	"wave_number": 7,
 	"wave_name": "Stampede",
 	"units": [
-	  { "name": "goomba", "count": 50 }
+	  { "name": "goomba", "count": 20 }
 	],
 	"method": "sequential",
-	"subsidy": 0,
-	"delay": 0.2
+	"delay": 0.5
   },
   {
 	"wave_number": 8,
@@ -106,28 +99,25 @@
 	  { "name": "koopa", "count": 1 }
 	],
 	"method": "random",
-	"subsidy": 0,
 	"delay": 0.5
   },
   {
 	"wave_number": 9,
 	"wave_name": "Sky Attack",
 	"units": [
-	  { "name": "koopa_paratroopa", "count": 50 }
+	  { "name": "koopa_paratroopa", "count": 20 }
 	],
 	"method": "sequential",
-	"subsidy": 0,
-	"delay": 0.2
+	"delay": 0.5
   },
   {
 	"wave_number": 10,
 	"wave_name": "Shellstorm",
 	"units": [
-	  { "name": "spiny_shell", "count": 50 }
+	  { "name": "spiny_shell", "count": 20 }
 	],
 	"method": "sequential",
-	"subsidy": 0,
-	"delay": 0.2
+	"delay": 0.5
   },
   {
 	"wave_number": 11,
@@ -142,7 +132,6 @@
 	  { "name": "koopa", "count": 200 }
 	],
 	"method": "random",
-	"subsidy": 0,
 	"delay": 0.5
   }
 ]

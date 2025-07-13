@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c66f8gxi1wnb6"]
+[gd_scene load_steps=8 format=3 uid="uid://3j6t5juwkgaa"]
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_by470"]
 [ext_resource type="PackedScene" uid="uid://61sg7emmulnr" path="res://scenes/bullets/bullet_2a.tscn" id="2_by470"]
@@ -18,8 +18,24 @@ animations = [{
 "texture": ExtResource("3_by470")
 }],
 "loop": false,
-"name": &"default",
+"name": &"LeftRight",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_by470")
+}],
+"loop": false,
+"name": &"Lower",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_by470")
+}],
+"loop": false,
+"name": &"Upper",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -45,9 +61,16 @@ damage = 0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 sprite_frames = SubResource("SpriteFrames_by470")
+animation = &"Upper"
 
-[node name="Marker2D" type="Marker2D" parent="Tower"]
+[node name="LeftRightMarker" type="Marker2D" parent="Tower"]
 position = Vector2(38.4123, -7.68246)
+
+[node name="UpperMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, -19.2061)
+
+[node name="LowerMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, 17.9257)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
