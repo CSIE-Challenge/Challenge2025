@@ -1,7 +1,7 @@
 class_name Round
 extends Control
 
-const GAME_DURATION = 70.0
+const GAME_DURATION = 300.0
 const FREEZE_TIME = 60.0
 const FREEZE_ANIMATION = 2.5
 
