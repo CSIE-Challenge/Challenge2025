@@ -87,5 +87,6 @@ func _process(_delta: float) -> void:
 	_last_exit_code = OS.get_process_exit_code(_current_pid)
 
 
-func _exit_tree() -> void:
-	kill_subprocess()
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		kill_subprocess()

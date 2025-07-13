@@ -106,7 +106,14 @@ func _on_game_timer_timeout():
 		),
 		EndScreen.Statistics.init("Enemies Sent", [game_1p.enemy_sent, game_2p.enemy_sent], false),
 		EndScreen.Statistics.init(
-			"API Called", [game_1p.api_called, game_2p.api_called], false, true, false
+			"API Call Attempts", [game_1p.api_called, game_2p.api_called], false, true, true
+		),
+		EndScreen.Statistics.init(
+			"API Call Failures",
+			[game_1p.api_called - game_1p.api_succeed, game_2p.api_calledd - game_2p.api_succeed],
+			false,
+			true,
+			true
 		),
 	]
 	get_tree().get_root().add_child(end_scene)

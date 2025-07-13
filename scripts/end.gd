@@ -7,7 +7,7 @@ const ALIGN_RIGHT = HORIZONTAL_ALIGNMENT_RIGHT
 
 const DISPLAY_STATS = 6
 # [400 160 720 160 400] x 120
-const ROW_MARGIN = 20
+const ROW_MARGIN = 10
 const ROW_HEIGHT = 100
 const WINNER_ROW_HEIGHT = 120
 const ROW_STATS_WIDTH = 400
@@ -16,6 +16,8 @@ const ROW_TITLE_WIDTH = 720
 
 var player_names: Array[String] = []
 var statistics: Array[Statistics] = []
+var stat_rows: Array[MarginContainer] = []
+var process_order: Array = []
 
 @onready var remaining_height = (
 	$MarginContainer/VBoxContainer.size.y - $MarginContainer/VBoxContainer/PlayerRow.size.y
@@ -127,6 +129,9 @@ func _append_row(
 	vbox_container.add_child(margin_container)
 	remaining_height -= margin_container.size.y
 
+	stat_rows.push_back(margin_container)
+	margin_container.modulate = Color(1, 1, 1, 0)
+
 
 func _build_winner_row(side: HorizontalAlignment):
 	var vbox_container: VBoxContainer = $MarginContainer/VBoxContainer
@@ -211,6 +216,11 @@ func _build():
 			slots -= 1
 	_build_winner_row(winning_side)
 
+	# Last row will be winner row, so we will process second to last to first, then last
+	process_order = range(stat_rows.size() - 1)
+	process_order.reverse()
+	process_order.push_back(stat_rows.size() - 1)
+
 
 func _ready() -> void:
 	# fill in player names
@@ -224,3 +234,11 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		get_tree().quit()
+
+
+func _on_timer_timeout() -> void:
+	if process_order.is_empty():
+		$Timer.stop()
+		return
+	stat_rows[process_order[0]].modulate = Color(1, 1, 1, 1)
+	process_order.pop_front()
