@@ -7,6 +7,8 @@ const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 
 var always_visible: bool = false
 
+@onready var scrollbar = $MarginContainer/ScrollContainer
+
 
 # sender id: 0 = system, 1 = left player (1p), 2 = right player (2p)
 func send_chat_with_sender(
@@ -25,6 +27,8 @@ func send_chat_with_sender(
 	textbox.set_meta("sender", sender_id)
 
 	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
+	await get_tree().process_frame
+	scrollbar.scroll_vertical = scrollbar.get_v_scroll_bar().max_value
 
 
 func _on_switch_pressed() -> void:
