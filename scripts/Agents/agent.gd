@@ -536,19 +536,19 @@ func _get_screen_name_label() -> Label:
 	return get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameRight")
 
 
-func _send_chat(_msg: String) -> Array:
+func _send_chat(msg: String) -> Array:
 	print("[SendChat] Get request")
 	if chat_node == null:
 		print("[Error] TEXTBOX_SCENE not loaded")
 		return [StatusCode.INTERNAL_ERR, false]
 
-	if _msg.length() > 50:
+	if msg.length() > 50:
 		print("[Error] too long")
 		return [StatusCode.ILLEGAL_ARGUMENT, false]
 
 	var chat_name_color = game_self.chat_name_color
 	var player_name = _get_screen_name_label().text
-	chat_node.send_chat_with_sender(player_id, chat_name_color, player_name, _msg)
+	chat_node.send_chat_with_sender(player_id, msg, chat_name_color, player_name)
 	return [StatusCode.OK, true]
 
 
