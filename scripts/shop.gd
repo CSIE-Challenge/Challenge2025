@@ -29,6 +29,7 @@ func _create_section(title: String) -> GridContainer:
 	tower_grid.columns = 3
 	tower_grid.add_theme_constant_override("h_separation", 16)
 	tower_grid.add_theme_constant_override("v_separation", 16)
+	tower_submenu.add_theme_constant_override("separation", 8)
 	tower_submenu.add_child(tower_label)
 	tower_submenu.add_child(tower_grid)
 	options_container.add_child(tower_submenu)
