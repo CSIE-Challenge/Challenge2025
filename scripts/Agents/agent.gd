@@ -134,7 +134,7 @@ func _get_scores(_owned: bool) -> Array:
 	print("[GetScores] Get request")
 	var result: int
 	if _owned == true:
-		result = game_self.score
+		result = game_self.internal_score
 	else:
 		result = game_other.score
 	return [StatusCode.OK, result]
