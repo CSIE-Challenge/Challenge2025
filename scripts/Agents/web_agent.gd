@@ -32,6 +32,8 @@ enum CommandType {
 	SET_NAME = 503
 }
 
+const MAX_LOGGING_REQUEST = 100
+
 
 class CommandHandler:
 	var command_id: CommandType = CommandType.UNKNOWN
@@ -140,7 +142,26 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 	else:
 		var request_id: int = command.pop_front()
 		var command_id: int = command.pop_front()
-		print("[API Server] received command: ", request_id, " ", command_id)
+		if request_id <= MAX_LOGGING_REQUEST:
+			var command_name = (
+				_command_handlers.get(command_id)._handler.get_method()
+				if _command_handlers.has(command_id)
+				else "(invalid)"
+			)
+			print(
+				(
+					"[API Server] received command: %d, %d (%s)"
+					% [request_id, command_id, command_name]
+				)
+			)
+		elif request_id == MAX_LOGGING_REQUEST + 1:
+			print(
+				(
+					"[API Server] received more than %d requests, no further log will be printed."
+					% MAX_LOGGING_REQUEST
+				)
+			)
+
 		if not _command_handlers.has(command_id):
 			response = [
 				request_id,
