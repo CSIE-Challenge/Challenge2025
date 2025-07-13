@@ -10,7 +10,10 @@ var display_name: String = ""
 func _ready():
 	$TextureButton.pressed.connect(_on_button_press)
 	$CenterContainer/Control.add_child(display_scene.instantiate())
-	$Cost.text = "$%d" % display_cost
+	if display_cost > 0:
+		$Cost.text = "$%d" % display_cost
+	else:
+		$Cost.text = ""
 	if not display_name.is_empty():
 		$Name.text = display_name
 
