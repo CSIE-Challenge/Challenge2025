@@ -16,8 +16,8 @@ const INTEREST_RATE := 1.02
 @export var status_panel: TextureRect
 
 # Various statistics
-var internal_score := 0
 var score := 0
+var display_score := 0
 var kill_count := 0
 var money_earned := 0
 var tower_built := 0
@@ -180,7 +180,7 @@ func _on_interest_timer_timeout() -> void:
 
 
 func on_subsidization(subsidy) -> void:
-	if internal_score < op_game.internal_score:
+	if score < op_game.score:
 		var next_money = money + subsidy
 		money_earned += next_money - money
 		money = next_money
@@ -229,7 +229,7 @@ func _on_enemy_summon(unit_data: Dictionary) -> void:
 
 
 func on_damage_dealt(damage: int) -> void:
-	internal_score += damage
+	score += damage
 
 
 func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
@@ -304,7 +304,7 @@ func freeze() -> void:
 
 func _process(_delta) -> void:
 	if !frozen:
-		score = internal_score
+		display_score = score
 	status_panel.find_child("Money").text = "%d" % money
 	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
 

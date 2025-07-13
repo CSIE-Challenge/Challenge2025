@@ -93,4 +93,4 @@ func _exit_tree() -> void:
 
 func _notification(what):
 	if what == NOTIFICATION_PREDELETE:
-		OS.kill(_current_pid)
+		self.kill_subprocess()
