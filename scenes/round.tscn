@@ -85,7 +85,8 @@ theme_override_font_sizes/font_size = 50
 text = "Player 2"
 horizontal_alignment = 2
 
-[node name="TextureRect2" type="TextureRect" parent="Screen/Top/TextureRect"]
+[node name="FrozenOverlay" type="TextureRect" parent="Screen/Top/TextureRect"]
+visible = false
 custom_minimum_size = Vector2(1024, 80)
 layout_mode = 2
 offset_right = 1024.0
