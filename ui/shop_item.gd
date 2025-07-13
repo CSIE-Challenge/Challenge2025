@@ -6,6 +6,7 @@ var display_scene: PackedScene
 var display_cost: int = 10
 var display_name: String = ""
 var is_valid: Callable = func(): return false
+var message: Callable = func(): return ""
 
 
 func _ready():
@@ -33,4 +34,4 @@ func _on_button_press() -> void:
 
 
 func _on_texture_button_mouse_entered() -> void:
-	pass  # Replace with function body.
+	$TextureButton.tooltip_text = message.call()

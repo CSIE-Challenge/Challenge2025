@@ -33,6 +33,7 @@ func cast_spell() -> bool:
 	if is_on_cooldown or is_active or not game:
 		print("Spell is on cooldown! Wait ", cooldown_timer.get_time_left(), " seconds")
 		return false
+	is_on_cooldown = true
 	activate_effect()
 	return true
 
