@@ -1,7 +1,7 @@
 class_name SpaceMap
 extends Map
 
-const OVERLAY_SCORE_THRESHOLD = 25_000
+const OVERLAY_SCORE_THRESHOLD = 200_000
 
 var is_overlay_enabled := false
 var overlay_start_us: int
