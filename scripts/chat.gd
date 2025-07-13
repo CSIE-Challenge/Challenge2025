@@ -8,6 +8,7 @@ const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 var always_visible: bool = false
 var color: String = "7fffd4"
 var random = RandomNumberGenerator.new()
+var util = Util.new()
 
 @onready var timer: Timer = $ChatTimer
 
@@ -24,26 +25,9 @@ func _on_timer_timeout():
 	send_chat_with_sender(0, get_random_messages(), color)
 
 
-func load_json(file_path: String):
-	var file = FileAccess.open(file_path, FileAccess.READ)
-	if file == null:
-		printerr("Failed to open file: ", file_path)
-		return null
-
-	var content = file.get_as_text()
-	file.close()
-
-	var json_parsed = JSON.parse_string(content)
-	if json_parsed == null:
-		printerr("Failed to parse JSON from file: ", file_path)
-		return null
-
-	return json_parsed
-
-
 func get_random_messages() -> String:
 	var chat_path = "res://data/chats.json"
-	var chats: Array = load_json(chat_path)
+	var chats: Array = util.load_json(chat_path)
 	var chat_num: int = len(chats)
 	var idx: int = random.randi_range(0, chat_num - 1)
 	return chats[idx]
