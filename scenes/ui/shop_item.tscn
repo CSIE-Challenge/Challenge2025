@@ -49,4 +49,5 @@ layout_mode = 2
 mouse_filter = 2
 
 [connection signal="gui_input" from="TextureButton" to="TextureButton" method="_on_gui_input"]
+[connection signal="mouse_entered" from="TextureButton" to="." method="_on_texture_button_mouse_entered"]
 [connection signal="pressed" from="TextureButton" to="TextureButton" method="_on_pressed"]

@@ -52,6 +52,8 @@ func _create_tower_options() -> void:
 		else:
 			ab = "a" if inst.level_a > inst.level_b else "b"
 		shop_item.display_name = ("lv. %d%s" % [max(inst.level_a, inst.level_b), ab])
+		shop_item.is_valid = func(): return building_game.money >= shop_item.display_cost
+
 		inst.queue_free()
 		grid.add_child(shop_item)
 
@@ -71,6 +73,13 @@ func _create_unit_options() -> void:
 				opposing_game.summon_enemy.emit(data)
 		shop_item.display_cost = data.stats.deploy_cost
 		shop_item.display_scene = scene
+
+		shop_item.is_valid = func():
+			return (
+				building_game.money >= shop_item.display_cost
+				and not opposing_game.enemy_cooldown.has(int(data.stats.type))
+			)
+
 		grid.add_child(shop_item)
 
 
@@ -82,6 +91,10 @@ func _create_spell_options() -> void:
 		shop_item.display_cost = 0
 		shop_item.display_scene = load(spell.metadata["scene_path"])
 		grid.add_child(shop_item)
+		shop_item.is_valid = func():
+			return not (
+				building_game.get_node("SpellManager").get_node(spell.metadata.name).is_on_cooldown
+			)
 
 
 func _on_switch_pressed() -> void:

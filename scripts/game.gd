@@ -32,7 +32,7 @@ var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
 var op_game: Game
-var enemy_cooldown: Dictionary[int, SceneTreeTimer] = {}
+var enemy_cooldown: Dictionary[int, Timer] = {}
 var map: Map = null
 var _enemy_scene_cache = {}
 
@@ -236,8 +236,13 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 		EnemySource.SYSTEM:
 			path = map.flying_system_path if enemy.flying else map.system_path
 		EnemySource.OPPONENT:
-			enemy_cooldown[enemy.type] = get_tree().create_timer(enemy.summon_cooldown)
-			enemy_cooldown[enemy.type].timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
+			var timer = Timer.new()
+			enemy_cooldown[enemy.type] = timer
+			timer.wait_time = enemy.summon_cooldown
+			timer.one_shot = true
+			add_child(timer)
+			timer.timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
+			timer.start()
 			path = map.flying_opponent_path if enemy.flying else map.opponent_path
 	path.add_child(enemy.path_follow)
 
@@ -256,6 +261,7 @@ func get_all_enemies() -> Array:
 
 
 func _enemy_cooldown_ended(enemy_type: Enemy.EnemyType):
+	enemy_cooldown[enemy_type].queue_free()
 	enemy_cooldown.erase(enemy_type)
 
 
