@@ -16,8 +16,6 @@ var selected_map_idx: int
 
 @onready var selection_1p: IndividualPlayerSelection = $VBoxContainer/HBoxContainer/Selection1P
 @onready var selection_2p: IndividualPlayerSelection = $VBoxContainer/HBoxContainer/Selection2P
-@onready var game_start_button: Button = $VBoxContainer/StartButton
-@onready var game_start_timer: Timer = $GameStartTimer
 @onready var map_panel = $VBoxContainer/HBoxContainer/PanelMap
 
 
@@ -68,16 +66,10 @@ func _select_map(new_map_idx: int) -> void:
 
 
 func _on_start_button_pressed() -> void:
-	if not game_start_timer.is_stopped():
-		return
 	selection_1p.freeze()
 	selection_2p.freeze()
-	game_start_button.text = "Starting..."
-	game_start_timer.start()
 	_save_config()
 
-
-func _on_game_start_timer_timeout() -> void:
 	AudioManager.background_menu.stop()
 
 	var manual_controlled = 0
