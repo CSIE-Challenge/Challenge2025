@@ -1,6 +1,6 @@
 class_name Agent
 extends Node
-enum GameStatus { PREPARING = 0, RUNNING = 1, PAUSED = 2 }
+enum GameStatus { PREPARING, RUNNING, PAUSED }
 enum EnemyType {
 	BUZZY_BEETLE,
 	GOOMBA,
@@ -10,7 +10,7 @@ enum EnemyType {
 	SPINY_SHELL,
 	WIGGLER,
 }
-enum SpellType { POISON = 1, DOUBLE_INCOME = 2, TELEPORT = 3 }
+enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
 enum StatusCode {
 	OK = 200,
 	ILLFORMED_COMMAND = 400,
@@ -20,6 +20,7 @@ enum StatusCode {
 	NOT_FOUND = 404,
 	TOO_FREQUENT = 405,
 	NOT_STARTED = 406,
+	PAUSED = 407,
 	INTERNAL_ERR = 500,
 	CLIENT_ERR = 501
 }
@@ -261,58 +262,50 @@ func _get_opponent_path(_fly: bool) -> Array:
 #region Tower
 
 
+#gdlint: disable=max-returns
 func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
 
-	# the return value. not returning early because of the linter
-	var result: Array = []
 	var map = game_self.get_node("Map")
 
 	if not map:
-		result = [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
 
-	elif map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
-		result = [
-			StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"
-		]
+	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
+		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
 
-	elif (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
-		result = [
+	if (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
+		return [
 			StatusCode.ILLEGAL_ARGUMENT,
 			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
 		]
 
-	else:
-		var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
-		if game_self.built_towers.has(_coord):
-			var previous_tower = game_self.built_towers[_coord]
-			if (
-				(
-					previous_tower.type == tower.type
-					and (
-						previous_tower.level_a > tower.level_a
-						or previous_tower.level_b > tower.level_b
-					)
-				)
-				or game_self.money + previous_tower.building_cost < tower.building_cost
-			):
-				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
-			elif (
-				previous_tower.type != tower.type
+	var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
+	if game_self.built_towers.has(_coord):
+		var previous_tower = game_self.built_towers[_coord]
+		if (
+			(
+				previous_tower.type == tower.type
 				and (
-					game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
-					< tower.building_cost
+					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
 				)
-			):
-				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
-		if len(result) == 0:
-			if game_self.money < tower.building_cost:
-				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
-			else:
-				game_self.place_tower(_coord, tower)
-				result = [StatusCode.OK]
+			)
+			or game_self.money + previous_tower.building_cost < tower.building_cost
+		):
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
+		if (
+			previous_tower.type != tower.type
+			and (
+				game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
+				< tower.building_cost
+			)
+		):
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
 
-	return result
+	if game_self.money < tower.building_cost:
+		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
+	game_self.place_tower(_coord, tower)
+	return [StatusCode.OK]
 
 
 func _get_all_towers(_owned: bool) -> Array:
@@ -345,9 +338,21 @@ func _get_tower(_owned: bool, _coord: Vector2i) -> Array:
 func _sell_tower(_coord: Vector2i) -> Array:
 	print("[SellTower] Get request")
 	if not game_self.built_towers.has(_coord):
-		return [StatusCode.ILLEGAL_ARGUMENT, "[SellTower] No built tower on designated coordinate"]
+		return [StatusCode.COMMAND_ERR, "[SellTower] No built tower on designated coordinate"]
 	var tower: Tower = game_self.built_towers[_coord]
 	game_self._on_tower_sold(tower, null, true)
+	return [StatusCode.OK]
+
+
+func _set_strategy(_coord: Vector2i, new_strategy: Tower.TargetStrategy) -> Array:
+	print("[SetStrategy] Get request")
+	if (not game_self.built_towers.has(_coord)) or (not new_strategy in range(3)):
+		return [
+			StatusCode.ILLEGAL_ARGUMENT,
+			"[SellTower] No built tower on 'coord' or incorrect 'new_strategy'"
+		]
+	var tower: Tower = game_self.built_towers[_coord]
+	tower.set_strategy(new_strategy)
 	return [StatusCode.OK]
 
 
@@ -370,13 +375,21 @@ func _spawn_unit(_type: EnemyType) -> Array:
 	var data = _get_unit_dict(_type)
 	if game_other.enemy_cooldown.has(_type):
 		print("[Error] cooldown hasn't finished")
-		return [StatusCode.COMMAND_ERR]
+		return [StatusCode.COMMAND_ERR, "[SpawnUnit] cooldown hasn't finished"]
 	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
 		game_other.summon_enemy.emit(data)
 	else:
 		print("[Error] doesn't have enough money")
-		return [StatusCode.COMMAND_ERR]
+		return [StatusCode.COMMAND_ERR, "[SpawnUnit] doesn't have enough money"]
 	return [StatusCode.OK]
+
+
+func _get_unit_cooldown(_type: EnemyType) -> Array:
+	print("[GetUnitCooldown] Get request")
+	var result: float = 0
+	if game_other.enemy_cooldown.has(_type):
+		result = game_other.enemy_cooldown[_type].get_time_left()
+	return [StatusCode.OK, result]
 
 
 func _get_enemy_info(enemy: Area2D) -> Dictionary:
@@ -386,31 +399,29 @@ func _get_enemy_info(enemy: Area2D) -> Dictionary:
 	if not map:
 		return {}
 
+	var pos: Vector2i = map.global_to_cell(enemy.path_follow.global_position)
 	data["type"] = type
+	data["position"] = {"x": pos[0], "y": pos[1]}
+	data["progress_ratio"] = enemy.path_follow.progress_ratio
 	data["income_impact"] = enemy.income_impact
+	data["health"] = enemy.health
 	data["max_health"] = enemy.max_health
-	data["max_speed"] = enemy.max_speed
 	data["damage"] = enemy.damage
+	data["max_speed"] = enemy.max_speed
 	data["flying"] = enemy.flying
 	data["knockback_resist"] = enemy.knockback_resist
 	data["kill_reward"] = enemy.kill_reward
-	data["health"] = enemy.health
-	data["progress_ratio"] = enemy.path_follow.progress_ratio
 
-	var pos: Vector2i = map.global_to_cell(enemy.path_follow.global_position)
-	data["position"] = {"x": pos[0], "y": pos[1]}
-	print(data)
 	return data
 
 
-func _get_available_units() -> Array:
-	print("[GetAvailableEnemies] Get request")
-	return [StatusCode.OK]
-
-
-func _get_all_enemies() -> Array:
+func _get_all_enemies(_owned: bool) -> Array:
 	print("[GetAllEnemies] Get request")
-	var enemies: Array = game_self.get_all_enemies()
+	var enemies: Array
+	if _owned:
+		enemies = game_self.get_all_enemies()
+	else:
+		enemies = game_other.get_all_enemies()
 	var enemies_info: Array = []
 
 	for enemy in enemies:
@@ -427,6 +438,7 @@ func _get_all_enemies() -> Array:
 #region Spell
 
 
+#gdlint: disable=max-returns
 func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 	var global_pos: Vector2 = game_self.map.cell_to_global(_coord)
 	print("[CastSpell] Get request")
@@ -450,19 +462,22 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 
 	if spell_manager == null:
 		print("[ERROR] node not found spell_manager")
-		return [StatusCode.INTERNAL_ERR]
+		return [StatusCode.INTERNAL_ERR, "node not found spell_manager"]
 
 	if _type == SpellType.DOUBLE_INCOME:
+		if spell_node.is_on_cooldown or spell_node.is_active or not spell_node.game:
+			return [StatusCode.CLIENT_ERR, "Spell is on cooldown"]
 		var suc = spell_node.cast_spell()
-		print(suc)
 		if not suc:
-			print("[ERROR] cann't cast the spell")
-			return [StatusCode.CLIENT_ERR]
+			print("[ERROR] cann't cast the spell for unknown reason")
+			return [StatusCode.INTERNAL_ERR, "Cannot cast spell for unknown reason"]
 	else:
+		if spell_node.is_on_cooldown or not spell_node.game:
+			return [StatusCode.CLIENT_ERR, "Spell is on cooldown"]
 		var suc = spell_node.cast_spell(global_pos)
 		if not suc:
-			print("[ERROR] cann't cast the spell")
-			return [StatusCode.CLIENT_ERR]
+			print("[ERROR] cann't cast the spell for unknown reason")
+			return [StatusCode.INTERNAL_ERR, "Cannot cast spell for unknown reason"]
 
 	return [StatusCode.OK]
 
@@ -496,33 +511,6 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 		return [StatusCode.INTERNAL_ERR, -1]
 
 	return [StatusCode.OK, spell_node.cooldown_timer.get_time_left()]
-
-
-func _get_spell_cost(_type: SpellType) -> Array:
-	print("[GetAllSpellCost] Get request")
-	var spell_manager: Node = game_self.get_node("SpellManager")
-
-	if spell_manager == null:
-		print("[ERROR] node not found spell_manager")
-		return [StatusCode.INTERNAL_ERR, -1]
-
-	var spell_node: Node = null
-	match _type:
-		SpellType.DOUBLE_INCOME:
-			spell_node = spell_manager.get_node("DoubleIncome")
-		SpellType.POISON:
-			spell_node = spell_manager.get_node("Poison")
-		SpellType.TELEPORT:
-			spell_node = spell_manager.get_node("Teleport")
-		_:
-			print("[Error] Unknown spell type:", _type)
-			return [StatusCode.ILLEGAL_ARGUMENT]
-
-	if spell_node == null:
-		print("[ERROR] node not found spell")
-		return [StatusCode.INTERNAL_ERR, -1]
-
-	return [StatusCode.OK, spell_node.metadata.stats.cost]
 
 
 #endregion
@@ -569,7 +557,7 @@ func _set_chat_name_color(_color: String) -> Array:
 
 #endregion
 
-#regionmisc
+#region Misc
 
 
 func _is_available_name(_name: String) -> bool:

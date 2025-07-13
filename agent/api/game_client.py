@@ -1,11 +1,23 @@
-from .defs import *
+from .defs import (
+    CommandType,
+    GameStatus,
+    TerrainType,
+    TowerType,
+    EnemyType,
+    ChatSource,
+    SpellType,
+    TargetStrategy,
+    Vector2,
+    Tower,
+    Enemy,
+)
 from .game_client_base import GameClientBase, game_command
 
 # the decorated member functions are dummy functions that never gets called
 # an NotImplementedError is raised because returning nothing violates return type checking
 
-class GameClient(GameClientBase):
 
+class GameClient(GameClientBase):
     @game_command(CommandType.GET_GAME_STATUS, [], GameStatus)
     def get_game_status(self) -> GameStatus:
         """
@@ -48,7 +60,7 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.GET_TERRAIN, [Vector2], TerrainType)
     def get_terrain(self, pos: Vector2) -> TerrainType:
         """
@@ -96,7 +108,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         - `owned` (bool): 是否為玩家擁有的金錢。如果為 `True`，則查詢玩家的金錢，如果為 `False`，則查詢對手的金錢。
-        
+
         ## Returns
         這個函數返回一個整數，表示指定玩家的金錢數量。
 
@@ -136,7 +148,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數返回一個整數，表示當前的波數。
 
@@ -156,7 +168,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數返回一個浮點數，表示遊戲剩餘的時間，單位為秒。
 
@@ -175,7 +187,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數返回一個浮點數，表示距離下一波的時間，單位為秒。
 
@@ -186,19 +198,19 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
-    @game_command(CommandType.GET_SYSTEM_PATH, [bool], list[Vector2]) 
+
+    @game_command(CommandType.GET_SYSTEM_PATH, [bool], list[Vector2])
     def get_system_path(self, fly: bool) -> list[Vector2]:
         """
         # Get System Path
         取得系統派兵的路徑。
-        
+
         ## Parameters
         - `fly` (bool): 是否為飛行兵的路徑。
-        
+
         ## Returns
         這個函式返回一個座標陣列，表示系統派兵從起點到終點經過的格點。
-        
+
         ## Example
         ```python
         system_path = api.get_system_path(False) # 獲取系統派地面兵路徑
@@ -208,18 +220,18 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_OPPONENT_PATH, [bool], list[Vector2]) 
+    @game_command(CommandType.GET_OPPONENT_PATH, [bool], list[Vector2])
     def get_opponent_path(self, fly: bool) -> list[Vector2]:
         """
         # Get Opponent Path
         取得對手派兵的路徑。
-        
+
         ## Parameters
         - `fly` (bool): 是否為飛行兵的路徑。
-        
+
         ## Returns
         這個函式返回一個座標陣列，表示對手派兵從起點到終點經過的格點。
-        
+
         ## Example
         ```python
         opp_path = api.get_opponent_path(True) # 獲取對手派飛行兵路徑
@@ -228,7 +240,7 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.PLACE_TOWER, [TowerType, str, Vector2], None)
     def place_tower(self, type: TowerType, level: str, coord: Vector2) -> None:
         """
@@ -245,7 +257,7 @@ class GameClient(GameClientBase):
 
         ## TowerType
         - 有FIRE_MARIO, ICE_LUIGI, DONKEY_KONG, FORT, SHY_GUY五種。
-        
+
         ## Example
         ```python
         api.place_tower(TowerType.FIRE_MARIO, "2a", Vector2(5, 10))  # 在 (5, 10) 的位置放置一個馬力歐塔
@@ -293,7 +305,7 @@ class GameClient(GameClientBase):
         print(tower)
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.SELL_TOWER, [Vector2], None)
     def sell_tower(self, coord: Vector2) -> None:
         """
@@ -311,20 +323,35 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
+    @game_command(CommandType.SET_STRATEGY, [Vector2, TargetStrategy], None)
+    def set_strategy(self, coord: Vector2, strategy: TargetStrategy) -> None:
+        """
+        # Set Strategy
+        指定一座防禦塔的瞄準策略。
+
+        ## Parameters
+        - `coord` (Vector2): 欲變更瞄準策略的防禦塔位置。
+        - `strategy` (TargetStrategy): 該防禦塔新的的瞄準策略，有FIRST，LAST和CLOSE。
+
+        ## Returns
+        這個函數沒有返回值。如果成功的話，防禦塔的瞄準策略會被變更。
+
+        ## Example
+        api.set_strategy(Vector2(5, 10), CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
+        """
+        raise NotImplementedError
+
     @game_command(CommandType.SPAWN_UNIT, [EnemyType], None)
     def spawn_unit(self, type: EnemyType) -> None:
         """
         # Spawn Unit
-        派出一個指定類型的敵人。
+        派出一個指定類型的單位。
 
         ## Parameters
-        - `type` (EnemyType): 要派出的敵人的類型。
+        - `type` (EnemyType): 要派出的單位的類型。
 
         ## Returns
         這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
-
-        ## EnemyType
-        - 有 BUZZY_BEETLE, GOOMBA, KOOPA_JR, KOOPA_PARATROOPA, KOOPA, SPINY_SHELL, WIGGLER
 
         ## Example
         ```python
@@ -332,30 +359,35 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-
-    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list[Enemy])
-    def get_available_units(self) -> list[Enemy]:
+    
+    @game_command(CommandType.GET_UNIT_COOLDOWN, [EnemyType], float)
+    def get_unit_cooldown(self, type: EnemyType) -> float:
         """
-        # Get Available Units
-        取得所有可用的敵人資訊。
+        # Get Unit Cooldown
+        取得特定單位的派遣冷卻時間。
+
+        ## Parameters
+        - `type` (EnemyType): 要查詢的單位的類型。
 
         ## Returns
-        這個函數返回一個 `Enemy` 物件的列表。
+        這個函數返回一個浮點數，代表此類型的單位再過幾秒後可以再次派遣。
 
         ## Example
         ```python
-        available_enemies = api.get_available_enemies()  # 獲取所有可用的敵人資訊
-        for enemy in available_enemies:
-            print(enemy)
+        to_wait = api.get_unit_cooldown(EnemyType.KOOPA)
+        time.sleep(to_wait)  # 等待直到可以再次派出一隻 KOOPA
         ```
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_ALL_ENEMIES, [], list[Enemy])
-    def get_all_enemies(self) -> list[Enemy]:
+    @game_command(CommandType.GET_ALL_ENEMIES, [bool], list[Enemy])
+    def get_all_enemies(self, owned: bool) -> list[Enemy]:
         """
         # Get All Enemies
         取得自己地圖上所有敵人的資訊。
+
+        ## Parameters
+        - `owned` (bool): 查詢自己 (True) 或對手 (False) 的敵人。
 
         ## Returns
         這個函數返回一個 `Enemy` 物件的列表。
@@ -420,31 +452,6 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_SPELL_COST, [SpellType], float)
-    def get_spell_cost(self, type: SpellType) -> float:
-        """
-        # Get Spell Cost
-        取得法術的消耗。
-
-        ## Parameters
-        - `type` (SpellType): 要查詢的法術類型。
-
-        ## Returns
-        這個函數返回一個浮點數，表示法術的消耗。
-
-        ## SpellType
-        - POISON: 毒藥法術，對範圍內的敵人造成持續傷害。
-        - DOUBLE_INCOME: 雙倍收入法術，在一段時間內使玩家的所有收入來源變為兩倍。
-        - TELEPORT: 傳送法術，將敵人傳送到對手的路線起點。
-
-        ## Example
-        ```python
-        cost = api.get_spell_cost(SpellType.POISON)  # 獲取毒藥法術的消耗
-        print(f"Cost for POISON spell: {cost} money")
-        ```
-        """
-        raise NotImplementedError
-
     @game_command(CommandType.SEND_CHAT, [str], bool)
     def send_chat(self, msg: str) -> bool:
         """
@@ -488,7 +495,7 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.SET_CHAT_NAME_COLOR, [str], None)
     def set_chat_name_color(self, color: str) -> None:
         """

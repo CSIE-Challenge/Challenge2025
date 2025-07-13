@@ -13,5 +13,4 @@ def enforce_type(name, obj, *args):
 
 def enforce_condition(condition_str, var, condition_fn):
     if not condition_fn(var):
-        raise ValueError(
-            f"[API Server] Error: condition violated: {condition_str}")
+        raise ValueError(f"[API Server] Error: condition violated: {condition_str}")

@@ -248,6 +248,10 @@ func get_all_enemies() -> Array:
 		list.push_back(path.get_children()[0])
 	for path in map.opponent_path.get_children():
 		list.push_back(path.get_children()[0])
+	for path in map.flying_system_path.get_children():
+		list.push_back(path.get_children()[0])
+	for path in map.flying_opponent_path.get_children():
+		list.push_back(path.get_children()[0])
 	return list
 
 
@@ -269,7 +273,7 @@ func _on_buy_spell(spell) -> void:
 		var spell_scene = load(spell.metadata.scene_path)
 		var preview_spell_node = spell_scene.instantiate()
 		var preview_color_callback = func(node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
-			if money >= node.metadata.stats.cost and not node.is_on_cooldown:
+			if not node.is_on_cooldown:
 				return Previewer.PreviewMode.SUCCESS
 			return Previewer.PreviewMode.FAIL
 

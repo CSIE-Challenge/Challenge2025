@@ -18,12 +18,12 @@ enum CommandType {
 	GET_ALL_TOWERS = 102,
 	GET_TOWER = 103,
 	SELL_TOWER = 104,
+	SET_STRATEGY = 105,
 	SPAWN_UNIT = 201,
-	GET_AVAILABLE_UNITS = 202,
+	GET_UNIT_COOLDOWN = 202,
 	GET_ALL_ENEMIES = 203,
 	CAST_SPELL = 301,
 	GET_SPELL_COOLDOWN = 302,
-	GET_SPELL_COST = 303,
 	SEND_CHAT = 401,
 	GET_CHAT_HISTORY = 402,
 	SET_CHAT_NAME_COLOR = 403,
@@ -85,14 +85,14 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
 		CommandHandler.new(CommandType.GET_TOWER, [TYPE_BOOL, TYPE_VECTOR2I], _get_tower),
 		CommandHandler.new(CommandType.SELL_TOWER, [TYPE_VECTOR2I], _sell_tower),
+		CommandHandler.new(CommandType.SET_STRATEGY, [TYPE_VECTOR2I, TYPE_INT], _set_strategy),
 		CommandHandler.new(CommandType.SPAWN_UNIT, [TYPE_INT], _spawn_unit),
-		CommandHandler.new(CommandType.GET_AVAILABLE_UNITS, [], _get_available_units),
-		CommandHandler.new(CommandType.GET_ALL_ENEMIES, [], _get_all_enemies),
+		CommandHandler.new(CommandType.GET_UNIT_COOLDOWN, [TYPE_INT], _get_unit_cooldown),
+		CommandHandler.new(CommandType.GET_ALL_ENEMIES, [TYPE_BOOL], _get_all_enemies),
 		CommandHandler.new(CommandType.CAST_SPELL, [TYPE_INT, TYPE_VECTOR2I], _cast_spell),
 		CommandHandler.new(
 			CommandType.GET_SPELL_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_spell_cooldown
 		),
-		CommandHandler.new(CommandType.GET_SPELL_COST, [TYPE_INT], _get_spell_cost),
 		CommandHandler.new(CommandType.SEND_CHAT, [TYPE_STRING], _send_chat),
 		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history),
 		CommandHandler.new(CommandType.SET_CHAT_NAME_COLOR, [TYPE_STRING], _set_chat_name_color),
@@ -154,6 +154,10 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 				request_id,
 				StatusCode.NOT_STARTED,
 				"[Receive Command] Error: the game is not running"
+			]
+		elif game_running and get_tree().paused and not _general_commands.has(command_id):
+			response = [
+				request_id, StatusCode.PAUSED, "[Receive Command] Error: the game is paused"
 			]
 		else:
 			game_self.api_called += 1

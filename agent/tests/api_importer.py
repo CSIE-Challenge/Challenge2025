@@ -1,4 +1,11 @@
-from .defs import (
+# include everything from api/, which is not include-able by default due to python's weird include path resolution
+
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
+from api.defs import (
     CommandType as CommandType,
     GameStatus as GameStatus,
     TerrainType as TerrainType,
@@ -12,4 +19,4 @@ from .defs import (
     Tower as Tower,
     Enemy as Enemy,
 )
-from .game_client import GameClient as GameClient
+from api.game_client import GameClient as GameClient
