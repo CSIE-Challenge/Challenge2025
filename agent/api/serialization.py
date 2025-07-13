@@ -2,7 +2,7 @@ from typing import Any
 from enum import IntEnum
 import struct
 
-from .defs import Vector2
+from .structures import Vector2
 
 
 class TypeCode(IntEnum):

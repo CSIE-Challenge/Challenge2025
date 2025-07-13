@@ -1,12 +1,15 @@
-from .defs import (
+from .constants import (
     CommandType as CommandType,
     GameStatus as GameStatus,
     TerrainType as TerrainType,
     TowerType as TowerType,
     EnemyType as EnemyType,
-    ChatSource as ChatSource,
     SpellType as SpellType,
+    TargetStrategy as TargetStrategy,
+    ChatSource as ChatSource,
     StatusCode as StatusCode,
+)
+from .structures import (
     Vector2 as Vector2,
     ApiException as ApiException,
     Tower as Tower,
