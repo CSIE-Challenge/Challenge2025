@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://djqh2uyjaenwg"]
+
+[ext_resource type="Texture2D" uid="uid://bf54ixcrynilc" path="res://assets/distro/macos.png" id="1_2wmxr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_juw6v"]
+size = Vector2(26, 28)
+
+[node name="MacOS" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_2wmxr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_juw6v")

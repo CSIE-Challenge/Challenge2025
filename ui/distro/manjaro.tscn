@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://tgvg1sre5w23"]
+
+[ext_resource type="Texture2D" uid="uid://cyunp2erwvfxg" path="res://assets/distro/manjaro.png" id="1_a1gh3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a1gh3"]
+size = Vector2(26, 26)
+
+[node name="Manjaro" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_a1gh3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_a1gh3")

@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bww3oq82ln2co"]
+
+[ext_resource type="Texture2D" uid="uid://b3v6vp1dk5uly" path="res://assets/distro/fedora.png" id="1_w4fdv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w4fdv"]
+radius = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2jrat"]
+size = Vector2(14, 14)
+
+[node name="Fedora" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_w4fdv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(4, 4)
+shape = SubResource("CircleShape2D_w4fdv")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-28, 28)
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_2jrat")

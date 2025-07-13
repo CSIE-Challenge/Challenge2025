@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfsklvy34ockr"]
+
+[ext_resource type="Texture2D" uid="uid://c2a1ashdq5tf2" path="res://assets/distro/ubuntu.png" id="1_bwc75"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wtc63"]
+radius = 15.0
+
+[node name="Arch" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_bwc75")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(4, 4)
+shape = SubResource("CircleShape2D_wtc63")
