@@ -13,7 +13,6 @@ const ROTATION_SPEED := 8.0
 @export var aoe_scale: float = 1
 @export var shockwave_scene: PackedScene  # The scene of generated effect/shockwave
 @export var movement_speed := 400.0
-@export var damage := 1
 
 @export var lifespan_seconds: float = 5
 @export var spanning_speed: float = 0  # For spanning animation
@@ -27,6 +26,7 @@ var target: Node2D = null
 var start_position: Vector2
 var direction: float
 var alive: bool = true
+var damage := 1
 var timer = Timer.new()
 var effect_timer = Timer.new()
 var respawn_effect_timer = Timer.new()  # Half of the period of (burning) effect

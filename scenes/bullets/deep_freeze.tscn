@@ -17,7 +17,6 @@ is_anti_air = true
 is_penetrating = true
 aoe_scale = 16.0
 movement_speed = 0.0
-damage = 0
 lifespan_seconds = 0.02
 effect = 4
 effect_duration = 2

@@ -15,7 +15,7 @@ script = ExtResource("1_rkw8v")
 is_tracking = false
 aoe_scale = 0.0
 shockwave_scene = ExtResource("2_6x7ts")
-damage = 0
+effect_damage = 150
 
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("3_djkmm")

@@ -17,7 +17,7 @@ shockwave_scene = ExtResource("2_jch3c")
 lifespan_seconds = 1.0
 spanning_speed = 0.262
 effect = 1
-effect_damage = 1
+effect_damage = 4
 effect_duration = 1
 effect_interval = 0.3
 
