@@ -17,12 +17,11 @@ const ANIMATION_FRAME_DURATION := 0.1
 @export var reload_seconds: float = 1
 @export var aim_range: float = 450
 @export var damage: int = 2
-# Should be a variable controlled otherwise later
-@export var strategy: TargetStrategy = TargetStrategy.FIRST
 var target: Node2D = null
 var enabled: bool = false
 var reload_timer: Timer
 var wait_for_animation_timer: Timer
+var strategy: TargetStrategy = TargetStrategy.FIRST
 var bullet_effect: String  # only used in to_dict
 
 @onready var anime = $Tower/AnimatedSprite2D
@@ -46,6 +45,10 @@ func enable(_global_position: Vector2, _map: Map) -> void:
 	global_position = _global_position
 	reload_timer.start(reload_seconds)
 	AudioManager.tower_place.play()
+
+
+func set_strategy(new_strategy: TargetStrategy) -> void:
+	strategy = new_strategy
 
 
 func _refresh_target() -> void:

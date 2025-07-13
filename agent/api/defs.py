@@ -20,6 +20,7 @@ class CommandType(IntEnum):
     GET_ALL_TOWERS = 102
     GET_TOWER = 103
     SELL_TOWER = 104
+    SET_STRATEGY = 105
     SPAWN_UNIT = 201
     GET_UNIT_COOLDOWN = 202
     GET_ALL_ENEMIES = 203
@@ -146,6 +147,17 @@ class SpellType(IntEnum):
     TELEPORT = 2
     """傳送我方地圖中一個區域的所有敵人到對手的場地內，重新從起點開始走。"""
 
+class TargetStrategy(IntEnum):
+    """瞄準策略。"""
+
+    FIRST = 0
+    """瞄準範圍內進度最快的敵人"""
+
+    LAST = 1
+    """瞄準範圍內進度最慢的敵人"""
+
+    CLOSE = 2
+    """瞄準距離自己最近的敵人"""
 
 class StatusCode(IntEnum):
     """呼叫API得到的回覆狀態。"""

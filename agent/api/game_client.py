@@ -6,6 +6,7 @@ from .defs import (
     EnemyType,
     ChatSource,
     SpellType,
+    TargetStrategy,
     Vector2,
     Tower,
     Enemy,
@@ -319,6 +320,24 @@ class GameClient(GameClientBase):
 
         ## Example
         api.sell_tower(Vector2(5, 10))  # 賣掉 (5, 10) 的位置上的防禦塔
+        """
+        raise NotImplementedError
+
+    @game_command(CommandType.SET_STRATEGY, [Vector2, TargetStrategy], None)
+    def set_strategy(self, coord: Vector2, strategy: TargetStrategy) -> None:
+        """
+        # Set Strategy
+        指定一座防禦塔的瞄準策略。
+
+        ## Parameters
+        - `coord` (Vector2): 欲變更瞄準策略的防禦塔位置。
+        - `strategy` (TargetStrategy): 該防禦塔新的的瞄準策略，有FIRST，LAST和CLOSE。
+
+        ## Returns
+        這個函數沒有返回值。如果成功的話，防禦塔的瞄準策略會被變更。
+
+        ## Example
+        api.set_strategy(Vector2(5, 10), CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
         """
         raise NotImplementedError
 
