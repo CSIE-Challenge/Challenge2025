@@ -344,24 +344,6 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_AVAILABLE_UNITS, [], list[Enemy])
-    def get_available_units(self) -> list[Enemy]:
-        """
-        # Get Available Units
-        取得所有可用的敵人資訊。
-
-        ## Returns
-        這個函數返回一個 `Enemy` 物件的列表。
-
-        ## Example
-        ```python
-        available_enemies = api.get_available_enemies()  # 獲取所有可用的敵人資訊
-        for enemy in available_enemies:
-            print(enemy)
-        ```
-        """
-        raise NotImplementedError
-
     @game_command(CommandType.GET_ALL_ENEMIES, [], list[Enemy])
     def get_all_enemies(self) -> list[Enemy]:
         """
