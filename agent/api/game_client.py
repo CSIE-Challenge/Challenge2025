@@ -344,11 +344,14 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_ALL_ENEMIES, [], list[Enemy])
-    def get_all_enemies(self) -> list[Enemy]:
+    @game_command(CommandType.GET_ALL_ENEMIES, [bool], list[Enemy])
+    def get_all_enemies(self, owned: bool) -> list[Enemy]:
         """
         # Get All Enemies
         取得自己地圖上所有敵人的資訊。
+
+        ## Parameters
+        - `owned` (bool): 查詢自己 (True) 或對手 (False) 的敵人。
 
         ## Returns
         這個函數返回一個 `Enemy` 物件的列表。

@@ -19,7 +19,15 @@ test_spawn(agent, api.EnemyType.WIGGLER)
 
 time.sleep(1)
 
-enemies = agent.get_all_enemies()
+enemies = agent.get_all_enemies(True)
+if isinstance(enemies, api.ApiException):
+    print(f"Error: {repr(enemies)}")
+else:
+    print(f"{len(enemies)} enemies")
+    for i in enemies:
+        print(repr(i))
+
+enemies = agent.get_all_enemies(False)
 if isinstance(enemies, api.ApiException):
     print(f"Error: {repr(enemies)}")
 else:

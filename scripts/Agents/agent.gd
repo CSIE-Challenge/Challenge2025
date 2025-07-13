@@ -403,9 +403,13 @@ func _get_enemy_info(enemy: Area2D) -> Dictionary:
 	return data
 
 
-func _get_all_enemies() -> Array:
+func _get_all_enemies(_owned: bool) -> Array:
 	print("[GetAllEnemies] Get request")
-	var enemies: Array = game_self.get_all_enemies()
+	var enemies: Array
+	if _owned:
+		enemies = game_self.get_all_enemies()
+	else:
+		enemies = game_other.get_all_enemies()
 	var enemies_info: Array = []
 
 	for enemy in enemies:

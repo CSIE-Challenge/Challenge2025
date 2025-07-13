@@ -85,7 +85,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.GET_TOWER, [TYPE_BOOL, TYPE_VECTOR2I], _get_tower),
 		CommandHandler.new(CommandType.SELL_TOWER, [TYPE_VECTOR2I], _sell_tower),
 		CommandHandler.new(CommandType.SPAWN_UNIT, [TYPE_INT], _spawn_unit),
-		CommandHandler.new(CommandType.GET_ALL_ENEMIES, [], _get_all_enemies),
+		CommandHandler.new(CommandType.GET_ALL_ENEMIES, [TYPE_BOOL], _get_all_enemies),
 		CommandHandler.new(CommandType.CAST_SPELL, [TYPE_INT, TYPE_VECTOR2I], _cast_spell),
 		CommandHandler.new(
 			CommandType.GET_SPELL_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_spell_cooldown
