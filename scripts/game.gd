@@ -161,11 +161,6 @@ func _on_interest_timer_timeout() -> void:
 	money = int(money * INTEREST_RATE)
 
 
-func on_subsidization(subsidy) -> void:
-	if score < op_game.score:
-		money = money + subsidy
-
-
 #endregion
 
 #region Enemies
