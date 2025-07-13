@@ -81,10 +81,10 @@
 	"wave_number": 7,
 	"wave_name": "Stampede",
 	"units": [
-	  { "name": "goomba", "count": 50 }
+	  { "name": "goomba", "count": 20 }
 	],
 	"method": "sequential",
-	"delay": 0.2
+	"delay": 0.5
   },
   {
 	"wave_number": 8,
@@ -105,19 +105,19 @@
 	"wave_number": 9,
 	"wave_name": "Sky Attack",
 	"units": [
-	  { "name": "koopa_paratroopa", "count": 50 }
+	  { "name": "koopa_paratroopa", "count": 20 }
 	],
 	"method": "sequential",
-	"delay": 0.2
+	"delay": 0.5
   },
   {
 	"wave_number": 10,
 	"wave_name": "Shellstorm",
 	"units": [
-	  { "name": "spiny_shell", "count": 50 }
+	  { "name": "spiny_shell", "count": 20 }
 	],
 	"method": "sequential",
-	"delay": 0.2
+	"delay": 0.5
   },
   {
 	"wave_number": 11,
