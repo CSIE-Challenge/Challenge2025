@@ -16,6 +16,7 @@ corner_radius_bottom_left = 100
 
 [node name="HealthBar" type="ProgressBar"]
 visible = false
+z_index = 100
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
