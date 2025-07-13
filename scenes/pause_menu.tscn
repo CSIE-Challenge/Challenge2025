@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://baakrjeehjclq"]
+[gd_scene load_steps=5 format=3 uid="uid://baakrjeehjclq"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_myx47"]
 [ext_resource type="Script" uid="uid://c7xgg0gcgxebh" path="res://scripts/pause_menu.gd" id="1_n87rw"]
+[ext_resource type="Script" uid="uid://cv32hx3ajiafn" path="res://ui/settings.gd" id="3_5d2l8"]
 [ext_resource type="PackedScene" uid="uid://3xue1fv3fh54" path="res://ui/volume_slider.tscn" id="3_kukqi"]
 
 [node name="PauseMenu" type="Control"]
@@ -65,6 +66,7 @@ offset_right = -475.0
 offset_bottom = -236.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("3_5d2l8")
 
 [node name="MarginContainer" type="MarginContainer" parent="Settings"]
 layout_mode = 2
@@ -90,7 +92,7 @@ alignment = 1
 layout_mode = 2
 text = "Master"
 
-[node name="VolumeSlider" parent="Settings/MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("3_kukqi")]
+[node name="Master" parent="Settings/MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("3_kukqi")]
 layout_mode = 2
 bus_name = "Master"
 
@@ -98,7 +100,7 @@ bus_name = "Master"
 layout_mode = 2
 text = "Music"
 
-[node name="VolumeSlider2" parent="Settings/MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("3_kukqi")]
+[node name="Music" parent="Settings/MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("3_kukqi")]
 layout_mode = 2
 bus_name = "Music"
 
@@ -106,7 +108,7 @@ bus_name = "Music"
 layout_mode = 2
 text = "SFX"
 
-[node name="VolumeSlider3" parent="Settings/MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("3_kukqi")]
+[node name="SFX" parent="Settings/MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("3_kukqi")]
 layout_mode = 2
 bus_name = "SFX"
 
@@ -118,3 +120,4 @@ text = "Back"
 [connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
 [connection signal="pressed" from="Settings/MarginContainer/VBoxContainer2/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Settings/MarginContainer/VBoxContainer2/Back" to="Settings" method="_on_back_pressed"]

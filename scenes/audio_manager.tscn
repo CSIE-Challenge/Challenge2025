@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://vqr16ide5skg" path="res://assets/audio/MenuTheme.mp3" id="5_ujhup"]
 
 [node name="AudioManager" type="Node"]
+process_mode = 3
 script = ExtResource("1_8qd8g")
 
 [node name="EnemyAttack" type="AudioStreamPlayer" parent="."]

@@ -1,6 +1,6 @@
 extends Control
 
-const CONFIG_FILE_PATH = "user://settings.cfg"
+const CONFIG_FILE_PATH = "user://player_settings.cfg"
 
 # array of: map name, cover image, scene
 # the random option MUST be the first one

@@ -33,6 +33,7 @@ func _on_exit_pressed() -> void:
 
 func _on_settings_pressed() -> void:
 	$PauseMenu.visible = false
+	$Settings.load_settings()
 	$Settings.visible = true
 
 
