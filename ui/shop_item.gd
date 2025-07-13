@@ -25,7 +25,7 @@ func _process(_delta):
 	if is_valid.call():
 		modulate = Color(1.0, 1.0, 1.0, 1.0)
 	else:
-		modulate = Color(1.0, 0, 0, 0.5)
+		modulate = Color(1.0, 0.5, 0.5, 0.3)
 
 
 func _on_button_press() -> void:
