@@ -439,10 +439,6 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 	print("[CastSpell] Get request")
 	var spell_manager: Node = game_self.get_node("SpellManager")
 
-	if spell_manager == null:
-		print("[ERROR] node not found spell_manager")
-		return [StatusCode.INTERNAL_ERR]
-
 	var spell_node: Node = null
 	match _type:
 		SpellType.DOUBLE_INCOME:
@@ -451,25 +447,25 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 			spell_node = spell_manager.get_node("Poison")
 		SpellType.TELEPORT:
 			spell_node = spell_manager.get_node("Teleport")
-		_:
-			print("[Error] Unknown spell type:", _type)
-			return [StatusCode.ILLEGAL_ARGUMENT]
 
 	if spell_manager == null:
 		print("[ERROR] node not found spell_manager")
-		return [StatusCode.INTERNAL_ERR]
+		return [StatusCode.INTERNAL_ERR, "node not found spell_manager"]
 
 	if _type == SpellType.DOUBLE_INCOME:
+		if spell_node.is_on_cooldown or spell_node.is_active or not spell_node.game:
+			return [StatusCode.CLIENT_ERR, "Spell is on cooldown"]
 		var suc = spell_node.cast_spell()
-		print(suc)
 		if not suc:
-			print("[ERROR] cann't cast the spell")
-			return [StatusCode.CLIENT_ERR]
+			print("[ERROR] cann't cast the spell for unknown reason")
+			return [StatusCode.INTERNAL_ERR, "Cannot cast spell for unknown reason"]
 	else:
+		if spell_node.is_on_cooldown or not spell_node.game:
+			return [StatusCode.CLIENT_ERR, "Spell is on cooldown"]
 		var suc = spell_node.cast_spell(global_pos)
 		if not suc:
-			print("[ERROR] cann't cast the spell")
-			return [StatusCode.CLIENT_ERR]
+			print("[ERROR] cann't cast the spell for unknown reason")
+			return [StatusCode.INTERNAL_ERR, "Cannot cast spell for unknown reason"]
 
 	return [StatusCode.OK]
 
@@ -503,33 +499,6 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 		return [StatusCode.INTERNAL_ERR, -1]
 
 	return [StatusCode.OK, spell_node.cooldown_timer.get_time_left()]
-
-
-func _get_spell_cost(_type: SpellType) -> Array:
-	print("[GetAllSpellCost] Get request")
-	var spell_manager: Node = game_self.get_node("SpellManager")
-
-	if spell_manager == null:
-		print("[ERROR] node not found spell_manager")
-		return [StatusCode.INTERNAL_ERR, -1]
-
-	var spell_node: Node = null
-	match _type:
-		SpellType.DOUBLE_INCOME:
-			spell_node = spell_manager.get_node("DoubleIncome")
-		SpellType.POISON:
-			spell_node = spell_manager.get_node("Poison")
-		SpellType.TELEPORT:
-			spell_node = spell_manager.get_node("Teleport")
-		_:
-			print("[Error] Unknown spell type:", _type)
-			return [StatusCode.ILLEGAL_ARGUMENT]
-
-	if spell_node == null:
-		print("[ERROR] node not found spell")
-		return [StatusCode.INTERNAL_ERR, -1]
-
-	return [StatusCode.OK, spell_node.metadata.stats.cost]
 
 
 #endregion

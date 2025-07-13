@@ -433,31 +433,6 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_SPELL_COST, [SpellType], float)
-    def get_spell_cost(self, type: SpellType) -> float:
-        """
-        # Get Spell Cost
-        取得法術的消耗。
-
-        ## Parameters
-        - `type` (SpellType): 要查詢的法術類型。
-
-        ## Returns
-        這個函數返回一個浮點數，表示法術的消耗。
-
-        ## SpellType
-        - POISON: 毒藥法術，對範圍內的敵人造成持續傷害。
-        - DOUBLE_INCOME: 雙倍收入法術，在一段時間內使玩家的所有收入來源變為兩倍。
-        - TELEPORT: 傳送法術，將敵人傳送到對手的路線起點。
-
-        ## Example
-        ```python
-        cost = api.get_spell_cost(SpellType.POISON)  # 獲取毒藥法術的消耗
-        print(f"Cost for POISON spell: {cost} money")
-        ```
-        """
-        raise NotImplementedError
-
     @game_command(CommandType.SEND_CHAT, [str], bool)
     def send_chat(self, msg: str) -> bool:
         """
