@@ -4,6 +4,17 @@ var screen_size := Vector2.ZERO
 var velocity := Vector2(400, 300)
 
 @onready var logo := $Subtitle
+@onready var distros := [
+	preload("res://ui/distro/arch.tscn"),
+	preload("res://ui/distro/debian.tscn"),
+	preload("res://ui/distro/fedora.tscn"),
+	preload("res://ui/distro/freebsd.tscn"),
+	preload("res://ui/distro/macos.tscn"),
+	preload("res://ui/distro/manjaro.tscn"),
+	preload("res://ui/distro/nixos.tscn"),
+	preload("res://ui/distro/ubuntu.tscn"),
+	preload("res://ui/distro/windows.tscn")
+]
 
 
 func _ready() -> void:
@@ -50,3 +61,12 @@ func _process(delta):
 
 func _change_color():
 	logo.modulate = Color(randf(), randf(), randf())
+
+
+func _on_timer_timeout() -> void:
+	var d = distros.pick_random().instantiate()
+	var screen_width = get_viewport_rect().size.x
+	d.position = Vector2(randf_range(0, screen_width), -50)
+	d.rotation = randf_range(0, TAU)
+	d.set_script(load("res://ui/distro/distro.gd"))
+	add_child(d)

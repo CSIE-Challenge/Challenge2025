@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://hh7dvepcsalw"]
+
+[ext_resource type="Texture2D" uid="uid://dy04wmjhjvil5" path="res://assets/distro/freebsd.png" id="1_t3i58"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eki62"]
+radius = 14.0357
+
+[node name="FreeBSD" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_t3i58")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4, 0)
+scale = Vector2(4, 4)
+shape = SubResource("CircleShape2D_eki62")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(-16, -14, -12, -5, -7, -12)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="."]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(16, -14, 8, -12, 14, -6)
