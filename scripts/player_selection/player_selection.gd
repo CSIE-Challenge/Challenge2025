@@ -1,6 +1,6 @@
 extends Control
 
-const CONFIG_FILE_PATH = "user://settings.cfg"
+const CONFIG_FILE_PATH = "user://player_settings.cfg"
 
 # array of: map name, cover image, scene
 # the random option MUST be the first one
@@ -16,7 +16,7 @@ var selected_map_idx: int
 
 @onready var selection_1p: IndividualPlayerSelection = $VBoxContainer/HBoxContainer/Selection1P
 @onready var selection_2p: IndividualPlayerSelection = $VBoxContainer/HBoxContainer/Selection2P
-@onready var game_start_button: Button = $VBoxContainer/StartButton
+@onready var game_start_button: Button = $VBoxContainer/HBoxContainer2/StartButton
 @onready var game_start_timer: Timer = $GameStartTimer
 @onready var map_panel = $VBoxContainer/HBoxContainer/PanelMap
 
@@ -95,3 +95,8 @@ func _on_game_start_timer_timeout() -> void:
 	the_round.set_maps(map_scene)
 	get_tree().get_root().add_child(the_round)
 	queue_free()
+
+
+func _on_back_button_pressed() -> void:
+	AudioManager.background_menu.play()
+	get_tree().change_scene_to_file("res://scenes/menu.tscn")

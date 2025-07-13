@@ -21,6 +21,7 @@ config/icon="uid://6rnsx1gsanpk"
 
 ApiServer="*res://scripts/APIServer/api_server.gd"
 AudioManager="*res://scenes/audio_manager.tscn"
+Global="*res://scripts/global.gd"
 
 [display]
 
