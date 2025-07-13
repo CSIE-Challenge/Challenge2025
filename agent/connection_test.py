@@ -1,5 +1,5 @@
 from time import sleep
 from api import GameClient
 
-api = GameClient(7749, "9e3a23bb")
+api = GameClient(7749, "TOKEN")
 sleep(5)
