@@ -553,6 +553,7 @@ func _pixel_cat() -> Array:
 	pixelcat_cnt -= 1
 	send_pixelcat = true
 	self._send_chat("[font_size=8]" + pixel_cat_str + "[/font_size]")
+	send_pixelcat = false
 	return [StatusCode.OK, pixel_cat_str]
 
 
