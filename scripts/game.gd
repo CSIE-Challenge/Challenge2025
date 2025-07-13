@@ -140,10 +140,16 @@ func _on_buy_tower(tower_scene: PackedScene):
 	self.add_child(previewer)
 
 
-func _select_tower(tower: Tower):
+func _select_tower(tower: Tower, left: bool, up: bool):
 	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
-	self.add_child(tower_ui)
+	tower.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
+	await get_tree().process_frame
+	var ui_size = tower_ui.size
+	if left:
+		tower_ui.global_position.x -= ui_size.x
+	if up:
+		tower_ui.global_position.y -= ui_size.y
 	tower_ui.sold.connect(self._on_tower_sold.bind(tower, tower_ui, true))
 
 
@@ -154,8 +160,9 @@ func _handle_tower_selection(event: InputEvent) -> void:
 		return
 	var clicked_cell = map.global_to_cell(get_global_mouse_position())
 	if built_towers.has(clicked_cell):
-		_select_tower(built_towers[clicked_cell])
+		_select_tower(built_towers[clicked_cell], clicked_cell.x > 13, clicked_cell.y > 16)
 		get_viewport().set_input_as_handled()
+		print("clicked cell:", clicked_cell)
 
 
 #endregion

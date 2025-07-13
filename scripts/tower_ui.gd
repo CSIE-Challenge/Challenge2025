@@ -18,3 +18,18 @@ func _input(event):
 
 func _on_sell_button_pressed() -> void:
 	sold.emit()
+
+
+func _on_first_button_pressed() -> void:
+	get_parent().strategy = Tower.TargetStrategy.FIRST
+	queue_free()
+
+
+func _on_close_button_pressed() -> void:
+	get_parent().strategy = Tower.TargetStrategy.CLOSE
+	queue_free()
+
+
+func _on_last_button_pressed() -> void:
+	get_parent().strategy = Tower.TargetStrategy.LAST
+	queue_free()
