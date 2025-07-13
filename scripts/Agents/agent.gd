@@ -1,6 +1,6 @@
 class_name Agent
 extends Node
-enum GameStatus { PREPARING = 0, RUNNING = 1, PAUSED = 2 }
+enum GameStatus { PREPARING, RUNNING, PAUSED }
 enum EnemyType {
 	BUZZY_BEETLE,
 	GOOMBA,
@@ -10,7 +10,7 @@ enum EnemyType {
 	SPINY_SHELL,
 	WIGGLER,
 }
-enum SpellType { POISON = 1, DOUBLE_INCOME = 2, TELEPORT = 3 }
+enum SpellType { POISON, DOUBLE_INCOME, TELEPORT }
 enum StatusCode {
 	OK = 200,
 	ILLFORMED_COMMAND = 400,
@@ -387,20 +387,21 @@ func _get_enemy_info(enemy: Area2D) -> Dictionary:
 	if not map:
 		return {}
 
+	var pos: Vector2i = map.global_to_cell(enemy.path_follow.global_position)
 	data["type"] = type
+	data["position"] = {"x": pos[0], "y": pos[1]}
+	data["progress_ratio"] = enemy.path_follow.progress_ratio
+	# TODO: deploy cost
 	data["income_impact"] = enemy.income_impact
+	data["health"] = enemy.health
 	data["max_health"] = enemy.max_health
-	data["max_speed"] = enemy.max_speed
 	data["damage"] = enemy.damage
+	data["max_speed"] = enemy.max_speed
 	data["flying"] = enemy.flying
 	data["knockback_resist"] = enemy.knockback_resist
 	data["kill_reward"] = enemy.kill_reward
-	data["health"] = enemy.health
-	data["progress_ratio"] = enemy.path_follow.progress_ratio
+	# TODO: cool down
 
-	var pos: Vector2i = map.global_to_cell(enemy.path_follow.global_position)
-	data["position"] = {"x": pos[0], "y": pos[1]}
-	print(data)
 	return data
 
 
@@ -570,7 +571,7 @@ func _set_chat_name_color(_color: String) -> Array:
 
 #endregion
 
-#regionmisc
+#region Misc
 
 
 func _is_available_name(_name: String) -> bool:

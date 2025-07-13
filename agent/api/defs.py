@@ -123,21 +123,28 @@ class EnemyType(IntEnum):
 
 
 class ChatSource(IntEnum):
+    """聊天室內的發言者"""
+
     SYSTEM = 0
+    """系統訊息。"""
+
     PLAYER_SELF = 1
+    """己方的發言。"""
+
     PLAYER_OTHER = 2
+    """對方的發言"""
 
 
 class SpellType(IntEnum):
     """技能類別。"""
 
-    POISON = 1
+    POISON = 0
     """毒藥，對範圍內的敵人造成持續傷害。"""
 
-    DOUBLE_INCOME = 2
+    DOUBLE_INCOME = 1
     """一段時間內收到的金錢變兩倍。"""
 
-    TELEPORT = 3
+    TELEPORT = 2
     """傳送我方地圖中一個區域的所有敵人到對手的場地內，重新從起點開始走。"""
 
 
@@ -307,15 +314,15 @@ class Enemy:
         position: Vector2,
         progress_ratio: float,
         deploy_cost: int,
+        income_impact: int,
         health: int,
         max_health: int,
-        flying: bool,
         damage: int,
         max_speed: int,
+        flying: bool,
         knockback_resist: bool,
         kill_reward: int,
-        income_impact: int,
-        cool_down: int = None,
+        cool_down: int,
     ) -> None:
         self.type = type
         """敵人型別。"""
@@ -361,17 +368,17 @@ class Enemy:
         return cls(
             type=EnemyType(data["type"]),
             position=Vector2(data["position"]["x"], data["position"]["y"]),
-            progress_ratio=data.get("progress_ratio"),
-            deploy_cost=data.get("deploy_cost"),
-            income_impact=data.get("income_impact"),
-            health=data.get("health"),
-            max_health=data.get("max_health"),
-            damage=data.get("damage"),
-            max_speed=data.get("max_speed"),
-            flying=data.get("flying"),
-            knockback_resist=data.get("knockback_resist"),
-            kill_reward=data.get("kill_reward"),
-            cool_down=data.get("cool_down", "none"),
+            progress_ratio=data["progress_ratio"],
+            deploy_cost=0,  # data["deploy_cost"],
+            income_impact=data["income_impact"],
+            health=data["health"],
+            max_health=data["max_health"],
+            damage=data["damage"],
+            max_speed=data["max_speed"],
+            flying=data["flying"],
+            knockback_resist=data["knockback_resist"],
+            kill_reward=data["kill_reward"],
+            cool_down=0,  # data["cool_down"],
         )
 
     def __str__(self) -> str:
