@@ -6,11 +6,28 @@ enum ChatSource { SYSTEM, PLAYER_SELF, PLAYER_OTHER }
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 
 var always_visible: bool = false
+var color: String = "ffffff"
+var random = RandomNumberGenerator.new()
+
+@onready var timer: Timer = $ChatTimer
+
+
+func _ready() -> void:
+	random.randomize()
+	timer.timeout.connect(_on_timer_timeout)
+	send_chat_with_sender(0, color, "遊戲開始")
+	timer.set_wait_time(random.randf_range(15, 20))
+	timer.start()
+
+
+func _on_timer_timeout():
+	send_chat_with_sender(0, color, "system")
+	timer.set_wait_time(random.randf_range(15, 20))
 
 
 # sender id: 0 = system, 1 = left player (1p), 2 = right player (2p)
 func send_chat_with_sender(
-	sender_id: int, chat_name_color: String, player_name: String, text: String
+	sender_id: int, chat_name_color: String, text: String, player_name: String = "player"
 ) -> void:
 	var textbox: MarginContainer = TEXTBOX_SCENE.instantiate()
 

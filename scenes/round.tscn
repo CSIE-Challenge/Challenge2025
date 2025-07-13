@@ -277,6 +277,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
+[node name="ChatTimer" type="Timer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+
 [node name="Game2P" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
 spawner = NodePath("../../../Spawner")
