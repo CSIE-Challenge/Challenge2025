@@ -76,6 +76,7 @@ class GameClient(GameClientBase):
 
         ## Parameters
         - `owned` (bool): 是否為玩家擁有的分數。如果為 `True`，則查詢玩家的分數，如果為 `False`，則查詢對手的分數。
+          如果遊戲的記分板被凍結，獲取對手的分數將為記分板凍結瞬間的分數而非實際分數。
 
         ## Returns
         這個函數返回一個整數，表示指定玩家的分數。
