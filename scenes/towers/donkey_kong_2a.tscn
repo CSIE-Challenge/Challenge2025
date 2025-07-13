@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ka30vdrvla2k"]
+[gd_scene load_steps=9 format=3 uid="uid://cvvihv3ubyust"]
 
 [ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_1a38i"]
 [ext_resource type="PackedScene" uid="uid://brnh001o7fq8i" path="res://scenes/bullets/donkey_attack_2a.tscn" id="2_1a38i"]
@@ -55,7 +55,6 @@ damage = 60
 sprite_frames = SubResource("SpriteFrames_opdar")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(24.3278, 39.6927)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
