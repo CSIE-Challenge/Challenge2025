@@ -8,6 +8,7 @@ signal manual_control_enabled
 var manual_control: bool = false
 var python_subprocess: PythonSubprocessManager
 var web_agent: WebAgent
+var _update_paths: bool = true
 
 @onready var manual_control_on_button: Button = $Options/ManualControlContainer/ButtonOn
 @onready var manual_control_off_button: Button = $Options/ManualControlContainer/ButtonOff
@@ -54,10 +55,12 @@ func _ready() -> void:
 	# python interpreter
 	python_interpreter_button.pressed.connect(python_interpreter_dialog.popup)
 	python_interpreter_dialog.file_selected.connect(python_subprocess.set_python_interpreter)
+	python_interpreter_dialog.file_selected.connect(func(_path: String): _update_paths = true)
 
 	# agent script
 	agent_script_button.pressed.connect(agent_script_dialog.popup)
 	agent_script_dialog.file_selected.connect(python_subprocess.set_python_script)
+	agent_script_dialog.file_selected.connect(func(_path: String): _update_paths = true)
 
 	# process status
 	process_status_run_button.pressed.connect(python_subprocess.run_subprocess)
@@ -123,24 +126,47 @@ func freeze() -> void:
 	_remove_handlers(manual_control_on_button.pressed)
 
 
+func _get_string_width(content: String) -> float:
+	return (
+		get_theme_default_font()
+		. get_string_size(content, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_default_font_size())
+		. x
+	)
+
+
+func _truncate_front(content: String, max_width: float) -> String:
+	if _get_string_width(content) < max_width:
+		return content
+	for i in range(len(content)):
+		var truncated = "…" + content.substr(i)
+		if _get_string_width(truncated) < max_width:
+			return truncated
+	return ""
+
+
 func _display_fields() -> void:
 	# manual control
 	manual_control_off_button.visible = not manual_control
 	manual_control_on_button.visible = manual_control
 
-	# python interpreter
-	var python_interpreter_path = python_subprocess.python_interpreter_path
-	if not python_interpreter_path.is_empty():
-		python_interpreter_label.text = python_interpreter_path
-	else:
-		python_interpreter_label.text = "(empty)"
-
-	# agent script
-	var agent_script_path = python_subprocess.python_script_path
-	if not agent_script_path.is_empty():
-		agent_script_label.text = agent_script_path
-	else:
-		agent_script_label.text = "(empty)"
+	if _update_paths:
+		_update_paths = false
+		# python interpreter
+		var python_interpreter_path = _truncate_front(
+			python_subprocess.python_interpreter_path, python_interpreter_label.size.x
+		)
+		if not python_interpreter_path.is_empty():
+			python_interpreter_label.text = python_interpreter_path
+		else:
+			python_interpreter_label.text = "(empty)"
+		# agent script
+		var agent_script_path = _truncate_front(
+			python_subprocess.python_script_path, agent_script_label.size.x
+		)
+		if not agent_script_path.is_empty():
+			agent_script_label.text = agent_script_path
+		else:
+			agent_script_label.text = "(empty)"
 
 	# token
 	token_label.text = web_agent._ws._token

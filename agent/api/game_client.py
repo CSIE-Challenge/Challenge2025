@@ -1,4 +1,4 @@
-from .defs import (
+from .constants import (
     CommandType,
     GameStatus,
     TerrainType,
@@ -7,6 +7,8 @@ from .defs import (
     ChatSource,
     SpellType,
     TargetStrategy,
+)
+from .structures import (
     Vector2,
     Tower,
     Enemy,
@@ -360,7 +362,7 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.GET_UNIT_COOLDOWN, [EnemyType], float)
     def get_unit_cooldown(self, type: EnemyType) -> float:
         """

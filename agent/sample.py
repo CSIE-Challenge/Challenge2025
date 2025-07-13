@@ -1,6 +1,5 @@
-import time
-from api import *
+import api
 
-api = GameClient(7749, "TOKEN")
+agent = api.GameClient(7749, "TOKEN")
 
 # TODO: sample agent
