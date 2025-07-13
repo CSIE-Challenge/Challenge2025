@@ -1,13 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://3j6t5juwkgaa"]
+[gd_scene load_steps=8 format=3 uid="uid://3j6t5juwkgaa"]
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_by470"]
 [ext_resource type="PackedScene" uid="uid://61sg7emmulnr" path="res://scenes/bullets/bullet_2a.tscn" id="2_by470"]
 [ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://pixel_art/tower/BombPipe.png" id="3_by470"]
 [ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://pixel_art/tower/BombPipeFire.png" id="4_qjybr"]
-[ext_resource type="Texture2D" uid="uid://bym1xfjew7tgo" path="res://pixel_art/tower/ShyGuyAttack.png" id="5_8o841"]
-[ext_resource type="Texture2D" uid="uid://clht2uerh11kk" path="res://pixel_art/tower/FireMarioAttack.png" id="6_ell15"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_dayal"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_by470"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -25,7 +23,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_8o841")
+"texture": ExtResource("3_by470")
 }],
 "loop": false,
 "name": &"Lower",
@@ -33,7 +31,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("6_ell15")
+"texture": ExtResource("3_by470")
 }],
 "loop": false,
 "name": &"Upper",
@@ -62,8 +60,8 @@ damage = 0
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_dayal")
-animation = &"LeftRight"
+sprite_frames = SubResource("SpriteFrames_by470")
+animation = &"Upper"
 
 [node name="LeftRightMarker" type="Marker2D" parent="Tower"]
 position = Vector2(38.4123, -7.68246)
