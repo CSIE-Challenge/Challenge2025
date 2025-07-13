@@ -70,9 +70,9 @@ func _on_area_entered(bullet: Bullet) -> void:
 
 	match bullet.effect:
 		bullet.Effect.FREEZE:
-			freeze(0.5)
+			freeze(0.7)
 		bullet.Effect.DEEP_FREEZE:
-			freeze(0.25)
+			freeze(0.5)
 		bullet.Effect.KNOCKBACK:
 			knockback(false)
 		bullet.Effect.FAR_KNOCKBACK:
@@ -100,7 +100,7 @@ func knockback(far: bool):
 
 func freeze(rate: float):
 	speed_rate.append(rate)
-	await get_tree().create_timer(8).timeout
+	await get_tree().create_timer(1).timeout
 	speed_rate.erase(rate)
 
 

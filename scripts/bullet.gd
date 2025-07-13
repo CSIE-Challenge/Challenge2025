@@ -19,7 +19,7 @@ const ROTATION_SPEED := 8.0
 
 @export var effect: Effect = Effect.NONE
 @export var effect_damage := 0
-@export var effect_duration := 3  # The period of (burning) effect
+@export var effect_duration := 3.0  # The period of (burning) effect
 @export var effect_interval := 0.5  # The inverse of (burning) effect frequency
 
 var target: Node2D = null
@@ -43,7 +43,6 @@ func init(origin, orientation, _target, _damage) -> void:
 	start_position = origin
 	direction = orientation
 	damage = _damage
-	effect_damage = _damage
 	if cos(direction) < 0:
 		sprite.flip_h = true
 		rotation = PI + direction

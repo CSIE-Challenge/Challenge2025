@@ -17,7 +17,8 @@ is_penetrating = true
 aoe_scale = 10.0
 movement_speed = 0.0
 lifespan_seconds = 0.02
-effect_duration = 0
+effect_damage = 300
+effect_duration = 0.05
 effect_interval = 0.0
 
 [node name="Body" type="Sprite2D" parent="."]

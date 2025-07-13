@@ -44,7 +44,7 @@ anti_air = true
 bullet_scene = ExtResource("2_obing")
 reload_seconds = 2.0
 aim_range = 300.0
-damage = 0
+damage = 40
 
 [node name="Tower" type="Node2D" parent="."]
 

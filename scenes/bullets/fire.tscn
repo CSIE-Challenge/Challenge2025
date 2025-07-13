@@ -18,8 +18,9 @@ aoe_scale = 10.0
 movement_speed = 0.0
 lifespan_seconds = 0.0
 effect = 1
+effect_damage = 10
 effect_duration = 1
-effect_interval = 0.3
+effect_interval = 0.15
 
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708
