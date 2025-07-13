@@ -371,12 +371,12 @@ func _spawn_unit(_type: EnemyType) -> Array:
 	var data = _get_unit_dict(_type)
 	if game_other.enemy_cooldown.has(_type):
 		print("[Error] cooldown hasn't finished")
-		return [StatusCode.COMMAND_ERR]
+		return [StatusCode.COMMAND_ERR, "[SpawnUnit] cooldown hasn't finished"]
 	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
 		game_other.summon_enemy.emit(data)
 	else:
 		print("[Error] doesn't have enough money")
-		return [StatusCode.COMMAND_ERR]
+		return [StatusCode.COMMAND_ERR, "[SpawnUnit] doesn't have enough money"]
 	return [StatusCode.OK]
 
 
@@ -391,7 +391,6 @@ func _get_enemy_info(enemy: Area2D) -> Dictionary:
 	data["type"] = type
 	data["position"] = {"x": pos[0], "y": pos[1]}
 	data["progress_ratio"] = enemy.path_follow.progress_ratio
-	# TODO: deploy cost
 	data["income_impact"] = enemy.income_impact
 	data["health"] = enemy.health
 	data["max_health"] = enemy.max_health
@@ -400,14 +399,8 @@ func _get_enemy_info(enemy: Area2D) -> Dictionary:
 	data["flying"] = enemy.flying
 	data["knockback_resist"] = enemy.knockback_resist
 	data["kill_reward"] = enemy.kill_reward
-	# TODO: cool down
 
 	return data
-
-
-func _get_available_units() -> Array:
-	print("[GetAvailableEnemies] Get request")
-	return [StatusCode.OK]
 
 
 func _get_all_enemies() -> Array:

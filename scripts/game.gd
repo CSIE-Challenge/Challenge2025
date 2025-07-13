@@ -248,6 +248,10 @@ func get_all_enemies() -> Array:
 		list.push_back(path.get_children()[0])
 	for path in map.opponent_path.get_children():
 		list.push_back(path.get_children()[0])
+	for path in map.flying_system_path.get_children():
+		list.push_back(path.get_children()[0])
+	for path in map.flying_opponent_path.get_children():
+		list.push_back(path.get_children()[0])
 	return list
 
 
