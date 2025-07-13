@@ -53,6 +53,7 @@ type = 4
 level_b = 3
 building_cost = 2800
 auto_aim = false
+anti_air = true
 bullet_scene = ExtResource("2_efhko")
 reload_seconds = 3.0
 damage = 90
