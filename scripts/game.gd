@@ -277,7 +277,7 @@ func _on_buy_spell(spell) -> void:
 		var preview_spell_node = spell_scene.instantiate()
 		var preview_color_callback = func(node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
 			if (
-				money >= spell.metadata.stats.cost
+				money >= node.metadata.stats.cost
 				and not $SpellManager.get_node(spell.metadata.name).is_on_cooldown
 			):
 				return Previewer.PreviewMode.SUCCESS
