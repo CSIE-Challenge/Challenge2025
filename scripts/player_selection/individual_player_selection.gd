@@ -150,6 +150,7 @@ func _display_fields() -> void:
 	manual_control_on_button.visible = manual_control
 
 	if _update_paths:
+		_update_paths = false
 		# python interpreter
 		var python_interpreter_path = _truncate_front(
 			python_subprocess.python_interpreter_path, python_interpreter_label.size.x
