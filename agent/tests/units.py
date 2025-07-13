@@ -1,5 +1,7 @@
 import time
 import api_importer as api
+from test_token import TOKEN1
+
 
 def test_spawn(agent, type):
     print(f"Spawning {type.name}...")
@@ -12,7 +14,8 @@ def test_spawn(agent, type):
         print(f"  3nd -- {agent.spawn_unit(type)}")
     time.sleep(0.5)
 
-agent = api.GameClient(7749, "TOKEN")
+
+agent = api.GameClient(7749, TOKEN1)
 
 test_spawn(agent, api.EnemyType.BUZZY_BEETLE)
 test_spawn(agent, api.EnemyType.GOOMBA)

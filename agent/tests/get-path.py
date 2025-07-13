@@ -1,6 +1,7 @@
 import api_importer as api
+from test_token import TOKEN1
 
-agent = api.GameClient(7749, "350a5458")
+agent = api.GameClient(7749, TOKEN1)
 
 sys_fly = agent.get_system_path(True)
 sys_ground = agent.get_system_path(False)
