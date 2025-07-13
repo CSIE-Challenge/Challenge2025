@@ -262,58 +262,50 @@ func _get_opponent_path(_fly: bool) -> Array:
 #region Tower
 
 
+#gdlint: disable=max-returns
 func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> Array:
 	print("[PlaceTower] Get request")
 
-	# the return value. not returning early because of the linter
-	var result: Array = []
 	var map = game_self.get_node("Map")
 
 	if not map:
-		result = [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
 
-	elif map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
-		result = [
-			StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"
-		]
+	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
+		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
 
-	elif (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
-		result = [
+	if (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
+		return [
 			StatusCode.ILLEGAL_ARGUMENT,
 			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
 		]
 
-	else:
-		var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
-		if game_self.built_towers.has(_coord):
-			var previous_tower = game_self.built_towers[_coord]
-			if (
-				(
-					previous_tower.type == tower.type
-					and (
-						previous_tower.level_a > tower.level_a
-						or previous_tower.level_b > tower.level_b
-					)
-				)
-				or game_self.money + previous_tower.building_cost < tower.building_cost
-			):
-				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
-			elif (
-				previous_tower.type != tower.type
+	var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
+	if game_self.built_towers.has(_coord):
+		var previous_tower = game_self.built_towers[_coord]
+		if (
+			(
+				previous_tower.type == tower.type
 				and (
-					game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
-					< tower.building_cost
+					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
 				)
-			):
-				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
-		if len(result) == 0:
-			if game_self.money < tower.building_cost:
-				result = [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
-			else:
-				game_self.place_tower(_coord, tower)
-				result = [StatusCode.OK]
+			)
+			or game_self.money + previous_tower.building_cost < tower.building_cost
+		):
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
+		if (
+			previous_tower.type != tower.type
+			and (
+				game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
+				< tower.building_cost
+			)
+		):
+			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
 
-	return result
+	if game_self.money < tower.building_cost:
+		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
+	game_self.place_tower(_coord, tower)
+	return [StatusCode.OK]
 
 
 func _get_all_towers(_owned: bool) -> Array:
@@ -446,10 +438,15 @@ func _get_all_enemies(_owned: bool) -> Array:
 #region Spell
 
 
+#gdlint: disable=max-returns
 func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 	var global_pos: Vector2 = game_self.map.cell_to_global(_coord)
 	print("[CastSpell] Get request")
 	var spell_manager: Node = game_self.get_node("SpellManager")
+
+	if spell_manager == null:
+		print("[ERROR] node not found spell_manager")
+		return [StatusCode.INTERNAL_ERR]
 
 	var spell_node: Node = null
 	match _type:
@@ -459,6 +456,9 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 			spell_node = spell_manager.get_node("Poison")
 		SpellType.TELEPORT:
 			spell_node = spell_manager.get_node("Teleport")
+		_:
+			print("[Error] Unknown spell type:", _type)
+			return [StatusCode.ILLEGAL_ARGUMENT]
 
 	if spell_manager == null:
 		print("[ERROR] node not found spell_manager")
