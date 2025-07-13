@@ -326,20 +326,37 @@ class GameClient(GameClientBase):
     def spawn_unit(self, type: EnemyType) -> None:
         """
         # Spawn Unit
-        派出一個指定類型的敵人。
+        派出一個指定類型的單位。
 
         ## Parameters
-        - `type` (EnemyType): 要派出的敵人的類型。
+        - `type` (EnemyType): 要派出的單位的類型。
 
         ## Returns
         這個函數沒有返回值。如果派出成功，則敵人會被加入到遊戲中。
 
-        ## EnemyType
-        - 有 BUZZY_BEETLE, GOOMBA, KOOPA_JR, KOOPA_PARATROOPA, KOOPA, SPINY_SHELL, WIGGLER
-
         ## Example
         ```python
         api.spawn_enemy(EnemyType.GOOMBA)  # 派出 GOOMBA
+        ```
+        """
+        raise NotImplementedError
+    
+    @game_command(CommandType.GET_UNIT_COOLDOWN, [EnemyType], float)
+    def get_unit_cooldown(self, type: EnemyType) -> float:
+        """
+        # Get Unit Cooldown
+        取得特定單位的派遣冷卻時間。
+
+        ## Parameters
+        - `type` (EnemyType): 要查詢的單位的類型。
+
+        ## Returns
+        這個函數返回一個浮點數，代表此類型的單位再過幾秒後可以再次派遣。
+
+        ## Example
+        ```python
+        to_wait = api.get_unit_cooldown(EnemyType.KOOPA)
+        time.sleep(to_wait)  # 等待直到可以再次派出一隻 KOOPA
         ```
         """
         raise NotImplementedError

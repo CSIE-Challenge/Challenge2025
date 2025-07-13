@@ -380,6 +380,14 @@ func _spawn_unit(_type: EnemyType) -> Array:
 	return [StatusCode.OK]
 
 
+func _get_unit_cooldown(_type: EnemyType) -> Array:
+	print("[GetUnitCooldown] Get request")
+	var result: float = 0
+	if game_other.enemy_cooldown.has(_type):
+		result = game_other.enemy_cooldown[_type].get_time_left()
+	return [StatusCode.OK, result]
+
+
 func _get_enemy_info(enemy: Area2D) -> Dictionary:
 	var type: EnemyType = enemy.type
 	var data: Dictionary = {}

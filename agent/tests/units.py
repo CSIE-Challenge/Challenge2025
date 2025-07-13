@@ -2,10 +2,15 @@ import time
 import api_importer as api
 
 def test_spawn(agent, type):
-    print(f"Spawnning {type.name}...")
-    for i in range(3):
-        print(f"{i} -- {agent.spawn_unit(type)}")
-        time.sleep(0.5)
+    print(f"Spawning {type.name}...")
+    print(f"  1st -- {agent.spawn_unit(type)}")
+    print(f"  2nd -- {agent.spawn_unit(type)}")
+    cd = agent.get_unit_cooldown(type)
+    print(f"  cooldown -- {cd}")
+    if not isinstance(cd, api.ApiException):
+        time.sleep(cd)
+        print(f"  3nd -- {agent.spawn_unit(type)}")
+    time.sleep(0.5)
 
 agent = api.GameClient(7749, "TOKEN")
 
