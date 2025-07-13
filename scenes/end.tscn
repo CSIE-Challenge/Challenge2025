@@ -61,3 +61,9 @@ theme_override_font_sizes/normal_font_size = 84
 text = "Player 2"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

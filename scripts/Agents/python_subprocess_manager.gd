@@ -85,3 +85,8 @@ func _process(_delta: float) -> void:
 		return
 	_state = EXITED
 	_last_exit_code = OS.get_process_exit_code(_current_pid)
+
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		OS.kill(_current_pid)

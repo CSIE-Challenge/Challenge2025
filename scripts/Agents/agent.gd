@@ -549,6 +549,7 @@ func _send_chat(_msg: String) -> Array:
 	var chat_name_color = game_self.chat_name_color
 	var player_name = _get_screen_name_label().text
 	chat_node.send_chat_with_sender(player_id, chat_name_color, player_name, _msg)
+	game_self.chat_total_length += _msg.length()
 	return [StatusCode.OK, true]
 
 

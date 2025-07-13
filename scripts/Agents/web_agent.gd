@@ -118,6 +118,8 @@ func _init() -> void:
 
 
 func _on_received_command(command_bytes: PackedByteArray) -> void:
+	if game_self != null:
+		game_self.api_called += 1
 	# rate-limit commands
 	var this_command = Time.get_ticks_msec()
 	if _last_command >= 0 and this_command - _last_command < MIN_COMMAND_INTERVAL_MSEC:
@@ -156,8 +158,8 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 				"[Receive Command] Error: the game is not running"
 			]
 		else:
-			game_self.api_called += 1
 			response = _command_handlers[command_id].handle(command)
+			game_self.api_succeed += (response[0] == StatusCode.OK) as int
 			response.push_front(request_id)
 
 	_ws.send_bytes(var_to_bytes(response))

@@ -22,6 +22,8 @@ var money_earned := 0
 var tower_built := 0
 var enemy_sent := 0
 var api_called := 0
+var api_succeed := 0
+var chat_total_length := 0
 
 var player_selection: IndividualPlayerSelection = null
 var money: int = 300
