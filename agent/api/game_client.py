@@ -519,7 +519,7 @@ class GameClient(GameClientBase):
     def pixelcat(self) -> str:
         """
         # Pixel Cat
-        取得一隻像素貓的圖像。
+        取得一隻像素貓的圖像並在聊天室發出，僅能使用一次。
 
         ## Parameters
         無參數
