@@ -2,6 +2,8 @@ class_name Round
 extends Control
 
 const GAME_DURATION = 300.0
+const FREEZE_TIME = 60.0
+const FREEZE_ANIMATION = 2.5
 
 @export var game_timer_label: Label
 @export var score_bar: ScoreBar
@@ -78,8 +80,18 @@ func get_formatted_time() -> String:
 
 func _process(_delta: float) -> void:
 	game_timer_label.text = get_formatted_time()
-	score_bar.left_score = game_1p.score
-	score_bar.right_score = game_2p.score
+	score_bar.left_score = game_1p.internal_score
+	score_bar.right_score = game_2p.internal_score
+
+	var time_after_freeze = FREEZE_TIME - $GameTimer.time_left
+	if time_after_freeze >= 0:
+		var frozen_overlay = $Screen/Top/TextureRect/FrozenOverlay
+		frozen_overlay.visible = true
+		frozen_overlay.modulate = Color(1, 1, 1, min(1.0, time_after_freeze / FREEZE_ANIMATION))
+
+		game_1p.freeze()
+		game_2p.freeze()
+		$Screen/Top/TextureRect/Score.freeze()
 
 
 func _on_game_timer_timeout():
@@ -92,7 +104,7 @@ func _on_game_timer_timeout():
 		$Screen/Top/TextureRect/PlayerNameRight.text,
 	]
 	end_scene.statistics = [
-		EndScreen.Statistics.init("Score", [game_1p.score, game_2p.score], true),
+		EndScreen.Statistics.init("Score", [game_1p.internal_score, game_2p.internal_score], true),
 		EndScreen.Statistics.init("Kill Count", [game_1p.kill_count, game_2p.kill_count], false),
 		EndScreen.Statistics.init(
 			"Total Money Earned", [game_1p.money_earned, game_2p.money_earned], true
@@ -102,7 +114,14 @@ func _on_game_timer_timeout():
 		),
 		EndScreen.Statistics.init("Enemies Sent", [game_1p.enemy_sent, game_2p.enemy_sent], false),
 		EndScreen.Statistics.init(
-			"API Called", [game_1p.api_called, game_2p.api_called], false, true, false
+			"API Call Attempts", [game_1p.api_called, game_2p.api_called], false, true, true
+		),
+		EndScreen.Statistics.init(
+			"API Call Failures",
+			[game_1p.api_called - game_1p.api_succeed, game_2p.api_calledd - game_2p.api_succeed],
+			false,
+			true,
+			true
 		),
 	]
 	get_tree().get_root().add_child(end_scene)

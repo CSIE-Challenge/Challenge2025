@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=15 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
 [ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scripts/chat.gd" id="5_vxv1r"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
+[ext_resource type="Texture2D" uid="uid://nje75xttqfkn" path="res://assets/ui/score-bar-overlay.png" id="6_h7h1o"]
 [ext_resource type="Texture2D" uid="uid://m13gswneptc" path="res://assets/ui/game-status.png" id="6_ojwvf"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
 [ext_resource type="Texture2D" uid="uid://dpb6xajj515sy" path="res://assets/ui/shop.png" id="8_p5kuw"]
@@ -83,6 +84,14 @@ grow_horizontal = 0
 theme_override_font_sizes/font_size = 50
 text = "Player 2"
 horizontal_alignment = 2
+
+[node name="FrozenOverlay" type="TextureRect" parent="Screen/Top/TextureRect"]
+visible = false
+custom_minimum_size = Vector2(1024, 80)
+layout_mode = 2
+offset_right = 1024.0
+offset_bottom = 80.0
+texture = ExtResource("6_h7h1o")
 
 [node name="Status2P" parent="Screen/Top" instance=ExtResource("3_g6yuj")]
 layout_mode = 2
