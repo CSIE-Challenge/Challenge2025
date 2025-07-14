@@ -100,9 +100,10 @@ func knockback(far: bool):
 
 
 func freeze(rate: float):
-	speed_rate.append(rate)
+	var max_speed = speed_rate.max()
+	speed_rate.append(max_speed * rate)
 	await get_tree().create_timer(1).timeout
-	speed_rate.erase(rate)
+	speed_rate.erase(max_speed * rate)
 
 
 #region Spells
