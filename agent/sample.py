@@ -1,7 +1,7 @@
 import time
 from api import *
 
-api = GameClient(7749, "8604d67d") # Replace with your own port and token
+api = GameClient(7749, "Token") # Replace with your token
 
 print("Waiting for game to RUNNING...")
 while api.get_game_status() != GameStatus.RUNNING:
