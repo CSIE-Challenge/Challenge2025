@@ -149,10 +149,16 @@ func _on_buy_tower(tower_scene: PackedScene):
 	self.add_child(previewer)
 
 
-func _select_tower(tower: Tower):
+func _select_tower(tower: Tower, left: bool, up: bool):
 	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
-	self.add_child(tower_ui)
+	tower.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
+	await get_tree().process_frame
+	var ui_size = tower_ui.size
+	if left:
+		tower_ui.global_position.x -= ui_size.x
+	if up:
+		tower_ui.global_position.y -= ui_size.y
 	tower_ui.sold.connect(self._on_tower_sold.bind(tower, tower_ui, true))
 
 
@@ -163,8 +169,9 @@ func _handle_tower_selection(event: InputEvent) -> void:
 		return
 	var clicked_cell = map.global_to_cell(get_global_mouse_position())
 	if built_towers.has(clicked_cell):
-		_select_tower(built_towers[clicked_cell])
+		_select_tower(built_towers[clicked_cell], clicked_cell.x > 13, clicked_cell.y > 16)
 		get_viewport().set_input_as_handled()
+		print("clicked cell:", clicked_cell)
 
 
 #endregion
@@ -242,6 +249,10 @@ func on_damage_dealt(damage: int) -> void:
 	score += damage
 
 
+func take_damage(damage: int) -> void:
+	emit_signal("damage_taken", damage)
+
+
 func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	enemy.game = self
 	enemy.init(source)
@@ -287,7 +298,10 @@ func _on_buy_spell(spell) -> void:
 		var spell_scene = load(spell.metadata.scene_path)
 		var preview_spell_node = spell_scene.instantiate()
 		var preview_color_callback = func(node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
-			if not node.is_on_cooldown:
+			if (
+				money >= node.metadata.stats.cost
+				and not $SpellManager.get_node(spell.metadata.name).is_on_cooldown
+			):
 				return Previewer.PreviewMode.SUCCESS
 			return Previewer.PreviewMode.FAIL
 
