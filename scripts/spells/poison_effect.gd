@@ -14,7 +14,7 @@ func _ready():
 
 
 func _draw():
-	draw_circle(Vector2.ZERO, spell.metadata.stats.radius, Color.BLUE)
+	draw_circle(Vector2.ZERO, spell.metadata.stats.radius, Color(0.4, 0.2, 0.8, 0.4))
 
 
 func _on_duration_ended():

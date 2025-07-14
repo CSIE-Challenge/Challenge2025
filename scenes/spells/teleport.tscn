@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dxdvwnp6m8px2"]
 
 [ext_resource type="Script" uid="uid://cnxidwb84k7vx" path="res://scripts/spells/teleport.gd" id="1_6nbr6"]
-[ext_resource type="Texture2D" uid="uid://ftaevdr2sdej" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile251.png" id="2_s6xv8"]
+[ext_resource type="Texture2D" uid="uid://bek8dwahb7ujq" path="res://assets/spells/Transfer.png" id="2_s6xv8"]
 [ext_resource type="Script" uid="uid://b6vds3w2nrxvq" path="res://scripts/spells/range_indicator.gd" id="3_s6xv8"]
 
 [node name="Teleport" type="Node2D"]
