@@ -70,6 +70,7 @@ func _on_start_button_pressed() -> void:
 	selection_2p.freeze()
 	_save_config()
 
+	AudioManager.button_on_click.play()
 	AudioManager.background_menu.stop()
 
 	var manual_controlled = 0
@@ -94,5 +95,5 @@ func _on_start_button_pressed() -> void:
 
 
 func _on_back_button_pressed() -> void:
-	AudioManager.background_menu.play()
+	AudioManager.button_on_click.play()
 	get_tree().change_scene_to_file("res://scenes/menu.tscn")

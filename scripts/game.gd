@@ -186,13 +186,6 @@ func _on_interest_timer_timeout() -> void:
 	money = next_money
 
 
-func on_subsidization(subsidy) -> void:
-	if score < op_game.score:
-		var next_money = money + subsidy
-		money_earned += next_money - money
-		money = next_money
-
-
 #endregion
 
 #region Enemies

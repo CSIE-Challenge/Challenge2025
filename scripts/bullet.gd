@@ -38,7 +38,8 @@ var exploding: bool = false  # Effect explode after time_out (actually 0 for all
 
 
 func init(origin, orientation, _target, _damage) -> void:
-	AudioManager.tower_shoot.play()
+	if not aoe_scale > 1:
+		AudioManager.tower_shoot.play()
 	global_position = origin
 	start_position = origin
 	direction = orientation
@@ -116,6 +117,7 @@ func _explode() -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	tween.finished.connect(_on_exploded, CONNECT_ONE_SHOT)
 	tween.tween_property(self, "scale", Vector2(aoe_scale, aoe_scale), RANGE_ATTACK_ANIMATION_TIME)
+	AudioManager.bullet_explode.play()
 
 
 # Start the duration of effect
