@@ -82,4 +82,5 @@ while True:
             if api.get_tower(True, pos) is None:
                 api.send_chat("OuO <3")
                 api.place_tower(TowerType.ICE_LUIGI, "1", pos)
+            api.spawn_unit(EnemyType.KOOPA_PARATROOPA)
             
