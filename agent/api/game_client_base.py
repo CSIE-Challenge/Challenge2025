@@ -20,7 +20,7 @@ class GameClientBase:
         port: int,
         token: str | None = None,
         server_domain: str = "localhost",
-        command_timeout_msec: int = 100,
+        command_timeout_msec: int = 1000,
         retry_count: int = 3,
     ) -> None:
         if token is None:

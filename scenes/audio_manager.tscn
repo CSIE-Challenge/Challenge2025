@@ -46,6 +46,7 @@ bus = &"SFX"
 
 [node name="TowerPlace" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_3asnw")
+volume_db = -20.0
 bus = &"SFX"
 
 [node name="BulletExplode" type="AudioStreamPlayer" parent="."]
