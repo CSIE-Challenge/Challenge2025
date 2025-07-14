@@ -81,7 +81,7 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 36
+theme_override_constants/separation = 42
 
 [node name="Section" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
