@@ -38,7 +38,8 @@ var exploding: bool = false  # Effect explode after time_out (actually 0 for all
 
 
 func init(origin, orientation, _target, _damage) -> void:
-	AudioManager.tower_shoot.play()
+	if not aoe_scale > 1:
+		AudioManager.tower_shoot.play()
 	global_position = origin
 	start_position = origin
 	direction = orientation
@@ -120,6 +121,7 @@ func _explode() -> void:
 
 # Start the duration of effect
 func _on_exploded() -> void:
+	AudioManager.bullet_explode.play()
 	if effect_duration == 0:
 		_on_effect_end()
 	collider.disabled = true

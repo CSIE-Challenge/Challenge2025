@@ -83,6 +83,11 @@ func _process(_delta: float) -> void:
 	score_bar.left_score = game_1p.score
 	score_bar.right_score = game_2p.score
 
+	if ($GameTimer.time_left < GAME_DURATION * 0.3) and not AudioManager.second_stage:
+		AudioManager.second_stage = true
+		AudioManager.background_game_stage1.stop()
+		AudioManager.background_game_stage2.play()
+
 	var time_after_freeze = FREEZE_TIME - $GameTimer.time_left
 	if time_after_freeze >= 0:
 		var frozen_overlay = $Screen/Top/TextureRect/FrozenOverlay

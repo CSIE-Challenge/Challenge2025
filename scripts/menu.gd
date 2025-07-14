@@ -25,7 +25,8 @@ func _ready() -> void:
 		randf_range(0, screen_size.y - logo.get_minimum_size().y)
 	)
 
-	AudioManager.background_menu.play()
+	if not AudioManager.background_menu.has_stream_playback():
+		AudioManager.background_menu.play()
 	$Version.text = "v%s" % [ProjectSettings.get_setting("application/config/version")]
 
 
