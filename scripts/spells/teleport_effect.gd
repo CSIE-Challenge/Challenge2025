@@ -19,7 +19,7 @@ func _ready():
 
 
 func _draw():
-	draw_circle(Vector2.ZERO, spell.metadata.stats.radius, Color.BLUE)
+	draw_circle(Vector2.ZERO, spell.metadata.stats.radius, Color(0.1, 0.8, 0.3, 0.4))
 
 
 func trigger() -> void:
