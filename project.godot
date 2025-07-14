@@ -28,7 +28,6 @@ Global="*res://scripts/global.gd"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
-display_server/driver.linuxbsd="wayland"
 
 [dotnet]
 
