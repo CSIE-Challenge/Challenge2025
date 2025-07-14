@@ -21,11 +21,9 @@ func resume():
 	get_tree().paused = false
 	AudioManager.button_on_click.play()
 	if AudioManager.second_stage:
-		AudioManager.background_game_stage2.play()
-		AudioManager.background_game_stage2.seek(AudioManager.background2_music_position)
+		AudioManager.background_game_stage2.play(AudioManager.background2_music_position)
 	else:
-		AudioManager.background_game_stage1.play()
-		AudioManager.background_game_stage1.seek(AudioManager.background1_music_position)
+		AudioManager.background_game_stage1.play(AudioManager.background1_music_position)
 	self.visible = false
 
 

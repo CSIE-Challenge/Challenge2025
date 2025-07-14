@@ -117,11 +117,11 @@ func _explode() -> void:
 	tween.set_ease(Tween.EASE_OUT)
 	tween.finished.connect(_on_exploded, CONNECT_ONE_SHOT)
 	tween.tween_property(self, "scale", Vector2(aoe_scale, aoe_scale), RANGE_ATTACK_ANIMATION_TIME)
+	AudioManager.bullet_explode.play()
 
 
 # Start the duration of effect
 func _on_exploded() -> void:
-	AudioManager.bullet_explode.play()
 	if effect_duration == 0:
 		_on_effect_end()
 	collider.disabled = true
