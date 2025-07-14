@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dn0pas1ennupu"]
 
-[ext_resource type="Script" uid="uid://bmi6xloxalyfa" path="res://scripts/tower_ui.gd" id="1_gxmcb"]
+[ext_resource type="Script" uid="uid://bmi6xloxalyfa" path="res://scripts/towers/tower_ui.gd" id="1_gxmcb"]
 
 [node name="TowerUI" type="VBoxContainer"]
 z_index = 200

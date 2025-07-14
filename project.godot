@@ -19,7 +19,7 @@ config/icon="uid://6rnsx1gsanpk"
 
 [autoload]
 
-ApiServer="*res://scripts/APIServer/api_server.gd"
+ApiServer="*res://scripts/api_server/api_server.gd"
 AudioManager="*res://scenes/audio_manager.tscn"
 Global="*res://scripts/global.gd"
 
@@ -28,6 +28,7 @@ Global="*res://scripts/global.gd"
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
+display_server/driver.linuxbsd="wayland"
 
 [dotnet]
 
