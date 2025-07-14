@@ -100,7 +100,7 @@ func _flip_sprite() -> void:
 func _physics_process(_delta: float) -> void:
 	if not enabled:
 		return
-	#_refresh_target()
+	_refresh_target()
 	_flip_sprite()
 
 
@@ -115,6 +115,7 @@ func _on_reload_timer_timeout() -> void:
 
 
 func _on_fire_bullet() -> void:
+	_refresh_target()
 	if target == null:
 		return
 	var origin: Vector2 = $Tower/Marker2D.global_position
