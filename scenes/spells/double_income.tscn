@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://b47thwmstjuji"]
 
-[ext_resource type="Texture2D" uid="uid://ftaevdr2sdej" path="res://assets/kenney_tower-defense-top-down/PNG/Default size/towerDefense_tile251.png" id="1_41fmw"]
 [ext_resource type="Script" uid="uid://dwhhbvtmvijdf" path="res://scripts/spells/double_income.gd" id="1_nkxoi"]
+[ext_resource type="Texture2D" uid="uid://cng4mvy0mysle" path="res://assets/spells/DoubleIncome.png" id="2_nkxoi"]
 
 [node name="DoubleIncome" type="Node2D"]
 script = ExtResource("1_nkxoi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_41fmw")
+texture = ExtResource("2_nkxoi")
 
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true

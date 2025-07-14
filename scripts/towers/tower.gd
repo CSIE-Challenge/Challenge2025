@@ -111,7 +111,7 @@ func _flip_sprite() -> void:
 func _physics_process(_delta: float) -> void:
 	if not enabled:
 		return
-	#_refresh_target()
+	_refresh_target()
 	_flip_sprite()
 
 
