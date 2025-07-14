@@ -542,7 +542,7 @@ func _send_chat(msg: String) -> Array:
 
 	var chat_name_color = game_self.chat_name_color
 	var player_name = _get_screen_name_label().text
-	chat_node.send_chat_with_sender(player_id, msg, chat_name_color, player_name)
+	chat_node.send_chat_with_sender(player_id, msg, chat_name_color, player_name, send_pixelcat)
 	return [StatusCode.OK, true]
 
 
@@ -552,7 +552,7 @@ func _pixel_cat() -> Array:
 		return [StatusCode.COMMAND_ERR, "[Error] No more pixel cat!"]
 	pixelcat_cnt -= 1
 	send_pixelcat = true
-	self._send_chat("[font_size=8]" + pixel_cat_str + "[/font_size]")
+	self._send_chat("[font_size=6]" + pixel_cat_str + "[/font_size]")
 	send_pixelcat = false
 	return [StatusCode.OK, pixel_cat_str]
 

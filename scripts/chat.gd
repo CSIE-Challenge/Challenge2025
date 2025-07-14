@@ -32,7 +32,11 @@ func get_random_messages() -> String:
 
 # sender id: 0 = system, 1 = left player (1p), 2 = right player (2p)
 func send_chat_with_sender(
-	sender_id: int, text: String, chat_name_color: String = "ffffe0", player_name: String = "player"
+	sender_id: int,
+	text: String,
+	chat_name_color: String = "ffffe0",
+	player_name: String = "player",
+	send_pixelcat: bool = false
 ) -> void:
 	var textbox: MarginContainer = TEXTBOX_SCENE.instantiate()
 
@@ -45,7 +49,7 @@ func send_chat_with_sender(
 	else:
 		textbox.set_text("[color=%s][%s][/color] %s" % [chat_name_color, player_name, text])
 	textbox.set_meta("sender", sender_id)
-
+	textbox.set_line_height(send_pixelcat)
 	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
 	await get_tree().process_frame
 	scrollbar.scroll_vertical = scrollbar.get_v_scroll_bar().max_value
