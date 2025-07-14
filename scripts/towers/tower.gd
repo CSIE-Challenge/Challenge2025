@@ -64,6 +64,8 @@ func _check_enemy_state() -> void:
 
 func _refresh_target() -> void:
 	_check_enemy_state()
+	if target == null:
+		return
 	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
 
 	match strategy:
@@ -121,6 +123,8 @@ func _on_reload_timer_timeout() -> void:
 
 func _on_fire_bullet() -> void:
 	_check_enemy_state()
+	if target == null:
+		_refresh_target()
 	if target == null:
 		return
 	var origin: Vector2 = $Tower/Marker2D.global_position
