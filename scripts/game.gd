@@ -239,6 +239,10 @@ func on_damage_dealt(damage: int) -> void:
 	score += damage
 
 
+func take_damage(damage: int) -> void:
+	emit_signal("damage_taken", damage)
+
+
 func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	enemy.game = self
 	enemy.init(source)
