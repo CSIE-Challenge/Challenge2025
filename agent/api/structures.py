@@ -8,10 +8,10 @@ class Vector2:
 
     def __init__(self, _x: int | None, _y: int | None) -> None:
         self.x = _x if _x is not None else 0
-        """x座標，若傳None則設為0。"""
+        """x 座標，若傳 None 則設為 0。"""
 
         self.y = _y if _y is not None else 0
-        """y座標，若傳None則設為0。"""
+        """y 座標，若傳 None 則設為 0。"""
 
     def __str__(self) -> str:
         return f"({self.x}, {self.y})"
@@ -25,10 +25,10 @@ class ApiException(Exception):
             f"API call {source_fn.name}({source_fn.value}) fails with status code {code.name}({code.value}): {what}"
         )
         self.source_fn = source_fn
-        """見class CommandType。"""
+        """見 class CommandType。"""
 
         self.code = code
-        """見class StatusCode。"""
+        """見 class StatusCode。"""
 
         self.what = what
         """完整錯誤訊息內容。"""
@@ -51,10 +51,10 @@ class Tower:
         bullet_effect: str,
     ) -> None:
         self.type = _type
-        """塔的型別，見class TowerType"""
+        """塔的型別，見 class TowerType"""
 
         self.position = position
-        """塔的座標，地圖左上角為(0, 0)。"""
+        """塔的座標，地圖左上角為 (0, 0)。"""
 
         self.level_a = level_a
         """塔的等級分支一。"""
@@ -162,7 +162,7 @@ class Enemy:
         """最高速度。"""
 
         self.knockback_resist = knockback_resist
-        """擊退抵抗，若為true則不會被擊退。"""
+        """擊退抵抗，若為 true 則不會被擊退。"""
 
         self.kill_reward = kill_reward
         """擊殺該敵人會獲得的獎勵。"""
