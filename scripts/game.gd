@@ -11,6 +11,8 @@ enum EnemySource { SYSTEM, OPPONENT }
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 const DEPRECIATION_RATE := 0.9
 const INTEREST_RATE := 1.02
+const WAVE_HP_INCREASE_RATE := 1.2
+const WAVE_SPEED_INCREASE_RATE := 1.1
 
 @export var spawner: Spawner
 @export var status_panel: TextureRect
@@ -38,6 +40,8 @@ var op_game: Game
 var enemy_cooldown: Dictionary[int, SceneTreeTimer] = {}
 var map: Map = null
 var frozen := true
+var current_hp_multiplier: float = 1
+var current_speed_multiplier: float = 1
 var _enemy_scene_cache = {}
 
 
@@ -57,6 +61,7 @@ func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
+	spawner.wave_end.connect(_on_wave_end)
 
 	buy_spell.connect(_on_buy_spell)
 
@@ -191,6 +196,11 @@ func on_subsidization(subsidy) -> void:
 #region Enemies
 
 
+func _on_wave_end() -> void:
+	current_hp_multiplier *= WAVE_HP_INCREASE_RATE
+	current_speed_multiplier *= WAVE_SPEED_INCREASE_RATE
+
+
 func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	var scene_path = unit_data.get("scene_path")
 	if scene_path == null or !ResourceLoader.exists(scene_path):
@@ -203,8 +213,8 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	var stats: Dictionary = unit_data.get("stats", {})
 	enemy.type = stats.type
 	enemy.income_impact = stats.income_impact
-	enemy.max_health = stats.max_health
-	enemy.max_speed = stats.max_speed
+	enemy.max_health = stats.max_health * current_hp_multiplier
+	enemy.max_speed = stats.max_speed * current_speed_multiplier
 	enemy.damage = stats.damage
 	enemy.flying = stats.flying
 	enemy.knockback_resist = stats.knockback_resist
