@@ -48,6 +48,8 @@ func _on_reload_timer_timeout() -> void:
 func _on_fire_bullet() -> void:
 	_check_enemy_state()
 	if target == null:
+		_refresh_target()
+	if target == null:
 		return
 	var origin: Vector2 = $Tower/Marker2D.global_position
 	var direction: float = (target.global_position - origin).angle()
