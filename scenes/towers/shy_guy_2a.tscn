@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ddc73100y5t64" path="res://pixel_art/tower/ShyGuyPrepare.png" id="4_fis6i"]
 [ext_resource type="Texture2D" uid="uid://bym1xfjew7tgo" path="res://pixel_art/tower/ShyGuyAttack.png" id="5_6snqr"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_5xu31"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_lrpro"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -17,10 +17,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_6snqr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lrpro")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -34,15 +37,20 @@ scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_4r3wq")
+expected_bullet_number = 5
 type = 5
 level_a = 2
+building_cost = 1200
 anti_air = true
 bullet_scene = ExtResource("2_2mpuf")
+reload_seconds = 1.5
+aim_range = 300.0
+damage = 20
 
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_5xu31")
+sprite_frames = SubResource("SpriteFrames_lrpro")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 position = Vector2(17.9257, -20.4866)

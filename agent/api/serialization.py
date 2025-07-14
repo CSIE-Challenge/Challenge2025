@@ -2,21 +2,33 @@ from typing import Any
 from enum import IntEnum
 import struct
 
-from .defs import *
+from .structures import Vector2
+
+
+class TypeCode(IntEnum):
+    NULL_TYPE = 0
+    BOOL_TYPE = 1
+    INT_TYPE = 2
+    FLOAT_TYPE = 3
+    STRING_TYPE = 4
+    VECTOR2I_TYPE = 6
+    DICTIONARY_TYPE = 27
+    LIST_TYPE = 28
+
 
 # Byte 0: `Variant::Type`, byte 1: unused, bytes 2 and 3: additional data.
 HEADER_TYPE_MASK = 0xFF
 # For `Variant::INT`, `Variant::FLOAT` and other math types.
-HEADER_DATA_FLAG_64 = (1 << 16)
+HEADER_DATA_FLAG_64 = 1 << 16
 # For `Variant::ARRAY`.
-HEADER_DATA_FIELD_TYPED_ARRAY_MASK = (0b11 << 16)
+HEADER_DATA_FIELD_TYPED_ARRAY_MASK = 0b11 << 16
 HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT = 16
 # For `Variant::DICTIONARY`.
 # Occupies bits 16 and 17.
-HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_MASK = (0b11 << 16)
+HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_MASK = 0b11 << 16
 HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_SHIFT = 16
 # Occupies bits 18 and 19.
-HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_MASK = (0b11 << 18)
+HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_MASK = 0b11 << 18
 HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_SHIFT = 18
 
 
@@ -32,23 +44,23 @@ def var_to_bytes(obj: Any) -> bytes:
 
     def pushInt32(x: int) -> None:
         nonlocal serialized
-        x = x if x >= 0 else (x + 2 ** 31)
+        x = x if x >= 0 else (x + 2**31)
         for _ in range(4):
             serialized.append(x & 255)
             x //= 256
 
     def pushFloat32(x: float) -> None:
         nonlocal serialized
-        packed_bytes = struct.pack('>f', x)
-        ieee_integer = struct.unpack('>I', packed_bytes)[0]
+        packed_bytes = struct.pack(">f", x)
+        ieee_integer = struct.unpack(">I", packed_bytes)[0]
         pushInt32(ieee_integer)
 
     def pushFloat64(x: float) -> None:
         nonlocal serialized
-        packed_bytes = struct.pack('>d', x)
-        ieee_integer = struct.unpack('>Q', packed_bytes)[0]
-        pushInt32(ieee_integer % (2 ** 32))
-        pushInt32(ieee_integer // (2 ** 32))
+        packed_bytes = struct.pack(">d", x)
+        ieee_integer = struct.unpack(">Q", packed_bytes)[0]
+        pushInt32(ieee_integer % (2**32))
+        pushInt32(ieee_integer // (2**32))
 
     def pushString(value: str) -> None:
         nonlocal serialized
@@ -68,26 +80,26 @@ def var_to_bytes(obj: Any) -> bytes:
         pushInt32(int(obj))
 
     elif isinstance(obj, int):
-        if -2 ** 31 <= obj < 2 ** 31:
+        if -(2**31) <= obj < 2**31:
             pushInt32(TypeCode.INT_TYPE)
-            obj = obj if obj >= 0 else (obj + 2 ** 31)
+            obj = obj if obj >= 0 else (obj + 2**31)
             pushInt32(obj)
         else:
             pushInt32(TypeCode.INT_TYPE + HEADER_DATA_FLAG_64)
-            obj = obj if obj >= 0 else (obj + 2 ** 63)
-            pushInt32(obj % (2 ** 32))
-            pushInt32(obj // (2 ** 32))
+            obj = obj if obj >= 0 else (obj + 2**63)
+            pushInt32(obj % (2**32))
+            pushInt32(obj // (2**32))
 
     elif isinstance(obj, float):
         try:
-            packed_bytes = struct.pack('>f', obj)
-            obj_as_f32 = struct.unpack('>f', packed_bytes)[0]
+            packed_bytes = struct.pack(">f", obj)
+            obj_as_f32 = struct.unpack(">f", packed_bytes)[0]
             if obj_as_f32 == obj:
                 pushInt32(TypeCode.FLOAT_TYPE)
                 pushFloat32(obj)
             else:
                 raise Exception("Value cannot be represented as float32")
-        except:
+        except Exception:
             pushInt32(TypeCode.FLOAT_TYPE + HEADER_DATA_FLAG_64)
             pushFloat64(obj)
 
@@ -108,7 +120,8 @@ def var_to_bytes(obj: Any) -> bytes:
 
     else:
         raise ValueError(
-            f"[GdType] Unable to serialize variables of type '{type(obj)}'")
+            f"[GdType] Unable to serialize variables of type '{type(obj)}'"
+        )
 
     return bytes(serialized)
 
@@ -116,14 +129,16 @@ def var_to_bytes(obj: Any) -> bytes:
 def bytes_to_var(serialized: bytes) -> Any:
     if len(serialized) % 4 != 0 or len(serialized) < 4:
         raise ValueError(
-            f"[GdType] Unable to deserialize: sequence length {len(serialized)} is not multiple of 4")
+            f"[GdType] Unable to deserialize: sequence length {len(serialized)} is not multiple of 4"
+        )
     idx = 0
 
     def popInt32() -> int:
         nonlocal idx
         if len(serialized) - idx < 4:
             raise ValueError(
-                f"[GdType] Unable to deserialize: insufficient data in sequence")
+                "[GdType] Unable to deserialize: insufficient data in sequence"
+            )
         result = 0
         for i in range(4):
             result = result * 256 + serialized[idx + 3 - i]
@@ -134,28 +149,31 @@ def bytes_to_var(serialized: bytes) -> Any:
         nonlocal idx
         if len(serialized) - idx < 4:
             raise ValueError(
-                f"[GdType] Unable to deserialize: insufficient data in sequence")
+                "[GdType] Unable to deserialize: insufficient data in sequence"
+            )
         ieee_integer = popInt32()
-        return struct.unpack('>f', struct.pack('>I', ieee_integer))[0]
+        return struct.unpack(">f", struct.pack(">I", ieee_integer))[0]
 
     def popFloat64() -> float:
         nonlocal idx
         if len(serialized) - idx < 8:
             raise ValueError(
-                f"[GdType] Unable to deserialize: insufficient data in sequence")
+                "[GdType] Unable to deserialize: insufficient data in sequence"
+            )
         ieee_integer = 0
         for i in range(8):
             ieee_integer = ieee_integer * 256 + serialized[idx + 7 - i]
         idx += 8
-        return struct.unpack('>d', struct.pack('>Q', ieee_integer))[0]
+        return struct.unpack(">d", struct.pack(">Q", ieee_integer))[0]
 
     def popString() -> str:
         nonlocal idx
         length = popInt32()
         if len(serialized) - idx < length:
             raise ValueError(
-                f"[GdType] Unable to deserialize: insufficient data in sequence")
-        value = serialized[idx: idx + length].decode("utf-8")
+                "[GdType] Unable to deserialize: insufficient data in sequence"
+            )
+        value = serialized[idx : idx + length].decode("utf-8")
         if length % 4 != 0:
             length += 4 - length % 4
         idx += length
@@ -170,7 +188,8 @@ def bytes_to_var(serialized: bytes) -> Any:
                 popInt32()
             case _:
                 raise ValueError(
-                    f"[GdType] Unable to deserialize: unsupported container type {type_kind} at {idx - 4}")
+                    f"[GdType] Unable to deserialize: unsupported container type {type_kind} at {idx - 4}"
+                )
 
     def _bytes_to_var() -> Any:
         nonlocal serialized, idx
@@ -188,10 +207,10 @@ def bytes_to_var(serialized: bytes) -> Any:
                 lo = popInt32()
                 if header & HEADER_DATA_FLAG_64 != 0:
                     hi = popInt32()
-                    lo = hi * (2 ** 32) + lo
-                    lo = lo if lo < (2 ** 63) else (lo - 2 ** 63)
+                    lo = hi * (2**32) + lo
+                    lo = lo if lo < (2**63) else (lo - 2**63)
                 else:
-                    lo = lo if lo < (2 ** 31) else (lo - 2 ** 31)
+                    lo = lo if lo < (2**31) else (lo - 2**31)
                 return lo
 
             case TypeCode.FLOAT_TYPE:
@@ -210,9 +229,13 @@ def bytes_to_var(serialized: bytes) -> Any:
 
             case TypeCode.DICTIONARY_TYPE:
                 key_type_kind = ContainerTypeKind(
-                    (header & HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_MASK) >> HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_SHIFT)
+                    (header & HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_MASK)
+                    >> HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_SHIFT
+                )
                 value_type_kind = ContainerTypeKind(
-                    (header & HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_MASK) >> HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_SHIFT)
+                    (header & HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_MASK)
+                    >> HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_SHIFT
+                )
                 popContainerType(key_type_kind)
                 popContainerType(value_type_kind)
                 count = popInt32() & 0x7FFFFFFF
@@ -225,7 +248,9 @@ def bytes_to_var(serialized: bytes) -> Any:
 
             case TypeCode.LIST_TYPE:
                 type_kind = ContainerTypeKind(
-                    (header & HEADER_DATA_FIELD_TYPED_ARRAY_MASK) >> HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT)
+                    (header & HEADER_DATA_FIELD_TYPED_ARRAY_MASK)
+                    >> HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT
+                )
                 popContainerType(type_kind)
                 length = popInt32() & 0x7FFFFFFF
                 result = [_bytes_to_var() for _ in range(length)]
@@ -233,6 +258,7 @@ def bytes_to_var(serialized: bytes) -> Any:
 
             case _:
                 raise ValueError(
-                    f"[GdType] Unable to deserialize: unsupported type code {typecode} at {idx - 4}")
+                    f"[GdType] Unable to deserialize: unsupported type code {typecode} at {idx - 4}"
+                )
 
     return _bytes_to_var()

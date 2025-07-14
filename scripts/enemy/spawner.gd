@@ -2,7 +2,7 @@ class_name Spawner
 extends Node
 
 signal spawn_enemy(unit_data: Dictionary)
-signal subsidize_loser(subsidy: int)
+signal wave_end
 
 @export var delay_between_waves: float = 5.0
 @export var wave_info_label: Label
@@ -15,23 +15,6 @@ var wave_data := EnemyData.new()
 var current_wave_index: int = -1
 var current_wave_data: Dictionary
 var unit_queue: Array = []
-
-
-func load_json(file_path: String):
-	var file = FileAccess.open(file_path, FileAccess.READ)
-	if file == null:
-		printerr("Failed to open file: ", file_path)
-		return null
-
-	var content = file.get_as_text()
-	file.close()
-
-	var json_parsed = JSON.parse_string(content)
-	if json_parsed == null:
-		printerr("Failed to parse JSON from file: ", file_path)
-		return null
-
-	return json_parsed
 
 
 func _ready():
@@ -89,7 +72,6 @@ func start_next_wave():
 		return
 
 	current_wave_data = wave_data.wave_data_list[current_wave_index]
-	subsidize_loser.emit(current_wave_data.subsidy)
 
 	# print("Starting Wave ", current_wave_data.wave_number)
 
@@ -114,6 +96,7 @@ func _on_wave_spawn_timer_timeout():
 
 	if unit_queue.size() == 0:
 		wave_spawn_timer.stop()
+		wave_end.emit()
 
 
 func _on_next_wave_timer_timeout():

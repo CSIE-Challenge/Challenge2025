@@ -10,34 +10,51 @@
 [ext_resource type="AudioStream" uid="uid://vqr16ide5skg" path="res://assets/audio/MenuTheme.mp3" id="5_ujhup"]
 
 [node name="AudioManager" type="Node"]
+process_mode = 3
 script = ExtResource("1_8qd8g")
 
 [node name="EnemyAttack" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_m6ggh")
 volume_db = -20.0
+bus = &"SFX"
 
 [node name="EnemyDie" type="AudioStreamPlayer" parent="."]
+bus = &"SFX"
 
 [node name="EnemyMove" type="AudioStreamPlayer" parent="."]
+bus = &"SFX"
 
 [node name="BackgroundGameStage1" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_njtn3")
+bus = &"Music"
 parameters/looping = true
 
 [node name="BackgroundGameStage2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_02gw7")
+bus = &"Music"
 parameters/looping = true
 
 [node name="BackgroundMenu" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_ujhup")
+bus = &"Music"
+parameters/looping = true
 
 [node name="ButtonOnClick" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_aoitu")
 volume_db = -5.0
+bus = &"SFX"
 
 [node name="TowerPlace" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_3asnw")
+volume_db = -20.0
+bus = &"SFX"
+
+[node name="BulletExplode" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_3asnw")
+volume_db = -20.0
+bus = &"SFX"
 
 [node name="TowerShoot" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_liach")
 volume_db = -20.0
+bus = &"SFX"

@@ -13,9 +13,28 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("4_58x5s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7gee1")
 }],
-"loop": true,
-"name": &"default",
+"loop": false,
+"name": &"LeftRight",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7gee1")
+}],
+"loop": false,
+"name": &"Lower",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_7gee1")
+}],
+"loop": false,
+"name": &"Upper",
 "speed": 5.0
 }]
 
@@ -31,16 +50,26 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_qwvox")
 type = 4
+building_cost = 400
 auto_aim = false
 bullet_scene = ExtResource("2_7gee1")
+reload_seconds = 3.0
+damage = 30
 
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 sprite_frames = SubResource("SpriteFrames_7gee1")
+animation = &"Upper"
 
-[node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(0, -7.68246)
+[node name="LeftRightMarker" type="Marker2D" parent="Tower"]
+position = Vector2(38.4123, -7.68246)
+
+[node name="UpperMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, -19.2061)
+
+[node name="LowerMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, 17.9257)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

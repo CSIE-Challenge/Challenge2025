@@ -13,9 +13,28 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("4_ue8gv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_efhko")
 }],
-"loop": true,
-"name": &"default",
+"loop": false,
+"name": &"LeftRight",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_efhko")
+}],
+"loop": false,
+"name": &"Lower",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_efhko")
+}],
+"loop": false,
+"name": &"Upper",
 "speed": 5.0
 }]
 
@@ -32,16 +51,27 @@ collision_mask = 0
 script = ExtResource("1_efhko")
 type = 4
 level_b = 3
+building_cost = 2800
 auto_aim = false
+anti_air = true
 bullet_scene = ExtResource("2_efhko")
+reload_seconds = 3.0
+damage = 90
 
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 sprite_frames = SubResource("SpriteFrames_efhko")
+animation = &"Upper"
 
-[node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(0, -7.68246)
+[node name="LeftRightMarker" type="Marker2D" parent="Tower"]
+position = Vector2(38.4123, -7.68246)
+
+[node name="UpperMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, -19.2061)
+
+[node name="LowerMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, 17.9257)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

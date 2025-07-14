@@ -17,10 +17,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_8vlwu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ulhc5")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -36,7 +39,11 @@ collision_mask = 0
 script = ExtResource("1_eqtww")
 type = 1
 level_b = 3
+building_cost = 2800
 bullet_scene = ExtResource("2_ulhc5")
+reload_seconds = 2.0
+aim_range = 300.0
+damage = 20
 
 [node name="Tower" type="Node2D" parent="."]
 

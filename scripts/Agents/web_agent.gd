@@ -12,21 +12,27 @@ enum CommandType {
 	GET_INCOME = 7,
 	GET_GAME_STATUS = 8,
 	GET_TERRAIN = 9,
+	GET_SYSTEM_PATH = 10,
+	GET_OPPONENT_PATH = 11,
 	PLACE_TOWER = 101,
 	GET_ALL_TOWERS = 102,
 	GET_TOWER = 103,
+	SELL_TOWER = 104,
+	SET_STRATEGY = 105,
 	SPAWN_UNIT = 201,
-	GET_AVAILABLE_UNITS = 202,
+	GET_UNIT_COOLDOWN = 202,
 	GET_ALL_ENEMIES = 203,
 	CAST_SPELL = 301,
 	GET_SPELL_COOLDOWN = 302,
-	GET_SPELL_COST = 303,
-	GET_EFFECTIVE_SPELLS = 304,
 	SEND_CHAT = 401,
 	GET_CHAT_HISTORY = 402,
+	SET_CHAT_NAME_COLOR = 403,
 	PIXELCAT = 501,
-	GET_DEVS = 502
+	GET_DEVS = 502,
+	SET_NAME = 503
 }
+
+const MAX_LOGGING_REQUEST = 100
 
 
 class CommandHandler:
@@ -59,45 +65,48 @@ var _last_command: float = -1
 # command id -> command handler
 var _command_handlers: Dictionary = {}
 # the set of command types that may be called when the game is not running
-var _general_commands: Dictionary = {}
+var _general_commands: Dictionary = {CommandType.GET_GAME_STATUS: null}
 
 
 func _register_command_handlers() -> void:
 	var handlers: Array[CommandHandler] = [
 		CommandHandler.new(CommandType.GET_ALL_TERRAIN, [], _get_all_terrain),
-		CommandHandler.new(CommandType.GET_TERRAIN, [TYPE_BOOL, TYPE_VECTOR2I], _get_terrain),
+		CommandHandler.new(CommandType.GET_TERRAIN, [TYPE_VECTOR2I], _get_terrain),
 		CommandHandler.new(CommandType.GET_SCORES, [TYPE_BOOL], _get_scores),
 		CommandHandler.new(CommandType.GET_CURRENT_WAVE, [], _get_current_wave),
 		CommandHandler.new(CommandType.GET_REMAIN_TIME, [], _get_remain_time),
 		CommandHandler.new(CommandType.GET_TIME_UNTIL_NEXT_WAVE, [], _get_time_until_next_wave),
 		CommandHandler.new(CommandType.GET_MONEY, [TYPE_BOOL], _get_money),
 		CommandHandler.new(CommandType.GET_INCOME, [TYPE_BOOL], _get_income),
-		#CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
+		CommandHandler.new(CommandType.GET_GAME_STATUS, [], _get_game_status),
+		CommandHandler.new(CommandType.GET_SYSTEM_PATH, [TYPE_BOOL], _get_system_path),
+		CommandHandler.new(CommandType.GET_OPPONENT_PATH, [TYPE_BOOL], _get_opponent_path),
 		CommandHandler.new(
 			CommandType.PLACE_TOWER, [TYPE_INT, TYPE_STRING, TYPE_VECTOR2I], _place_tower
 		),
 		CommandHandler.new(CommandType.GET_ALL_TOWERS, [TYPE_BOOL], _get_all_towers),
-		CommandHandler.new(CommandType.GET_TOWER, [TYPE_VECTOR2I], _get_tower),
+		CommandHandler.new(CommandType.GET_TOWER, [TYPE_BOOL, TYPE_VECTOR2I], _get_tower),
+		CommandHandler.new(CommandType.SELL_TOWER, [TYPE_VECTOR2I], _sell_tower),
+		CommandHandler.new(CommandType.SET_STRATEGY, [TYPE_VECTOR2I, TYPE_INT], _set_strategy),
 		CommandHandler.new(CommandType.SPAWN_UNIT, [TYPE_INT], _spawn_unit),
-		CommandHandler.new(CommandType.GET_AVAILABLE_UNITS, [], _get_available_units),
-		CommandHandler.new(CommandType.GET_ALL_ENEMIES, [], _get_all_enemies),
+		CommandHandler.new(CommandType.GET_UNIT_COOLDOWN, [TYPE_INT], _get_unit_cooldown),
+		CommandHandler.new(CommandType.GET_ALL_ENEMIES, [TYPE_BOOL], _get_all_enemies),
 		CommandHandler.new(CommandType.CAST_SPELL, [TYPE_INT, TYPE_VECTOR2I], _cast_spell),
 		CommandHandler.new(
 			CommandType.GET_SPELL_COOLDOWN, [TYPE_BOOL, TYPE_INT], _get_spell_cooldown
 		),
-		CommandHandler.new(CommandType.GET_SPELL_COST, [TYPE_INT], _get_spell_cost),
 		CommandHandler.new(CommandType.SEND_CHAT, [TYPE_STRING], _send_chat),
-		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history)
+		CommandHandler.new(CommandType.GET_CHAT_HISTORY, [TYPE_INT], _get_chat_history),
+		CommandHandler.new(CommandType.SET_CHAT_NAME_COLOR, [TYPE_STRING], _set_chat_name_color),
+		CommandHandler.new(CommandType.SET_NAME, [TYPE_STRING], _set_name),
 	]
 	for handler in handlers:
 		if _command_handlers.has(handler.command_id):
 			pass  # error: duplicated handler id
 		_command_handlers[handler.command_id] = handler
-	_general_commands = {CommandType.GET_REMAIN_TIME: null}
 
 
 func _init() -> void:
-	type = AgentType.AI
 	_register_command_handlers()
 	_ws = ApiServer.register_connection()
 	add_child(_ws)
@@ -106,9 +115,13 @@ func _init() -> void:
 	_ws.client_disconnected.connect(
 		func(): print("[API Server] Remote agent %s disconnected" % name)
 	)
+	# keep processing requests when the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func _on_received_command(command_bytes: PackedByteArray) -> void:
+	if game_self != null:
+		game_self.api_called += 1
 	# rate-limit commands
 	var this_command = Time.get_ticks_msec()
 	if _last_command >= 0 and this_command - _last_command < MIN_COMMAND_INTERVAL_MSEC:
@@ -129,7 +142,26 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 	else:
 		var request_id: int = command.pop_front()
 		var command_id: int = command.pop_front()
-		print("[API Server] received command: ", request_id, " ", command_id)
+		if request_id <= MAX_LOGGING_REQUEST:
+			var command_name = (
+				_command_handlers.get(command_id)._handler.get_method()
+				if _command_handlers.has(command_id)
+				else "(invalid)"
+			)
+			print(
+				(
+					"[API Server] received command: %d, %d (%s)"
+					% [request_id, command_id, command_name]
+				)
+			)
+		elif request_id == MAX_LOGGING_REQUEST + 1:
+			print(
+				(
+					"[API Server] received more than %d requests, no further log will be printed."
+					% MAX_LOGGING_REQUEST
+				)
+			)
+
 		if not _command_handlers.has(command_id):
 			response = [
 				request_id,
@@ -146,8 +178,14 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 				StatusCode.NOT_STARTED,
 				"[Receive Command] Error: the game is not running"
 			]
+		elif game_running and get_tree().paused and not _general_commands.has(command_id):
+			response = [
+				request_id, StatusCode.PAUSED, "[Receive Command] Error: the game is paused"
+			]
 		else:
 			response = _command_handlers[command_id].handle(command)
 			response.push_front(request_id)
+			if game_self != null:
+				game_self.api_succeed += (response[0] == StatusCode.OK) as int
 
 	_ws.send_bytes(var_to_bytes(response))

@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b47ltcag6vqkv" path="res://pixel_art/tower/FireMarioPrepare.png" id="4_xghqf"]
 [ext_resource type="Texture2D" uid="uid://clht2uerh11kk" path="res://pixel_art/tower/FireMarioAttack.png" id="5_mmt6j"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_hyp4a"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_4wmw7"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -17,10 +17,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_mmt6j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4wmw7")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -36,13 +39,17 @@ collision_mask = 0
 script = ExtResource("1_1kchy")
 type = 1
 level_a = 2
+building_cost = 1200
 anti_air = true
 bullet_scene = ExtResource("2_4wmw7")
+reload_seconds = 0.75
+aim_range = 300.0
+damage = 60
 
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_hyp4a")
+sprite_frames = SubResource("SpriteFrames_4wmw7")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 position = Vector2(23.0474, -11.5237)

@@ -12,6 +12,7 @@ func _ready():
 	# Create duration timer
 	duration_timer.timeout.connect(_on_duration_ended)
 	duration_timer.wait_time = spell.metadata.stats.duration
+	duration_timer.start()
 	# Create trigger timer
 	# trigger_timer.timeout.connect(_on_trigger)
 	# trigger_timer.wait_time = spell.metadata.stats.trigger_interval
@@ -23,7 +24,9 @@ func _draw():
 
 func trigger() -> void:
 	var enemies: Array[Area2D] = get_overlapping_areas()
-	for enemy in enemies:
+	for enemy: Enemy in enemies:
+		if not enemy is Enemy:
+			return
 		enemy.transport()
 
 

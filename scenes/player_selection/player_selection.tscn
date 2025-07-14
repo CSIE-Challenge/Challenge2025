@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://4n6lbd6ccvkh"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vxqyd"]
-[ext_resource type="Texture2D" uid="uid://kpvbltopk254" path="res://assets/ui/background.png" id="2_0w1p3"]
 [ext_resource type="Script" uid="uid://c2y16xmq3qenw" path="res://scripts/player_selection/player_selection.gd" id="2_vo1kg"]
+[ext_resource type="Texture2D" uid="uid://chktdkl6cqvho" path="res://assets/background.png" id="3_rp0cw"]
 [ext_resource type="PackedScene" uid="uid://2vyhv0c7ehjb" path="res://scenes/player_selection/individual_player_selection.tscn" id="4_vo1kg"]
 [ext_resource type="Texture2D" uid="uid://dk74l88eou2lq" path="res://pixel_art/bullet/BigBomb.png" id="5_rp0cw"]
 [ext_resource type="Texture2D" uid="uid://bpvwad4fudbmq" path="res://assets/maps/Map3.png" id="6_rp0cw"]
@@ -24,7 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_0w1p3")
+texture = ExtResource("3_rp0cw")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 modulate = Color(0.686275, 0.686275, 0.686275, 0.580392)
@@ -137,7 +137,12 @@ stretch_mode = 5
 layout_mode = 2
 player_identifier = "Player 2"
 
-[node name="StartButton" type="Button" parent="VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="StartButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -145,8 +150,17 @@ size_flags_vertical = 3
 theme_override_font_sizes/font_size = 50
 text = "Start"
 
+[node name="BackButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 50
+text = "Back"
+
 [node name="GameStartTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="timeout" from="GameStartTimer" to="." method="_on_game_start_timer_timeout"]

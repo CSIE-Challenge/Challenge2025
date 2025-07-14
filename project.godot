@@ -11,15 +11,17 @@ config_version=5
 [application]
 
 config/name="Challenge2025"
-config/version="0.2.1"
+config/version="1.0.0"
 run/main_scene="uid://cdex8rnl6lny2"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/image="uid://brtpt72a50fg0"
+config/icon="uid://6rnsx1gsanpk"
 
 [autoload]
 
 ApiServer="*res://scripts/APIServer/api_server.gd"
 AudioManager="*res://scenes/audio_manager.tscn"
+Global="*res://scripts/global.gd"
 
 [display]
 

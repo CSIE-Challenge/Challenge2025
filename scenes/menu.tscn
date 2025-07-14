@@ -1,10 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://cdex8rnl6lny2"]
+[gd_scene load_steps=13 format=3 uid="uid://cdex8rnl6lny2"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_con2f"]
 [ext_resource type="Script" uid="uid://d3i2acqjv2ffm" path="res://scripts/menu.gd" id="1_yqeox"]
-[ext_resource type="Texture2D" uid="uid://kpvbltopk254" path="res://assets/ui/background.png" id="2_vjb58"]
+[ext_resource type="Texture2D" uid="uid://chktdkl6cqvho" path="res://assets/background.png" id="3_mhnvy"]
+[ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="4_mhnvy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ytvr"]
+bg_color = Color(0.43, 0.43, 0.43, 0.866667)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhnvy"]
+bg_color = Color(0.19, 0.19, 0.19, 0.87451)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ytvr"]
+size = Vector2(1920, 136)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mhnvy"]
+size = Vector2(496, 104)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g3eks"]
+size = Vector2(184, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v86rl"]
+size = Vector2(152, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_13sgg"]
+size = Vector2(184, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i6lef"]
+size = Vector2(152, 280)
 
 [node name="Menu" type="Control"]
+z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,9 +47,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_vjb58")
+texture = ExtResource("3_mhnvy")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+z_index = 10
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -43,26 +70,36 @@ theme_override_constants/separation = 40
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 theme_override_font_sizes/font_size = 56
+theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
 text = "Start"
 
 [node name="Quad" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 theme_override_font_sizes/font_size = 56
+theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
+disabled = true
 text = "Quad"
 
 [node name="About" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 56
+theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
 text = "About"
 
 [node name="Quit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Start")
 theme_override_font_sizes/font_size = 56
+theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
 text = "Quit"
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="RichTextLabel" parent="."]
+z_index = 10
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -70,32 +107,85 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -346.0
-offset_top = -434.0
+offset_top = -413.0
 offset_right = 346.0
-offset_bottom = -316.0
+offset_bottom = -295.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 100
-text = "Challenge 2025"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/normal_font_size = 100
+text = "超解碼農兄弟"
 horizontal_alignment = 1
 
 [node name="Version" type="Label" parent="."]
+z_index = 10
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -145.0
+offset_top = 16.0
+offset_right = -17.0
+offset_bottom = 72.0
+grow_horizontal = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 48
+text = "v1.0.0"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="."]
+z_index = 10
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -276.0
-offset_right = 64.0
-offset_bottom = -220.0
+offset_left = -364.0
+offset_top = -271.0
+offset_right = 364.0
+offset_bottom = -192.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 48
-text = "v1.0.0"
+theme_override_fonts/font = ExtResource("4_mhnvy")
+theme_override_font_sizes/font_size = 32
+text = "轉生到蘑菇王國後發現這裡的怪物會排隊進攻，
+所以我決定開發塔防戰術統治這個世界～ "
 horizontal_alignment = 1
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(960, 1012)
+shape = SubResource("RectangleShape2D_4ytvr")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(248, 516)
+shape = SubResource("RectangleShape2D_mhnvy")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(708, 804)
+shape = SubResource("RectangleShape2D_g3eks")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(708, 888)
+shape = SubResource("RectangleShape2D_v86rl")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1748, 636)
+shape = SubResource("RectangleShape2D_13sgg")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1748, 804)
+shape = SubResource("RectangleShape2D_i6lef")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/About" to="." method="_on_about_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

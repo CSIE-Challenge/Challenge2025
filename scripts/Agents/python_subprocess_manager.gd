@@ -14,6 +14,8 @@ var _last_exit_code: int
 
 func _init() -> void:
 	OS.set_environment("IS_CHALLENGE_GAME_PROCESS", "TRUE")
+	# keep monitoring the subprocess when the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func set_python_interpreter(path: String) -> void:
@@ -57,12 +59,11 @@ func is_runnable() -> bool:
 func run_subprocess() -> void:
 	if not is_runnable():
 		return
-	var dict = OS.execute_with_pipe(python_interpreter_path, [python_script_path])
-	if dict.is_empty():
+	_current_pid = OS.create_process(python_interpreter_path, [python_script_path])
+	if _current_pid == -1:
 		_state = FAILED
 		return
 	_state = RUNNING
-	_current_pid = dict["pid"]
 
 
 # terminate the subprocess
@@ -84,3 +85,8 @@ func _process(_delta: float) -> void:
 		return
 	_state = EXITED
 	_last_exit_code = OS.get_process_exit_code(_current_pid)
+
+
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		kill_subprocess()

@@ -1,6 +1,17 @@
 class_name Enemy
 extends Area2D
 
+enum EnemyType {
+	BUZZY_BEETLE,
+	GOOMBA,
+	KOOPA_JR,
+	KOOPA_PARATROOPA,
+	KOOPA,
+	SPINY_SHELL,
+	WIGGLER,
+}
+
+@export var type: EnemyType
 @export var income_impact: int = 0
 @export var max_health: int = 100
 # Note that the speed of enemy should never exceed that of explosion of effect,
@@ -8,14 +19,13 @@ extends Area2D
 @export var max_speed: int = 50
 @export var damage: int = 5
 @export var flying: bool = false
-@export var armor: int = 0
-@export var shield: int = 0
 @export var knockback_resist: bool = false
 @export var kill_reward: int = 1
+@export var summon_cooldown: float = 2.0
 
 var game: Game
 var path_follow: PathFollow2D
-var knockback_distance: int = 50
+var knockback_distance: int = 25
 var source: Game.EnemySource
 var health: int:
 	get:
@@ -25,29 +35,28 @@ var health: int:
 		if health_bar != null:
 			health_bar.value = health / float(max_health) * 100.0
 var speed_rate: Array[float] = [1.0]  # store speed_rates and get minimum
+var knockback_invincibility = false
 
 @onready var sprite = $AnimatedSprite2D
 @onready var health_bar := $HealthBar
 
 
 func _on_killed() -> void:
-	game.kill_cnt += 1
+	game.kill_count += 1
+	game.score += kill_reward  # == 0.1 * damage
 	if source == Game.EnemySource.SYSTEM:
 		game.money = game.money + kill_reward
 	path_follow.queue_free()
 
 
 func _on_reached() -> void:
-	game.damage_taken.emit(damage)
+	game.take_damage(damage)
 	AudioManager.enemy_attack.play()
 	path_follow.queue_free()
 
 
 func take_damage(amount: int):
-	if shield == 0:
-		health -= amount * max(0.2, (20.0 - armor) / 20.0)
-	else:
-		shield -= min(amount, shield)
+	health -= amount
 
 	if health <= 0:
 		_on_killed()
@@ -62,9 +71,9 @@ func _on_area_entered(bullet: Bullet) -> void:
 
 	match bullet.effect:
 		bullet.Effect.FREEZE:
-			freeze(0.6)
+			freeze(0.7)
 		bullet.Effect.DEEP_FREEZE:
-			freeze(0.3)
+			freeze(0.5)
 		bullet.Effect.KNOCKBACK:
 			knockback(false)
 		bullet.Effect.FAR_KNOCKBACK:
@@ -75,6 +84,9 @@ func _on_area_entered(bullet: Bullet) -> void:
 
 
 func knockback(far: bool):
+	if knockback_invincibility or ((not knockback_resist) and (not far)):
+		return
+	knockback_invincibility = true
 	if far:
 		if knockback_resist:
 			path_follow.progress -= knockback_distance
@@ -83,12 +95,15 @@ func knockback(far: bool):
 	else:
 		if not knockback_resist:
 			path_follow.progress -= knockback_distance
+	await get_tree().create_timer(3).timeout
+	knockback_invincibility = false
 
 
 func freeze(rate: float):
-	speed_rate.append(rate)
-	await get_tree().create_timer(8).timeout
-	speed_rate.erase(rate)
+	var max_speed = speed_rate.max()
+	speed_rate.append(max_speed * rate)
+	await get_tree().create_timer(1).timeout
+	speed_rate.erase(max_speed * rate)
 
 
 #region Spells
@@ -98,10 +113,15 @@ func transport():
 	var op_game = game.op_game
 	path_follow.get_parent().remove_child(path_follow)
 	if flying:
-		op_game._map.flying_opponent_path.add_child(path_follow)
+		op_game.map.flying_opponent_path.add_child(path_follow)
 	else:
-		op_game._map.opponent_path.add_child(path_follow)
+		op_game.map.opponent_path.add_child(path_follow)
 	path_follow.progress_ratio = 0
+
+	# Swap games so scores are calculated correcrtly
+	var tmp_game = op_game
+	op_game = game
+	game = tmp_game
 
 
 #endregion
@@ -122,13 +142,14 @@ func _ready():
 		path_follow.progress_ratio = 0
 	add_to_group("enemies")
 	$AnimatedSprite2D.play("default")
-	self.z_index = 10  # For effect to be on the ground
 
 
 func _process(delta):
 	path_follow.progress += speed_rate.min() * max_speed * delta
 	if path_follow.progress_ratio >= 0.99:
 		_on_reached()
+
+	self.z_index = game.map.get_enemy_z_index(self)
 
 	self.rotation = -path_follow.rotation
 	if cos(path_follow.rotation) > 0:

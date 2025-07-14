@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvjdabq2ffoy7"]
+
+[ext_resource type="Texture2D" uid="uid://b5phndtmcwrbs" path="res://assets/distro/debian.png" id="1_nlxvw"]
+
+[node name="Debian" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_nlxvw")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(1, 13, 10, -6, 7, -12, -3, -13, -8, -10, -10, -2, -6, 7)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=15 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
@@ -9,10 +9,11 @@
 [ext_resource type="Script" uid="uid://d1w82i23q04sb" path="res://scripts/shop.gd" id="4_snxki"]
 [ext_resource type="Script" uid="uid://c8q4w2gvkyqno" path="res://scripts/chat.gd" id="5_vxv1r"]
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
-[ext_resource type="Texture2D" uid="uid://bvlbsdkpegbiw" path="res://assets/ui/game-status.png" id="6_ojwvf"]
+[ext_resource type="Texture2D" uid="uid://nje75xttqfkn" path="res://assets/ui/score-bar-overlay.png" id="6_h7h1o"]
+[ext_resource type="Texture2D" uid="uid://m13gswneptc" path="res://assets/ui/game-status.png" id="6_ojwvf"]
 [ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
-[ext_resource type="Texture2D" uid="uid://dp2dc15q5igfw" path="res://assets/ui/shop.png" id="8_p5kuw"]
-[ext_resource type="Texture2D" uid="uid://cmtdm1uj8hu0a" path="res://assets/ui/chat.png" id="11_i86cr"]
+[ext_resource type="Texture2D" uid="uid://dpb6xajj515sy" path="res://assets/ui/shop.png" id="8_p5kuw"]
+[ext_resource type="Texture2D" uid="uid://btahr8i011mlt" path="res://assets/ui/chat.png" id="11_i86cr"]
 
 [node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar", "game_1p", "game_2p")]
 layout_mode = 3
@@ -84,6 +85,14 @@ theme_override_font_sizes/font_size = 50
 text = "Player 2"
 horizontal_alignment = 2
 
+[node name="FrozenOverlay" type="TextureRect" parent="Screen/Top/TextureRect"]
+visible = false
+custom_minimum_size = Vector2(1024, 80)
+layout_mode = 2
+offset_right = 1024.0
+offset_bottom = 80.0
+texture = ExtResource("6_h7h1o")
+
 [node name="Status2P" parent="Screen/Top" instance=ExtResource("3_g6yuj")]
 layout_mode = 2
 
@@ -133,6 +142,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="TabContainer" type="TabContainer" parent="Screen/Bottom/Mid/ShopAndChat"]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -209,6 +219,7 @@ vertical_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 16
 
 [node name="Chat" type="TextureRect" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer"]
 visible = false
@@ -259,7 +270,6 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 64.0
-offset_bottom = -79.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 32
@@ -276,19 +286,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="LineEdit" type="LineEdit" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 28.0
-offset_top = -68.0
-offset_right = -28.0
-offset_bottom = -26.0
-grow_horizontal = 2
-grow_vertical = 0
-placeholder_text = "Chat something..."
+[node name="ChatTimer" type="Timer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
 
 [node name="Game2P" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
@@ -309,5 +307,5 @@ layout_mode = 1
 
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]
-[connection signal="text_submitted" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/LineEdit" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_line_edit_text_submitted"]
+[connection signal="timeout" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/ChatTimer" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_timer_timeout"]
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]

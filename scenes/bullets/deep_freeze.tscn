@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_uvkrg"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
-load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vsod2"]
+load_path = "res://.godot/imported/tile_0001.png-fef6977aebcbecb1ff13f6940dc01e86.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vsod2"]
-radius = 7.28011
+radius = 8.0
 
 [node name="Deep_freeze" type="Area2D"]
 collision_layer = 10
@@ -15,15 +15,16 @@ script = ExtResource("1_uvkrg")
 is_tracking = false
 is_anti_air = true
 is_penetrating = true
-aoe_scale = 10.0
+aoe_scale = 14.0
 movement_speed = 0.0
-damage = 0
-lifespan_seconds = 0
+lifespan_seconds = 0.02
 effect = 4
+effect_duration = 0.1
+effect_interval = 0.05
 
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708
-texture = SubResource("CompressedTexture2D_n5hp2")
+texture = SubResource("CompressedTexture2D_vsod2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708

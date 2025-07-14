@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxumekwaixhig"]
+
+[ext_resource type="Texture2D" uid="uid://dcaogverifi0c" path="res://assets/distro/arch.png" id="1_fkv0b"]
+
+[node name="Arch" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_fkv0b")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(0, -17, -17, 17, -4, 11, 0, 4, 4, 11, 17, 17)

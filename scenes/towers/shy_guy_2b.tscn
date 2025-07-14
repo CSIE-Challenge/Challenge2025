@@ -1,12 +1,12 @@
 [gd_scene load_steps=9 format=3 uid="uid://b1bgyigw6oxva"]
 
-[ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_7fpqp"]
+[ext_resource type="Script" uid="uid://bgtui2ogpsrpq" path="res://scripts/towers/tower_with_multiple_bullet.gd" id="1_mx8jr"]
 [ext_resource type="PackedScene" uid="uid://c15hbsg2p236o" path="res://scenes/bullets/knife_2b.tscn" id="2_7fpqp"]
 [ext_resource type="Texture2D" uid="uid://bqikcu5a6ov7i" path="res://pixel_art/tower/ShyGuyStand.png" id="3_mx8jr"]
 [ext_resource type="Texture2D" uid="uid://ddc73100y5t64" path="res://pixel_art/tower/ShyGuyPrepare.png" id="4_gjuae"]
 [ext_resource type="Texture2D" uid="uid://bym1xfjew7tgo" path="res://pixel_art/tower/ShyGuyAttack.png" id="5_y1nbr"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_i76iq"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_mx8jr"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -17,10 +17,13 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("5_y1nbr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_mx8jr")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -33,16 +36,20 @@ radius = 734.063
 scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
-script = ExtResource("1_7fpqp")
+script = ExtResource("1_mx8jr")
 type = 5
 level_b = 2
+building_cost = 1200
 anti_air = true
 bullet_scene = ExtResource("2_7fpqp")
+reload_seconds = 1.5
+aim_range = 200.0
+damage = 20
 
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_i76iq")
+sprite_frames = SubResource("SpriteFrames_mx8jr")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 position = Vector2(17.9257, -20.4866)

@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dwdw7rtb2b76h"]
+[gd_scene load_steps=7 format=3 uid="uid://dwdw7rtb2b76h"]
 
 [ext_resource type="Script" uid="uid://bmfv7333bad4c" path="res://scripts/enemy/enemy.gd" id="1_4hexv"]
 [ext_resource type="Texture2D" uid="uid://c6mrj7cfrsa6h" path="res://pixel_art/enemy/Wiggler2.png" id="2_agxef"]
 [ext_resource type="Texture2D" uid="uid://ckwccl062wvx5" path="res://pixel_art/enemy/Wiggler1.png" id="3_4hexv"]
+[ext_resource type="PackedScene" uid="uid://d020isqlfgktk" path="res://ui/health_bar.tscn" id="4_4hexv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_772r1"]
 animations = [{
@@ -33,21 +34,6 @@ frame_progress = 0.670469
 position = Vector2(1, 2)
 shape = SubResource("CircleShape2D_55jtl")
 
-[node name="HealthBar" type="ProgressBar" parent="."]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -24.0
-offset_top = -32.0
-offset_right = 24.0
-offset_bottom = -24.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(24, 32)
-value = 32.46
-show_percentage = false
+[node name="HealthBar" parent="." instance=ExtResource("4_4hexv")]
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

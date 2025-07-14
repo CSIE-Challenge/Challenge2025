@@ -29,6 +29,7 @@ func _create_section(title: String) -> GridContainer:
 	tower_grid.columns = 3
 	tower_grid.add_theme_constant_override("h_separation", 16)
 	tower_grid.add_theme_constant_override("v_separation", 16)
+	tower_submenu.add_theme_constant_override("separation", 8)
 	tower_submenu.add_child(tower_label)
 	tower_submenu.add_child(tower_grid)
 	options_container.add_child(tower_submenu)
@@ -51,6 +52,12 @@ func _create_tower_options() -> void:
 		else:
 			ab = "a" if inst.level_a > inst.level_b else "b"
 		shop_item.display_name = ("lv. %d%s" % [max(inst.level_a, inst.level_b), ab])
+		shop_item.is_valid = func(): return building_game.money >= shop_item.display_cost
+		shop_item.message = func():
+			if building_game.money >= shop_item.display_cost:
+				return ""
+			return "not enough money"
+
 		inst.queue_free()
 		grid.add_child(shop_item)
 
@@ -63,10 +70,27 @@ func _create_unit_options() -> void:
 		var data = unit_data.unit_data_list[unit]
 		var scene = load(data.get("scene_path"))
 		shop_item.callback = func():
-			if building_game.spend(data.stats.deploy_cost, data.stats.income_impact):
+			if (
+				(not opposing_game.enemy_cooldown.has(int(data.stats.type)))
+				and building_game.spend(data.stats.deploy_cost, data.stats.income_impact)
+			):
 				opposing_game.summon_enemy.emit(data)
 		shop_item.display_cost = data.stats.deploy_cost
 		shop_item.display_scene = scene
+		shop_item.is_valid = func():
+			return (
+				building_game.money >= shop_item.display_cost
+				and not opposing_game.enemy_cooldown.has(int(data.stats.type))
+			)
+		shop_item.message = func():
+			if building_game.money < shop_item.display_cost:
+				return "not enough money"
+			if opposing_game.enemy_cooldown.has(int(data.stats.type)):
+				return (
+					"on cooldown\n%d sec left"
+					% int(opposing_game.enemy_cooldown[int(data.stats.type)].time_left)
+				)
+			return ""
 		grid.add_child(shop_item)
 
 
@@ -75,9 +99,28 @@ func _create_spell_options() -> void:
 	for spell in [PoisonSpell, DoubleIncomeSpell, TeleportSpell]:
 		var shop_item := SHOP_ITEM_SCENE.instantiate()
 		shop_item.callback = func(): building_game.buy_spell.emit(spell)
-		shop_item.display_cost = spell.metadata["stats"]["cost"]
+		shop_item.display_cost = 0
 		shop_item.display_scene = load(spell.metadata["scene_path"])
 		grid.add_child(shop_item)
+		shop_item.is_valid = func():
+			return not (
+				building_game.get_node("SpellManager").get_node(spell.metadata.name).is_on_cooldown
+			)
+		shop_item.message = func():
+			if building_game.get_node("SpellManager").get_node(spell.metadata.name).is_on_cooldown:
+				return (
+					"on cooldown\n%d sec left"
+					% int(
+						(
+							building_game
+							. get_node("SpellManager")
+							. get_node(spell.metadata.name)
+							. cooldown_timer
+							. time_left
+						)
+					)
+				)
+			return ""
 
 
 func _on_switch_pressed() -> void:

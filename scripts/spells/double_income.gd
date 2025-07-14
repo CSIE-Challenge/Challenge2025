@@ -7,9 +7,8 @@ static var metadata: Dictionary = {
 	"description": "I am rich",
 	"stats":
 	{
-		"duration": 8,
-		"cooldown": 20,
-		"cost": 20,
+		"duration": 10,
+		"cooldown": 60,
 		"target": false,
 	}
 }
@@ -34,9 +33,7 @@ func cast_spell() -> bool:
 	if is_on_cooldown or is_active or not game:
 		print("Spell is on cooldown! Wait ", cooldown_timer.get_time_left(), " seconds")
 		return false
-	if not game.spend(metadata.stats.cost):
-		print("Not enough money")
-		return false
+	is_on_cooldown = true
 	activate_effect()
 	return true
 
