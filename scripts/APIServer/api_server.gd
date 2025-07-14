@@ -19,7 +19,8 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	assert(listen() == OK)
+	var server_listen_ret = listen()
+	assert(server_listen_ret == OK)
 	print("[API Server] Listening to port: ", port)
 
 
