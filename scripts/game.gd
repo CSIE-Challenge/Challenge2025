@@ -295,7 +295,7 @@ func _on_buy_spell(spell) -> void:
 		var original_spell_node = $SpellManager.get_node(spell.metadata.name)
 		var spell_scene = load(spell.metadata.scene_path)
 		var preview_spell_node = spell_scene.instantiate()
-		var preview_color_callback = func(node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
+		var preview_color_callback = func(_node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
 			if not $SpellManager.get_node(spell.metadata.name).is_on_cooldown:
 				return Previewer.PreviewMode.SUCCESS
 			return Previewer.PreviewMode.FAIL

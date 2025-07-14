@@ -59,7 +59,6 @@ func _on_cooldown_ended():
 
 
 func _on_trigger():
-	var stats = metadata.stats
 	var effect = preload("res://scenes/spells/poison_effect.tscn").instantiate()
 
 	add_child(effect)
