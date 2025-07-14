@@ -26,7 +26,6 @@ enum StatusCode {
 }
 
 const TOWER_SCENES = [
-	[preload("res://scenes/towers/twin_turret.tscn")],
 	[
 		preload("res://scenes/towers/fire_mario_1.tscn"),
 		preload("res://scenes/towers/fire_mario_2a.tscn"),
