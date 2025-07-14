@@ -184,7 +184,8 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 			]
 		else:
 			response = _command_handlers[command_id].handle(command)
-			game_self.api_succeed += (response[0] == StatusCode.OK) as int
 			response.push_front(request_id)
+			if game_self != null:
+				game_self.api_succeed += (response[0] == StatusCode.OK) as int
 
 	_ws.send_bytes(var_to_bytes(response))

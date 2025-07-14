@@ -8,7 +8,8 @@ ZIP_PATH = os.path.join(EXPORT_DIR, ZIP_NAME)
 
 EXCLUDE_PATHS = [
     os.path.join(AGENT_DIR, "api", "__pycache__"),
-    os.path.join(AGENT_DIR, "tests")
+    os.path.join(AGENT_DIR, "tests"),
+    os.path.join(AGENT_DIR, "agent/boss")
 ]
 
 
