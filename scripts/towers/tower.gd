@@ -63,10 +63,14 @@ func _check_enemy_state() -> void:
 
 
 func _refresh_target() -> void:
-	_check_enemy_state()
-	if target == null or self.overlaps_area(target):
+	if target != null and is_instance_valid(target) and self.overlaps_area(target):
 		return
+	target = null
 	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
+
+	if enemies.is_empty():
+		return
+	target = enemies[0]
 
 	match strategy:
 		TargetStrategy.CLOSE:
