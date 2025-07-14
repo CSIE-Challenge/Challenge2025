@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://dc62ygf03o6fc"]
 
 [ext_resource type="Script" uid="uid://bmfv7333bad4c" path="res://scripts/enemy/enemy.gd" id="1_vlomg"]
-[ext_resource type="Texture2D" uid="uid://c6o8nybrveb52" path="res://pixel_art/enemy/KoopaTroopa2.png" id="2_eb5cn"]
-[ext_resource type="Texture2D" uid="uid://ct2n3gm774bqc" path="res://pixel_art/enemy/KoopaTroopa1.png" id="3_vlomg"]
+[ext_resource type="Texture2D" uid="uid://c6o8nybrveb52" path="res://assets/enemy/KoopaTroopa2.png" id="2_eb5cn"]
+[ext_resource type="Texture2D" uid="uid://ct2n3gm774bqc" path="res://assets/enemy/KoopaTroopa1.png" id="3_vlomg"]
 [ext_resource type="PackedScene" uid="uid://d020isqlfgktk" path="res://ui/health_bar.tscn" id="4_vlomg"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_772r1"]

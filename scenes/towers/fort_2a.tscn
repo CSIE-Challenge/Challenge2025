@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_by470"]
 [ext_resource type="PackedScene" uid="uid://61sg7emmulnr" path="res://scenes/bullets/bullet_2a.tscn" id="2_by470"]
-[ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://pixel_art/tower/BombPipe.png" id="3_by470"]
-[ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://pixel_art/tower/BombPipeFire.png" id="4_qjybr"]
+[ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://assets/tower/BombPipe.png" id="3_by470"]
+[ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://assets/tower/BombPipeFire.png" id="4_qjybr"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_by470"]
 animations = [{

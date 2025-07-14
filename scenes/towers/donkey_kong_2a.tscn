@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_1a38i"]
 [ext_resource type="PackedScene" uid="uid://brnh001o7fq8i" path="res://scenes/bullets/donkey_attack_2a.tscn" id="2_1a38i"]
-[ext_resource type="Texture2D" uid="uid://dn8dmr7xhtkfc" path="res://pixel_art/tower/DonkeyKongStand.png" id="3_3nf7w"]
-[ext_resource type="Texture2D" uid="uid://dox1c8u154ql4" path="res://pixel_art/tower/DonkeyKongPrepare.png" id="4_3nf7w"]
-[ext_resource type="Texture2D" uid="uid://cbgtn5dajnqp7" path="res://pixel_art/tower/DonkeyKongSlam.png" id="4_opdar"]
+[ext_resource type="Texture2D" uid="uid://dn8dmr7xhtkfc" path="res://assets/tower/DonkeyKongStand.png" id="3_3nf7w"]
+[ext_resource type="Texture2D" uid="uid://dox1c8u154ql4" path="res://assets/tower/DonkeyKongPrepare.png" id="4_3nf7w"]
+[ext_resource type="Texture2D" uid="uid://cbgtn5dajnqp7" path="res://assets/tower/DonkeyKongSlam.png" id="4_opdar"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_opdar"]
 animations = [{

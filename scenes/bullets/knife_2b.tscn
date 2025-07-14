@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c15hbsg2p236o"]
 
 [ext_resource type="Script" uid="uid://cbmn0kdprupln" path="res://scripts/bullets/boomerang.gd" id="1_8otx2"]
-[ext_resource type="Texture2D" uid="uid://d3w5eaa0sxeej" path="res://pixel_art/bullet/Dart.png" id="2_yb3hn"]
+[ext_resource type="Texture2D" uid="uid://d3w5eaa0sxeej" path="res://assets/bullet/Dart.png" id="2_yb3hn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_8otx2"]
 radius = 9.0
