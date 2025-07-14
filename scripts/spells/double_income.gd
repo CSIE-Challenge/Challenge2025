@@ -31,7 +31,6 @@ func _ready() -> void:
 
 func cast_spell() -> bool:
 	if is_on_cooldown or is_active or not game:
-		print("Spell is on cooldown! Wait ", cooldown_timer.get_time_left(), " seconds")
 		return false
 	is_on_cooldown = true
 	activate_effect()
@@ -50,13 +49,10 @@ func activate_effect():
 	duration_timer.start()
 	cooldown_timer.start()
 
-	print("Double income activated for ", stats.duration, " seconds!")
-
 
 func _on_duration_ended():
 	game.income_rate = 1
 	is_active = false
-	print("Double income effect ended!")
 
 
 func _on_cooldown_ended():

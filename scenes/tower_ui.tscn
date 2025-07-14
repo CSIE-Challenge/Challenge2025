@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dn0pas1ennupu"]
+[gd_scene load_steps=3 format=3 uid="uid://dn0pas1ennupu"]
 
-[ext_resource type="Script" uid="uid://bmi6xloxalyfa" path="res://scripts/tower_ui.gd" id="1_gxmcb"]
+[ext_resource type="Script" uid="uid://bmi6xloxalyfa" path="res://scripts/towers/tower_ui.gd" id="1_gxmcb"]
+[ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="2_u174h"]
 
 [node name="TowerUI" type="VBoxContainer"]
 z_index = 200
@@ -11,18 +12,22 @@ script = ExtResource("1_gxmcb")
 
 [node name="SellButton" type="Button" parent="."]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u174h")
 text = "Sell"
 
 [node name="LastButton" type="Button" parent="."]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u174h")
 text = "Last"
 
 [node name="CloseButton" type="Button" parent="."]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u174h")
 text = "Close"
 
 [node name="FirstButton" type="Button" parent="."]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_u174h")
 text = "First"
 
 [connection signal="pressed" from="SellButton" to="." method="_on_sell_button_pressed"]
