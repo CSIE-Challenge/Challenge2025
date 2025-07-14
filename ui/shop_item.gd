@@ -1,7 +1,7 @@
 class_name ShopItem
 extends AspectRatioContainer
 
-var callback: Callable = func(): print("yay")
+var callback: Callable = func(): push_error("[ShopItem] Clicked on item without handler")
 var display_scene: PackedScene
 var display_cost: int = 10
 var display_name: String = ""

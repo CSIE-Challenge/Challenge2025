@@ -171,7 +171,6 @@ func _handle_tower_selection(event: InputEvent) -> void:
 	if built_towers.has(clicked_cell):
 		_select_tower(built_towers[clicked_cell], clicked_cell.x > 13, clicked_cell.y > 16)
 		get_viewport().set_input_as_handled()
-		print("clicked cell:", clicked_cell)
 
 
 #endregion
@@ -204,7 +203,7 @@ func _on_wave_end() -> void:
 func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	var scene_path = unit_data.get("scene_path")
 	if scene_path == null or !ResourceLoader.exists(scene_path):
-		print("Attempted to initialize Invalid Enemy Scene (%s)" % scene_path)
+		push_error("[Game] Attempted to initialize invalid enemy scene (%s)" % scene_path)
 		return
 	if !_enemy_scene_cache.has(scene_path):
 		_enemy_scene_cache[scene_path] = load(scene_path)

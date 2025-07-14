@@ -28,7 +28,6 @@ func _ready() -> void:
 
 func cast_spell(global_pos: Vector2i) -> bool:
 	if is_on_cooldown or not game:
-		print("Spell is on cooldown! Wait ", cooldown_timer.get_time_left(), " seconds")
 		return false
 	activate_effect(global_pos)
 	return true

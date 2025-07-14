@@ -75,7 +75,7 @@ func _poll() -> void:
 		elif typeof(recv) == TYPE_PACKED_BYTE_ARRAY:
 			received_bytes.emit(recv)
 		else:
-			print("Error: unknown msg type")
+			push_warning("[WebSocketConnection] Warning: Unknown message type from client %d" % id)
 
 
 func _process(_delta: float) -> void:

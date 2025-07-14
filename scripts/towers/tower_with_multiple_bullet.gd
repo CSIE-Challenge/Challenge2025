@@ -21,7 +21,6 @@ func _ready():
 	enemy_detector.shape.radius = 0.5 * aim_range
 	shooting_timer = Timer.new()
 	self.add_child(shooting_timer)
-	#print(sprite.sprite_frames.get_frame_count(sprite.animation))
 
 
 func _flip_sprite() -> void:
