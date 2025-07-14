@@ -51,7 +51,7 @@ func set_strategy(new_strategy: TargetStrategy) -> void:
 	strategy = new_strategy
 
 
-func _refresh_target() -> void:
+func _check_enemy_state() -> void:
 	if target != null and is_instance_valid(target) and self.overlaps_area(target):
 		return
 	target = null
@@ -60,6 +60,11 @@ func _refresh_target() -> void:
 	if enemies.is_empty():
 		return
 	target = enemies[0]
+
+
+func _refresh_target() -> void:
+	_check_enemy_state()
+	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
 
 	match strategy:
 		TargetStrategy.CLOSE:
@@ -115,6 +120,7 @@ func _on_reload_timer_timeout() -> void:
 
 
 func _on_fire_bullet() -> void:
+	_check_enemy_state()
 	if target == null:
 		return
 	var origin: Vector2 = $Tower/Marker2D.global_position
