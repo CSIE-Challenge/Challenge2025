@@ -536,16 +536,16 @@ func _set_chat_name_color(_color: String) -> Array:
 #region Misc
 
 
-func get_label_str_len(label: Label, str: String, font_size: int) -> Vector2:
+func get_label_str_len(label: Label, s: String, font_size: int) -> Vector2:
 	var font = label.get_theme_font("font")
-	return font.get_string_size(str, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
+	return font.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size)
 
 
-func _set_name(name: String) -> Array:
+func _set_name(_name: String) -> Array:
 	var label = _get_screen_name_label()
-	if get_label_str_len(label, name, 50).x > 340:
+	if get_label_str_len(label, _name, 50).x > 340:
 		return [StatusCode.ILLEGAL_ARGUMENT, "Name is too long"]
-	label.text = name
+	label.text = _name
 	game_self.player_selection.get_node("PlayerIdentifierLabel").text = name
 	return [StatusCode.OK]
 
