@@ -29,7 +29,7 @@ var api_succeed := 0
 var chat_total_length := 0
 
 var player_selection: IndividualPlayerSelection = null
-var money: int = 300
+var money: int = 30000
 var income_per_second = 50
 var income_rate: int = 1
 var chat_name_color: String = "ffffff"
