@@ -11,7 +11,7 @@ const MAP_LIST = [
 	["椰林大道", preload("res://assets/maps/Map3.png"), preload("res://scenes/maps/map3.tscn")],
 	[" ", preload("res://assets/maps/space/preview.png"), preload("res://scenes/maps/space.tscn")],
 	[
-		"Water",
+		"沙河模擬",
 		preload("res://assets/maps/water/preview.png"),
 		preload("res://scenes/maps/water/water.tscn")
 	]
