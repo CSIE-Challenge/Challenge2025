@@ -1,4 +1,3 @@
-import time
 import api_importer as api
 from test_token import TOKEN1
 
@@ -10,5 +9,9 @@ pixel_cat = agent.pixelcat()
 print(pixel_cat)
 pixel_cat = agent.pixelcat()
 print(pixel_cat)
-agent.send_chat("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-agent.send_chat("ouo ouo")
+print(
+    agent.send_chat(
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    )
+)
+print(agent.send_chat("ouo ouo"))
