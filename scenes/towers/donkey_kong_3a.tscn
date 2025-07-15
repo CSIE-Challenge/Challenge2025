@@ -45,6 +45,7 @@ level_a = 3
 building_cost = 2800
 auto_aim = false
 bullet_scene = ExtResource("2_e6lh2")
+reload_seconds = 3.0
 aim_range = 250.0
 damage = 80
 

@@ -41,9 +41,9 @@ type = 3
 level_b = 3
 building_cost = 2800
 bullet_scene = ExtResource("2_r4rqj")
-reload_seconds = 0.75
+reload_seconds = 2.5
 aim_range = 200.0
-damage = 200
+damage = 600
 
 [node name="Tower" type="Node2D" parent="."]
 
