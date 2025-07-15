@@ -12,7 +12,6 @@ const RESTART_INTERVAL_SEC: float = 1.0
 
 var _state: int = NEVER_RUN
 var _current_pid: int
-var _current_stdio_pipe: FileAccess
 var _last_exit_code: int
 var _restart_timer: Timer
 var _ran_after_setting_auto_restart: bool = false
@@ -109,9 +108,6 @@ func _process(_delta: float) -> void:
 	if OS.is_process_running(_current_pid):
 		if auto_restart:
 			_ran_after_setting_auto_restart = true
-		# close the stdio pipes once we get responses from stdout pipe
-		if _current_stdio_pipe != null and _current_stdio_pipe.get_length() > 0:
-			_current_stdio_pipe = null
 		return
 	# collect exit code if the subprocess has terminated
 	_state = EXITED
