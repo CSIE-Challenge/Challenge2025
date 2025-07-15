@@ -58,7 +58,7 @@ position = Vector2(375, 500)
 texture = ExtResource("2_7421a")
 
 [node name="House" type="Sprite2D" parent="."]
-z_index = 10
+z_index = 20
 position = Vector2(375, 500)
 texture = ExtResource("3_swxy5")
 
