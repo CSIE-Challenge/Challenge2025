@@ -61,8 +61,8 @@ func _process(delta):
 		_change_color()
 
 	if match_score > 0:
-		var hundred: int = int(match_score / 100)
-		var ten: int = int((match_score % 100) / 10)
+		var hundred: int = floori(match_score / 100.0)
+		var ten: int = floori((match_score % 100) / 10.0)
 		var one: int = match_score % 10
 		$Version.text = "v%d.%d.%d" % [hundred, ten, one]
 	if match_score >= 256:
