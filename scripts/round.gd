@@ -39,6 +39,7 @@ func set_maps(map: PackedScene):
 func _ready() -> void:
 	game_1p.op_game = game_2p
 	game_2p.op_game = game_1p
+	$GPUParticles2D.visible = false
 
 	# start game timer
 	game_timer.wait_time = GAME_DURATION
@@ -94,6 +95,7 @@ func _process(_delta: float) -> void:
 		frozen_overlay.visible = true
 		frozen_overlay.modulate = Color(1, 1, 1, min(1.0, time_after_freeze / FREEZE_ANIMATION))
 
+		$GPUParticles2D.visible = true
 		game_1p.freeze()
 		game_2p.freeze()
 		$Screen/Top/TextureRect/Score.freeze()
