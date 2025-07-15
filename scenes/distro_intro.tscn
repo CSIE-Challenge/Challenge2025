@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://csxqjq5qgjk5e"]
+[gd_scene load_steps=14 format=3 uid="uid://ot6jc3knkbru"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_oteds"]
 [ext_resource type="Script" uid="uid://bdl067q3i8sr3" path="res://scripts/about.gd" id="2_vu163"]
@@ -64,13 +64,26 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -129.0
-offset_top = 60.0
-offset_right = 129.0
-offset_bottom = 178.0
+offset_left = -266.5
+offset_top = 53.0
+offset_right = 266.5
+offset_bottom = 171.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 100
 text = "Distro Intro"
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -437.0
+offset_top = 179.0
+offset_right = 437.0
+offset_bottom = 231.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 44
+text = "恭喜你在 distro 消消樂獲得超過 256 分！"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
@@ -80,9 +93,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -770.0
-offset_top = -330.0
+offset_top = -288.0
 offset_right = 770.0
-offset_bottom = 359.0
+offset_bottom = 392.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -250,7 +263,7 @@ dev_name = "說明：對不玩遊戲的人很友善"
 
 [node name="Entry2" parent="ScrollContainer/VBoxContainer/Section5/Grid" instance=ExtResource("4_t3vmu")]
 layout_mode = 2
-dev_name = "User(s): 李尚哲、蔡余恩"
+dev_name = "User(s): 李尚哲、蔡瑜恩"
 
 [node name="Section6" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -346,7 +359,7 @@ dev_name = "說明：安全穩定而且套件豐富"
 
 [node name="Entry2" parent="ScrollContainer/VBoxContainer/Section8/Grid" instance=ExtResource("4_t3vmu")]
 layout_mode = 2
-dev_name = "User(s): 王　淇、邱翊均"
+dev_name = "User(s): 邱翊均、王淇"
 
 [node name="Section9" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -378,6 +391,6 @@ dev_name = "說明：目前的遊戲支援度最好"
 
 [node name="Entry2" parent="ScrollContainer/VBoxContainer/Section9/Grid" instance=ExtResource("4_t3vmu")]
 layout_mode = 2
-dev_name = "User(s): 大多數人"
+dev_name = "User(s): 麻瓜"
 
 [connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
