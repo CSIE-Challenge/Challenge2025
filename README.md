@@ -33,6 +33,7 @@
 
 ### Art
 
+- 張嘉泰 TDDY
 - 張聲元 LightningFarter
 - 胡祐誠 HyperSoWeak
 - 謝承憲 ChengHsien
