@@ -43,6 +43,8 @@ func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cell
 	_mode_callback = mode_callback
 	_map = map
 	_snap_to_cells = snap_to_cells
+	range_circle = TowerPreviewRange.new(_previewed_node.aim_range)
+	_previewed_node.add_child(range_circle)
 	self.add_child(previewed_node)
 
 
@@ -57,6 +59,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _map.get_local_terrain(mouse_pos) == Map.CellTerrain.OUT_OF_BOUNDS:
 			selected.emit(null)
 		else:
+			_previewed_node.remove_child(range_circle)
 			self.remove_child(_previewed_node)
 			selected.emit(mouse_pos)
 		get_viewport().set_input_as_handled()
@@ -72,6 +75,7 @@ func _input(event: InputEvent) -> void:
 		and event.button_index == MOUSE_BUTTON_RIGHT
 	):
 		get_viewport().set_input_as_handled()
+		_previewed_node.queue_free()
 		self.queue_free()
 
 
@@ -81,29 +85,8 @@ func _process(_delta: float) -> void:
 	var mode: PreviewMode = _mode_callback.call(_previewed_node, _get_selected_position())
 	match mode:
 		PreviewMode.DEFAULT:
-			modulate = Color(1, 1, 1, 0.5)
+			modulate = Color(1, 1, 1, 0.2)
 		PreviewMode.SUCCESS:
 			modulate = Color(0, 1, 0, 0.5)
 		PreviewMode.FAIL:
 			modulate = Color(1, 0, 0, 0.5)
-
-
-func _create_range_circle(radius: float) -> Line2D:
-	var circle := Line2D.new()
-	circle.width = 5
-	circle.default_color = Color(1, 1, 1, 0.3)
-	circle.closed = true
-
-	var segments := 64
-	for i in segments:
-		var angle = TAU * i / segments
-		var point = Vector2(cos(angle), sin(angle)) * radius
-		circle.add_point(point)
-	return circle
-
-
-func show_attack_range(radius: float) -> void:
-	if range_circle:
-		range_circle.queue_free()
-	range_circle = _create_range_circle(radius)
-	add_child(range_circle)

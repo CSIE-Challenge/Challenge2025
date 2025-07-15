@@ -9,7 +9,8 @@ var range_circle = null
 
 func initialize(t: Tower):
 	tower = t
-	_draw_attack_range(tower.aim_range)
+	range_circle = TowerPreviewRange.new(t.aim_range)
+	add_child(range_circle)
 
 
 # the tower's UI intercepts input events before GUI (because it is impossible to trigger both)
@@ -41,24 +42,3 @@ func _on_close_button_pressed() -> void:
 func _on_last_button_pressed() -> void:
 	get_parent().strategy = Tower.TargetStrategy.LAST
 	queue_free()
-
-
-func _create_range_circle(radius: float) -> Line2D:
-	var circle := Line2D.new()
-	circle.width = 5
-	circle.default_color = Color(1, 1, 1, 0.3)
-	circle.closed = true
-
-	var segments := 64
-	for i in segments:
-		var angle = TAU * i / segments
-		var point = Vector2(cos(angle), sin(angle)) * radius
-		circle.add_point(point)
-	return circle
-
-
-func _draw_attack_range(radius: float) -> void:
-	if range_circle:
-		range_circle.queue_free()
-	range_circle = _create_range_circle(radius)
-	add_child(range_circle)
