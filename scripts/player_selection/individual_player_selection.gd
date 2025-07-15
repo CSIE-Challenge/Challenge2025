@@ -109,6 +109,7 @@ func load_config(config: ConfigFile, section: String) -> void:
 	manual_control = config.get_value(section, "manual_control", false)
 	python_subprocess.set_python_interpreter(config.get_value(section, "python_interpreter", ""))
 	python_subprocess.set_python_script(config.get_value(section, "agent_script", ""))
+	python_subprocess.set_auto_restart(config.get_value(section, "auto_restart", false))
 	if config.has_section_key(section, "api_token"):
 		ApiServer.update_token(web_agent._ws, config.get_value(section, "api_token"))
 
@@ -118,6 +119,7 @@ func save_config(config: ConfigFile, section: String) -> void:
 	config.set_value(section, "manual_control", manual_control)
 	config.set_value(section, "python_interpreter", python_subprocess.python_interpreter_path)
 	config.set_value(section, "agent_script", python_subprocess.python_script_path)
+	config.set_value(section, "auto_restart", python_subprocess.auto_restart)
 	config.set_value(section, "api_token", web_agent._ws._token)
 
 
