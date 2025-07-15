@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://chktdkl6cqvho" path="res://assets/background.png" id="3_rp0cw"]
 [ext_resource type="PackedScene" uid="uid://2vyhv0c7ehjb" path="res://scenes/player_selection/individual_player_selection.tscn" id="4_vo1kg"]
 [ext_resource type="Texture2D" uid="uid://dk74l88eou2lq" path="res://assets/bullet/BigBomb.png" id="5_rp0cw"]
-[ext_resource type="Texture2D" uid="uid://bpvwad4fudbmq" path="res://assets/maps/Map3.png" id="6_rp0cw"]
+[ext_resource type="Texture2D" uid="uid://de5tsdfnn12c7" path="res://assets/maps/Map3.png" id="6_rp0cw"]
 
 [node name="PlayerSelection" type="Control"]
 layout_mode = 3
