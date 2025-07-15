@@ -19,31 +19,39 @@ const ANIMATION_FRAME_DURATION := 0.1
 @export var damage: int = 2
 var target: Node2D = null
 var enabled: bool = false
+var has_cooldowned: bool = false
 var reload_timer: Timer
 var wait_for_animation_timer: Timer
 var strategy: TargetStrategy = TargetStrategy.FIRST
 var bullet_effect: String  # only used in to_dict
 
+@onready var tower_body = $Tower
+@onready var sprite = $Tower/AnimatedSprite2D
+@onready var enemy_detector = $AimRange/CollisionShape2D
 @onready var anime = $Tower/AnimatedSprite2D
 
 
 func _ready():
 	add_to_group("towers")
-	enabled = false
+	self.z_index = 10  # For effect to be on the ground
+	enemy_detector.shape.radius = 0.5 * aim_range
+	bullet_effect = bullet_scene.instantiate().get_effect_name()
+	# Initialize timers
 	reload_timer = Timer.new()
 	wait_for_animation_timer = Timer.new()
+	reload_timer.one_shot = true
+	wait_for_animation_timer.one_shot = true
 	self.add_child(reload_timer)
 	self.add_child(wait_for_animation_timer)
 	reload_timer.timeout.connect(self._on_reload_timer_timeout)
-	self.z_index = 10  # For effect to be on the ground
-	bullet_effect = bullet_scene.instantiate().get_effect_name()
+	wait_for_animation_timer.timeout.connect(self._on_fire_bullet)
 
 
 # Take in the map so the the fort can decide which direction to face
 func enable(_global_position: Vector2, _map: Map) -> void:
 	enabled = true
+	has_cooldowned = true
 	global_position = _global_position
-	reload_timer.start(reload_seconds)
 	AudioManager.tower_place.play()
 
 
@@ -51,20 +59,7 @@ func set_strategy(new_strategy: TargetStrategy) -> void:
 	strategy = new_strategy
 
 
-func _check_enemy_state() -> void:
-	if target != null and is_instance_valid(target):
-		return
-	target = null
-	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
-
-	if enemies.is_empty():
-		return
-	target = enemies[0]
-
-
 func _refresh_target() -> void:
-	if target != null and is_instance_valid(target) and self.overlaps_area(target):
-		return
 	target = null
 	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
 
@@ -96,14 +91,7 @@ func _refresh_target() -> void:
 					smallest_progress = progress
 
 
-# For default tower only (can be deleted later)
-func _move_toward_angle(from: float, to: float, max_delta: float = PI / 15) -> float:
-	var angle_diff = wrapf(to - from, -PI, PI)
-	angle_diff = clamp(angle_diff, -max_delta, max_delta)
-	return from + angle_diff
-
-
-# Inherited class can make the sprites to face either left or right
+# Abstract
 func _flip_sprite() -> void:
 	return
 
@@ -111,26 +99,33 @@ func _flip_sprite() -> void:
 func _physics_process(_delta: float) -> void:
 	if not enabled:
 		return
-	_refresh_target()
-	_flip_sprite()
+
+
+func _on_aim_range_area_entered(_area: Area2D) -> void:
+	if has_cooldowned:
+		_on_reload_timer_timeout()
 
 
 func _on_reload_timer_timeout() -> void:
+	has_cooldowned = false
 	_refresh_target()
 	if target == null:
+		has_cooldowned = true
 		return
+	reload_timer.start(reload_seconds)
+	_flip_sprite()
 	if not anime.is_playing():
 		anime.play("default")
-	wait_for_animation_timer.timeout.connect(self._on_fire_bullet, CONNECT_ONE_SHOT)
-	wait_for_animation_timer.start(ANIMATION_FRAME_DURATION)
+	var attack_scene = sprite.sprite_frames.get_frame_count(sprite.animation) - 2
+	wait_for_animation_timer.start(ANIMATION_FRAME_DURATION * attack_scene)
 
 
 func _on_fire_bullet() -> void:
-	_check_enemy_state()
-	if target == null:
+	if not (target != null and is_instance_valid(target)):
 		_refresh_target()
-	if target == null:
-		return
+		if target == null:
+			has_cooldowned = true
+			return
 	var origin: Vector2 = $Tower/Marker2D.global_position
 	var direction: float = (target.global_position - origin).angle()
 	var bullet := bullet_scene.instantiate()

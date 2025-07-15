@@ -6,9 +6,6 @@ var marker: Marker2D
 var animation: StringName = "LeftRight"  # Default scene
 var _map: Map
 
-@onready var sprite = $Tower/AnimatedSprite2D
-@onready var enemy_detector = $AimRange/CollisionShape2D
-
 
 func enable(_global_position: Vector2, map: Map) -> void:
 	global_position = _global_position
@@ -34,15 +31,14 @@ func enable(_global_position: Vector2, map: Map) -> void:
 
 func _ready():
 	super()
-	enemy_detector.shape.radius = 0.5 * aim_range
 	sprite.set_animation(animation)  # Default scene
 
 
 func _on_reload_timer_timeout() -> void:
+	reload_timer.start(reload_seconds)
 	if not anime.is_playing():
 		anime.play(animation)
-	var attack_scene = sprite.sprite_frames.get_frame_count(sprite.animation) - 1
-	wait_for_animation_timer.timeout.connect(self._on_fire_bullet, CONNECT_ONE_SHOT)
+	var attack_scene = sprite.sprite_frames.get_frame_count(sprite.animation) - 2
 	wait_for_animation_timer.start(ANIMATION_FRAME_DURATION * attack_scene)
 
 
