@@ -525,9 +525,8 @@ func _send_chat(msg: String) -> Array:
 
 
 func _pixel_cat() -> Array:
-	print("[PixelCat] Get request")
 	if pixelcat_cnt == 0:
-		return [StatusCode.COMMAND_ERR, "[Error] No more pixel cat!"]
+		return [StatusCode.COMMAND_ERR, "No more pixel cat!"]
 	pixelcat_cnt -= 1
 	send_pixelcat = true
 	self._send_chat("[font_size=6]" + pixel_cat_str + "[/font_size]")
