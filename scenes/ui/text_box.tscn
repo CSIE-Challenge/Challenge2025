@@ -32,3 +32,10 @@ theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "PixelCat is so cute <3 hahaha this is a test message"
 fit_content = true
+
+[node name="LinkButton" type="LinkButton" parent="MarginContainer"]
+layout_mode = 2
+disabled = true
+underline = 2
+
+[connection signal="pressed" from="MarginContainer/LinkButton" to="." method="_on_link_button_pressed"]
