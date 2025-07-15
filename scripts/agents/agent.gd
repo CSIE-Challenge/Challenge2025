@@ -275,7 +275,7 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
 		]
 
-	var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
+	var tower = TOWER_SCENES[_type - 1][LEVEL_TO_INDEX[_level]].instantiate()
 	if game_self.built_towers.has(_coord):
 		var previous_tower = game_self.built_towers[_coord]
 		if (
