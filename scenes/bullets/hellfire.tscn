@@ -19,7 +19,7 @@ movement_speed = 0.0
 lifespan_seconds = 0.0
 effect = 2
 effect_damage = 15
-effect_duration = 1
+effect_duration = 1.5
 effect_interval = 0.15
 
 [node name="Body" type="Sprite2D" parent="."]

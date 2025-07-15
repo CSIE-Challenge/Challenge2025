@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://cge4jit0bieu5"]
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_3necw"]
-[ext_resource type="PackedScene" uid="uid://61sg7emmulnr" path="res://scenes/bullets/bullet_2a.tscn" id="2_82o3m"]
+[ext_resource type="PackedScene" uid="uid://12s20si1i8oy" path="res://scenes/bullets/bullet_3a.tscn" id="2_28tvs"]
 [ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://assets/tower/BombPipe.png" id="3_3necw"]
 [ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://assets/tower/BombPipeFire.png" id="4_82o3m"]
 [ext_resource type="Texture2D" uid="uid://cks5e08ne5gyr" path="res://assets/tower/BombPipeFront.png" id="5_gah3o"]
@@ -69,7 +69,7 @@ type = 4
 level_a = 3
 building_cost = 2800
 auto_aim = false
-bullet_scene = ExtResource("2_82o3m")
+bullet_scene = ExtResource("2_28tvs")
 reload_seconds = 3.0
 damage = 0
 
