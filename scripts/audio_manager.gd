@@ -14,3 +14,4 @@ var background2_music_position: float
 @onready var tower_place: AudioStreamPlayer = $TowerPlace
 @onready var tower_shoot: AudioStreamPlayer = $TowerShoot
 @onready var bullet_explode: AudioStreamPlayer = $BulletExplode
+@onready var match_sound: AudioStreamPlayer = $Match
