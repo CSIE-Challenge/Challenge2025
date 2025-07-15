@@ -1,11 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://23vpthkdxvxk"]
+[gd_scene load_steps=12 format=3 uid="uid://23vpthkdxvxk"]
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_qwvox"]
 [ext_resource type="PackedScene" uid="uid://dhcbg2jscx5iy" path="res://scenes/bullets/bullet_1.tscn" id="2_7gee1"]
 [ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://assets/tower/BombPipe.png" id="3_7gee1"]
 [ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://assets/tower/BombPipeFire.png" id="4_58x5s"]
 [ext_resource type="Texture2D" uid="uid://cks5e08ne5gyr" path="res://assets/tower/BombPipeFront.png" id="5_5qvc3"]
+[ext_resource type="Texture2D" uid="uid://bkcjtqoon8kwu" path="res://assets/tower/BombPipeFrontFire.png" id="6_eoh1u"]
 [ext_resource type="Texture2D" uid="uid://bc26q33pxh361" path="res://assets/tower/BombPipeBack.png" id="6_pldll"]
+[ext_resource type="Texture2D" uid="uid://cy7w7yxkmgemk" path="res://assets/tower/BombPipeBackFire.png" id="8_2btkj"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7gee1"]
 animations = [{
@@ -28,6 +30,9 @@ animations = [{
 "texture": ExtResource("5_5qvc3")
 }, {
 "duration": 1.0,
+"texture": ExtResource("6_eoh1u")
+}, {
+"duration": 1.0,
 "texture": ExtResource("5_5qvc3")
 }],
 "loop": false,
@@ -37,6 +42,9 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("6_pldll")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_2btkj")
 }, {
 "duration": 1.0,
 "texture": ExtResource("6_pldll")
@@ -69,13 +77,13 @@ damage = 30
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 position = Vector2(0, -7.68246)
 sprite_frames = SubResource("SpriteFrames_7gee1")
-animation = &"Lower"
+animation = &"Upper"
 
 [node name="LeftRightMarker" type="Marker2D" parent="Tower"]
-position = Vector2(38.4123, -15.3649)
+position = Vector2(33.2907, -15.3649)
 
 [node name="LowerMarker" type="Marker2D" parent="Tower"]
-position = Vector2(0, 3.84123)
+position = Vector2(0, 7.68246)
 
 [node name="UpperMarker" type="Marker2D" parent="Tower"]
 position = Vector2(0, -44.8143)
