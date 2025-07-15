@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bge6e6bqn28b8"]
+
+[ext_resource type="Texture2D" uid="uid://2pfu2xpiew51" path="res://assets/distro/nixos.png" id="1_hsa06"]
+[ext_resource type="Script" uid="uid://cftqym8vwuoq5" path="res://ui/distro/distro.gd" id="2_rmp15"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hsa06"]
+radius = 78.1025
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rmp15"]
+radius = 61.2046
+
+[node name="NixOS" type="RigidBody2D"]
+script = ExtResource("2_rmp15")
+distro_type = 6
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_hsa06")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(-8, -14, 8, -14, 16, 0, 8, 14, -8, 14, -16, 0)
+
+[node name="Match" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Match"]
+shape = SubResource("CircleShape2D_hsa06")
+
+[node name="Click" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Click"]
+shape = SubResource("CircleShape2D_rmp15")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://chnfc10sxumgl"]
 
-[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_p76kf"]
-[ext_resource type="Texture2D" uid="uid://c1svtwm2u3fyu" path="res://pixel_art/bullet/FireBall.png" id="2_xnep1"]
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullets/bullet.gd" id="1_p76kf"]
+[ext_resource type="Texture2D" uid="uid://c1svtwm2u3fyu" path="res://assets/bullet/FireBall.png" id="2_xnep1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a87je"]
 radius = 7.0

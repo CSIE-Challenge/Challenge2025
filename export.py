@@ -6,34 +6,35 @@ EXPORT_DIR = "./export"
 ZIP_NAME = "agent.zip"
 ZIP_PATH = os.path.join(EXPORT_DIR, ZIP_NAME)
 
-EXCLUDE_PATHS = [
-    os.path.join(AGENT_DIR, "api", "__pycache__"),
-    os.path.join(AGENT_DIR, "tests")
+WHITELIST = [
+    "api/__init__.py",
+    "api/constants.py",
+    "api/game_client_base.py",
+    "api/game_client.py",
+    "api/logger.py",
+    "api/serialization.py",
+    "api/structures.py",
+    "api/utils.py",
+    "requirements.txt",
+    "connection_test.py",
+    "sample.py",
 ]
 
 
-def should_exclude(file_path):
-    return any(file_path.startswith(exclude) for exclude in EXCLUDE_PATHS)
+def main():
+    os.makedirs(EXPORT_DIR, exist_ok=True)
 
-
-def zip_ai_folder():
-    if not os.path.exists(EXPORT_DIR):
-        os.makedirs(EXPORT_DIR)
-
-    with zipfile.ZipFile(ZIP_PATH, "w", zipfile.ZIP_DEFLATED) as zipf:
-        for root, dirs, files in os.walk(AGENT_DIR):
-            dirs[:] = [d for d in dirs if not should_exclude(os.path.join(root, d))]
-
-            for file in files:
-                full_path = os.path.join(root, file)
-                if should_exclude(full_path):
-                    continue
-
-                relative_path = os.path.relpath(full_path, os.path.dirname(AGENT_DIR))
-                zipf.write(full_path, arcname=relative_path)
+    with zipfile.ZipFile(ZIP_PATH, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for path in WHITELIST:
+            full_path = os.path.join(AGENT_DIR, path)
+            if os.path.isfile(full_path):
+                arcname = os.path.join("agent", path)
+                zipf.write(full_path, arcname)
+            else:
+                print(f"Warning: {full_path} does not exist and is skipped.")
 
     print(f"Zipped {AGENT_DIR} to {ZIP_PATH}")
 
 
 if __name__ == "__main__":
-    zip_ai_folder()
+    main()

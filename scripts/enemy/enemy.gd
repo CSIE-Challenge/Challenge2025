@@ -34,7 +34,7 @@ var health: int:
 		health = value
 		if health_bar != null:
 			health_bar.value = health / float(max_health) * 100.0
-var speed_rate: Array[float] = [1.0]  # store speed_rates and get minimum
+var freeze_debuff: Array[float] = [1.0]  # store all effects, minimum of the array is applied
 var knockback_invincibility = false
 
 @onready var sprite = $AnimatedSprite2D
@@ -43,21 +43,21 @@ var knockback_invincibility = false
 
 func _on_killed() -> void:
 	game.kill_count += 1
-	if source == Game.EnemySource.SYSTEM:
-		game.money = game.money + kill_reward
 	path_follow.queue_free()
 
 
 func _on_reached() -> void:
-	game.damage_taken.emit(damage)
+	game.take_damage(damage)
 	AudioManager.enemy_attack.play()
 	path_follow.queue_free()
 
 
 func take_damage(amount: int):
 	health -= amount
-
 	if health <= 0:
+		if source == Game.EnemySource.SYSTEM:
+			game.score += kill_reward  # == 0.1 * damage
+			game.money += kill_reward
 		_on_killed()
 
 
@@ -70,9 +70,9 @@ func _on_area_entered(bullet: Bullet) -> void:
 
 	match bullet.effect:
 		bullet.Effect.FREEZE:
-			freeze(0.5)
+			freeze(0.7)
 		bullet.Effect.DEEP_FREEZE:
-			freeze(0.25)
+			freeze(0.5)
 		bullet.Effect.KNOCKBACK:
 			knockback(false)
 		bullet.Effect.FAR_KNOCKBACK:
@@ -99,9 +99,10 @@ func knockback(far: bool):
 
 
 func freeze(rate: float):
-	speed_rate.append(rate)
-	await get_tree().create_timer(8).timeout
-	speed_rate.erase(rate)
+	# simply append it
+	freeze_debuff.append(rate)
+	await get_tree().create_timer(1).timeout
+	freeze_debuff.erase(rate)
 
 
 #region Spells
@@ -143,7 +144,7 @@ func _ready():
 
 
 func _process(delta):
-	path_follow.progress += speed_rate.min() * max_speed * delta
+	path_follow.progress += freeze_debuff.min() * max_speed * delta
 	if path_follow.progress_ratio >= 0.99:
 		_on_reached()
 

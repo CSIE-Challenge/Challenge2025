@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://yrhbq15od20f"]
 
-[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_lryqa"]
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullets/bullet.gd" id="1_lryqa"]
 [ext_resource type="PackedScene" uid="uid://den22sw68w24" path="res://scenes/bullets/hellfire.tscn" id="2_lryqa"]
-[ext_resource type="Texture2D" uid="uid://c1svtwm2u3fyu" path="res://pixel_art/bullet/FireBall.png" id="3_btth8"]
+[ext_resource type="Texture2D" uid="uid://c1svtwm2u3fyu" path="res://assets/bullet/FireBall.png" id="3_btth8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e24mr"]
 radius = 7.0
@@ -17,7 +17,7 @@ shockwave_scene = ExtResource("2_lryqa")
 lifespan_seconds = 1.5
 spanning_speed = 0.262
 effect = 2
-effect_damage = 3
+effect_damage = 4
 effect_duration = 2
 effect_interval = 0.3
 

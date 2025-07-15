@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://61sg7emmulnr"]
 
-[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_rkw8v"]
-[ext_resource type="PackedScene" uid="uid://12s20si1i8oy" path="res://scenes/bullets/bullet_3a.tscn" id="2_djkmm"]
-[ext_resource type="Texture2D" uid="uid://bcuimnmosj4bm" path="res://pixel_art/bullet/Bomb.png" id="3_djkmm"]
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullets/bullet.gd" id="1_rkw8v"]
+[ext_resource type="PackedScene" uid="uid://cparf8i7tyei" path="res://scenes/bullets/explode_2a.tscn" id="2_6x7ts"]
+[ext_resource type="Texture2D" uid="uid://bcuimnmosj4bm" path="res://assets/bullet/Bomb.png" id="3_djkmm"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6x7ts"]
 radius = 7.0
@@ -14,8 +14,8 @@ collision_mask = 0
 script = ExtResource("1_rkw8v")
 is_tracking = false
 aoe_scale = 0.0
-shockwave_scene = ExtResource("2_djkmm")
-damage = 0
+shockwave_scene = ExtResource("2_6x7ts")
+effect_damage = 150
 
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("3_djkmm")

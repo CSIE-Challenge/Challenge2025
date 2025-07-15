@@ -1,4 +1,4 @@
-from .defs import (
+from .constants import (
     CommandType,
     GameStatus,
     TerrainType,
@@ -7,6 +7,8 @@ from .defs import (
     ChatSource,
     SpellType,
     TargetStrategy,
+)
+from .structures import (
     Vector2,
     Tower,
     Enemy,
@@ -32,10 +34,10 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        status = api.get_game_status()
+        status = agent.get_game_status()
         while status != GameStatus.RUNNING:
             time.sleep(1)
-            status = api.get_game_status()
+            status = agent.get_game_status()
         ```
         """
         raise NotImplementedError
@@ -54,7 +56,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        terrain_map = api.get_all_terrain()  # 獲取整個地圖的地形資訊
+        terrain_map = agent.get_all_terrain()  # 獲取整個地圖的地形資訊
         for row in terrain_map:
             print(row)
         ```
@@ -75,7 +77,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        terrain = api.get_terrain(Vector2(5, 10))  # 獲取玩家擁有地圖上 (5, 10) 的地形
+        terrain = agent.get_terrain(Vector2(5, 10))  # 獲取玩家擁有地圖上 (5, 10) 的地形
         ```
         """
         raise NotImplementedError
@@ -88,14 +90,15 @@ class GameClient(GameClientBase):
 
         ## Parameters
         - `owned` (bool): 是否為玩家擁有的分數。如果為 `True`，則查詢玩家的分數，如果為 `False`，則查詢對手的分數。
+          如果遊戲的記分板被凍結，獲取對手的分數將為記分板凍結瞬間的分數而非實際分數。
 
         ## Returns
         這個函數返回一個整數，表示指定玩家的分數。
 
         ## Example
         ```python
-        score = api.get_scores(True)  # 獲取玩家的分數
-        opponent_score = api.get_scores(False)  # 獲取對手的分數
+        score = agent.get_scores(True)  # 獲取玩家的分數
+        opponent_score = agent.get_scores(False)  # 獲取對手的分數
         ```
         """
         raise NotImplementedError
@@ -114,8 +117,8 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        money = api.get_money(True)  # 獲取玩家的金錢數量
-        opponent_money = api.get_money(False)  # 獲取對手的金錢數量
+        money = agent.get_money(True)  # 獲取玩家的金錢數量
+        opponent_money = agent.get_money(False)  # 獲取對手的金錢數量
         ```
         """
         raise NotImplementedError
@@ -134,8 +137,8 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        income = api.get_income(True) # 獲取玩家的收入
-        opponent_income = api.get_income(False)  # 獲取對手的收入
+        income = agent.get_income(True) # 獲取玩家的收入
+        opponent_income = agent.get_income(False)  # 獲取對手的收入
         ```
         """
         raise NotImplementedError
@@ -154,7 +157,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        current_wave = api.get_current_wave()  # 獲取當前波數
+        current_wave = agent.get_current_wave()  # 獲取當前波數
         print(f"Current wave: {current_wave}")
         ```
         """
@@ -174,7 +177,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        remain_time = api.get_remain_time()  # 獲取遊戲剩餘的時間
+        remain_time = agent.get_remain_time()  # 獲取遊戲剩餘的時間
         print(f"Remaining time: {remain_time} seconds")
         """
         raise NotImplementedError
@@ -193,7 +196,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        time_until_next_wave = api.get_time_until_next_wave()  # 獲取距離下一波開始的時間
+        time_until_next_wave = agent.get_time_until_next_wave()  # 獲取距離下一波開始的時間
         print(f"Time until next wave: {time_until_next_wave} seconds")
         ```
         """
@@ -213,7 +216,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        system_path = api.get_system_path(False) # 獲取系統派地面兵路徑
+        system_path = agent.get_system_path(False) # 獲取系統派地面兵路徑
         for cell in system_path:
             print(f"x:{cell.x}, y:{cell.y}")
         ```
@@ -234,7 +237,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        opp_path = api.get_opponent_path(True) # 獲取對手派飛行兵路徑
+        opp_path = agent.get_opponent_path(True) # 獲取對手派飛行兵路徑
         for cell in opp_path:
             print(f"x:{cell.x}, y:{cell.y}")
         ```
@@ -260,7 +263,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        api.place_tower(TowerType.FIRE_MARIO, "2a", Vector2(5, 10))  # 在 (5, 10) 的位置放置一個馬力歐塔
+        agent.place_tower(TowerType.FIRE_MARIO, "2a", Vector2(5, 10))  # 在 (5, 10) 的位置放置一個馬力歐塔
         ```
         """
         raise NotImplementedError
@@ -279,7 +282,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        towers = api.get_all_towers(True)  # 獲取玩家自己的所有塔
+        towers = agent.get_all_towers(True)  # 獲取玩家自己的所有塔
         for tower in towers:
             print(tower)
         ```
@@ -301,7 +304,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        tower = api.get_tower(Vector2(5, 10))  # 獲取 (5, 10) 位置的塔資訊
+        tower = agent.get_tower(Vector2(5, 10))  # 獲取 (5, 10) 位置的塔資訊
         print(tower)
         """
         raise NotImplementedError
@@ -319,7 +322,7 @@ class GameClient(GameClientBase):
         這個函數沒有返回值。如果成功的話，指定位置上的防禦塔會被賣掉。
 
         ## Example
-        api.sell_tower(Vector2(5, 10))  # 賣掉 (5, 10) 的位置上的防禦塔
+        agent.sell_tower(Vector2(5, 10))  # 賣掉 (5, 10) 的位置上的防禦塔
         """
         raise NotImplementedError
 
@@ -337,7 +340,7 @@ class GameClient(GameClientBase):
         這個函數沒有返回值。如果成功的話，防禦塔的瞄準策略會被變更。
 
         ## Example
-        api.set_strategy(Vector2(5, 10), CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
+        agent.set_strategy(Vector2(5, 10), CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
         """
         raise NotImplementedError
 
@@ -355,11 +358,11 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        api.spawn_enemy(EnemyType.GOOMBA)  # 派出 GOOMBA
+        agent.spawn_enemy(EnemyType.GOOMBA)  # 派出 GOOMBA
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.GET_UNIT_COOLDOWN, [EnemyType], float)
     def get_unit_cooldown(self, type: EnemyType) -> float:
         """
@@ -374,7 +377,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        to_wait = api.get_unit_cooldown(EnemyType.KOOPA)
+        to_wait = agent.get_unit_cooldown(EnemyType.KOOPA)
         time.sleep(to_wait)  # 等待直到可以再次派出一隻 KOOPA
         ```
         """
@@ -394,7 +397,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        all_enemies = api.get_all_enemies()  # 獲取自己地圖上所有敵人的資訊
+        all_enemies = agent.get_all_enemies()  # 獲取自己地圖上所有敵人的資訊
         for enemy in all_enemies:
             print(enemy)
         ```
@@ -421,7 +424,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        api.cast_spell(SpellType.POISON, Vector2(5, 10))  # 在 (5, 10) 的位置施放毒藥法術
+        agent.cast_spell(SpellType.POISON, Vector2(5, 10))  # 在 (5, 10) 的位置施放毒藥法術
         ```
         """
         raise NotImplementedError
@@ -446,7 +449,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        cooldown = api.get_spell_cooldown(True, SpellType.POISON)  # 獲取玩家自己的毒藥法術的冷卻時間
+        cooldown = agent.get_spell_cooldown(True, SpellType.POISON)  # 獲取玩家自己的毒藥法術的冷卻時間
         print(f"Cooldown for my POISON spell: {cooldown} seconds")
         ```
         """
@@ -466,7 +469,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        success = api.send_chat("Hello, my friend!")  # 發送聊天訊息
+        success = agent.send_chat("Hello, my friend!")  # 發送聊天訊息
         if success:
             print("Message sent successfully!")
         else:
@@ -489,7 +492,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        chat_history = api.get_chat_history(10)  # 獲取最近的 10 條聊天訊息
+        chat_history = agent.get_chat_history(10)  # 獲取最近的 10 條聊天訊息
         for id, message in chat_history:
             print(f"[{id}] {message}")
         ```
@@ -510,7 +513,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        api.set_chat_name_color("ffffff") # 設定對話框的玩家名字顏色為白色
+        agent.set_chat_name_color("ffffff") # 設定對話框的玩家名字顏色為白色
         ```
         """
         raise NotImplementedError
@@ -529,7 +532,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        pixel_cat = api.pixelcat()  # 獲取像素貓的 ASCII 藝術
+        pixel_cat = agent.pixelcat()  # 獲取像素貓的 ASCII 藝術
         print(pixel_cat)
         ```
         """
@@ -549,7 +552,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        devs = api.get_devs()  # 獲取開發者名單
+        devs = agent.get_devs()  # 獲取開發者名單
         for dev in devs:
             print(dev)
         ```
@@ -570,7 +573,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        api.set_name("PixelCat") # 設定玩家名稱為 PixelCat
+        agent.set_name("PixelCat") # 設定玩家名稱為 PixelCat
         ```
         """
         raise NotImplementedError

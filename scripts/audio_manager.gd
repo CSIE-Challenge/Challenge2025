@@ -1,5 +1,9 @@
 extends Node
 
+var second_stage := false
+var background1_music_position: float
+var background2_music_position: float
+
 @onready var enemy_attack: AudioStreamPlayer = $EnemyAttack
 @onready var enemy_die: AudioStreamPlayer = $EnemyDie
 @onready var enemy_move: AudioStreamPlayer = $EnemyMove  # loop
@@ -9,3 +13,5 @@ extends Node
 @onready var button_on_click: AudioStreamPlayer = $ButtonOnClick
 @onready var tower_place: AudioStreamPlayer = $TowerPlace
 @onready var tower_shoot: AudioStreamPlayer = $TowerShoot
+@onready var bullet_explode: AudioStreamPlayer = $BulletExplode
+@onready var match_sound: AudioStreamPlayer = $Match

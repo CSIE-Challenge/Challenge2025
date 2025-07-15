@@ -11,17 +11,22 @@ enum EnemySource { SYSTEM, OPPONENT }
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 const DEPRECIATION_RATE := 0.9
 const INTEREST_RATE := 1.02
+const WAVE_HP_INCREASE_RATE := 1.2
+const WAVE_SPEED_INCREASE_RATE := 1.1
 
 @export var spawner: Spawner
 @export var status_panel: TextureRect
 
 # Various statistics
 var score := 0
+var display_score := 0
 var kill_count := 0
 var money_earned := 0
 var tower_built := 0
 var enemy_sent := 0
 var api_called := 0
+var api_succeed := 0
+var chat_total_length := 0
 
 var player_selection: IndividualPlayerSelection = null
 var money: int = 300
@@ -32,8 +37,11 @@ var built_towers: Dictionary = {}
 var previewer: Previewer = null
 var spell_dict: Dictionary
 var op_game: Game
-var enemy_cooldown: Dictionary[int, SceneTreeTimer] = {}
+var enemy_cooldown: Dictionary[int, Timer] = {}
 var map: Map = null
+var frozen := true
+var current_hp_multiplier: float = 1
+var current_speed_multiplier: float = 1
 var _enemy_scene_cache = {}
 
 
@@ -53,6 +61,7 @@ func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
+	spawner.wave_end.connect(_on_wave_end)
 
 	buy_spell.connect(_on_buy_spell)
 
@@ -140,10 +149,16 @@ func _on_buy_tower(tower_scene: PackedScene):
 	self.add_child(previewer)
 
 
-func _select_tower(tower: Tower):
+func _select_tower(tower: Tower, left: bool, up: bool):
 	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
-	self.add_child(tower_ui)
+	tower.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
+	await get_tree().process_frame
+	var ui_size = tower_ui.size
+	if left:
+		tower_ui.global_position.x -= ui_size.x
+	if up:
+		tower_ui.global_position.y -= ui_size.y
 	tower_ui.sold.connect(self._on_tower_sold.bind(tower, tower_ui, true))
 
 
@@ -154,7 +169,7 @@ func _handle_tower_selection(event: InputEvent) -> void:
 		return
 	var clicked_cell = map.global_to_cell(get_global_mouse_position())
 	if built_towers.has(clicked_cell):
-		_select_tower(built_towers[clicked_cell])
+		_select_tower(built_towers[clicked_cell], clicked_cell.x > 13, clicked_cell.y > 16)
 		get_viewport().set_input_as_handled()
 
 
@@ -175,22 +190,20 @@ func _on_interest_timer_timeout() -> void:
 	money = next_money
 
 
-func on_subsidization(subsidy) -> void:
-	if score < op_game.score:
-		var next_money = money + subsidy
-		money_earned += next_money - money
-		money = next_money
-
-
 #endregion
 
 #region Enemies
 
 
+func _on_wave_end() -> void:
+	current_hp_multiplier *= WAVE_HP_INCREASE_RATE
+	current_speed_multiplier *= WAVE_SPEED_INCREASE_RATE
+
+
 func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	var scene_path = unit_data.get("scene_path")
 	if scene_path == null or !ResourceLoader.exists(scene_path):
-		print("Attempted to initialize Invalid Enemy Scene (%s)" % scene_path)
+		push_error("[Game] Attempted to initialize invalid enemy scene (%s)" % scene_path)
 		return
 	if !_enemy_scene_cache.has(scene_path):
 		_enemy_scene_cache[scene_path] = load(scene_path)
@@ -199,8 +212,8 @@ func _initialize_enemy_from_data(unit_data: Dictionary) -> Enemy:
 	var stats: Dictionary = unit_data.get("stats", {})
 	enemy.type = stats.type
 	enemy.income_impact = stats.income_impact
-	enemy.max_health = stats.max_health
-	enemy.max_speed = stats.max_speed
+	enemy.max_health = stats.max_health * current_hp_multiplier
+	enemy.max_speed = stats.max_speed * current_speed_multiplier
 	enemy.damage = stats.damage
 	enemy.flying = stats.flying
 	enemy.knockback_resist = stats.knockback_resist
@@ -228,6 +241,10 @@ func on_damage_dealt(damage: int) -> void:
 	score += damage
 
 
+func take_damage(damage: int) -> void:
+	emit_signal("damage_taken", damage)
+
+
 func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 	enemy.game = self
 	enemy.init(source)
@@ -236,8 +253,13 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 		EnemySource.SYSTEM:
 			path = map.flying_system_path if enemy.flying else map.system_path
 		EnemySource.OPPONENT:
-			enemy_cooldown[enemy.type] = get_tree().create_timer(enemy.summon_cooldown)
-			enemy_cooldown[enemy.type].timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
+			var timer = Timer.new()
+			enemy_cooldown[enemy.type] = timer
+			timer.wait_time = enemy.summon_cooldown
+			timer.one_shot = true
+			add_child(timer)
+			timer.timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
+			timer.start()
 			path = map.flying_opponent_path if enemy.flying else map.opponent_path
 	path.add_child(enemy.path_follow)
 
@@ -256,6 +278,7 @@ func get_all_enemies() -> Array:
 
 
 func _enemy_cooldown_ended(enemy_type: Enemy.EnemyType):
+	enemy_cooldown[enemy_type].queue_free()
 	enemy_cooldown.erase(enemy_type)
 
 
@@ -272,8 +295,8 @@ func _on_buy_spell(spell) -> void:
 		var original_spell_node = $SpellManager.get_node(spell.metadata.name)
 		var spell_scene = load(spell.metadata.scene_path)
 		var preview_spell_node = spell_scene.instantiate()
-		var preview_color_callback = func(node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
-			if not node.is_on_cooldown:
+		var preview_color_callback = func(_node, _cell_pos: Vector2i) -> Previewer.PreviewMode:
+			if not $SpellManager.get_node(spell.metadata.name).is_on_cooldown:
 				return Previewer.PreviewMode.SUCCESS
 			return Previewer.PreviewMode.FAIL
 
@@ -294,7 +317,13 @@ func _place_spell(cell_pos: Vector2i, spell_node) -> void:
 #endregion
 
 
+func freeze() -> void:
+	frozen = true
+
+
 func _process(_delta) -> void:
+	if !frozen:
+		display_score = score
 	status_panel.find_child("Money").text = "%d" % money
 	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
 

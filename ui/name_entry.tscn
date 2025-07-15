@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://ewqymfp7ihe0"]
+
+[ext_resource type="Script" uid="uid://csehce5mspj30" path="res://ui/name_entry.gd" id="1_i6x17"]
+
+[node name="Entry" type="HBoxContainer"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+alignment = 1
+script = ExtResource("1_i6x17")
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "胡祐誠 HyperSoWeak"
+
+[node name="LinkButton" type="LinkButton" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Link"

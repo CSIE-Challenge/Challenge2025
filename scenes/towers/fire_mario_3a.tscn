@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_ymiud"]
 [ext_resource type="PackedScene" uid="uid://chnfc10sxumgl" path="res://scenes/bullets/fireball_3a.tscn" id="2_gwg4c"]
-[ext_resource type="Texture2D" uid="uid://b77p5vt1t0gpf" path="res://pixel_art/tower/FireMarioStand.png" id="3_gwg4c"]
-[ext_resource type="Texture2D" uid="uid://b47ltcag6vqkv" path="res://pixel_art/tower/FireMarioPrepare.png" id="4_rnfne"]
-[ext_resource type="Texture2D" uid="uid://clht2uerh11kk" path="res://pixel_art/tower/FireMarioAttack.png" id="5_20t5r"]
+[ext_resource type="Texture2D" uid="uid://b77p5vt1t0gpf" path="res://assets/tower/FireMarioStand.png" id="3_gwg4c"]
+[ext_resource type="Texture2D" uid="uid://b47ltcag6vqkv" path="res://assets/tower/FireMarioPrepare.png" id="4_rnfne"]
+[ext_resource type="Texture2D" uid="uid://clht2uerh11kk" path="res://assets/tower/FireMarioAttack.png" id="5_20t5r"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gwg4c"]
 animations = [{
@@ -42,6 +42,7 @@ level_a = 3
 building_cost = 2800
 anti_air = true
 bullet_scene = ExtResource("2_gwg4c")
+reload_seconds = 0.5
 aim_range = 400.0
 damage = 80
 

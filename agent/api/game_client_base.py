@@ -4,7 +4,8 @@ import time
 import inspect
 from typing import Any, Callable, cast
 
-from .defs import CommandType, StatusCode, ApiException, Tower, Enemy
+from .constants import CommandType, StatusCode
+from .structures import ApiException, Tower, Enemy
 from .serialization import var_to_bytes, bytes_to_var
 from .utils import is_auto_invoked, enforce_type, enforce_condition
 from .logger import logger
@@ -19,7 +20,7 @@ class GameClientBase:
         port: int,
         token: str | None = None,
         server_domain: str = "localhost",
-        command_timeout_msec: int = 100,
+        command_timeout_msec: int = 1000,
         retry_count: int = 3,
     ) -> None:
         if token is None:

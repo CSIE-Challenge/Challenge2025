@@ -65,3 +65,9 @@ func _process(_delta):
 	rect_size = Vector2(size.x / 2, size.y * 5 / 8)
 	fit_child_in_rect($Score1P, Rect2(Vector2(0, 0), rect_size))
 	fit_child_in_rect($Score2P, Rect2(Vector2(size.x / 2, 0), rect_size))
+
+
+func freeze():
+	$Score1P/RichTextLabel.modulate = Color("03f0fc")
+	$Score2P/RichTextLabel.modulate = Color("03f0fc")
+	self.process_mode = Node.PROCESS_MODE_DISABLED

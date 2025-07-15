@@ -2,6 +2,8 @@ class_name Round
 extends Control
 
 const GAME_DURATION = 300.0
+const FREEZE_TIME = 60.0
+const FREEZE_ANIMATION = 2.5
 
 @export var game_timer_label: Label
 @export var score_bar: ScoreBar
@@ -59,8 +61,6 @@ func _ready() -> void:
 	# setup signals for the games
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
 	game_2p.damage_taken.connect(game_1p.on_damage_dealt)
-	game_1p.spawner.subsidize_loser.connect(game_1p.on_subsidization)
-	game_2p.spawner.subsidize_loser.connect(game_2p.on_subsidization)
 
 	var agent_1p = game_1p.player_selection.web_agent
 	var agent_2p = game_2p.player_selection.web_agent
@@ -83,11 +83,27 @@ func _process(_delta: float) -> void:
 	score_bar.left_score = game_1p.score
 	score_bar.right_score = game_2p.score
 
+	if ($GameTimer.time_left < GAME_DURATION * 0.3) and not AudioManager.second_stage:
+		AudioManager.second_stage = true
+		AudioManager.background_game_stage1.stop()
+		AudioManager.background_game_stage2.play()
+
+	var time_after_freeze = FREEZE_TIME - $GameTimer.time_left
+	if time_after_freeze >= 0:
+		var frozen_overlay = $Screen/Top/TextureRect/FrozenOverlay
+		frozen_overlay.visible = true
+		frozen_overlay.modulate = Color(1, 1, 1, min(1.0, time_after_freeze / FREEZE_ANIMATION))
+
+		game_1p.freeze()
+		game_2p.freeze()
+		$Screen/Top/TextureRect/Score.freeze()
+
 
 func _on_game_timer_timeout():
 	game_1p.player_selection.web_agent.game_running = false
 	game_2p.player_selection.web_agent.game_running = false
 	# load end scene
+	ApiServer.stop()
 	var end_scene: EndScreen = preload("res://scenes/end.tscn").instantiate()
 	end_scene.player_names = [
 		$Screen/Top/TextureRect/PlayerNameLeft.text,
@@ -104,8 +120,17 @@ func _on_game_timer_timeout():
 		),
 		EndScreen.Statistics.init("Enemies Sent", [game_1p.enemy_sent, game_2p.enemy_sent], false),
 		EndScreen.Statistics.init(
-			"API Called", [game_1p.api_called, game_2p.api_called], false, true, false
+			"API Call Attempts", [game_1p.api_called, game_2p.api_called], false, true, true
+		),
+		EndScreen.Statistics.init(
+			"API Call Failures",
+			[game_1p.api_called - game_1p.api_succeed, game_2p.api_called - game_2p.api_succeed],
+			false,
+			true,
+			true
 		),
 	]
+	AudioManager.background_game_stage2.stop()
+	AudioManager.background_menu.play()
 	get_tree().get_root().add_child(end_scene)
 	queue_free()

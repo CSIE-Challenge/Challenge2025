@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_efhko"]
 [ext_resource type="PackedScene" uid="uid://bkqah8iou5o5t" path="res://scenes/bullets/bullet_3b.tscn" id="2_efhko"]
-[ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://pixel_art/tower/BombPipe.png" id="3_efhko"]
-[ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://pixel_art/tower/BombPipeFire.png" id="4_ue8gv"]
+[ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://assets/tower/BombPipe.png" id="3_efhko"]
+[ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://assets/tower/BombPipeFire.png" id="4_ue8gv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_efhko"]
 animations = [{
@@ -18,8 +18,24 @@ animations = [{
 "texture": ExtResource("3_efhko")
 }],
 "loop": false,
-"name": &"default",
+"name": &"LeftRight",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_efhko")
+}],
+"loop": false,
+"name": &"Lower",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_efhko")
+}],
+"loop": false,
+"name": &"Upper",
+"speed": 5.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -37,6 +53,7 @@ type = 4
 level_b = 3
 building_cost = 2800
 auto_aim = false
+anti_air = true
 bullet_scene = ExtResource("2_efhko")
 reload_seconds = 3.0
 damage = 90
@@ -45,9 +62,16 @@ damage = 90
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
 sprite_frames = SubResource("SpriteFrames_efhko")
+animation = &"Upper"
 
-[node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(49.936, -7.68246)
+[node name="LeftRightMarker" type="Marker2D" parent="Tower"]
+position = Vector2(38.4123, -7.68246)
+
+[node name="UpperMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, -19.2061)
+
+[node name="LowerMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, 17.9257)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

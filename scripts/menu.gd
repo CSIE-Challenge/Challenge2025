@@ -2,8 +2,20 @@ extends Control
 
 var screen_size := Vector2.ZERO
 var velocity := Vector2(400, 300)
+var match_score: int = 0
 
 @onready var logo := $Subtitle
+@onready var distros := [
+	preload("res://ui/distro/arch.tscn"),
+	preload("res://ui/distro/debian.tscn"),
+	preload("res://ui/distro/fedora.tscn"),
+	preload("res://ui/distro/freebsd.tscn"),
+	preload("res://ui/distro/macos.tscn"),
+	preload("res://ui/distro/manjaro.tscn"),
+	preload("res://ui/distro/nixos.tscn"),
+	preload("res://ui/distro/ubuntu.tscn"),
+	preload("res://ui/distro/windows.tscn")
+]
 
 
 func _ready() -> void:
@@ -14,7 +26,8 @@ func _ready() -> void:
 		randf_range(0, screen_size.y - logo.get_minimum_size().y)
 	)
 
-	AudioManager.background_menu.play()
+	if not AudioManager.background_menu.has_stream_playback():
+		AudioManager.background_menu.play()
 	$Version.text = "v%s" % [ProjectSettings.get_setting("application/config/version")]
 
 
@@ -47,6 +60,20 @@ func _process(delta):
 		logo.position.y = clamp(logo.position.y, 0, screen_size.y - logo_size.y)
 		_change_color()
 
+	if match_score > 0:
+		$MatchScore.text = "Minigame Score: %d" % match_score
+	if match_score >= 256:
+		get_tree().change_scene_to_file("res://scenes/distro_intro.tscn")
+
 
 func _change_color():
 	logo.modulate = Color(randf(), randf(), randf())
+
+
+func _on_timer_timeout() -> void:
+	var d = distros.pick_random().instantiate()
+	var screen_width = get_viewport_rect().size.x
+	d.position = Vector2(randf_range(0, screen_width), -50)
+	d.rotation = randf_range(0, TAU)
+	d.set_script(load("res://ui/distro/distro.gd"))
+	add_child(d)

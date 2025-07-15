@@ -13,6 +13,11 @@
 process_mode = 3
 script = ExtResource("1_8qd8g")
 
+[node name="Match" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_m6ggh")
+volume_db = -10.0
+bus = &"SFX"
+
 [node name="EnemyAttack" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_m6ggh")
 volume_db = -20.0
@@ -37,6 +42,7 @@ parameters/looping = true
 [node name="BackgroundMenu" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_ujhup")
 bus = &"Music"
+parameters/looping = true
 
 [node name="ButtonOnClick" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_aoitu")
@@ -45,6 +51,12 @@ bus = &"SFX"
 
 [node name="TowerPlace" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_3asnw")
+volume_db = -20.0
+bus = &"SFX"
+
+[node name="BulletExplode" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_3asnw")
+volume_db = -20.0
 bus = &"SFX"
 
 [node name="TowerShoot" type="AudioStreamPlayer" parent="."]

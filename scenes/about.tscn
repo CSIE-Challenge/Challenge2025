@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpm0e3pt1ooke"]
+[gd_scene load_steps=5 format=3 uid="uid://cpm0e3pt1ooke"]
 
+[ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_23fuk"]
 [ext_resource type="Script" uid="uid://bdl067q3i8sr3" path="res://scripts/about.gd" id="1_hx3vx"]
+[ext_resource type="Texture2D" uid="uid://chktdkl6cqvho" path="res://assets/background.png" id="3_lloox"]
+[ext_resource type="PackedScene" uid="uid://ewqymfp7ihe0" path="res://ui/name_entry.tscn" id="4_lloox"]
 
 [node name="About" type="Control"]
 layout_mode = 3
@@ -9,7 +12,27 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_23fuk")
 script = ExtResource("1_hx3vx")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_lloox")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color(0.686275, 0.686275, 0.686275, 0.580392)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.29219, 0.29219, 0.29219, 1)
 
 [node name="Quit" type="Button" parent="."]
 layout_mode = 1
@@ -18,12 +41,245 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -57.0
-offset_top = -184.0
-offset_right = 57.0
-offset_bottom = -145.0
+offset_left = -148.0
+offset_top = -116.0
+offset_right = 148.0
+offset_bottom = -52.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_font_sizes/font_size = 48
 text = "Back to Menu"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -129.0
+offset_top = 60.0
+offset_right = 129.0
+offset_bottom = 178.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 100
+text = "Credit"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -770.0
+offset_top = -330.0
+offset_right = 770.0
+offset_bottom = 359.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 42
+
+[node name="Section" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Section"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Project Management & Quality Assurance"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="ScrollContainer/VBoxContainer/Section"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Entry" parent="ScrollContainer/VBoxContainer/Section/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "胡祐誠 HyperSoWeak"
+
+[node name="Entry2" parent="ScrollContainer/VBoxContainer/Section/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "邱翊均 PixelCat"
+
+[node name="Section2" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Section2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Game Design & Game Programming"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="ScrollContainer/VBoxContainer/Section2"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="Entry" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "卓育安 prairie2022"
+
+[node name="Entry2" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "常洧丞 Weber Change"
+
+[node name="Entry3" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "廖禹喬 JoyLiao"
+
+[node name="Entry4" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "張聲元 LightningFarter"
+
+[node name="Entry5" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "李尚哲 Matt"
+
+[node name="Entry6" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "林文繡 bbwinner"
+
+[node name="Entry7" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "洪德朗 Andromeda"
+
+[node name="Entry8" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "王　淇 littlecube8152 "
+
+[node name="Entry9" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "胡祐誠 HyperSoWeak"
+
+[node name="Entry10" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "蔡孟憬 cmj"
+
+[node name="Entry11" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "蔡孟衡 lemonilemon"
+
+[node name="Entry12" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "蔡瑜恩 Jaime"
+
+[node name="Entry13" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "邱翊均 PixelCat"
+
+[node name="Section3" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Section3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Art"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="ScrollContainer/VBoxContainer/Section3"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="Entry" parent="ScrollContainer/VBoxContainer/Section3/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "張聲元 LightningFarter"
+
+[node name="Entry2" parent="ScrollContainer/VBoxContainer/Section3/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "胡祐誠 HyperSoWeak"
+
+[node name="Entry3" parent="ScrollContainer/VBoxContainer/Section3/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "謝承憲 ChengHsien"
+
+[node name="Section4" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Section4"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Music & Sound Effect"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="ScrollContainer/VBoxContainer/Section4"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 10
+columns = 2
+
+[node name="Entry" parent="ScrollContainer/VBoxContainer/Section4/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "李尚哲 Matt"
+
+[node name="Entry2" parent="ScrollContainer/VBoxContainer/Section4/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "林文繡 bbwinner"
+
+[node name="Section5" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Section5"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Agent Design & Game Testing"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="ScrollContainer/VBoxContainer/Section5"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="Entry" parent="ScrollContainer/VBoxContainer/Section5/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "張聲元 LightningFarter"
+
+[node name="Entry2" parent="ScrollContainer/VBoxContainer/Section5/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "李尚哲 Matt"
+
+[node name="Entry3" parent="ScrollContainer/VBoxContainer/Section5/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "蔡瑜恩 Jaime"
+
+[node name="Section6" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/Section6"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Special Thanks"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="ScrollContainer/VBoxContainer/Section6"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 10
+
+[node name="Entry" parent="ScrollContainer/VBoxContainer/Section6/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "Challenge 2024 開發團隊"
+
+[node name="Entry2" parent="ScrollContainer/VBoxContainer/Section6/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "主辦　資工系系學會"
+
+[node name="Entry3" parent="ScrollContainer/VBoxContainer/Section6/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "一起籌備資訊營的人們與參加資訊營的所有人"
 
 [connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

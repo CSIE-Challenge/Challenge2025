@@ -9,12 +9,12 @@ func _ready():
 	collision.shape.radius = spell.metadata.stats.radius
 	# Create duration timer
 	duration_timer.timeout.connect(_on_duration_ended)
-	duration_timer.wait_time = spell.metadata.stats.duration
+	duration_timer.wait_time = spell.metadata.stats.trigger_interval * 1.1
 	duration_timer.start()
 
 
 func _draw():
-	draw_circle(Vector2.ZERO, spell.metadata.stats.radius, Color.BLUE)
+	draw_circle(Vector2.ZERO, spell.metadata.stats.radius, Color(0.4, 0.2, 0.8, 0.4))
 
 
 func _on_duration_ended():

@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://cl2jk5nb1k65o" path="res://scripts/towers/tower_with_single_bullet.gd" id="1_s6md2"]
 [ext_resource type="PackedScene" uid="uid://cf3qsx2iqak3t" path="res://scenes/bullets/freeze.tscn" id="2_s6md2"]
-[ext_resource type="Texture2D" uid="uid://b7olbt3ixm3vr" path="res://pixel_art/tower/IceLuigiStand.png" id="3_weq22"]
-[ext_resource type="Texture2D" uid="uid://bnjhw6guw63b3" path="res://pixel_art/tower/IceLuigiPrepare.png" id="4_tq7qp"]
-[ext_resource type="Texture2D" uid="uid://co7fm38thq084" path="res://pixel_art/tower/IceLuigiAttack.png" id="5_dcn1e"]
+[ext_resource type="Texture2D" uid="uid://b7olbt3ixm3vr" path="res://assets/tower/IceLuigiStand.png" id="3_weq22"]
+[ext_resource type="Texture2D" uid="uid://bnjhw6guw63b3" path="res://assets/tower/IceLuigiPrepare.png" id="4_tq7qp"]
+[ext_resource type="Texture2D" uid="uid://co7fm38thq084" path="res://assets/tower/IceLuigiAttack.png" id="5_dcn1e"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_weq22"]
 animations = [{
@@ -52,7 +52,7 @@ damage = 20
 sprite_frames = SubResource("SpriteFrames_weq22")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(48.6556, -12.8041)
+position = Vector2(0, -9.53674e-07)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
