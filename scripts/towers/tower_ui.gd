@@ -9,7 +9,7 @@ var range_circle = null
 
 func initialize(t: Tower):
 	tower = t
-	range_circle = TowerPreviewRange.new(t.aim_range)
+	range_circle = TowerPreviewRange.new(t.aim_range / 2)
 	add_child(range_circle)
 
 

@@ -43,7 +43,7 @@ func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cell
 	_mode_callback = mode_callback
 	_map = map
 	_snap_to_cells = snap_to_cells
-	range_circle = TowerPreviewRange.new(_previewed_node.aim_range)
+	range_circle = TowerPreviewRange.new(_previewed_node.aim_range / 2)
 	_previewed_node.add_child(range_circle)
 	self.add_child(previewed_node)
 
