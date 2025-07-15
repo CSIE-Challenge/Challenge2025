@@ -142,14 +142,6 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="StartButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(300, 80)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 3
-theme_override_font_sizes/font_size = 50
-text = "Start"
-
 [node name="BackButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
@@ -158,9 +150,17 @@ size_flags_vertical = 3
 theme_override_font_sizes/font_size = 50
 text = "Back"
 
+[node name="StartButton" type="Button" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 50
+text = "Start"
+
 [node name="GameStartTimer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="pressed" from="VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="timeout" from="GameStartTimer" to="." method="_on_game_start_timer_timeout"]
