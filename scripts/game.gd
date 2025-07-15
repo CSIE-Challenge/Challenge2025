@@ -154,6 +154,7 @@ func _select_tower(tower: Tower, left: bool, up: bool):
 	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
 	tower.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
+	tower_ui.initialize(tower)
 	await get_tree().process_frame
 	var ui_size = tower_ui.size
 	if left:
