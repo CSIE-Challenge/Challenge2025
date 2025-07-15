@@ -77,9 +77,11 @@ var chat_node: Node = null
 var sys_paths: Array = [[], []]
 var opp_paths: Array = [[], []]
 
-@onready var pixel_cat_str: String = (
-	FileAccess.open("res://data/pixelcat.txt", FileAccess.READ).get_as_text()
-)
+var pixel_cat_str: String
+
+
+func _ready() -> void:
+	pixel_cat_str = Util.load_json("res://data/pixelcat.json")["data"]
 
 
 func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
