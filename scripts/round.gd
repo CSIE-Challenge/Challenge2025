@@ -132,5 +132,5 @@ func _on_game_timer_timeout():
 	]
 	AudioManager.background_game_stage2.stop()
 	AudioManager.background_menu.play()
-	get_tree().get_root().add_child(end_scene)
+	get_parent().add_child(end_scene)
 	queue_free()

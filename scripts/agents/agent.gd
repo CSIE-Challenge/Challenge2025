@@ -499,8 +499,8 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 
 func _get_screen_name_label() -> Label:
 	if player_id == 1:
-		return get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameLeft")
-	return get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameRight")
+		return ongoing_round.get_node("Screen/Top/TextureRect/PlayerNameLeft")
+	return ongoing_round.get_node("Screen/Top/TextureRect/PlayerNameRight")
 
 
 func _send_chat(msg: String) -> Array:
