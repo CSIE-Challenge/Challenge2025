@@ -43,9 +43,6 @@ var knockback_invincibility = false
 
 func _on_killed() -> void:
 	game.kill_count += 1
-	game.score += kill_reward  # == 0.1 * damage
-	if source == Game.EnemySource.SYSTEM:
-		game.money = game.money + kill_reward
 	path_follow.queue_free()
 
 
@@ -57,8 +54,10 @@ func _on_reached() -> void:
 
 func take_damage(amount: int):
 	health -= amount
-
 	if health <= 0:
+		if source == Game.EnemySource.SYSTEM:
+			game.score += kill_reward  # == 0.1 * damage
+			game.money += kill_reward
 		_on_killed()
 
 
