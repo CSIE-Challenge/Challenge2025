@@ -10,4 +10,5 @@ func _init(radius: float) -> void:
 
 
 func _draw():
-	draw_circle(Vector2(0, 0), _radius, color)
+	var corrected_radius = _radius / global_transform.get_scale().x
+	draw_circle(Vector2(0, 0), corrected_radius, color)
