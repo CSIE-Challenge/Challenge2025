@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://de5tsdfnn12c7"
-path="res://.godot/imported/Map3.png-55ee0c8a40bb22f1d825fdfc5dba3d04.ctex"
+uid="uid://r151dmxl66wx"
+path="res://.godot/imported/tilde.png-aabbe1236bef55364c33cd99764cf75b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maps/Map3.png"
-dest_files=["res://.godot/imported/Map3.png-55ee0c8a40bb22f1d825fdfc5dba3d04.ctex"]
+source_file="res://assets/maps/map2/tilde.png"
+dest_files=["res://.godot/imported/tilde.png-aabbe1236bef55364c33cd99764cf75b.ctex"]
 
 [params]
 

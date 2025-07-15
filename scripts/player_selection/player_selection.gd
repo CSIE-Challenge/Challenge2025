@@ -7,7 +7,7 @@ const CONFIG_FILE_PATH = "user://player_settings.cfg"
 const MAP_LIST = [
 	["隨機", preload("res://assets/background_image/random_map.png"), null],
 	["沒有香菜的世界", preload("res://assets/maps/Map1.png"), preload("res://scenes/maps/map1.tscn")],
-	["小村探秘", preload("res://assets/maps/Map2.png"), preload("res://scenes/maps/map2.tscn")],
+	["小村探秘", preload("res://assets/maps/map2/preview.png"), preload("res://scenes/maps/map2.tscn")],
 	["椰林大道", preload("res://assets/maps/Map3.png"), preload("res://scenes/maps/map3.tscn")],
 	[" ", preload("res://assets/maps/space/preview.png"), preload("res://scenes/maps/space.tscn")]
 ]
