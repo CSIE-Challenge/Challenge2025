@@ -55,8 +55,10 @@ func _ready() -> void:
 			chat.always_visible = true
 		1:
 			shop.start_game(game_1p, game_2p)
+			game_1p.is_manually_controlled = true
 		2:
 			shop.start_game(game_2p, game_1p)
+			game_2p.is_manually_controlled = true
 
 	# setup signals for the games
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)

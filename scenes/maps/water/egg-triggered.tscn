@@ -1,0 +1,140 @@
+[gd_scene load_steps=7 format=3 uid="uid://b3rraug7dskmf"]
+
+[ext_resource type="Script" uid="uid://cuqa8lggg7co7" path="res://scripts/maps/water/egg-triggered.gd" id="1_ph8ny"]
+[ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="1_sdw44"]
+
+[sub_resource type="SystemFont" id="SystemFont_aleiu"]
+fallbacks = Array[Font]([ExtResource("1_sdw44")])
+font_names = PackedStringArray("Monospace")
+
+[sub_resource type="Animation" id="Animation_o4b5c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Centering/RichTextLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["> start-process powershell –verb runAs
+Privilege elevated.
+> shutdown /r /fw
+Booted into UEFI...
+Rebooted into UEFI.
+Installing Arch Linux...
+
+Thank you for your support of open-source software.
+Your unmatched intelligence moved the world toward a more open, freer place.
+You may record this as your certificate of such conviction (or an Easter egg).
+
+CSIE Camp Challenge 2025 超 解碼 農兄弟
+Thanks for your playing!
+
+Project Management & Quality Assurance
+    胡祐誠 HyperSoWeak 邱翊均 PixelCat
+Game Design & Game Programming
+    卓育安 prairie2022 常洧丞 Weber Change 廖禹喬 JoyLiao 張聲元 LightningFarter 李尚哲 Matt 林文繡 bbwinner
+    洪德朗 Andromeda 王　淇 littlecube8152 胡祐誠 HyperSoWeak 蔡孟憬 cmj 蔡孟衡 lemonilemon 蔡瑜恩 Jaime 邱翊均 PixelCat
+Art 
+    張嘉泰 TDDY 張聲元 LightningFarter 胡祐誠 HyperSoWeak 謝承憲 ChengHsien
+Music & Sound Effect
+    李尚哲 Matt 林文繡 bbwinner
+Agent Design & Game Testing
+    張聲元 LightningFarter 李尚哲 Matt 蔡瑜恩 Jaime
+
+Special Thanks
+    Challenge 2024 開發團隊
+    主辦　資工系系學會
+    一起籌備資訊營的人們與參加資訊營的所有人
+
+Press any key to continue..."]
+}
+
+[sub_resource type="Animation" id="Animation_u0c1o"]
+resource_name = "text-reveal"
+length = 12.0
+step = 30.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Centering/RichTextLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h3c2p"]
+_data = {
+&"RESET": SubResource("Animation_o4b5c"),
+&"text-reveal": SubResource("Animation_u0c1o")
+}
+
+[node name="EasterEggTriggered" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ph8ny")
+
+[node name="Background" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.06, 0.06, 0.06, 1)
+
+[node name="Centering" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_right = 1925.0
+offset_bottom = 1075.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Centering"]
+custom_minimum_size = Vector2(1800, 1040)
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 1, 0, 1)
+theme_override_fonts/normal_font = SubResource("SystemFont_aleiu")
+theme_override_font_sizes/normal_font_size = 24
+text = "> start-process powershell –verb runAs
+Privilege elevated.
+> shutdown /r /fw
+Booted into UEFI...
+Rebooted into UEFI.
+Installing Arch Linux...
+
+Thank you for your support of open-source software.
+Your unmatched intelligence moved the world toward a more open, freer place.
+You may record this as your certificate of such conviction (or an Easter egg).
+
+CSIE Camp Challenge 2025 超 解碼 農兄弟
+Thanks for your playing!
+
+Project Management & Quality Assurance
+    胡祐誠 HyperSoWeak 邱翊均 PixelCat
+Game Design & Game Programming
+    卓育安 prairie2022 常洧丞 Weber Change 廖禹喬 JoyLiao 張聲元 LightningFarter 李尚哲 Matt 林文繡 bbwinner
+    洪德朗 Andromeda 王　淇 littlecube8152 胡祐誠 HyperSoWeak 蔡孟憬 cmj 蔡孟衡 lemonilemon 蔡瑜恩 Jaime 邱翊均 PixelCat
+Art 
+    張嘉泰 TDDY 張聲元 LightningFarter 胡祐誠 HyperSoWeak 謝承憲 ChengHsien
+Music & Sound Effect
+    李尚哲 Matt 林文繡 bbwinner
+Agent Design & Game Testing
+    張聲元 LightningFarter 李尚哲 Matt 蔡瑜恩 Jaime
+
+Special Thanks
+    Challenge 2024 開發團隊
+    主辦　資工系系學會
+    一起籌備資訊營的人們與參加資訊營的所有人
+
+Press any key to continue..."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_h3c2p")
+}
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -5,6 +5,7 @@ signal damage_taken(damage: int)
 signal buy_tower(tower_scene: PackedScene)
 signal summon_enemy(unit_data: Dictionary)
 signal buy_spell(spell_data)
+signal on_manual_control_changed(value: bool)
 
 enum EnemySource { SYSTEM, OPPONENT }
 
@@ -42,6 +43,13 @@ var map: Map = null
 var frozen := true
 var current_hp_multiplier: float = 1
 var current_speed_multiplier: float = 1
+var is_manually_controlled := false:  # only used in water map
+	get:
+		return is_manually_controlled
+	set(value):
+		is_manually_controlled = value
+		self.on_manual_control_changed.emit(value)
+
 var _enemy_scene_cache = {}
 
 
