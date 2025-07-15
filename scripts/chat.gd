@@ -14,11 +14,11 @@ var color: String = "7fffd4"
 
 func _ready() -> void:
 	timer.start()
-	timer.set_wait_time(randf_range(15, 20))
+	timer.set_wait_time(randf_range(1, 5))
 
 
 func _on_timer_timeout():
-	timer.set_wait_time(randf_range(15, 20))
+	timer.set_wait_time(randf_range(1, 5))
 	send_chat_with_sender(0, get_random_messages(), color)
 
 
