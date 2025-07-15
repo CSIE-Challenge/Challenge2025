@@ -169,7 +169,7 @@ dev_name = "蔡孟衡 lemonilemon"
 
 [node name="Entry12" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
 layout_mode = 2
-dev_name = "蔡瑜恩 Jaimed"
+dev_name = "蔡瑜恩 Jaime"
 
 [node name="Entry13" parent="ScrollContainer/VBoxContainer/Section2/Grid" instance=ExtResource("4_lloox")]
 layout_mode = 2
@@ -201,7 +201,7 @@ dev_name = "胡祐誠 HyperSoWeak"
 
 [node name="Entry3" parent="ScrollContainer/VBoxContainer/Section3/Grid" instance=ExtResource("4_lloox")]
 layout_mode = 2
-dev_name = "謝承憲 naizu_33"
+dev_name = "謝承憲 ChengHsien"
 
 [node name="Section4" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -221,7 +221,7 @@ columns = 2
 
 [node name="Entry" parent="ScrollContainer/VBoxContainer/Section4/Grid" instance=ExtResource("4_lloox")]
 layout_mode = 2
-dev_name = "李尚哲 Mattd"
+dev_name = "李尚哲 Matt"
 
 [node name="Entry2" parent="ScrollContainer/VBoxContainer/Section4/Grid" instance=ExtResource("4_lloox")]
 layout_mode = 2
