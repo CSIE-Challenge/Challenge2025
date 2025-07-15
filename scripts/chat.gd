@@ -67,6 +67,7 @@ func send_chat_with_sender(
 	textbox.set_meta("sender", sender_id)
 	textbox.set_line_height(send_pixelcat)
 	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
+	AudioManager.message.play()
 	await get_tree().process_frame
 	scrollbar.scroll_vertical = scrollbar.get_v_scroll_bar().max_value
 
