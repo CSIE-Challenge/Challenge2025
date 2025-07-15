@@ -61,7 +61,10 @@ func _process(delta):
 		_change_color()
 
 	if match_score > 0:
-		$MatchScore.text = "Minigame Score: %d" % match_score
+		var hundred: int = int(match_score / 100)
+		var ten: int = int((match_score % 100) / 10)
+		var one: int = match_score % 10
+		$Version.text = "v%d.%d.%d" % [hundred, ten, one]
 	if match_score >= 256:
 		get_tree().change_scene_to_file("res://scenes/distro_intro.tscn")
 
