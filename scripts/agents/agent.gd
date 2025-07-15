@@ -508,6 +508,9 @@ func _send_chat(msg: String) -> Array:
 		push_error("[Agent] TEXTBOX_SCENE is not loaded")
 		return [StatusCode.INTERNAL_ERR, false]
 
+	if chat_node.is_cool_down(player_id):
+		return [StatusCode.COMMAND_ERR, false]
+
 	if msg.length() > 50:
 		return [StatusCode.ILLEGAL_ARGUMENT, false]
 
