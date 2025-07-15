@@ -28,5 +28,6 @@ shape = SubResource("CircleShape2D_2wmxr")
 
 [node name="Click" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Click"]
-shape = SubResource("CircleShape2D_2wmxr")
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Click"]
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_juw6v")
