@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://tgvg1sre5w23"]
+[gd_scene load_steps=5 format=3 uid="uid://tgvg1sre5w23"]
 
 [ext_resource type="Texture2D" uid="uid://cyunp2erwvfxg" path="res://assets/distro/manjaro.png" id="1_a1gh3"]
 [ext_resource type="Script" uid="uid://cftqym8vwuoq5" path="res://ui/distro/distro.gd" id="2_ymh5b"]
@@ -6,11 +6,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a1gh3"]
 size = Vector2(26, 26)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_a1gh3"]
-radius = 114.018
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_ymh5b"]
-radius = 67.0075
+radius = 99.0051
 
 [node name="Manjaro" type="RigidBody2D"]
 script = ExtResource("2_ymh5b")
@@ -27,9 +24,10 @@ shape = SubResource("RectangleShape2D_a1gh3")
 [node name="Match" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Match"]
-shape = SubResource("CircleShape2D_a1gh3")
+shape = SubResource("CircleShape2D_ymh5b")
 
 [node name="Click" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Click"]
-shape = SubResource("CircleShape2D_ymh5b")
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Click"]
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_a1gh3")

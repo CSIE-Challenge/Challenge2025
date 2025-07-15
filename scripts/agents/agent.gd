@@ -65,8 +65,10 @@ const TOWER_SCENES = [
 const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 const LEVEL_TO_INDEX: Dictionary = {"1": 0, "2a": 1, "2b": 2, "3a": 3, "3b": 4}
 
+var pixelcat_cnt: int = 1
 var player_id: int
 var game_running: bool = false
+var send_pixelcat: bool = false
 var ongoing_round: Round = null
 var game_self: Game = null
 var game_other: Game = null
@@ -74,6 +76,10 @@ var chat_node: Node = null
 
 var sys_paths: Array = [[], []]
 var opp_paths: Array = [[], []]
+
+@onready var pixel_cat_str: String = (
+	FileAccess.open("res://data/pixelcat.txt", FileAccess.READ).get_as_text()
+)
 
 
 func start_game(_round: Round, _game_self: Game, _game_other: Game) -> void:
@@ -102,7 +108,7 @@ func _get_game_status() -> Array:
 func _get_all_terrain() -> Array:
 	var map = game_self.get_node("Map")
 	if not map:
-		return [StatusCode.INTERNAL_ERR, "[GetAllTerrain] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "Error: cannot find map"]
 
 	# Get the terrain without knowing the map size
 	var all_terrain: Array[Array] = []
@@ -122,7 +128,7 @@ func _get_all_terrain() -> Array:
 func _get_terrain(_coord: Vector2i) -> Array:
 	var map = game_self.get_node("Map")
 	if not map:
-		return [StatusCode.INTERNAL_ERR, "[GetTerrain] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "Error: cannot find map"]
 
 	return [StatusCode.OK, map.get_cell_terrain(_coord)]
 
@@ -139,28 +145,24 @@ func _get_scores(_owned: bool) -> Array:
 func _get_current_wave() -> Array:
 	var wave = ongoing_round.get_node("Spawner")
 	if not wave:
-		return [StatusCode.INTERNAL_ERR, "[GetCurrentWave] Error: cannot find wave"]
+		return [StatusCode.INTERNAL_ERR, "Error: cannot find wave"]
 	var wave_num: int = wave.current_wave_data.wave_number
 	return [StatusCode.OK, wave_num]
 
 
 func _get_remain_time() -> Array:
 	if not game_running:
-		# TODO: get remaining time from player_selection when counting down
 		return [StatusCode.OK, 1]
 	var time_left = ongoing_round.get_node("GameTimer").time_left
 	if time_left == null:
-		return [StatusCode.INTERNAL_ERR, "[GetRemainTime] Error: cannot find timeleft"]
+		return [StatusCode.INTERNAL_ERR, "Error: cannot find timeleft"]
 	return [StatusCode.OK, time_left]
 
 
 func _get_time_until_next_wave() -> Array:
 	var time_left = ongoing_round.get_node("Spawner").next_wave_timer.time_left
 	if time_left == null:
-		return [
-			StatusCode.INTERNAL_ERR,
-			"[GetTimeUntilNextWave] Error: cannot find timeleft till next wave"
-		]
+		return [StatusCode.INTERNAL_ERR, "Error: cannot find timeleft till next wave"]
 	return [StatusCode.OK, time_left]
 
 
@@ -185,7 +187,7 @@ func _get_income(_owned: bool) -> Array:
 func _get_system_path(_fly: bool) -> Array:
 	var map: Map = game_self.map
 	if not map:
-		return [StatusCode.INTERNAL_ERR, "[GetSystemPath] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "Error: cannot find map"]
 
 	var index = int(_fly)
 	if not sys_paths[index].is_empty():
@@ -218,7 +220,7 @@ func _get_system_path(_fly: bool) -> Array:
 func _get_opponent_path(_fly: bool) -> Array:
 	var map: Map = game_self.map
 	if not map:
-		return [StatusCode.INTERNAL_ERR, "[GetSystemPath] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "Error: cannot find map"]
 
 	var index = int(_fly)
 	if not opp_paths[index].is_empty():
@@ -258,18 +260,15 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 	var map = game_self.get_node("Map")
 
 	if not map:
-		return [StatusCode.INTERNAL_ERR, "[PlaceTower] Error: cannot find map"]
+		return [StatusCode.INTERNAL_ERR, "Error: cannot find map"]
 
 	if map.get_cell_terrain(_coord) != Map.CellTerrain.EMPTY:
-		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: invalid coordinate for building tower"]
+		return [StatusCode.COMMAND_ERR, "Error: invalid coordinate for building tower"]
 
 	if (not _type in range(0, 6)) or (not _level in LEVEL_TO_INDEX.keys()):
-		return [
-			StatusCode.ILLEGAL_ARGUMENT,
-			"[PlaceTower] Error: 'type' out of range or 'level' invalid"
-		]
+		return [StatusCode.ILLEGAL_ARGUMENT, "Error: 'type' out of range or 'level' invalid"]
 
-	var tower = TOWER_SCENES[_type][LEVEL_TO_INDEX[_level]].instantiate()
+	var tower = TOWER_SCENES[_type - 1][LEVEL_TO_INDEX[_level]].instantiate()
 	if game_self.built_towers.has(_coord):
 		var previous_tower = game_self.built_towers[_coord]
 		if (
@@ -281,7 +280,7 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 			)
 			or game_self.money + previous_tower.building_cost < tower.building_cost
 		):
-			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: can't upgrade tower"]
+			return [StatusCode.COMMAND_ERR, "Error: can't upgrade tower"]
 		if (
 			previous_tower.type != tower.type
 			and (
@@ -289,10 +288,10 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 				< tower.building_cost
 			)
 		):
-			return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
+			return [StatusCode.COMMAND_ERR, "Error: not enough money"]
 
 	if game_self.money < tower.building_cost:
-		return [StatusCode.COMMAND_ERR, "[PlaceTower] Error: not enough money"]
+		return [StatusCode.COMMAND_ERR, "Error: not enough money"]
 	game_self.place_tower(_coord, tower)
 	return [StatusCode.OK]
 
@@ -324,7 +323,7 @@ func _get_tower(_owned: bool, _coord: Vector2i) -> Array:
 
 func _sell_tower(_coord: Vector2i) -> Array:
 	if not game_self.built_towers.has(_coord):
-		return [StatusCode.COMMAND_ERR, "[SellTower] No built tower on designated coordinate"]
+		return [StatusCode.COMMAND_ERR, "No built tower on designated coordinate"]
 	var tower: Tower = game_self.built_towers[_coord]
 	game_self._on_tower_sold(tower, null, true)
 	return [StatusCode.OK]
@@ -333,8 +332,7 @@ func _sell_tower(_coord: Vector2i) -> Array:
 func _set_strategy(_coord: Vector2i, new_strategy: Tower.TargetStrategy) -> Array:
 	if (not game_self.built_towers.has(_coord)) or (not new_strategy in range(3)):
 		return [
-			StatusCode.ILLEGAL_ARGUMENT,
-			"[SellTower] No built tower on 'coord' or incorrect 'new_strategy'"
+			StatusCode.ILLEGAL_ARGUMENT, "No built tower on 'coord' or incorrect 'new_strategy'"
 		]
 	var tower: Tower = game_self.built_towers[_coord]
 	tower.set_strategy(new_strategy)
@@ -358,11 +356,11 @@ func _get_unit_dict(_type: EnemyType) -> Dictionary:
 func _spawn_unit(_type: EnemyType) -> Array:
 	var data = _get_unit_dict(_type)
 	if game_other.enemy_cooldown.has(_type):
-		return [StatusCode.COMMAND_ERR, "[SpawnUnit] cooldown hasn't finished"]
+		return [StatusCode.COMMAND_ERR, "cooldown hasn't finished"]
 	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
 		game_other.summon_enemy.emit(data)
 	else:
-		return [StatusCode.COMMAND_ERR, "[SpawnUnit] doesn't have enough money"]
+		return [StatusCode.COMMAND_ERR, "doesn't have enough money"]
 	return [StatusCode.OK]
 
 
@@ -424,7 +422,7 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 	var spell_manager: Node = game_self.get_node("SpellManager")
 
 	if spell_manager == null:
-		push_error("[Agent] node not found spell_manager")
+		push_error("[Agent] Node not found spell_manager")
 		return [StatusCode.INTERNAL_ERR]
 
 	var spell_node: Node = null
@@ -441,7 +439,7 @@ func _cast_spell(_type: SpellType, _coord: Vector2i) -> Array:
 
 	if spell_manager == null:
 		push_error("[Agent] Node not found: SpellManager")
-		return [StatusCode.INTERNAL_ERR, "node not found SpellManager"]
+		return [StatusCode.INTERNAL_ERR, "Node not found SpellManager"]
 
 	if _type == SpellType.DOUBLE_INCOME:
 		if spell_node.is_on_cooldown or spell_node.is_active or not spell_node.game:
@@ -506,22 +504,35 @@ func _get_screen_name_label() -> Label:
 func _send_chat(msg: String) -> Array:
 	if chat_node == null:
 		push_error("[Agent] TEXTBOX_SCENE is not loaded")
-		return [StatusCode.INTERNAL_ERR, false]
+		return [StatusCode.INTERNAL_ERR, "TEXTBOX_SCENE is not loaded"]
 
-	if msg.length() > 50:
-		return [StatusCode.ILLEGAL_ARGUMENT, false]
+	if chat_node.is_cool_down(player_id):
+		return [StatusCode.COMMAND_ERR, "Cooldown hasn't finished"]
+
+	if !send_pixelcat && msg.length() > 50:
+		return [StatusCode.ILLEGAL_ARGUMENT, "Message is too long"]
 
 	var chat_name_color = game_self.chat_name_color
 	var player_name = _get_screen_name_label().text
-	chat_node.send_chat_with_sender(player_id, msg, chat_name_color, player_name)
+	chat_node.send_chat_with_sender(player_id, msg, chat_name_color, player_name, send_pixelcat)
 	game_self.chat_total_length += msg.length()
-	return [StatusCode.OK, true]
+	return [StatusCode.OK]
+
+
+func _pixel_cat() -> Array:
+	if pixelcat_cnt == 0:
+		return [StatusCode.COMMAND_ERR, "No more pixel cat!"]
+	pixelcat_cnt -= 1
+	send_pixelcat = true
+	self._send_chat("[font_size=6]" + pixel_cat_str + "[/font_size]")
+	send_pixelcat = false
+	return [StatusCode.OK, pixel_cat_str]
 
 
 func _get_chat_history(_num: int) -> Array:
 	if chat_node == null:
 		push_error("[Agent] TEXTBOX_SCENE is not loaded")
-		return [StatusCode.INTERNAL_ERR, false]
+		return [StatusCode.INTERNAL_ERR, "TEXTBOX_SCENE is not loaded"]
 	var history = chat_node.get_history(player_id, _num)
 	return [StatusCode.OK, history]
 

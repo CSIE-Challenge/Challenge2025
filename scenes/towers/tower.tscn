@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cfs1q2ao3ob67"]
+[gd_scene load_steps=8 format=3 uid="uid://cfs1q2ao3ob67"]
 
 [ext_resource type="Script" uid="uid://c772uxg3ihrb6" path="res://scripts/towers/twin_turret.gd" id="1_1opkc"]
-[ext_resource type="PackedScene" uid="uid://cugx8q4x81to3" path="res://scenes/bullets/bullet_for_twin_turret.tscn" id="2_dc0g6"]
 [ext_resource type="Texture2D" uid="uid://bqikcu5a6ov7i" path="res://assets/tower/ShyGuyStand.png" id="3_35rpl"]
 [ext_resource type="Texture2D" uid="uid://ddc73100y5t64" path="res://assets/tower/ShyGuyPrepare.png" id="4_t3um6"]
 [ext_resource type="Texture2D" uid="uid://bym1xfjew7tgo" path="res://assets/tower/ShyGuyAttack.png" id="5_s243d"]
@@ -34,7 +33,6 @@ scale = Vector2(0.781, 0.781)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_1opkc")
-bullet_scene = ExtResource("2_dc0g6")
 
 [node name="Turret" type="Node2D" parent="."]
 
