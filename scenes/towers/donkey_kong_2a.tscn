@@ -46,7 +46,7 @@ building_cost = 1200
 auto_aim = false
 bullet_scene = ExtResource("2_1a38i")
 reload_seconds = 1.5
-aim_range = 300.0
+aim_range = 225.0
 damage = 60
 
 [node name="Tower" type="Node2D" parent="."]

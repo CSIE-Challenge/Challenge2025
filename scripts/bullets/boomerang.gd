@@ -2,7 +2,7 @@ class_name Boomerang
 extends Bullet
 
 # The acceleration of bullet back toward the tower
-const RESISTENCE: float = 400
+const RESISTENCE: float = 1000
 
 
 func _process(delta):

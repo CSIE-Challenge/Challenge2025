@@ -10,7 +10,7 @@ collision_mask = 0
 script = ExtResource("1_sxwwf")
 is_tracking = false
 is_penetrating = true
-lifespan_seconds = 0.2
+lifespan_seconds = 0.12
 
 [node name="Body" type="Sprite2D" parent="."]
 position = Vector2(0, -2)
