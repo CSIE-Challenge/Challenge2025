@@ -9,6 +9,7 @@ enum PreviewMode {
 	FAIL,
 }
 
+var range_circle = null
 var _previewed_node: Node
 
 # this is called every frame for updating the color of previewed object
@@ -85,3 +86,24 @@ func _process(_delta: float) -> void:
 			modulate = Color(0, 1, 0, 0.5)
 		PreviewMode.FAIL:
 			modulate = Color(1, 0, 0, 0.5)
+
+
+func _create_range_circle(radius: float) -> Line2D:
+	var circle := Line2D.new()
+	circle.width = 5
+	circle.default_color = Color(1, 1, 1, 0.3)
+	circle.closed = true
+
+	var segments := 64
+	for i in segments:
+		var angle = TAU * i / segments
+		var point = Vector2(cos(angle), sin(angle)) * radius
+		circle.add_point(point)
+	return circle
+
+
+func show_attack_range(radius: float) -> void:
+	if range_circle:
+		range_circle.queue_free()
+	range_circle = _create_range_circle(radius)
+	add_child(range_circle)

@@ -145,6 +145,7 @@ func _on_buy_tower(tower_scene: PackedScene):
 		self.remove_child(previewer)
 		previewer.free()
 	previewer = Previewer.new(tower, preview_color_callback, map, true)
+	previewer.show_attack_range(tower.aim_range)
 	previewer.selected.connect(self.place_tower.bind(tower))
 	self.add_child(previewer)
 
