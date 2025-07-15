@@ -24,13 +24,11 @@ func _on_timer_timeout():
 
 
 func trigger_timer(player_id: int):
-	print("timer start ", player_id)
 	player_timer[player_id - 1].start()
 
 
 func is_cool_down(player_id: int) -> bool:
 	if player_timer[player_id - 1].is_stopped():
-		print("can send chat")
 		return false
 	return true
 

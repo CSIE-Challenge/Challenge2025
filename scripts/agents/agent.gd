@@ -505,26 +505,26 @@ func _get_screen_name_label() -> Label:
 
 func _send_chat(msg: String) -> Array:
 	if chat_node == null:
-		push_error("[Agent] TEXTBOX_SCENE is not loaded")
-		return [StatusCode.INTERNAL_ERR, false]
+		push_error("TEXTBOX_SCENE is not loaded")
+		return [StatusCode.INTERNAL_ERR, "TEXTBOX_SCENE is not loaded"]
 
 	if chat_node.is_cool_down(player_id):
-		return [StatusCode.COMMAND_ERR, false]
+		return [StatusCode.COMMAND_ERR, "Cooldown hasn't finished"]
 
 	if msg.length() > 50:
-		return [StatusCode.ILLEGAL_ARGUMENT, false]
+		return [StatusCode.ILLEGAL_ARGUMENT, "Message too long"]
 
 	var chat_name_color = game_self.chat_name_color
 	var player_name = _get_screen_name_label().text
 	chat_node.send_chat_with_sender(player_id, msg, chat_name_color, player_name)
 	game_self.chat_total_length += msg.length()
-	return [StatusCode.OK, true]
+	return [StatusCode.OK]
 
 
 func _get_chat_history(_num: int) -> Array:
 	if chat_node == null:
-		push_error("[Agent] TEXTBOX_SCENE is not loaded")
-		return [StatusCode.INTERNAL_ERR, false]
+		push_error("TEXTBOX_SCENE is not loaded")
+		return [StatusCode.INTERNAL_ERR, "TEXTBOX_SCENE is not loaded"]
 	var history = chat_node.get_history(player_id, _num)
 	return [StatusCode.OK, history]
 
