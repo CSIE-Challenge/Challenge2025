@@ -1,11 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://tjot8qcbgh0h"]
+[gd_scene load_steps=10 format=3 uid="uid://tjot8qcbgh0h"]
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_efhko"]
 [ext_resource type="PackedScene" uid="uid://bkqah8iou5o5t" path="res://scenes/bullets/bullet_3b.tscn" id="2_efhko"]
 [ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://assets/tower/BombPipe.png" id="3_efhko"]
 [ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://assets/tower/BombPipeFire.png" id="4_ue8gv"]
+[ext_resource type="Texture2D" uid="uid://cks5e08ne5gyr" path="res://assets/tower/BombPipeFront.png" id="5_xem8o"]
+[ext_resource type="Texture2D" uid="uid://bc26q33pxh361" path="res://assets/tower/BombPipeBack.png" id="6_qev83"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_efhko"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_xem8o"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -23,19 +25,25 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_efhko")
+"texture": ExtResource("5_xem8o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_xem8o")
 }],
 "loop": false,
 "name": &"Lower",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_efhko")
+"texture": ExtResource("6_qev83")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_qev83")
 }],
 "loop": false,
 "name": &"Upper",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -61,17 +69,18 @@ damage = 90
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_efhko")
-animation = &"Upper"
+position = Vector2(0, -7.68246)
+sprite_frames = SubResource("SpriteFrames_xem8o")
+animation = &"Lower"
 
 [node name="LeftRightMarker" type="Marker2D" parent="Tower"]
-position = Vector2(38.4123, -7.68246)
-
-[node name="UpperMarker" type="Marker2D" parent="Tower"]
-position = Vector2(0, -19.2061)
+position = Vector2(38.4123, -15.3649)
 
 [node name="LowerMarker" type="Marker2D" parent="Tower"]
-position = Vector2(0, 17.9257)
+position = Vector2(0, 3.84123)
+
+[node name="UpperMarker" type="Marker2D" parent="Tower"]
+position = Vector2(0, -44.8143)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

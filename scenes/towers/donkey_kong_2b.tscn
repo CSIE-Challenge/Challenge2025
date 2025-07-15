@@ -20,9 +20,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("3_dhp31")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_dhp31")
 }],
 "loop": false,
 "name": &"default",
@@ -51,10 +48,11 @@ damage = 200
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+position = Vector2(0, -8.96287)
 sprite_frames = SubResource("SpriteFrames_lq6w4")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(24.3278, -3.84123)
+position = Vector2(24.3278, -12.8041)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

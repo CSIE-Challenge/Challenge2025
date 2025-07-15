@@ -50,10 +50,11 @@ damage = 20
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+position = Vector2(0, -7.68246)
 sprite_frames = SubResource("SpriteFrames_lrpro")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(17.9257, -20.4866)
+position = Vector2(17.9257, -28.1691)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

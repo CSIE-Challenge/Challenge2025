@@ -14,10 +14,10 @@ func enable(_global_position: Vector2, map: Map) -> void:
 	global_position = _global_position
 	_map = map
 	target_direction = _get_fort_direction()
-	if sin(target_direction) > 0.5:
+	if sin(target_direction) < -0.5:
 		marker = $Tower/UpperMarker
 		animation = "Upper"
-	elif sin(target_direction) < -0.5:
+	elif sin(target_direction) > 0.5:
 		marker = $Tower/LowerMarker
 		animation = "Lower"
 	else:

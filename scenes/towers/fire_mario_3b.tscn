@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b47ltcag6vqkv" path="res://assets/tower/FireMarioPrepare.png" id="4_bbptl"]
 [ext_resource type="Texture2D" uid="uid://clht2uerh11kk" path="res://assets/tower/FireMarioAttack.png" id="5_8vlwu"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_rxdad"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_ulhc5"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -48,11 +48,11 @@ damage = 20
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_rxdad")
-frame_progress = 0.196116
+position = Vector2(0, -7.68246)
+sprite_frames = SubResource("SpriteFrames_ulhc5")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(23.0474, -11.5237)
+position = Vector2(23.0474, -19.2062)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

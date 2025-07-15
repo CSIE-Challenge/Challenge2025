@@ -51,6 +51,7 @@ damage = 40
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+position = Vector2(0, -8.96287)
 sprite_frames = SubResource("SpriteFrames_oc2kn")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]

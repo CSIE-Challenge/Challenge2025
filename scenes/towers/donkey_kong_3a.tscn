@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dox1c8u154ql4" path="res://assets/tower/DonkeyKongPrepare.png" id="4_nebxk"]
 [ext_resource type="Texture2D" uid="uid://cbgtn5dajnqp7" path="res://assets/tower/DonkeyKongSlam.png" id="4_s45hl"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_s45hl"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_nebxk"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -51,7 +51,8 @@ damage = 80
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_s45hl")
+position = Vector2(0, -8.96287)
+sprite_frames = SubResource("SpriteFrames_nebxk")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
 
