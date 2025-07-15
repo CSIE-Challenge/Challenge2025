@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=3 uid="uid://h2qbu1iudoru"]
+
+[ext_resource type="PackedScene" uid="uid://cjayw2pm0713u" path="res://scenes/round.tscn" id="1_nfqpc"]
+
+[node name="Quad" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Top" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TopLeft" type="SubViewport" parent="VBoxContainer/Top"]
+size = Vector2i(960, 540)
+
+[node name="Round" parent="VBoxContainer/Top/TopLeft" instance=ExtResource("1_nfqpc")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="TopRight" type="SubViewport" parent="VBoxContainer/Top"]
+size = Vector2i(960, 540)
+
+[node name="Round" parent="VBoxContainer/Top/TopRight" instance=ExtResource("1_nfqpc")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="Bottom" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="BottomLeft" type="SubViewport" parent="VBoxContainer/Bottom"]
+size = Vector2i(960, 540)
+
+[node name="Round" parent="VBoxContainer/Bottom/BottomLeft" instance=ExtResource("1_nfqpc")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="BottomRight" type="SubViewport" parent="VBoxContainer/Bottom"]
+size = Vector2i(960, 540)
+
+[node name="Round" parent="VBoxContainer/Bottom/BottomRight" instance=ExtResource("1_nfqpc")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1920.0
+grow_horizontal = 1
+grow_vertical = 1

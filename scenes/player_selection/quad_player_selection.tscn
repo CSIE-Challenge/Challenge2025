@@ -1,0 +1,138 @@
+[gd_scene load_steps=5 format=3 uid="uid://4l3aawlnh0kc"]
+
+[ext_resource type="Script" uid="uid://cpn3eld8gawjq" path="res://scripts/player_selection/quad_play_selection.gd" id="1_t3hm6"]
+[ext_resource type="Texture2D" uid="uid://chktdkl6cqvho" path="res://assets/background.png" id="2_nhaaj"]
+[ext_resource type="PackedScene" uid="uid://dbad1mbl7g3ry" path="res://scenes/player_selection/quad_player_selection_cell.tscn" id="3_ito2d"]
+[ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="4_nhaaj"]
+
+[node name="QuadPlayerSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_t3hm6")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_nhaaj")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color(0.686275, 0.686275, 0.686275, 0.580392)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Top" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TopLeft" type="SubViewportContainer" parent="VBoxContainer/Top"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/Top/TopLeft"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(960, 540)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="VBoxContainer/Top/TopLeft/SubViewport"]
+anchor_mode = 0
+zoom = Vector2(0.5, 0.5)
+
+[node name="SelectionCell" parent="VBoxContainer/Top/TopLeft/SubViewport/Camera2D" instance=ExtResource("3_ito2d")]
+
+[node name="TopRight" type="SubViewportContainer" parent="VBoxContainer/Top"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/Top/TopRight"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(960, 540)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="VBoxContainer/Top/TopRight/SubViewport"]
+anchor_mode = 0
+zoom = Vector2(0.5, 0.5)
+
+[node name="SelectionCell" parent="VBoxContainer/Top/TopRight/SubViewport/Camera2D" instance=ExtResource("3_ito2d")]
+
+[node name="Bottom" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="BottomLeft" type="SubViewportContainer" parent="VBoxContainer/Bottom"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/Bottom/BottomLeft"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(960, 540)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="VBoxContainer/Bottom/BottomLeft/SubViewport"]
+anchor_mode = 0
+zoom = Vector2(0.5, 0.5)
+
+[node name="SelectionCell" parent="VBoxContainer/Bottom/BottomLeft/SubViewport/Camera2D" instance=ExtResource("3_ito2d")]
+
+[node name="BottomRight" type="SubViewportContainer" parent="VBoxContainer/Bottom"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/Bottom/BottomRight"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(960, 540)
+render_target_update_mode = 4
+
+[node name="Camera2D" type="Camera2D" parent="VBoxContainer/Bottom/BottomRight/SubViewport"]
+anchor_mode = 0
+zoom = Vector2(0.5, 0.5)
+
+[node name="SelectionCell" parent="VBoxContainer/Bottom/BottomRight/SubViewport/Camera2D" instance=ExtResource("3_ito2d")]
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -40.0
+offset_right = 310.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BackButton" type="Button" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("4_nhaaj")
+theme_override_font_sizes/font_size = 40
+text = "Back"
+
+[node name="StartButton" type="Button" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("4_nhaaj")
+theme_override_font_sizes/font_size = 40
+text = "Start"
