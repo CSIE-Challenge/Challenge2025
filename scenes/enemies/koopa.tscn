@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://bqy8hdswuj2ve"]
 
 [ext_resource type="Script" uid="uid://bmfv7333bad4c" path="res://scripts/enemy/enemy.gd" id="1_c6fa8"]
-[ext_resource type="Texture2D" uid="uid://c77dkgmbpr2mk" path="res://pixel_art/enemy/Bowser2.png" id="2_c6fa8"]
-[ext_resource type="Texture2D" uid="uid://bg11yx2gmsemu" path="res://pixel_art/enemy/Bowser1.png" id="3_bx1ei"]
+[ext_resource type="Texture2D" uid="uid://c77dkgmbpr2mk" path="res://assets/enemy/Bowser2.png" id="2_c6fa8"]
+[ext_resource type="Texture2D" uid="uid://bg11yx2gmsemu" path="res://assets/enemy/Bowser1.png" id="3_bx1ei"]
 [ext_resource type="PackedScene" uid="uid://d020isqlfgktk" path="res://ui/health_bar.tscn" id="4_bx1ei"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_772r1"]

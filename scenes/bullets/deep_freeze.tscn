@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dncvplv6wj4wm"]
 
-[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_uvkrg"]
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullets/bullet.gd" id="1_uvkrg"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vsod2"]
 load_path = "res://.godot/imported/tile_0001.png-fef6977aebcbecb1ff13f6940dc01e86.ctex"

@@ -2,6 +2,7 @@ extends Control
 
 var screen_size := Vector2.ZERO
 var velocity := Vector2(400, 300)
+var match_score: int = 0
 
 @onready var logo := $Subtitle
 @onready var distros := [
@@ -58,6 +59,11 @@ func _process(delta):
 		velocity.y *= -1
 		logo.position.y = clamp(logo.position.y, 0, screen_size.y - logo_size.y)
 		_change_color()
+
+	if match_score > 0:
+		$MatchScore.text = "Minigame Score: %d" % match_score
+	if match_score >= 256:
+		get_tree().change_scene_to_file("res://scenes/distro_intro.tscn")
 
 
 func _change_color():

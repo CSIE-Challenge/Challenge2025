@@ -21,7 +21,6 @@ func _ready():
 	enemy_detector.shape.radius = 0.5 * aim_range
 	shooting_timer = Timer.new()
 	self.add_child(shooting_timer)
-	#print(sprite.sprite_frames.get_frame_count(sprite.animation))
 
 
 func _flip_sprite() -> void:
@@ -46,6 +45,9 @@ func _on_reload_timer_timeout() -> void:
 
 
 func _on_fire_bullet() -> void:
+	_check_enemy_state()
+	if target == null:
+		_refresh_target()
 	if target == null:
 		return
 	var origin: Vector2 = $Tower/Marker2D.global_position

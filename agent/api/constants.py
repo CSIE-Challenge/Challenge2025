@@ -168,7 +168,7 @@ class StatusCode(IntEnum):
 
     ILLFORMED_COMMAND = 400
     """
-    呼叫API的參數陣列不符格式。  
+    呼叫 API 的參數陣列不符格式。  
     ex: 參數數量錯誤。
     """
 
@@ -176,16 +176,16 @@ class StatusCode(IntEnum):
     """認證失敗。"""
 
     ILLEGAL_ARGUMENT = 402
-    """API傳入參數型別錯誤。"""
+    """API 傳入參數型別錯誤。"""
 
     COMMAND_ERR = 403
     """指令施放失敗。"""
 
     NOT_FOUND = 404
-    """CommandType不存在。"""
+    """CommandType 不存在。"""
 
     TOO_FREQUENT = 405
-    """最近兩次的API請求相隔時間過短。"""
+    """最近兩次的 API 請求相隔時間過短。"""
 
     NOT_STARTED = 406
     """遊戲尚未開始。"""
@@ -194,7 +194,7 @@ class StatusCode(IntEnum):
     """遊戲暫停中。"""
 
     INTERNAL_ERR = 500
-    """Godot server端出現問題（請向開發組反映，對不起！！！）。"""
+    """Godot server 端出現問題（請向開發組反映，對不起！！！）。"""
 
     CLIENT_ERR = 501
-    """Python client端出現問題（請向開發組反映，對不起！！！）。"""
+    """Python client 端出現問題（請向開發組反映，對不起！！！）。"""

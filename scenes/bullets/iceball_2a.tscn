@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://driufjb0sdxx7"]
 
-[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullet.gd" id="1_mye8v"]
-[ext_resource type="Texture2D" uid="uid://df6h61mwoorfn" path="res://pixel_art/bullet/IceBall.png" id="2_mye8v"]
+[ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullets/bullet.gd" id="1_mye8v"]
+[ext_resource type="Texture2D" uid="uid://df6h61mwoorfn" path="res://assets/bullet/IceBall.png" id="2_mye8v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ayxfj"]
 
