@@ -8,18 +8,29 @@ const TEXTBOX_SCENE = preload("res://scenes/ui/text_box.tscn")
 var always_visible: bool = false
 var color: String = "7fffd4"
 
-@onready var timer: Timer = $ChatTimer
+@onready var system_timer: Timer = $System
+@onready var player_timer = [$Player1, $Player2]
 @onready var scrollbar = $MarginContainer/ScrollContainer
 
 
 func _ready() -> void:
-	timer.start()
-	timer.set_wait_time(randf_range(15, 20))
+	system_timer.start()
+	system_timer.set_wait_time(randf_range(15, 20))
 
 
 func _on_timer_timeout():
-	timer.set_wait_time(randf_range(15, 20))
+	system_timer.set_wait_time(randf_range(15, 20))
 	send_chat_with_sender(0, get_random_messages(), color)
+
+
+func trigger_timer(player_id: int):
+	player_timer[player_id - 1].start()
+
+
+func is_cool_down(player_id: int) -> bool:
+	if player_timer[player_id - 1].is_stopped():
+		return false
+	return true
 
 
 func get_random_messages() -> String:
@@ -42,12 +53,17 @@ func send_chat_with_sender(
 
 	if sender_id == 0:
 		textbox.set_text("[color=%s]%s[/color]" % [chat_name_color, text])
-	elif chat_name_color == "hyper":
-		textbox.set_text(
-			"[rainbow freq=1.0 sat=0.8 val=0.8 speed=0.3][%s][/rainbow]: %s" % [player_name, text]
-		)
 	else:
-		textbox.set_text("[color=%s][%s][/color] %s" % [chat_name_color, player_name, text])
+		trigger_timer(sender_id)
+		if chat_name_color == "hyper":
+			textbox.set_text(
+				(
+					"[rainbow freq=1.0 sat=0.8 val=0.8 speed=0.3][%s][/rainbow]: %s"
+					% [player_name, text]
+				)
+			)
+		else:
+			textbox.set_text("[color=%s][%s][/color] %s" % [chat_name_color, player_name, text])
 	textbox.set_meta("sender", sender_id)
 	textbox.set_line_height(send_pixelcat)
 	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
