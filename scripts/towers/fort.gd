@@ -26,7 +26,7 @@ func enable(_global_position: Vector2, map: Map) -> void:
 		else:
 			marker.position.x = abs(marker.position.x)
 	sprite.set_animation(animation)
-	_on_reload_timer_timeout()
+	reload_timer.start(reload_seconds)
 
 
 func _ready():

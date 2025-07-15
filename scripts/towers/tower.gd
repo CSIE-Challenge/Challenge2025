@@ -6,6 +6,7 @@ enum TargetStrategy { FIRST, LAST, CLOSE }
 enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 
 const ANIMATION_FRAME_DURATION := 0.1
+const PLACEMENT_COOL_DOWN := 0.5
 
 @export var type: TowerType = TowerType.NONE
 @export var level_a: int = 1
@@ -50,9 +51,9 @@ func _ready():
 # Take in the map so the the fort can decide which direction to face
 func enable(_global_position: Vector2, _map: Map) -> void:
 	enabled = true
-	has_cooldowned = true
 	global_position = _global_position
 	AudioManager.tower_place.play()
+	reload_timer.start(reload_seconds)
 
 
 func set_strategy(new_strategy: TargetStrategy) -> void:
