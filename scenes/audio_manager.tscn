@@ -13,6 +13,11 @@
 process_mode = 3
 script = ExtResource("1_8qd8g")
 
+[node name="Match" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_m6ggh")
+volume_db = -10.0
+bus = &"SFX"
+
 [node name="EnemyAttack" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_m6ggh")
 volume_db = -20.0
