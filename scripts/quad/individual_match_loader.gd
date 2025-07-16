@@ -6,8 +6,8 @@
 
 extends Panel
 
-var selector: IndividualPlayerSelection
-var options: Dictionary
+var selector: IndividualPlayerSelection = null
+var options: Dictionary = {}
 
 
 func _ready() -> void:
@@ -22,7 +22,6 @@ func _ready() -> void:
 func init(_options: Dictionary) -> void:
 	options = _options
 	load_options()
-	display_options()
 	visible = true
 
 
@@ -31,6 +30,7 @@ func _process(_delta: float) -> void:
 	$Options/AgentStatusContainer/Connected.visible = connected
 	$Options/AgentStatusContainer/Disconnected.visible = not connected
 	$Options/ProcessStatusLabel.text = selector.process_status_label.text
+	display_options()
 
 
 func load_options() -> void:
@@ -44,7 +44,11 @@ func load_options() -> void:
 
 # the width of AgentScriptLabel is hard-coded because it is tricky to get the right update order
 func display_options() -> void:
+	if options.is_empty():
+		return
 	$PlayerNameLabel.text = options["name"]
-	$Options/AgentScriptLabel.text = selector._truncate_front(options["agent-script"], 400)
+	$Options/AgentScriptLabel.text = Util.truncate_front(
+		self, options["agent-script"], $Options/AgentScriptLabel.size.x
+	)
 	$Options/TokenContainer/Token.text = options["token"]
 	$Options/ApiQuotaContainer/ApiQuota.text = "%d" % options["api-quota"]

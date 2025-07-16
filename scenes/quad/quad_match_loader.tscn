@@ -67,6 +67,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="ConfigTextContainer" type="VBoxContainer" parent="ConfigPanel"]
 layout_mode = 1
@@ -158,16 +159,18 @@ vertical_alignment = 1
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.662745, 0.662745, 0.662745, 1)
 theme_override_font_sizes/normal_font_size = 34
 bbcode_enabled = true
-text = "[color=a9a9a9]uwu.json[/color]"
+text = "(empty)"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FileDialog" type="FileDialog" parent="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
+[node name="ConfigSelection" type="FileDialog" parent="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
 auto_translate_mode = 1
 title = "Open a File"
 initial_position = 1
@@ -259,5 +262,6 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 50
 text = "Next"
 
+[connection signal="file_selected" from="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer/ConfigSelection" to="." method="_on_config_selection_file_selected"]
 [connection signal="pressed" from="ButtonsContainer/Back" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="ButtonsContainer/Next" to="." method="_on_next_button_pressed"]

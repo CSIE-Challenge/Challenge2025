@@ -5,6 +5,8 @@ extends Control
 var active_section: int = 1
 var map_scene: PackedScene
 
+@onready
+var config_path_panel = $ConfigPanel/ConfigTextContainer/DefaultSettingsContainer/ConfigPathLabel
 @onready var connection_panels = [
 	[
 		$ConnectionPanelContainer/Nw/Left,
@@ -31,10 +33,6 @@ var map_scene: PackedScene
 ]
 
 
-func _ready() -> void:
-	load_config_file("res://data/quad-match.json")
-
-
 func load_config_file(config_path: String) -> void:
 	var data: Dictionary = Util.load_json(config_path)
 	$TitleContainer/TitleLabel.text = data["title"]
@@ -50,6 +48,21 @@ func load_config_file(config_path: String) -> void:
 		for j: int in range(2):
 			var lr: String = ["player-left", "player-right"][j]
 			connection_panels[i][j].init(match_data[lr])
+
+
+func _gui_input(event: InputEvent) -> void:
+	if (
+		event is InputEventMouseButton
+		and event.pressed
+		and event.button_index == MOUSE_BUTTON_LEFT
+		and config_path_panel.get_global_rect().has_point(event.position)
+	):
+		$ConfigPanel/ConfigTextContainer/DefaultSettingsContainer/ConfigSelection.popup()
+
+
+func _on_config_selection_file_selected(path: String) -> void:
+	load_config_file(path)
+	config_path_panel.text = Util.truncate_front(self, path, config_path_panel.size.x)
 
 
 func start_game() -> void:
