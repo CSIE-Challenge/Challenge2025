@@ -286,7 +286,15 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="ChatTimer" type="Timer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+[node name="System" type="Timer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+
+[node name="Player1" type="Timer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+wait_time = 2.0
+one_shot = true
+
+[node name="Player2" type="Timer" parent="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat"]
+wait_time = 2.0
+one_shot = true
 
 [node name="Game2P" parent="Screen/Bottom" node_paths=PackedStringArray("spawner", "status_panel") instance=ExtResource("3_vxv1r")]
 layout_mode = 2
@@ -307,5 +315,5 @@ layout_mode = 1
 
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]
-[connection signal="timeout" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/ChatTimer" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_timer_timeout"]
+[connection signal="timeout" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/System" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_timer_timeout"]
 [connection signal="timeout" from="GameTimer" to="." method="_on_game_timer_timeout"]

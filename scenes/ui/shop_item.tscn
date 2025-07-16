@@ -21,7 +21,6 @@ texture_pressed = ExtResource("3_aty2n")
 stretch_mode = 0
 
 [node name="Cost" type="Label" parent="."]
-z_index = 20
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -31,7 +30,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Name" type="Label" parent="."]
-z_index = 20
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)

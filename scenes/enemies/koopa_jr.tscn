@@ -37,6 +37,7 @@ position = Vector2(0, -8)
 shape = SubResource("CapsuleShape2D_0dixy")
 
 [node name="HealthBar" parent="." instance=ExtResource("4_12xa7")]
+z_index = 50
 offset_top = -40.0
 offset_bottom = -32.0
 

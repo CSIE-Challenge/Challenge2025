@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://dwewqj41wq8uf"]
+[gd_scene load_steps=11 format=3 uid="uid://dwewqj41wq8uf"]
 
 [ext_resource type="Script" uid="uid://xsselfn6s12u" path="res://scripts/audio_manager.gd" id="1_8qd8g"]
 [ext_resource type="AudioStream" uid="uid://djf63mbh4v5of" path="res://assets/audio/tower_place.wav" id="2_3asnw"]
+[ext_resource type="AudioStream" uid="uid://dtkj4aehmfh7i" path="res://assets/audio/MacOS.wav" id="2_064dn"]
 [ext_resource type="AudioStream" uid="uid://cfkljic87grob" path="res://assets/audio/tower_shoot.wav" id="2_liach"]
 [ext_resource type="AudioStream" uid="uid://txe81rba6n8y" path="res://assets/audio/enemy_attack.wav" id="2_m6ggh"]
 [ext_resource type="AudioStream" uid="uid://b043q2vdxa1gt" path="res://assets/audio/button_on_click.wav" id="3_aoitu"]
+[ext_resource type="AudioStream" uid="uid://qkia7y2p8nxa" path="res://assets/audio/Windows.mp3" id="3_ic5jq"]
 [ext_resource type="AudioStream" uid="uid://bpos003h1x5hj" path="res://assets/audio/MainThemeStage1.mp3" id="3_njtn3"]
 [ext_resource type="AudioStream" uid="uid://b5gxkb00c474b" path="res://assets/audio/MainThemeStage2.mp3" id="4_02gw7"]
 [ext_resource type="AudioStream" uid="uid://vqr16ide5skg" path="res://assets/audio/MenuTheme.mp3" id="5_ujhup"]
@@ -12,6 +14,21 @@
 [node name="AudioManager" type="Node"]
 process_mode = 3
 script = ExtResource("1_8qd8g")
+
+[node name="MacOS" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_064dn")
+volume_db = 10.0
+bus = &"SFX"
+
+[node name="Windows" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ic5jq")
+volume_db = 20.0
+bus = &"SFX"
+
+[node name="Match" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_m6ggh")
+volume_db = -10.0
+bus = &"SFX"
 
 [node name="EnemyAttack" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_m6ggh")

@@ -1,8 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://dg2gd6kwtimkl"]
+[gd_scene load_steps=5 format=3 uid="uid://dg2gd6kwtimkl"]
 
 [ext_resource type="Texture2D" uid="uid://ddeox1r14ky3s" path="res://assets/distro/windows.png" id="1_0j6dc"]
+[ext_resource type="Script" uid="uid://cftqym8vwuoq5" path="res://ui/distro/distro.gd" id="2_hl2wj"]
 
-[node name="Arch" type="RigidBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_0j6dc"]
+radius = 90.0888
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hl2wj"]
+radius = 95.021
+
+[node name="Windows" type="RigidBody2D"]
+script = ExtResource("2_hl2wj")
+distro_type = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(4, 4)
@@ -11,3 +20,13 @@ texture = ExtResource("1_0j6dc")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 scale = Vector2(4, 4)
 polygon = PackedVector2Array(-11, -15, -19, 12, -11, 11, -5, 15, 11, 16, 19, -15, 14, -11, 8, -11, 4, -15, -7, -16)
+
+[node name="Match" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Match"]
+shape = SubResource("CircleShape2D_0j6dc")
+
+[node name="Click" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Click"]
+shape = SubResource("CircleShape2D_hl2wj")
