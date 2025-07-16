@@ -81,7 +81,6 @@ focus_neighbor_top = NodePath("../Quit")
 theme_override_font_sizes/font_size = 56
 theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
-disabled = true
 text = "Quad"
 
 [node name="About" type="Button" parent="VBoxContainer"]
@@ -204,6 +203,7 @@ wait_time = 0.2
 autostart = true
 
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quad" to="." method="_on_quad_pressed"]
 [connection signal="pressed" from="VBoxContainer/About" to="." method="_on_about_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
