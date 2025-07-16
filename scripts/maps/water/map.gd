@@ -47,5 +47,5 @@ func _on_input_event(_viewport, event: InputEvent, _shape_idx) -> void:
 		creature_clicked = true
 		_on_game_manual_control_changed(self.game.is_manually_controlled)
 
-		var secret_scene = load("res://scenes/maps/water/egg-hint.tscn").instantiate()
+		var secret_scene = load("res://scenes/maps/water/storyline-hint.tscn").instantiate()
 		get_tree().get_root().add_child(secret_scene)

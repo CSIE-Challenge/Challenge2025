@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b3rraug7dskmf"]
 
-[ext_resource type="Script" uid="uid://cuqa8lggg7co7" path="res://scripts/maps/water/egg-triggered.gd" id="1_ph8ny"]
+[ext_resource type="Script" uid="uid://cuqa8lggg7co7" path="res://scripts/maps/water/storyline-triggered.gd" id="1_ph8ny"]
 [ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="1_sdw44"]
 
 [sub_resource type="SystemFont" id="SystemFont_aleiu"]
@@ -76,7 +76,7 @@ _data = {
 &"text-reveal": SubResource("Animation_u0c1o")
 }
 
-[node name="EasterEggTriggered" type="Control"]
+[node name="StorylineTriggered" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_ph8ny")
@@ -138,4 +138,8 @@ libraries = {
 &"": SubResource("AnimationLibrary_h3c2p")
 }
 
+[node name="BGMTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="BGMTimer" to="." method="_on_bgm_timer_timeout"]

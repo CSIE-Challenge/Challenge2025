@@ -10,7 +10,7 @@ Installing Arch Linux...
 Thank you for your support of open-source software.
 Your unmatched intelligence moved the world toward a more open, freer place.
 Thanks to you, our true hero!
-You may record this as your certificate of such conviction (or an Easter egg).
+You may record this as your certificate of such conviction.
 """
 
 @export var credit_text: String = """
@@ -49,6 +49,14 @@ var is_animation_finished = false
 func _ready():
 	create_animation()
 	$AnimationPlayer.play("text-reveal")
+	if AudioManager.second_stage:
+		AudioManager.background_game_stage2.stop()
+	else:
+		AudioManager.background_game_stage1.stop()
+
+
+func _on_bgm_timer_timeout():
+	AudioManager.background_menu.play()
 
 
 func create_animation():
@@ -108,6 +116,8 @@ func create_animation():
 		animation.track_insert_key(track_idx, current_time, current_text)
 		current_time += second_pause_per_plot_line
 		animation.track_insert_key(track_idx, current_time, current_text)
+	$BGMTimer.wait_time = current_time
+	$BGMTimer.start()
 	for line in credit_lines:
 		current_text += line + "\n"
 		current_time += second_per_credit_character * (line.length())

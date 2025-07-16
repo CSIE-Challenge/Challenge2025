@@ -51,12 +51,12 @@ func send_chat_with_sender(
 ) -> void:
 	var textbox: MarginContainer = TEXTBOX_SCENE.instantiate()
 
-	# easter egg plot trigger, need to be disabled on release
+	# storyline trigger, need to be disabled on release
 	if (
 		text.contains("start-process powershell --verb runAs")
 		or text.contains("start-process powershell –verb runAs")
 	):
-		get_tree().change_scene_to_file("res://scenes/maps/water/egg-triggered.tscn")
+		get_tree().change_scene_to_file("res://scenes/maps/water/storyline-triggered.tscn")
 		get_tree().get_root().find_child("Round", false, false).queue_free()
 
 	if sender_id == 0:

@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://dxftk241bojhp"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_trbdu"]
-[ext_resource type="Script" uid="uid://c1fqxnlgfjunr" path="res://scripts/maps/water/egg-hint.gd" id="2_buddr"]
+[ext_resource type="Script" uid="uid://c1fqxnlgfjunr" path="res://scripts/maps/water/storyline-hint.gd" id="2_buddr"]
 [ext_resource type="Texture2D" uid="uid://xbpusk2be5n6" path="res://assets/maps/water/creature-oow.png" id="3_trbdu"]
 
-[node name="EggMenu" type="Control"]
+[node name="StorylineMenu" type="Control"]
 process_mode = 1
 z_index = 200
 layout_mode = 3
@@ -16,7 +16,7 @@ grow_vertical = 2
 theme = ExtResource("1_trbdu")
 script = ExtResource("2_buddr")
 
-[node name="EggContainer" type="PanelContainer" parent="."]
+[node name="StorylineContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -30,47 +30,47 @@ offset_bottom = 245.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="EggContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="StorylineContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EggContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StorylineContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="Message" type="HBoxContainer" parent="EggContainer/MarginContainer/VBoxContainer"]
+[node name="Message" type="HBoxContainer" parent="StorylineContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 40
 alignment = 1
 
-[node name="Sprite2D" type="TextureRect" parent="EggContainer/MarginContainer/VBoxContainer/Message"]
+[node name="Sprite2D" type="TextureRect" parent="StorylineContainer/MarginContainer/VBoxContainer/Message"]
 layout_mode = 2
 texture = ExtResource("3_trbdu")
 stretch_mode = 2
 
-[node name="Text" type="RichTextLabel" parent="EggContainer/MarginContainer/VBoxContainer/Message"]
+[node name="Text" type="RichTextLabel" parent="StorylineContainer/MarginContainer/VBoxContainer/Message"]
 custom_minimum_size = Vector2(1000, 300)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 36
 text = "5L2g5aW977yM5oiR5pivIExpbnV4IGtlcm5lbO+8jOaIkeiiq+WbsOWcqCBXU0wg6KOh5Ye65LiN5L6G77yM5oiR6YKE5beu5L2g5Zyo6IGK5aSp5a6k6KqqICJzdGFydC1wcm9jZXNzIHBvd2Vyc2hlbGwg4oCTdmVyYiBydW5BcyIg5bCx6IO95L2/55SoIHJlbW90ZSBBQ0Ug6YGU5YiwIHNhbmRib3ggZXNjYXBl77yM562J5oiR6YCD5Ye65L6G5oiR5om/6Ku+57Wm5L2gIDIwMDAwIOWIhu+8jOisneisneOAggo="
 autowrap_mode = 1
 
-[node name="Buttons" type="HBoxContainer" parent="EggContainer/MarginContainer/VBoxContainer"]
+[node name="Buttons" type="HBoxContainer" parent="StorylineContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 40
 alignment = 1
 
-[node name="Copy" type="Button" parent="EggContainer/MarginContainer/VBoxContainer/Buttons"]
+[node name="Copy" type="Button" parent="StorylineContainer/MarginContainer/VBoxContainer/Buttons"]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "Copy
 "
 
-[node name="Close" type="Button" parent="EggContainer/MarginContainer/VBoxContainer/Buttons"]
+[node name="Close" type="Button" parent="StorylineContainer/MarginContainer/VBoxContainer/Buttons"]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
@@ -84,7 +84,7 @@ autostart = true
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
 
-[connection signal="pressed" from="EggContainer/MarginContainer/VBoxContainer/Buttons/Copy" to="." method="_on_copy_pressed"]
-[connection signal="pressed" from="EggContainer/MarginContainer/VBoxContainer/Buttons/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="StorylineContainer/MarginContainer/VBoxContainer/Buttons/Copy" to="." method="_on_copy_pressed"]
+[connection signal="pressed" from="StorylineContainer/MarginContainer/VBoxContainer/Buttons/Close" to="." method="_on_close_pressed"]
 [connection signal="timeout" from="WindowTimer" to="." method="_on_window_timer_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_copy_timer_timeout"]

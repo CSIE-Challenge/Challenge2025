@@ -1,8 +1,8 @@
 extends Control
 
 @onready var copy_timer = $Timer
-@onready var textbox = $EggContainer/MarginContainer/VBoxContainer/Message/Text
-@onready var copy_button = $EggContainer/MarginContainer/VBoxContainer/Buttons/Copy
+@onready var textbox = $StorylineContainer/MarginContainer/VBoxContainer/Message/Text
+@onready var copy_button = $StorylineContainer/MarginContainer/VBoxContainer/Buttons/Copy
 
 
 func _notification(what):
@@ -20,7 +20,7 @@ func _on_copy_pressed() -> void:
 	copy_timer.stop()
 	copy_timer.start()
 	copy_button.text = "Copied!"
-	DisplayServer.clipboard_set($EggContainer/MarginContainer/VBoxContainer/Message/Text.text)
+	DisplayServer.clipboard_set(textbox.text)
 
 
 func _on_close_pressed() -> void:
