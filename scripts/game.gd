@@ -31,6 +31,8 @@ var chat_total_length := 0
 var player_selection: IndividualPlayerSelection = null
 var money: int = 300
 var income_per_second = 50
+var kill_reward_within_second = 0
+var display_kill_reward = 0
 var income_rate: int = 1
 var chat_name_color: String = "ffffff"
 var built_towers: Dictionary = {}
@@ -182,6 +184,8 @@ func _on_constant_income_timer_timeout() -> void:
 	var next_money = (money + income_rate * income_per_second) as int
 	money_earned += next_money - money
 	money = next_money
+	display_kill_reward = kill_reward_within_second
+	kill_reward_within_second = 0
 
 
 func _on_interest_timer_timeout() -> void:
@@ -325,7 +329,13 @@ func _process(_delta) -> void:
 	if !frozen:
 		display_score = score
 	status_panel.find_child("Money").text = "%d" % money
-	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
+	status_panel.find_child("Income").text = "+%d" % income_per_second
+	if income_rate > 1:
+		status_panel.find_child("Income").text += " ×%d" % income_rate
+	if display_kill_reward > 0:
+		status_panel.find_child("KillReward").text = "+%d" % display_kill_reward
+	else:
+		status_panel.find_child("KillReward").text = ""
 
 
 func _unhandled_input(event: InputEvent) -> void:

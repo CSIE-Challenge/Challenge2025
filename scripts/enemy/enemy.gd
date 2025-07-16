@@ -58,6 +58,9 @@ func take_damage(amount: int):
 		if source == Game.EnemySource.SYSTEM:
 			game.score += kill_reward  # == 0.1 * damage
 			game.money += kill_reward
+			game.money_earned += kill_reward
+			game.display_kill_reward += kill_reward
+			game.kill_reward_within_second += kill_reward
 		_on_killed()
 
 
