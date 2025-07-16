@@ -2,12 +2,12 @@
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_myx47"]
 [ext_resource type="Script" uid="uid://c7xgg0gcgxebh" path="res://scripts/pause_menu.gd" id="1_n87rw"]
-[ext_resource type="Script" uid="uid://cv32hx3ajiafn" path="res://ui/settings.gd" id="3_5d2l8"]
+[ext_resource type="Script" path="res://ui/settings.gd" id="3_5d2l8"]
 [ext_resource type="PackedScene" uid="uid://3xue1fv3fh54" path="res://ui/volume_slider.tscn" id="3_kukqi"]
 
 [node name="PauseMenu" type="Control"]
 process_mode = 3
-z_index = 50
+z_index = 200
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
