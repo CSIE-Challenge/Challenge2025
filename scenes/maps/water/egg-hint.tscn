@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_trbdu"]
 [ext_resource type="Script" uid="uid://c1fqxnlgfjunr" path="res://scripts/maps/water/egg-hint.gd" id="2_buddr"]
-[ext_resource type="Texture2D" uid="uid://dbp24t4tngy4n" path="res://assets/maps/water/creature.png" id="3_glc4e"]
+[ext_resource type="Texture2D" uid="uid://xbpusk2be5n6" path="res://assets/maps/water/creature-oow.png" id="3_trbdu"]
 
 [node name="EggMenu" type="Control"]
 process_mode = 1
@@ -48,7 +48,7 @@ alignment = 1
 
 [node name="Sprite2D" type="TextureRect" parent="EggContainer/MarginContainer/VBoxContainer/Message"]
 layout_mode = 2
-texture = ExtResource("3_glc4e")
+texture = ExtResource("3_trbdu")
 stretch_mode = 2
 
 [node name="Text" type="RichTextLabel" parent="EggContainer/MarginContainer/VBoxContainer/Message"]
