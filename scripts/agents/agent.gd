@@ -108,7 +108,7 @@ func _get_game_status() -> Array:
 
 
 func _get_all_terrain() -> Array:
-	var map = game_self.get_node("Map2")
+	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "Error: cannot find map"]
 
@@ -128,7 +128,7 @@ func _get_all_terrain() -> Array:
 
 
 func _get_terrain(_coord: Vector2i) -> Array:
-	var map = game_self.get_node("Map2")
+	var map = game_self.get_node("Map")
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "Error: cannot find map"]
 
@@ -259,7 +259,7 @@ func _get_opponent_path(_fly: bool) -> Array:
 
 #gdlint: disable=max-returns
 func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> Array:
-	var map = game_self.get_node("Map2")
+	var map = game_self.get_node("Map")
 
 	if not map:
 		return [StatusCode.INTERNAL_ERR, "Error: cannot find map"]
@@ -376,7 +376,7 @@ func _get_unit_cooldown(_type: EnemyType) -> Array:
 func _get_enemy_info(enemy: Area2D) -> Dictionary:
 	var type: EnemyType = enemy.type
 	var data: Dictionary = {}
-	var map = game_self.get_node("Map2")
+	var map = game_self.get_node("Map")
 	if not map:
 		return {}
 
