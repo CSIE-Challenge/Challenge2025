@@ -29,7 +29,8 @@ enum CommandType {
 	SET_CHAT_NAME_COLOR = 403,
 	PIXELCAT = 501,
 	GET_DEVS = 502,
-	SET_NAME = 503
+	SET_NAME = 503,
+	BOO = 601
 }
 
 const MAX_LOGGING_REQUEST = 100
@@ -100,6 +101,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.SET_CHAT_NAME_COLOR, [TYPE_STRING], _set_chat_name_color),
 		CommandHandler.new(CommandType.SET_NAME, [TYPE_STRING], _set_name),
 		CommandHandler.new(CommandType.PIXELCAT, [], _pixel_cat),
+		CommandHandler.new(CommandType.BOO, [], boo)
 	]
 	for handler in handlers:
 		if _command_handlers.has(handler.command_id):

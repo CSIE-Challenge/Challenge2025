@@ -31,6 +31,7 @@ class CommandType(IntEnum):
     PIXELCAT = 501
     GET_DEVS = 502
     SET_NAME = 503
+    BOO = 601
 
 
 class GameStatus(IntEnum):

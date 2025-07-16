@@ -562,4 +562,17 @@ func _set_name(_name: String) -> Array:
 	game_self.player_selection.get_node("PlayerIdentifierLabel").text = name
 	return [StatusCode.OK]
 
+
+# Please don't activate this until sometime near deadline
+func boo() -> Array:
+	return [StatusCode.COMMAND_ERR, "Not yet implemented"]
+	#var value
+	#if randf() < 0.95:
+	#value = randi_range(-10, 0)
+	#game_self.on_boo_called(value)
+	#return [StatusCode.OK, false]
+	#else:
+	#value = randi_range(400, 440)
+	#game_self.on_boo_called(value)
+	#return [StatusCode.OK, true]
 #endregion

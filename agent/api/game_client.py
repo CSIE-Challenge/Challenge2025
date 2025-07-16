@@ -573,3 +573,22 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
+    
+    @game_command(CommandType.BOO, [], bool)
+    def boo(self) -> bool:
+        """
+        # Boo
+        使用害羞幽靈偷取對方金錢，期望上每次呼叫皆可幫助你創造 40 元的經濟差距。
+
+        ## Parameters
+        無參數。
+
+        ## Returns
+        這個函數回傳一個布林值，表示該次偷竊是否成功。
+
+        ## Example
+        ```python
+        agent.boo()
+        ```
+        """
+        raise NotImplementedError

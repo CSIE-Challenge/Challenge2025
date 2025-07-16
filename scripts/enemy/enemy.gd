@@ -59,7 +59,8 @@ func take_damage(amount: int):
 			game.score += kill_reward  # == 0.1 * damage
 			game.money += kill_reward
 			game.money_earned += kill_reward
-			game.display_kill_reward += kill_reward
+			if not game.during_boo:
+				game.display_kill_reward += kill_reward
 			game.kill_reward_within_second += kill_reward
 		_on_killed()
 
