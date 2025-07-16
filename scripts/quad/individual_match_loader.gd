@@ -16,12 +16,14 @@ func _ready() -> void:
 	)
 	selector.visible = false
 	add_child(selector)
+	visible = false
 
 
 func init(_options: Dictionary) -> void:
 	options = _options
 	load_options()
 	display_options()
+	visible = true
 
 
 func _process(_delta: float) -> void:

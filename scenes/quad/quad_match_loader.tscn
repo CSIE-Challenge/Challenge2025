@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://chktdkl6cqvho" path="res://assets/background.png" id="2_i6rtq"]
 [ext_resource type="Script" uid="uid://dt5fx0vlrsjq7" path="res://scripts/quad/quad_match_loader.gd" id="2_nshnb"]
 [ext_resource type="PackedScene" uid="uid://b3d8xc0rij8wv" path="res://scenes/quad/individual_match_loader.tscn" id="3_i6rtq"]
-[ext_resource type="Texture2D" uid="uid://cwo4kf3q5uoqx" path="res://assets/background_image/random_map.png" id="4_nshnb"]
+[ext_resource type="PackedScene" uid="uid://731r7v4rempo" path="res://scenes/quad/individual_map_loader.tscn" id="4_nshnb"]
 
 [node name="QuadMatchSelection" type="Control"]
 layout_mode = 3
@@ -37,49 +37,43 @@ grow_vertical = 2
 [node name="TitleContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.1
-anchor_right = 0.5
-anchor_bottom = 0.1
+anchor_left = 0.0854167
+anchor_top = -0.0287037
+anchor_right = 0.914583
+anchor_bottom = 0.127778
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
 theme_override_constants/separation = 30
+metadata/_edit_use_anchors_ = true
 
 [node name="TitleLabel" type="Label" parent="TitleContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 70
-text = "喵喵喵"
+text = "至尊終身特選極享體驗限量貴賓卡友
+全域通行頂級榮耀特選尊貴專屬大使巔峰挑戰賽"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ConfigContainer" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -815.0
-offset_top = -320.0
-offset_right = 815.0
-offset_bottom = 320.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 50
-
-[node name="ConfigPanel" type="Panel" parent="ConfigContainer"]
+[node name="ConfigPanel" type="Panel" parent="."]
 custom_minimum_size = Vector2(1100, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ConfigTextContainer" type="VBoxContainer" parent="ConfigContainer/ConfigPanel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
-anchor_top = 0.05
+anchor_top = 0.15
 anchor_right = 0.9
+anchor_bottom = 0.85
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ConfigTextContainer" type="VBoxContainer" parent="ConfigPanel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.05
+anchor_right = 0.98
 anchor_bottom = 0.95
 grow_horizontal = 2
 grow_vertical = 2
@@ -87,78 +81,41 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 15
 alignment = 1
 
-[node name="MapNameContainer" type="HBoxContainer" parent="ConfigContainer/ConfigPanel/ConfigTextContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 50
-alignment = 1
-
-[node name="LabelL" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/MapNameContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_font_sizes/font_size = 70
-text = "MAP ["
-
-[node name="LabelM" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/MapNameContainer"]
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 70
-text = "喵喵喵喵"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="LabelR" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/MapNameContainer"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_font_sizes/font_size = 70
-text = "]"
-
-[node name="Spacing1" type="Panel" parent="ConfigContainer/ConfigPanel/ConfigTextContainer"]
+[node name="Spacing1" type="Panel" parent="ConfigPanel/ConfigTextContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
 
-[node name="TeamNamesContainer" type="GridContainer" parent="ConfigContainer/ConfigPanel/ConfigTextContainer"]
+[node name="MapConfigContainer" type="GridContainer" parent="ConfigPanel/ConfigTextContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 100
-theme_override_constants/v_separation = 50
+theme_override_constants/v_separation = 20
 columns = 2
 
-[node name="Nw" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/TeamNamesContainer"]
+[node name="Nw" parent="ConfigPanel/ConfigTextContainer/MapConfigContainer" instance=ExtResource("4_nshnb")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Team 1 - Team 2"
 
-[node name="Ne" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/TeamNamesContainer"]
+[node name="Ne" parent="ConfigPanel/ConfigTextContainer/MapConfigContainer" instance=ExtResource("4_nshnb")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Team 1 - Team 2"
 
-[node name="Sw" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/TeamNamesContainer"]
+[node name="Sw" parent="ConfigPanel/ConfigTextContainer/MapConfigContainer" instance=ExtResource("4_nshnb")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Team 1 - Team 2"
 
-[node name="Se" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/TeamNamesContainer"]
+[node name="Se" parent="ConfigPanel/ConfigTextContainer/MapConfigContainer" instance=ExtResource("4_nshnb")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "Team 1 - Team 2"
 
-[node name="Spacing2" type="Panel" parent="ConfigContainer/ConfigPanel/ConfigTextContainer"]
+[node name="Spacing2" type="Panel" parent="ConfigPanel/ConfigTextContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
 
-[node name="DefaultSettingsContainer" type="HBoxContainer" parent="ConfigContainer/ConfigPanel/ConfigTextContainer"]
+[node name="DefaultSettingsContainer" type="HBoxContainer" parent="ConfigPanel/ConfigTextContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 50
 alignment = 1
 
-[node name="ManualControlLabel" type="RichTextLabel" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
+[node name="ManualControlLabel" type="RichTextLabel" parent="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -168,9 +125,10 @@ text = "[color=a9a9a9]Manual Control[/color] [color=dc5050]OFF[/color]"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
+horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AutoRestartLabel" type="RichTextLabel" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
+[node name="AutoRestartLabel" type="RichTextLabel" parent="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -183,7 +141,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PythonVersionLabel" type="RichTextLabel" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
+[node name="PythonVersionLabel" type="RichTextLabel" parent="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -193,62 +151,31 @@ text = "[color=a9a9a9]Python[/color] 3.13.5"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="MatchConfigContainer" type="HBoxContainer" parent="ConfigContainer/ConfigPanel/ConfigTextContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 50
-alignment = 1
-
-[node name="ConfigTitleLabel" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/MatchConfigContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_font_sizes/font_size = 34
-text = "Config JSON"
-
-[node name="ConfigPathLabel" type="Label" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/MatchConfigContainer"]
-custom_minimum_size = Vector2(450, 0)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_font_sizes/font_size = 34
-text = "....................ata/game.json"
 horizontal_alignment = 1
 vertical_alignment = 1
-clip_text = true
-text_overrun_behavior = 3
 
-[node name="Button" type="Button" parent="ConfigContainer/ConfigPanel/ConfigTextContainer/MatchConfigContainer"]
+[node name="ConfigPathLabel" type="RichTextLabel" parent="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
+clip_contents = false
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_colors/font_hover_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_colors/font_outline_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_colors/font_focus_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_colors/font_pressed_color = Color(0.662745, 0.662745, 0.662745, 1)
-theme_override_font_sizes/font_size = 34
-text = "Select"
-flat = true
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "[color=a9a9a9]uwu.json[/color]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="MapPreviewContainer" type="Panel" parent="ConfigContainer"]
-self_modulate = Color(1, 1, 1, 0)
-clip_contents = true
-custom_minimum_size = Vector2(480, 640)
-layout_mode = 2
-
-[node name="MapPreviewTexture" type="TextureRect" parent="ConfigContainer/MapPreviewContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_nshnb")
-expand_mode = 5
-stretch_mode = 5
+[node name="FileDialog" type="FileDialog" parent="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer"]
+auto_translate_mode = 1
+title = "Open a File"
+initial_position = 1
+size = Vector2i(1080, 720)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+show_hidden_files = true
 
 [node name="ConnectionPanelContainer" type="GridContainer" parent="."]
 visible = false
