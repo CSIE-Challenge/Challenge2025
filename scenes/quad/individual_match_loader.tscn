@@ -1,0 +1,131 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3d8xc0rij8wv"]
+
+[ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_t32a6"]
+
+[node name="Panel1P" type="Panel"]
+custom_minimum_size = Vector2(448, 310)
+offset_right = 448.0
+offset_bottom = 310.0
+theme = ExtResource("1_t32a6")
+
+[node name="PlayerIdentifierLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.15
+theme_override_font_sizes/font_size = 50
+text = "Player 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Options" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.25
+anchor_right = 0.95
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AgentScriptLabel" type="Label" parent="Options"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "...pixelcat/agent/sample.py"
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Panel7" type="Panel" parent="Options"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="TokenContainer" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Options/TokenContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Token"
+vertical_alignment = 1
+
+[node name="TokenLabel" type="Label" parent="Options/TokenContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
+text = "48763abc"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Panel8" type="Panel" parent="Options"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="TokenContainer2" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Options/TokenContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "API Quota"
+vertical_alignment = 1
+
+[node name="TokenLabel" type="Label" parent="Options/TokenContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
+text = "48763"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Panel5" type="Panel" parent="Options"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AgentStatusContainer" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="AgentStatusConnected" type="Label" parent="Options/AgentStatusContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.313726, 0.862745, 0.313726, 1)
+text = "Connected"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AgentStatusDisconnected" type="Label" parent="Options/AgentStatusContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.862745, 0.313726, 0.313726, 1)
+text = "Disconnected"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel6" type="Panel" parent="Options"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="ProcessStatusLabel" type="Label" parent="Options"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
+text = "Terminated (0), restarting"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3

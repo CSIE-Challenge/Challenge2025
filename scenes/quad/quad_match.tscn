@@ -1,0 +1,72 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxoa0bofh8eo"]
+
+[ext_resource type="Script" uid="uid://47qkf1qojv6r" path="res://scripts/quad/quad_match.gd" id="1_dxo5m"]
+
+[node name="QuadMatch" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dxo5m")
+
+[node name="SubViewportContainerNw" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 0.5
+scale = Vector2(0.5, 0.5)
+mouse_filter = 0
+
+[node name="SubViewportNw" type="SubViewport" parent="SubViewportContainerNw"]
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="SubViewportContainerNe" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+scale = Vector2(0.5, 0.5)
+mouse_filter = 0
+
+[node name="SubViewportNe" type="SubViewport" parent="SubViewportContainerNe"]
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="SubViewportContainerSw" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+scale = Vector2(0.5, 0.5)
+mouse_filter = 0
+
+[node name="SubViewportSw" type="SubViewport" parent="SubViewportContainerSw"]
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="SubViewportContainerSe" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+scale = Vector2(0.5, 0.5)
+mouse_filter = 0
+
+[node name="SubViewportSe" type="SubViewport" parent="SubViewportContainerSe"]
+handle_input_locally = false
+gui_disable_input = true
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4

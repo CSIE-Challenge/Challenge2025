@@ -1,0 +1,322 @@
+[gd_scene load_steps=5 format=3 uid="uid://byovo2j0xeerr"]
+
+[ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_ytj5w"]
+[ext_resource type="Texture2D" uid="uid://chktdkl6cqvho" path="res://assets/background.png" id="2_i6rtq"]
+[ext_resource type="PackedScene" uid="uid://b3d8xc0rij8wv" path="res://scenes/quad/individual_match_loader.tscn" id="3_i6rtq"]
+[ext_resource type="Texture2D" uid="uid://de5tsdfnn12c7" path="res://assets/maps/Map3.png" id="4_8sae7"]
+
+[node name="QuadMatchSelection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ytj5w")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_i6rtq")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color(0.686275, 0.686275, 0.686275, 0.580392)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.1
+anchor_right = 0.5
+anchor_bottom = 0.1
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="HBoxContainer3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 70
+text = "無限尊榮至尊黑卡極致禮遇終身會員盃錦標賽"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -815.0
+offset_top = -320.0
+offset_right = 815.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="Panel2" type="Panel" parent="HBoxContainer4"]
+custom_minimum_size = Vector2(1100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer4/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.95
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer4/Panel2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_font_sizes/font_size = 70
+text = "MAP ["
+
+[node name="Label2" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 70
+text = "椰林大道"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_font_sizes/font_size = 70
+text = "]"
+
+[node name="Panel2" type="Panel" parent="HBoxContainer4/Panel2/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="GridContainer" type="GridContainer" parent="HBoxContainer4/Panel2/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 100
+theme_override_constants/v_separation = 50
+columns = 2
+
+[node name="Label" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Team 1 - Team 2"
+
+[node name="Label2" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Team 1 - Team 2"
+
+[node name="Label3" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Team 1 - Team 2"
+
+[node name="Label4" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Team 1 - Team 2"
+
+[node name="Panel" type="Panel" parent="HBoxContainer4/Panel2/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer4/Panel2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer3"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "Manual Control [color=dc5050]OFF[/color]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer3"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "Auto Restart [color=50dc50]ON[/color]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer3"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 34
+bbcode_enabled = true
+text = "Python [color=a9a9a9]3.13.5[/color]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer4/Panel2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 34
+text = "Config JSON"
+
+[node name="Label2" type="Label" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
+theme_override_font_sizes/font_size = 34
+text = "....................ata/game.json"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Button" type="Button" parent="HBoxContainer4/Panel2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "Select"
+flat = true
+
+[node name="Panel" type="Panel" parent="HBoxContainer4"]
+self_modulate = Color(1, 1, 1, 0)
+clip_contents = true
+custom_minimum_size = Vector2(480, 640)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer4/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_8sae7")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="HBoxContainer" type="GridContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -911.0
+offset_top = -325.0
+offset_right = 911.0
+offset_bottom = 325.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 30
+columns = 2
+
+[node name="HBoxContainerNw" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Panel1P" parent="HBoxContainer/HBoxContainerNw" instance=ExtResource("3_i6rtq")]
+layout_mode = 2
+
+[node name="Panel2P" parent="HBoxContainer/HBoxContainerNw" instance=ExtResource("3_i6rtq")]
+layout_mode = 2
+
+[node name="HBoxContainerNe" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Panel1P" parent="HBoxContainer/HBoxContainerNe" instance=ExtResource("3_i6rtq")]
+layout_mode = 2
+
+[node name="Panel2P" parent="HBoxContainer/HBoxContainerNe" instance=ExtResource("3_i6rtq")]
+layout_mode = 2
+
+[node name="HBoxContainerSw" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Panel1P" parent="HBoxContainer/HBoxContainerSw" instance=ExtResource("3_i6rtq")]
+layout_mode = 2
+
+[node name="Panel2P" parent="HBoxContainer/HBoxContainerSw" instance=ExtResource("3_i6rtq")]
+layout_mode = 2
+
+[node name="HBoxContainerSe" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Panel1P" parent="HBoxContainer/HBoxContainerSe" instance=ExtResource("3_i6rtq")]
+layout_mode = 2
+
+[node name="Panel2P" parent="HBoxContainer/HBoxContainerSe" instance=ExtResource("3_i6rtq")]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.9
+anchor_right = 0.5
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="Button" type="Button" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Back"
+
+[node name="Button2" type="Button" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(300, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Start"
