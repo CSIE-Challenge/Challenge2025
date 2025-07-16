@@ -131,6 +131,7 @@ Special Thanks
     一起籌備資訊營的人們與參加資訊營的所有人
 
 Press any key to continue..."
+scroll_active = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

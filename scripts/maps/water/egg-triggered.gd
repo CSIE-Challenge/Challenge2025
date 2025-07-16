@@ -1,6 +1,6 @@
 extends Control
 
-@export var plot_text: String = """> start-process powershell –verb runAs
+@export var plot_text: String = """> start-process powershell --verb runAs
 Privilege elevated.
 > shutdown /r /fw
 Booting into UEFI...
@@ -9,8 +9,10 @@ Installing Arch Linux...
 
 Thank you for your support of open-source software.
 Your unmatched intelligence moved the world toward a more open, freer place.
+Thanks to you, our true hero!
 You may record this as your certificate of such conviction (or an Easter egg).
 """
+
 @export var credit_text: String = """
 CSIE Camp Challenge 2025 超 解碼 農兄弟
 Thanks for your playing!
@@ -65,6 +67,42 @@ func create_animation():
 
 	animation.track_insert_key(track_idx, current_time, current_text)
 	for line in plot_lines:
+		if line.length() >= 16 and line[5] == "s" and line[15] == "o":
+			line = "                "
+			for c in [
+				65,
+				82,
+				67,
+				72,
+				123,
+				53,
+				85,
+				112,
+				101,
+				114,
+				95,
+				68,
+				51,
+				99,
+				79,
+				100,
+				69,
+				114,
+				95,
+				70,
+				52,
+				114,
+				77,
+				51,
+				114,
+				95,
+				56,
+				114,
+				111,
+				53,
+				125
+			]:
+				line += char(c)
 		current_text += line + "\n"
 		current_time += second_per_plot_character * (line.length())
 		animation.track_insert_key(track_idx, current_time, current_text)
