@@ -26,6 +26,7 @@ func init(_options: Dictionary, python_interpreter_path: String) -> void:
 
 	options = _options
 	selector.player_identifier = options["name"]
+	selector.web_agent._agent_identifier = options["name"]
 	var token = options["token"]
 	ApiServer.update_token(selector.web_agent._ws, token)
 	# TODO: pass API quota to the game
