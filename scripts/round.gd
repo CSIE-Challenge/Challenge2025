@@ -1,6 +1,8 @@
 class_name Round
 extends Control
 
+signal game_finished(stats: Array[EndScreen.Statistics])
+
 const GAME_DURATION = 300.0
 const FREEZE_TIME = 60.0
 const FREEZE_ANIMATION = 2.5
@@ -141,3 +143,4 @@ func _on_game_timer_timeout():
 	AudioManager.background_menu.play()
 	get_parent().add_child(end_scene)
 	queue_free()
+	game_finished.emit(end_scene.statistics)

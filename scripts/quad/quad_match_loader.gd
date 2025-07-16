@@ -4,6 +4,9 @@ extends Control
 # 2: connection panels (second page)
 var active_section: int = 1
 
+var match_config: Dictionary = {}
+var config_path: String
+
 @onready
 var config_path_panel = $ConfigPanel/ConfigTextContainer/DefaultSettingsContainer/ConfigPathLabel
 @onready var connection_panels = [
@@ -32,8 +35,10 @@ var config_path_panel = $ConfigPanel/ConfigTextContainer/DefaultSettingsContaine
 ]
 
 
-func load_config_file(config_path: String) -> void:
-	var data: Dictionary = Util.load_json(config_path)
+func load_config_file(_config_path: String) -> void:
+	config_path = _config_path
+	var data: Dictionary = Util.load_json(_config_path)
+	match_config = data
 	$TitleContainer/TitleLabel.text = data["title"]
 
 	for i: int in range(4):
@@ -91,7 +96,7 @@ func start_game() -> void:
 		selection_2p.python_subprocess.reparent(the_round)
 		the_rounds.push_back(the_round)
 	var the_quad = preload("res://scenes/quad/quad_match.tscn").instantiate()
-	the_quad.set_rounds(the_rounds)
+	the_quad.init(config_path, match_config, the_rounds)
 	get_tree().get_root().add_child(the_quad)
 	queue_free()
 

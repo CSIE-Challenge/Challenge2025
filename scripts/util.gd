@@ -31,7 +31,9 @@ const L_PATH = 10
 static func load_json(file_path: String):
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	if file == null:
-		push_error("[Util] Failed to open file: ", file_path)
+		push_error(
+			"[Util] Failed to open file: %s, reason: %d" % [file_path, FileAccess.get_open_error()]
+		)
 		return null
 
 	var content = file.get_as_text()
@@ -43,6 +45,20 @@ static func load_json(file_path: String):
 		return null
 
 	return json_parsed
+
+
+static func save_json(file_path: String, data: Variant) -> void:
+	var file = FileAccess.open(file_path, FileAccess.WRITE)
+	if file == null:
+		push_error(
+			"[Util] Failed to open file: %s, reason: %d" % [file_path, FileAccess.get_open_error()]
+		)
+		return
+
+	var dumped = JSON.stringify(data, "  ")
+	if not file.store_string(dumped):
+		push_error("[Util] Failed to write data to file: ", file_path)
+	file.close()
 
 
 static func get_string_width(node: Control, content: String) -> float:
