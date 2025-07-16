@@ -178,12 +178,12 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 
 [node name="Version" type="HBoxContainer" parent="VersionMargin"]
+z_index = 150
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 2
 
 [node name="Version" type="Label" parent="VersionMargin/Version"]
-z_index = 150
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
