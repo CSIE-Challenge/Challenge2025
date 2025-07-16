@@ -62,7 +62,8 @@ func _gui_input(event: InputEvent) -> void:
 
 func _on_config_selection_file_selected(path: String) -> void:
 	load_config_file(path)
-	config_path_panel.text = Util.truncate_front(self, path, config_path_panel.size.x)
+	# hard-code the width, otherwise getting the right width could be tricky
+	config_path_panel.text = Util.truncate_front(self, path, 360)
 	$ButtonsContainer/Next.disabled = false
 
 
