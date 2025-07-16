@@ -72,7 +72,7 @@ func toggle_all_agents(run: bool) -> void:
 			var subproc = connection_panels[i][j].selector.python_subprocess
 			if run:
 				subproc.run_subprocess()
-				print(subproc._state, subproc.python_interpreter_path, subproc.python_script_path)
+				subproc.set_auto_restart(true)
 			else:
 				subproc.kill_subprocess()
 
