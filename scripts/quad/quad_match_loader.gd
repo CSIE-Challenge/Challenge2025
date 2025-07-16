@@ -3,7 +3,6 @@ extends Control
 # 1: config (first page)
 # 2: connection panels (second page)
 var active_section: int = 1
-var map_scene: PackedScene
 
 @onready
 var config_path_panel = $ConfigPanel/ConfigTextContainer/DefaultSettingsContainer/ConfigPathLabel
@@ -79,7 +78,22 @@ func toggle_all_agents(run: bool) -> void:
 
 
 func start_game() -> void:
-	pass
+	var the_rounds: Array[Round] = []
+	for i in range(4):
+		var map_scene = map_panels[i].map_scene
+		var selection_1p = connection_panels[i][0].selector
+		var selection_2p = connection_panels[i][1].selector
+		var the_round = preload("res://scenes/round.tscn").instantiate()
+		the_round.system_controlled = true
+		the_round.set_controllers(selection_1p, selection_2p, 0)
+		the_round.set_maps(map_scene)
+		selection_1p.python_subprocess.reparent(the_round)
+		selection_2p.python_subprocess.reparent(the_round)
+		the_rounds.push_back(the_round)
+	var the_quad = preload("res://scenes/quad/quad_match.tscn").instantiate()
+	the_quad.set_rounds(the_rounds)
+	get_tree().get_root().add_child(the_quad)
+	queue_free()
 
 
 func _on_next_button_pressed() -> void:
@@ -93,6 +107,8 @@ func _on_next_button_pressed() -> void:
 			toggle_all_agents(true)
 		2:
 			# proceed to games
+			AudioManager.button_on_click.play()
+			AudioManager.background_menu.stop()
 			start_game()
 
 

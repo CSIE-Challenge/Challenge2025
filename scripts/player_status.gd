@@ -3,6 +3,11 @@ extends TextureRect
 var player_selection: IndividualPlayerSelection
 
 
+func _init() -> void:
+	# keep updating connection status (the signal light) when the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
 func link_player_selection(_player_selection: IndividualPlayerSelection) -> void:
 	# add and hide the player selection panel
 	player_selection = _player_selection

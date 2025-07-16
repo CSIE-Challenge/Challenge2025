@@ -12,6 +12,9 @@ const FREEZE_ANIMATION = 2.5
 
 var manual_controlled: int
 
+# when turned on, pressing ESC does not pause the game or exit the game on end screen
+var system_controlled: bool = false
+
 @onready var game_timer: Timer = $GameTimer
 
 
@@ -37,6 +40,9 @@ func set_maps(map: PackedScene):
 
 
 func _ready() -> void:
+	if not system_controlled:
+		add_child(preload("res://scenes/pause_menu.tscn").instantiate())
+
 	game_1p.op_game = game_2p
 	game_2p.op_game = game_1p
 
@@ -105,6 +111,7 @@ func _on_game_timer_timeout():
 	# load end scene
 	ApiServer.stop()
 	var end_scene: EndScreen = preload("res://scenes/end.tscn").instantiate()
+	end_scene.quit_hotkey_enabled = not system_controlled
 	end_scene.player_names = [
 		$Screen/Top/TextureRect/PlayerNameLeft.text,
 		$Screen/Top/TextureRect/PlayerNameRight.text,
