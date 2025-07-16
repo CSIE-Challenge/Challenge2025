@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://c2q3w8rb1e31l"]
 
-[ext_resource type="Script" uid="uid://de8fbmtpnxj4r" path="res://scripts/enemy/score_bar.gd" id="1_8juob"]
+[ext_resource type="Script" uid="uid://de8fbmtpnxj4r" path="res://scripts/score_bar.gd" id="1_8juob"]
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_bak1h"]
 [ext_resource type="FontFile" uid="uid://ccw18kx27c5q2" path="res://assets/font/PixelMplus12-Bold.ttf" id="3_plgac"]
 

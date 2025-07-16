@@ -22,7 +22,12 @@ func _ready():
 
 
 func get_enemy_z_index(_enemy: Enemy) -> int:
-	return 10  # enemy default z-index for effect
+	if (
+		_enemy.path_follow.get_parent() == $FlyingOpponentPath
+		or _enemy.path_follow.get_parent() == $FlyingSystemPath
+	):
+		return Util.FLYING_LAYER
+	return Util.ENEMY_LAYER
 
 
 func global_to_local(global_pos: Vector2) -> Vector2:

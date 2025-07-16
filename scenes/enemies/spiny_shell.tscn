@@ -34,5 +34,6 @@ frame_progress = 0.973474
 shape = SubResource("CircleShape2D_55jtl")
 
 [node name="HealthBar" parent="." instance=ExtResource("4_2ssq8")]
+z_index = 50
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
