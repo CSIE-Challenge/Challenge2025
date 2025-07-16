@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dxdvwnp6m8px2" path="res://scenes/spells/teleport.tscn" id="5_u5sy4"]
 
 [node name="Game" type="Control"]
+y_sort_enabled = true
 clip_contents = true
 custom_minimum_size = Vector2(750, 1000)
 layout_mode = 3

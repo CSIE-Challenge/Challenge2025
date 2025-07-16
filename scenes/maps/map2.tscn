@@ -45,7 +45,7 @@ custom_data_layer_0/name = "type"
 custom_data_layer_0/type = 2
 sources/0 = SubResource("TileSetAtlasSource_wijl4")
 
-[node name="Map2" type="Control"]
+[node name="Map" type="Control"]
 custom_minimum_size = Vector2(750, 1000)
 layout_mode = 3
 anchors_preset = 0

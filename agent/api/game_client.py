@@ -340,7 +340,7 @@ class GameClient(GameClientBase):
         這個函數沒有返回值。如果成功的話，防禦塔的瞄準策略會被變更。
 
         ## Example
-        agent.set_strategy(Vector2(5, 10), CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
+        agent.set_strategy(Vector2(5, 10), TargetStrategy.CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
         """
         raise NotImplementedError
 
@@ -358,7 +358,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        agent.spawn_enemy(EnemyType.GOOMBA)  # 派出 GOOMBA
+        agent.spawn_unit(EnemyType.GOOMBA)  # 派出 GOOMBA
         ```
         """
         raise NotImplementedError
