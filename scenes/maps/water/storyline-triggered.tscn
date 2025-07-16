@@ -9,49 +9,6 @@ font_names = PackedStringArray("Monospace")
 
 [sub_resource type="Animation" id="Animation_o4b5c"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Centering/RichTextLabel:text")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": ["> start-process powershell –verb runAs
-Privilege elevated.
-> shutdown /r /fw
-Booted into UEFI...
-Rebooted into UEFI.
-Installing Arch Linux...
-
-Thank you for your support of open-source software.
-Your unmatched intelligence moved the world toward a more open, freer place.
-You may record this as your certificate of such conviction (or an Easter egg).
-
-CSIE Camp Challenge 2025 超 解碼 農兄弟
-Thanks for your playing!
-
-Project Management & Quality Assurance
-    胡祐誠 HyperSoWeak 邱翊均 PixelCat
-Game Design & Game Programming
-    卓育安 prairie2022 常洧丞 Weber Change 廖禹喬 JoyLiao 張聲元 LightningFarter 李尚哲 Matt 林文繡 bbwinner
-    洪德朗 Andromeda 王　淇 littlecube8152 胡祐誠 HyperSoWeak 蔡孟憬 cmj 蔡孟衡 lemonilemon 蔡瑜恩 Jaime 邱翊均 PixelCat
-Art 
-    張嘉泰 TDDY 張聲元 LightningFarter 胡祐誠 HyperSoWeak 謝承憲 ChengHsien
-Music & Sound Effect
-    李尚哲 Matt 林文繡 bbwinner
-Agent Design & Game Testing
-    張聲元 LightningFarter 李尚哲 Matt 蔡瑜恩 Jaime
-
-Special Thanks
-    Challenge 2024 開發團隊
-    主辦　資工系系學會
-    一起籌備資訊營的人們與參加資訊營的所有人
-
-Press any key to continue..."]
-}
 
 [sub_resource type="Animation" id="Animation_u0c1o"]
 resource_name = "text-reveal"
@@ -99,38 +56,6 @@ layout_mode = 2
 theme_override_colors/default_color = Color(0, 1, 0, 1)
 theme_override_fonts/normal_font = SubResource("SystemFont_aleiu")
 theme_override_font_sizes/normal_font_size = 24
-text = "> start-process powershell –verb runAs
-Privilege elevated.
-> shutdown /r /fw
-Booted into UEFI...
-Rebooted into UEFI.
-Installing Arch Linux...
-
-Thank you for your support of open-source software.
-Your unmatched intelligence moved the world toward a more open, freer place.
-You may record this as your certificate of such conviction (or an Easter egg).
-
-CSIE Camp Challenge 2025 超 解碼 農兄弟
-Thanks for your playing!
-
-Project Management & Quality Assurance
-    胡祐誠 HyperSoWeak 邱翊均 PixelCat
-Game Design & Game Programming
-    卓育安 prairie2022 常洧丞 Weber Change 廖禹喬 JoyLiao 張聲元 LightningFarter 李尚哲 Matt 林文繡 bbwinner
-    洪德朗 Andromeda 王　淇 littlecube8152 胡祐誠 HyperSoWeak 蔡孟憬 cmj 蔡孟衡 lemonilemon 蔡瑜恩 Jaime 邱翊均 PixelCat
-Art 
-    張嘉泰 TDDY 張聲元 LightningFarter 胡祐誠 HyperSoWeak 謝承憲 ChengHsien
-Music & Sound Effect
-    李尚哲 Matt 林文繡 bbwinner
-Agent Design & Game Testing
-    張聲元 LightningFarter 李尚哲 Matt 蔡瑜恩 Jaime
-
-Special Thanks
-    Challenge 2024 開發團隊
-    主辦　資工系系學會
-    一起籌備資訊營的人們與參加資訊營的所有人
-
-Press any key to continue..."
 scroll_active = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
