@@ -25,7 +25,7 @@ enum EnemyType {
 
 var game: Game
 var path_follow: PathFollow2D
-var knockback_distance: int = 50
+var knockback_distance: int = 40
 var source: Game.EnemySource
 var health: int:
 	get:
@@ -94,7 +94,7 @@ func knockback(far: bool):
 	else:
 		if not knockback_resist:
 			path_follow.progress -= knockback_distance
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(3).timeout
 	knockback_invincibility = false
 
 

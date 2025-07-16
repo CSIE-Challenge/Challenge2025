@@ -6,7 +6,6 @@ enum TargetStrategy { FIRST, LAST, CLOSE }
 enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 
 const ANIMATION_FRAME_DURATION := 0.1
-const PLACEMENT_COOL_DOWN := 0.5
 
 @export var type: TowerType = TowerType.NONE
 @export var level_a: int = 1
@@ -36,6 +35,9 @@ func _ready():
 	add_to_group("towers")
 	enabled = false
 	self.z_index = Util.TOWER_LAYER
+	enemy_detector.shape.radius = 0.5 * aim_range
+	bullet_effect = bullet_scene.instantiate().get_effect_name()
+	# Set timer
 	reload_timer = Timer.new()
 	wait_for_animation_timer = Timer.new()
 	reload_timer.one_shot = true
@@ -43,7 +45,7 @@ func _ready():
 	self.add_child(reload_timer)
 	self.add_child(wait_for_animation_timer)
 	reload_timer.timeout.connect(self._on_reload_timer_timeout)
-	bullet_effect = bullet_scene.instantiate().get_effect_name()
+	wait_for_animation_timer.timeout.connect(self._on_fire_bullet)
 
 
 # Take in the map so the the fort can decide which direction to face
@@ -61,7 +63,6 @@ func set_strategy(new_strategy: TargetStrategy) -> void:
 func _refresh_target() -> void:
 	target = null
 	var enemies: Array[Area2D] = $AimRange.get_overlapping_areas()
-
 	if enemies.is_empty():
 		return
 	target = enemies[0]
