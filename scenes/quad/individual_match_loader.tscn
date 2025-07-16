@@ -1,14 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://b3d8xc0rij8wv"]
+[gd_scene load_steps=3 format=3 uid="uid://b3d8xc0rij8wv"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_t32a6"]
+[ext_resource type="Script" uid="uid://dxatoujg1jljg" path="res://scripts/quad/individual_match_loader.gd" id="2_7ucby"]
 
-[node name="Panel1P" type="Panel"]
+[node name="Panel" type="Panel"]
 custom_minimum_size = Vector2(448, 310)
 offset_right = 448.0
 offset_bottom = 310.0
 theme = ExtResource("1_t32a6")
+script = ExtResource("2_7ucby")
 
-[node name="PlayerIdentifierLabel" type="Label" parent="."]
+[node name="PlayerNameLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
@@ -39,10 +41,11 @@ vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Panel7" type="Panel" parent="Options"]
+[node name="Spacing1" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="TokenContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
@@ -54,7 +57,7 @@ size_flags_vertical = 1
 text = "Token"
 vertical_alignment = 1
 
-[node name="TokenLabel" type="Label" parent="Options/TokenContainer"]
+[node name="Token" type="Label" parent="Options/TokenContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -63,22 +66,23 @@ text = "48763abc"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Panel8" type="Panel" parent="Options"]
+[node name="Spacing2" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="TokenContainer2" type="HBoxContainer" parent="Options"]
+[node name="ApiQuotaContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Options/TokenContainer2"]
+[node name="Label" type="Label" parent="Options/ApiQuotaContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "API Quota"
 vertical_alignment = 1
 
-[node name="TokenLabel" type="Label" parent="Options/TokenContainer2"]
+[node name="ApiQuota" type="Label" parent="Options/ApiQuotaContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -87,15 +91,16 @@ text = "48763"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Panel5" type="Panel" parent="Options"]
+[node name="Spacing3" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 
 [node name="AgentStatusContainer" type="HBoxContainer" parent="Options"]
 layout_mode = 2
 
-[node name="AgentStatusConnected" type="Label" parent="Options/AgentStatusContainer"]
+[node name="Connected" type="Label" parent="Options/AgentStatusContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -105,7 +110,7 @@ text = "Connected"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AgentStatusDisconnected" type="Label" parent="Options/AgentStatusContainer"]
+[node name="Disconnected" type="Label" parent="Options/AgentStatusContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -114,10 +119,11 @@ text = "Disconnected"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Panel6" type="Panel" parent="Options"]
+[node name="Spacing4" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="ProcessStatusLabel" type="Label" parent="Options"]
 layout_mode = 2
