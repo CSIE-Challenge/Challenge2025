@@ -38,6 +38,7 @@ func activate_effect(global_pos: Vector2):
 	var effect = preload("res://scenes/spells/teleport_effect.tscn").instantiate()
 
 	add_child(effect)
+	effect.z_index = Util.EFFECT_LAYER
 	effect.global_position = global_pos
 
 	# Start timers

@@ -340,7 +340,7 @@ class GameClient(GameClientBase):
         這個函數沒有返回值。如果成功的話，防禦塔的瞄準策略會被變更。
 
         ## Example
-        agent.set_strategy(Vector2(5, 10), CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
+        agent.set_strategy(Vector2(5, 10), TargetStrategy.CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
         """
         raise NotImplementedError
 
@@ -358,7 +358,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        agent.spawn_enemy(EnemyType.GOOMBA)  # 派出 GOOMBA
+        agent.spawn_unit(EnemyType.GOOMBA)  # 派出 GOOMBA
         ```
         """
         raise NotImplementedError
@@ -455,8 +455,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.SEND_CHAT, [str], bool)
-    def send_chat(self, msg: str) -> bool:
+    @game_command(CommandType.SEND_CHAT, [str], None)
+    def send_chat(self, msg: str) -> None:
         """
         # Send Chat
         發送一條聊天訊息。
@@ -465,15 +465,11 @@ class GameClient(GameClientBase):
         - `msg` (str): 要發送的訊息。
 
         ## Returns
-        這個函數返回一個布林值，表示訊息是否發送成功。
+        這個函數沒有返回值。如果發送成功，訊息會出現在對話框。
 
         ## Example
         ```python
         success = agent.send_chat("Hello, my friend!")  # 發送聊天訊息
-        if success:
-            print("Message sent successfully!")
-        else:
-            print("Failed to send message.")
         ```
         """
         raise NotImplementedError
@@ -522,7 +518,7 @@ class GameClient(GameClientBase):
     def pixelcat(self) -> str:
         """
         # Pixel Cat
-        取得一隻像素貓的圖像。
+        取得一隻像素貓的圖像並在聊天室發出，僅能使用一次。
 
         ## Parameters
         無參數

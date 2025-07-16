@@ -22,7 +22,12 @@ func _ready():
 
 
 func get_enemy_z_index(_enemy: Enemy) -> int:
-	return 10  # enemy default z-index for effect
+	if (
+		_enemy.path_follow.get_parent() == $FlyingOpponentPath
+		or _enemy.path_follow.get_parent() == $FlyingSystemPath
+	):
+		return Util.FLYING_LAYER
+	return Util.ENEMY_LAYER
 
 
 func global_to_local(global_pos: Vector2) -> Vector2:
@@ -50,3 +55,13 @@ func get_cell_terrain(cell_pos: Vector2i) -> CellTerrain:
 
 func get_local_terrain(local_pos: Vector2) -> CellTerrain:
 	return get_cell_terrain(terrain.local_to_map(local_pos))
+
+
+# display terrain overlay on hotkey
+func _unhandled_input(event: InputEvent) -> void:
+	if (
+		InputMap.event_is_action(event, "toggle_terrain_overlay")
+		and event.is_pressed()
+		and not event.is_echo()
+	):
+		terrain.visible = not terrain.visible

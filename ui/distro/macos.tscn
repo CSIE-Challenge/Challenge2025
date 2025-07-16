@@ -1,16 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://djqh2uyjaenwg"]
+[gd_scene load_steps=5 format=3 uid="uid://djqh2uyjaenwg"]
 
 [ext_resource type="Texture2D" uid="uid://bf54ixcrynilc" path="res://assets/distro/macos.png" id="1_2wmxr"]
+[ext_resource type="Script" uid="uid://cftqym8vwuoq5" path="res://ui/distro/distro.gd" id="2_juw6v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_juw6v"]
 size = Vector2(26, 28)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_2wmxr"]
+radius = 100.18
+
 [node name="MacOS" type="RigidBody2D"]
+script = ExtResource("2_juw6v")
+distro_type = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(4, 4)
 texture = ExtResource("1_2wmxr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_juw6v")
+
+[node name="Match" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Match"]
+shape = SubResource("CircleShape2D_2wmxr")
+
+[node name="Click" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Click"]
 scale = Vector2(4, 4)
 shape = SubResource("RectangleShape2D_juw6v")

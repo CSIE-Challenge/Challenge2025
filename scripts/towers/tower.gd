@@ -34,10 +34,8 @@ var bullet_effect: String  # only used in to_dict
 
 func _ready():
 	add_to_group("towers")
-	self.z_index = 10  # For effect to be on the ground
-	enemy_detector.shape.radius = 0.5 * aim_range
-	bullet_effect = bullet_scene.instantiate().get_effect_name()
-	# Initialize timers
+	enabled = false
+	self.z_index = Util.TOWER_LAYER
 	reload_timer = Timer.new()
 	wait_for_animation_timer = Timer.new()
 	reload_timer.one_shot = true
@@ -45,7 +43,7 @@ func _ready():
 	self.add_child(reload_timer)
 	self.add_child(wait_for_animation_timer)
 	reload_timer.timeout.connect(self._on_reload_timer_timeout)
-	wait_for_animation_timer.timeout.connect(self._on_fire_bullet)
+	bullet_effect = bullet_scene.instantiate().get_effect_name()
 
 
 # Take in the map so the the fort can decide which direction to face
