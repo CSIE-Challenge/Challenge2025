@@ -282,6 +282,7 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 			)
 			or game_self.money + previous_tower.building_cost < tower.building_cost
 		):
+			tower.free()
 			return [StatusCode.COMMAND_ERR, "Error: can't upgrade tower"]
 		if (
 			previous_tower.type != tower.type
@@ -290,9 +291,11 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 				< tower.building_cost
 			)
 		):
+			tower.free()
 			return [StatusCode.COMMAND_ERR, "Error: not enough money"]
 
 	if game_self.money < tower.building_cost:
+		tower.free()
 		return [StatusCode.COMMAND_ERR, "Error: not enough money"]
 	game_self.place_tower(_coord, tower)
 	return [StatusCode.OK]
