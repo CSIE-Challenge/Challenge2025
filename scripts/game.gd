@@ -12,7 +12,7 @@ enum EnemySource { SYSTEM, OPPONENT }
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 const DEPRECIATION_RATE := 0.9
 const INTEREST_RATE := 1.02
-const WAVE_HP_INCREASE_RATE := 1.2
+const WAVE_HP_INCREASE_RATE := 1.1
 const WAVE_SPEED_INCREASE_RATE := 1.1
 
 @export var spawner: Spawner

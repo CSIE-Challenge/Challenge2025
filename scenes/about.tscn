@@ -191,6 +191,10 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 10
 columns = 3
 
+[node name="Entry4" parent="ScrollContainer/VBoxContainer/Section3/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "張嘉泰 TDDY"
+
 [node name="Entry" parent="ScrollContainer/VBoxContainer/Section3/Grid" instance=ExtResource("4_lloox")]
 layout_mode = 2
 dev_name = "張聲元 LightningFarter"

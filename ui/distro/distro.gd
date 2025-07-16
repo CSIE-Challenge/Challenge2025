@@ -27,10 +27,19 @@ func _on_body_exited(body) -> void:
 		surrounded_distro.erase(body)
 
 
+func _play_match_sound() -> void:
+	if distro_type == DistroType.MACOS:
+		AudioManager.macos.play()
+	elif distro_type == DistroType.WINDOWS:
+		AudioManager.windows.play()
+	else:
+		AudioManager.match_sound.play()
+
+
 func _on_input_event(_viewport, event: InputEvent, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if surrounded_distro.size() >= 2:
-			AudioManager.match_sound.play()
+			_play_match_sound()
 			get_parent().match_score += pow(surrounded_distro.size(), 2)
 			for distro in surrounded_distro:
 				distro.queue_free()
