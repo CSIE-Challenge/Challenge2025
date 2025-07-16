@@ -47,7 +47,7 @@ func load_config_file(config_path: String) -> void:
 			map_panels[i].reverse_horizontal()
 		for j: int in range(2):
 			var lr: String = ["player-left", "player-right"][j]
-			connection_panels[i][j].init(match_data[lr])
+			connection_panels[i][j].init(match_data[lr], data["python-interpreter"])
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -63,6 +63,18 @@ func _gui_input(event: InputEvent) -> void:
 func _on_config_selection_file_selected(path: String) -> void:
 	load_config_file(path)
 	config_path_panel.text = Util.truncate_front(self, path, config_path_panel.size.x)
+	$ButtonsContainer/Next.disabled = false
+
+
+func toggle_all_agents(run: bool) -> void:
+	for i: int in range(4):
+		for j: int in range(2):
+			var subproc = connection_panels[i][j].selector.python_subprocess
+			if run:
+				subproc.run_subprocess()
+				print(subproc._state, subproc.python_interpreter_path, subproc.python_script_path)
+			else:
+				subproc.kill_subprocess()
 
 
 func start_game() -> void:
@@ -72,11 +84,12 @@ func start_game() -> void:
 func _on_next_button_pressed() -> void:
 	match active_section:
 		1:
-			# back to match configs
+			# proceed to connection panels
 			active_section = 2
 			$ButtonsContainer/Next.text = "Start"
 			$ConfigPanel.visible = false
 			$ConnectionPanelContainer.visible = true
+			toggle_all_agents(true)
 		2:
 			# proceed to games
 			start_game()
@@ -88,8 +101,9 @@ func _on_back_button_pressed() -> void:
 			# back to main screen
 			get_tree().change_scene_to_file("res://scenes/menu.tscn")
 		2:
-			# proceed to connection panels
+			# back to match config
 			active_section = 1
 			$ButtonsContainer/Next.text = "Next"
 			$ConfigPanel.visible = true
 			$ConnectionPanelContainer.visible = false
+			toggle_all_agents(false)

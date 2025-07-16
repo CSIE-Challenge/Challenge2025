@@ -19,10 +19,18 @@ func _ready() -> void:
 	visible = false
 
 
-func init(_options: Dictionary) -> void:
-	options = _options
-	load_options()
+func init(_options: Dictionary, python_interpreter_path: String) -> void:
 	visible = true
+	selector.python_subprocess.set_python_interpreter(python_interpreter_path)
+	# TODO: set auto-restart
+
+	options = _options
+	selector.player_identifier = options["name"]
+	var token = options["token"]
+	ApiServer.update_token(selector.web_agent._ws, token)
+	# TODO: pass API quota to the game
+	var agent_script = options["agent-script"]
+	selector.python_subprocess.set_python_script(agent_script)
 
 
 func _process(_delta: float) -> void:
@@ -31,15 +39,6 @@ func _process(_delta: float) -> void:
 	$Options/AgentStatusContainer/Disconnected.visible = not connected
 	$Options/ProcessStatusLabel.text = selector.process_status_label.text
 	display_options()
-
-
-func load_options() -> void:
-	selector.player_identifier = options["name"]
-	var token = options["token"]
-	ApiServer.update_token(selector.web_agent._ws, token)
-	# TODO: pass API quota to the game
-	var agent_script = options["agent-script"]
-	selector.python_subprocess.set_python_script(agent_script)
 
 
 # the width of AgentScriptLabel is hard-coded because it is tricky to get the right update order

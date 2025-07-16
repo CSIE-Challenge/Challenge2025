@@ -260,6 +260,7 @@ text = "Back"
 custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 50
+disabled = true
 text = "Next"
 
 [connection signal="file_selected" from="ConfigPanel/ConfigTextContainer/DefaultSettingsContainer/ConfigSelection" to="." method="_on_config_selection_file_selected"]
