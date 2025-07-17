@@ -75,6 +75,7 @@ func send_chat_with_sender(
 	textbox.set_meta("sender", sender_id)
 	textbox.set_line_height(send_pixelcat)
 	$MarginContainer/ScrollContainer/VBoxContainer.add_child(textbox)
+	AudioManager.message.play()
 
 	if not get_global_rect().has_point(get_global_mouse_position()):
 		await get_tree().process_frame
