@@ -20,7 +20,9 @@ var understand_time: int = 3
 
 
 func _ready() -> void:
+	print("HYJO{>:tPU;8fHHh<[:9}")
 	screen_size = get_viewport_rect().size
+	$VBoxContainer/Quit.grab_focus()
 	_change_color()
 	logo.position = Vector2(
 		randf_range(0, screen_size.x - logo.get_minimum_size().x),
@@ -83,6 +85,15 @@ func _on_settings_pressed() -> void:
 
 func _on_changelog_pressed() -> void:
 	OS.shell_open("https://github.com/CSIE-Challenge/Challenge2025/releases")
+
+
+func _on_hidden_pressed() -> void:
+	var pwd = $Hahayoufoundit.text
+	var line = ""
+	for c in [104, 97, 72, 52, 95, 106, 48, 118, 95, 118, 48, 118, 73, 55, 100, 95, 49, 55]:
+		line += char(c)
+	$Hahayoufoundit.text = "ARCH{" + line + "}"
+	$Hahayoufoundit.set_visible(true)
 
 
 func _process(delta):
