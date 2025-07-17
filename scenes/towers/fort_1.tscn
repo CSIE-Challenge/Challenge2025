@@ -1,9 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://23vpthkdxvxk"]
+[gd_scene load_steps=12 format=3 uid="uid://23vpthkdxvxk"]
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_qwvox"]
 [ext_resource type="PackedScene" uid="uid://dhcbg2jscx5iy" path="res://scenes/bullets/bullet_1.tscn" id="2_7gee1"]
 [ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://assets/tower/BombPipe.png" id="3_7gee1"]
 [ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://assets/tower/BombPipeFire.png" id="4_58x5s"]
+[ext_resource type="Texture2D" uid="uid://carmco8yh3v40" path="res://assets/tower/BombPipeBack.png" id="5_eoh1u"]
+[ext_resource type="Texture2D" uid="uid://brf7v1i5ufqxs" path="res://assets/tower/BombPipeBackFire.png" id="6_2btkj"]
+[ext_resource type="Texture2D" uid="uid://br5eh7mmfwq" path="res://assets/tower/BombPipeFront.png" id="7_i2unn"]
+[ext_resource type="Texture2D" uid="uid://dj70pnfy2ntpa" path="res://assets/tower/BombPipeFrontFire.png" id="8_kskae"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7gee1"]
 animations = [{
@@ -23,19 +27,31 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_7gee1")
+"texture": ExtResource("5_eoh1u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_2btkj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_eoh1u")
 }],
 "loop": false,
 "name": &"Lower",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_7gee1")
+"texture": ExtResource("7_i2unn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_kskae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_i2unn")
 }],
 "loop": false,
 "name": &"Upper",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -50,10 +66,14 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_qwvox")
 type = 4
+level_a = null
+level_b = null
 building_cost = 400
 auto_aim = false
+anti_air = null
 bullet_scene = ExtResource("2_7gee1")
 reload_seconds = 3.0
+aim_range = null
 damage = 30
 
 [node name="Tower" type="Node2D" parent="."]

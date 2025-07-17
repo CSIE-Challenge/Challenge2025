@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dwewqj41wq8uf"]
+[gd_scene load_steps=16 format=3 uid="uid://dwewqj41wq8uf"]
 
 [ext_resource type="Script" uid="uid://xsselfn6s12u" path="res://scripts/audio_manager.gd" id="1_8qd8g"]
 [ext_resource type="AudioStream" uid="uid://djf63mbh4v5of" path="res://assets/audio/tower_place.wav" id="2_3asnw"]

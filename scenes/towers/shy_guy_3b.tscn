@@ -41,6 +41,7 @@ expected_bullet_number = 5
 type = 5
 level_b = 3
 building_cost = 2800
+auto_aim = false
 anti_air = true
 bullet_scene = ExtResource("2_3phi0")
 reload_seconds = 1.5
@@ -50,10 +51,11 @@ damage = 20
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+position = Vector2(0, -7.68246)
 sprite_frames = SubResource("SpriteFrames_s5vor")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(17.9257, -20.4866)
+position = Vector2(17.9257, -28.1691)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false
