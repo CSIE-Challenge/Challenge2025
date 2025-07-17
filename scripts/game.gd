@@ -98,7 +98,14 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 			(
 				previous_tower.type == tower.type
 				and (
-					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+					(
+						previous_tower.level_a > tower.level_a
+						or previous_tower.level_b > tower.level_b
+					)
+					or (
+						previous_tower.level_a == tower.level_a
+						and previous_tower.level_b == tower.level_b
+					)
 				)
 			)
 			or money + previous_tower.building_cost < tower.building_cost

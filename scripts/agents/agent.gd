@@ -277,7 +277,14 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 			(
 				previous_tower.type == tower.type
 				and (
-					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+					(
+						previous_tower.level_a > tower.level_a
+						or previous_tower.level_b > tower.level_b
+					)
+					or (
+						previous_tower.level_a == tower.level_a
+						and previous_tower.level_b == tower.level_b
+					)
 				)
 			)
 			or game_self.money + previous_tower.building_cost < tower.building_cost
