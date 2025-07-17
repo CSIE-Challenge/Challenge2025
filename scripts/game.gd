@@ -55,7 +55,7 @@ var is_manually_controlled := false:  # only used in water map
 	set(value):
 		is_manually_controlled = value
 		self.on_manual_control_changed.emit(value)
-var premium_api_quota: int = 0
+var premium_api_quota: int = -1
 
 var _enemy_scene_cache = {}
 @onready var danmaku_scene = preload("res://scenes/danmaku.tscn")
@@ -369,7 +369,7 @@ func _process(_delta) -> void:
 		display_score = score
 	status_panel.find_child("Money").text = "%d" % money
 	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
-	status_panel.find_child("ApiQuota").text = "%d" % premium_api_quota
+	status_panel.find_child("ApiQuota").text = "%d" % max(0, premium_api_quota)
 
 
 func _unhandled_input(event: InputEvent) -> void:
