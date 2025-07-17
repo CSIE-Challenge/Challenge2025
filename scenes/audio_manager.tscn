@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dwewqj41wq8uf"]
+[gd_scene load_steps=15 format=3 uid="uid://dwewqj41wq8uf"]
 
 [ext_resource type="Script" uid="uid://xsselfn6s12u" path="res://scripts/audio_manager.gd" id="1_8qd8g"]
 [ext_resource type="AudioStream" uid="uid://djf63mbh4v5of" path="res://assets/audio/tower_place.wav" id="2_3asnw"]
@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://ff0h6fc0uoib" path="res://assets/audio/discord/join.mp3" id="11_8igv3"]
 [ext_resource type="AudioStream" uid="uid://bfpdfc6ub1b62" path="res://assets/audio/discord/leave.mp3" id="12_2y2jw"]
 [ext_resource type="AudioStream" uid="uid://c0w8lcrp42f1v" path="res://assets/audio/discord/message.mp3" id="13_2y5yn"]
+[ext_resource type="AudioStream" uid="uid://c36d2t61ly4ip" path="res://assets/audio/metal_pipe.mp3" id="14_2y2jw"]
 
 [node name="AudioManager" type="Node"]
 process_mode = 3
@@ -99,3 +100,7 @@ bus = &"SFX"
 stream = ExtResource("13_2y5yn")
 volume_db = -8.0
 bus = &"SFX"
+
+[node name="MetalPipe" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_2y2jw")
+volume_db = 24.0

@@ -21,6 +21,7 @@ enum StatusCode {
 	TOO_FREQUENT = 405,
 	NOT_STARTED = 406,
 	PAUSED = 407,
+	INSUFFICIENT_QUOTA = 408,
 	INTERNAL_ERR = 500,
 	CLIENT_ERR = 501
 }
@@ -73,6 +74,7 @@ var ongoing_round: Round = null
 var game_self: Game = null
 var game_other: Game = null
 var chat_node: Node = null
+var no_cooldown: Timer = Timer.new()
 
 var sys_paths: Array = [[], []]
 var opp_paths: Array = [[], []]
@@ -367,9 +369,11 @@ func _get_unit_dict(_type: EnemyType) -> Dictionary:
 
 func _spawn_unit(_type: EnemyType) -> Array:
 	var data = _get_unit_dict(_type)
-	if game_other.enemy_cooldown.has(_type):
+	if game_other.enemy_cooldown.has(_type) and not game_other.no_cooldown:
 		return [StatusCode.COMMAND_ERR, "cooldown hasn't finished"]
-	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
+	if game_self.spend(
+		int(data.stats.deploy_cost * game_self.shop_discount), data.stats.income_impact
+	):
 		game_other.summon_enemy.emit(data)
 	else:
 		return [StatusCode.COMMAND_ERR, "doesn't have enough money"]
@@ -573,6 +577,11 @@ func _set_name(_name: String) -> Array:
 	return [StatusCode.OK]
 
 
+#endregion
+
+#region Premium-API
+
+
 func boo() -> Array:
 	var value: int
 	if randf() < 0.95:
@@ -582,5 +591,62 @@ func boo() -> Array:
 	value = randi_range(400, 440)
 	game_self.on_boo_called(value)
 	return [StatusCode.OK, true]
+
+
+func _disconnect() -> Array:
+	game_other.player_selection.web_agent._ws.queue_disconnection(5)
+	return [StatusCode.OK]
+
+
+func _ntu_student_id_card() -> Array:
+	game_self.shop_discount = 0.9
+	var num: int = (randi() % 800) + 200
+	var id: String = "B14902%d" % num
+	return [StatusCode.OK, id]
+
+
+func _metal_pipe() -> Array:
+	AudioManager.play_metal_pipe()
+	return [StatusCode.OK]
+
+
+func _spam(_message: String, size: int, color: Color) -> Array:
+	var cost: int = floori(len(_message) * size / 2.0)
+	if game_self.premium_api_quota < cost:
+		return [
+			StatusCode.INSUFFICIENT_QUOTA,
+			(
+				"[Receive Command] Error: insufficient premium API quota. Required %d, but %d left"
+				% [cost, game_self.premium_api_quota]
+			)
+		]
+	game_self.premium_api_quota -= cost
+	game_self.send_danmaku(_message, size, color)
+	return [StatusCode.OK]
+
+
+func _super_star() -> Array:
+	return [StatusCode.NOT_FOUND]
+
+
+func _turbo_on() -> Array:
+	game_other.no_cooldown = true
+	game_other.no_cooldown_timer.start()
+	return [StatusCode.OK]
+
+
+func _get_quota() -> Array:
+	return [StatusCode.OK, game_self.premium_api_quota]
+
+
+# gdlint: disable=max-line-length
+func _set_quota(_quota: int) -> Array:
+	if _quota < 0:
+		return [
+			StatusCode.ILLEGAL_ARGUMENT,
+			"Failed to set the Radiant Core of Stellar Faith.The Radiant Core of Stellar Faith cannot be negative, be faithful!"
+		]
+	game_self.premium_api_quota = _quota
+	return [StatusCode.OK]
 
 #endregion

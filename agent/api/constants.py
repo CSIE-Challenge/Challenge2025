@@ -31,7 +31,15 @@ class CommandType(IntEnum):
     PIXELCAT = 501
     GET_DEVS = 502
     SET_NAME = 503
-    BOO = 601
+    DISCONNECT = 601
+    NTU_STUDENT_ID_CARD = 602
+    METAL_PIPE = 603
+    SPAM = 604
+    SUPER_STAR = 605
+    TURBO_ON = 606
+    GET_THE_RADIANT_CORE_OF_STELLAR_FAITH = 607
+    SET_THE_RADIANT_CORE_OF_STELLAR_FAITH = 608
+    BOO = 609
 
 
 class GameStatus(IntEnum):
@@ -193,6 +201,9 @@ class StatusCode(IntEnum):
 
     PAUSED = 407
     """遊戲暫停中。"""
+
+    INSUFFICIENT_QUOTA = 408
+    """呼叫 Premium API 時 Quota 不足"""
 
     INTERNAL_ERR = 500
     """Godot server 端出現問題（請向開發組反映，對不起！！！）。"""

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://jc5py07lwssl"]
+
+[ext_resource type="Script" uid="uid://dmfxooc5n4lr5" path="res://scripts/curtain.gd" id="1_ql855"]
+
+[node name="danmaku" type="Label"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ql855")

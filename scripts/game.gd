@@ -42,6 +42,7 @@ var income_per_second = 50
 var kill_reward_within_second = 0
 var display_kill_reward = 0
 var income_rate: int = 1
+var shop_discount: float = 1.0
 var chat_name_color: String = "ffffff"
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
@@ -52,6 +53,7 @@ var map: Map = null
 var frozen := true
 var during_boo := false
 var boo_timer: Timer
+var no_cooldown := false
 var current_hp_multiplier: float = 1
 var current_speed_multiplier: float = 1
 var is_manually_controlled := false:  # only used in water map
@@ -60,8 +62,12 @@ var is_manually_controlled := false:  # only used in water map
 	set(value):
 		is_manually_controlled = value
 		self.on_manual_control_changed.emit(value)
+var premium_api_quota: int = -1
 
 var _enemy_scene_cache = {}
+@onready var danmaku_scene = preload("res://scenes/danmaku.tscn")
+
+@onready var no_cooldown_timer = $NoCooldownTimer
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
@@ -120,22 +126,30 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 					)
 				)
 			)
-			or money + previous_tower.building_cost < tower.building_cost
+			or (
+				money + previous_tower.building_cost * shop_discount
+				< tower.building_cost * shop_discount
+			)
 		):
 			return false
 		if (
 			previous_tower.type != tower.type
-			and money + (previous_tower.building_cost * DEPRECIATION_RATE) < tower.building_cost
+			and (
+				money + (previous_tower.building_cost * shop_discount * DEPRECIATION_RATE)
+				< tower.building_cost * shop_discount
+			)
 		):
 			return false
-	if money < tower.building_cost:
+	if money < tower.building_cost * shop_discount:
 		return false
 	return map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
 	money += (
-		(tower.building_cost * DEPRECIATION_RATE) as int if depreciation else tower.building_cost
+		(tower.building_cost * shop_discount * DEPRECIATION_RATE) as int
+		if depreciation
+		else int(tower.building_cost * shop_discount)
 	)
 	tower.queue_free()
 	if is_instance_valid(tower_ui):
@@ -165,7 +179,7 @@ func _on_place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	tower_built += 1
 	self.tower_placed.emit(cell_pos)
 
-	money -= tower.building_cost
+	money -= int(tower.building_cost * shop_discount)
 	built_towers[cell_pos] = tower
 
 
@@ -323,13 +337,14 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 		EnemySource.SYSTEM:
 			path = map.flying_system_path if enemy.flying else map.system_path
 		EnemySource.OPPONENT:
-			var timer = Timer.new()
-			enemy_cooldown[enemy.type] = timer
-			timer.wait_time = enemy.summon_cooldown
-			timer.one_shot = true
-			add_child(timer)
-			timer.timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
-			timer.start()
+			if not no_cooldown:
+				var timer = Timer.new()
+				enemy_cooldown[enemy.type] = timer
+				timer.wait_time = enemy.summon_cooldown
+				timer.one_shot = true
+				add_child(timer)
+				timer.timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
+				timer.start()
 			path = map.flying_opponent_path if enemy.flying else map.opponent_path
 	path.add_child(enemy.path_follow)
 
@@ -401,11 +416,25 @@ func _process(_delta) -> void:
 	if !frozen:
 		display_score = score
 	status_panel.find_child("Money").text = "%d" % money
-	status_panel.find_child("Income").text = "+%d" % income_per_second
+	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
 	if income_rate > 1:
 		status_panel.find_child("Income").text += " ×%d" % income_rate
 	status_panel.find_child("KillReward").text = _get_signed_string_number(display_kill_reward)
+	status_panel.find_child("ApiQuota").text = "%d" % max(0, premium_api_quota)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	_handle_tower_selection(event)
+
+
+func _turbo_off() -> void:
+	no_cooldown = false
+
+
+func send_danmaku(text: String, size := 24, color := Color.WHITE):
+	var danmaku: Label = danmaku_scene.instantiate()
+	var danmaku_layer = get_node("../../danmaku_layer")
+	danmaku.setup(text, size, color)
+	var y_position = randf_range(50, 800)
+	danmaku.position = Vector2(get_viewport_rect().size.x, y_position)
+	danmaku_layer.add_child(danmaku)
