@@ -73,6 +73,15 @@ var _last_command: float = -1
 var _command_handlers: Dictionary = {}
 # the set of command types that may be called when the game is not running
 var _general_commands: Dictionary = {CommandType.GET_GAME_STATUS: null}
+# the API quota reduction of each premium API
+var _premium_commands: Dictionary = {
+	CommandType.DISCONNECT: 1,
+	CommandType.NTU_STUDENT_ID_CARD: 1,
+	CommandType.METAL_PIPE: 1,
+	CommandType.SPAM: 1,
+	CommandType.SUPER_STAR: 1,
+	CommandType.TURBO_ON: 1,
+}
 
 
 func _register_command_handlers() -> void:
@@ -202,7 +211,21 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 			response = [
 				request_id, StatusCode.PAUSED, "[Receive Command] Error: the game is paused"
 			]
+		elif (
+			_premium_commands.has(command_id)
+			and game_self.premium_api_quota < _premium_commands[command_id]
+		):
+			response = [
+				request_id,
+				StatusCode.INSUFFICIENT_QUOTA,
+				(
+					"[Receive Command] Error: insufficient premium API quota. Required %d, but %d left"
+					% [_premium_commands[command_id], game_self.premium_api_quota]
+				)
+			]
 		else:
+			if _premium_commands.has(command_id):
+				game_self.premium_api_quota -= _premium_commands[command_id]
 			response = _command_handlers[command_id].handle(command)
 			if game_self != null:
 				game_self.api_succeed += (response[0] == StatusCode.OK) as int

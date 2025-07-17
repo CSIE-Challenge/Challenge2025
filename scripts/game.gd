@@ -54,6 +54,7 @@ var is_manually_controlled := false:  # only used in water map
 	set(value):
 		is_manually_controlled = value
 		self.on_manual_control_changed.emit(value)
+var premium_api_quota: int = 0
 
 var _enemy_scene_cache = {}
 
