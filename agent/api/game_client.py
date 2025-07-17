@@ -387,7 +387,7 @@ class GameClient(GameClientBase):
     def get_all_enemies(self, owned: bool) -> list[Enemy]:
         """
         # Get All Enemies
-        取得自己地圖上所有敵人的資訊。
+        取得自己或對手地圖上所有敵人的資訊。
 
         ## Parameters
         - `owned` (bool): 查詢自己 (True) 或對手 (False) 的敵人。
@@ -397,7 +397,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        all_enemies = agent.get_all_enemies()  # 獲取自己地圖上所有敵人的資訊
+        all_enemies = agent.get_all_enemies(True)  # 獲取自己地圖上所有敵人的資訊
         for enemy in all_enemies:
             print(enemy)
         ```
