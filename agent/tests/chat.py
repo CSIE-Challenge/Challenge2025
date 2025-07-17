@@ -1,3 +1,4 @@
+import time
 import api_importer as api
 from test_token import TOKEN1, TOKEN2
 
@@ -21,11 +22,16 @@ print("API call...", agent2.set_name("HyperSoGoat"))  # too long
 print("API call...", agent2.set_name("HyperGoat"))
 print("API call...", agent2.set_chat_name_color("ff69b4"))
 
-agent1.send_chat("adsflkjhasdflkjahsdflkjh")
-agent1.send_chat("起來，不願做奴隸的人們")
-agent2.send_chat("喵喵喵喵喵喵喵喵")
-agent1.send_chat("٩(ˊᗜˋ*)و")
-agent2.send_chat("Arch addicted :yum:")
+print("Sending chat...", agent1.send_chat("adsflkjhasdflkjahsdflkjh"))
+time.sleep(2.1)
+print("Sending chat...", agent1.send_chat("起來，不願做奴隸的人們"))
+time.sleep(2.1)
+print("Sending chat...", agent2.send_chat("喵喵喵喵喵喵喵喵"))
+time.sleep(2.1)
+print("Sending chat...", agent1.send_chat("٩(ˊᗜˋ*)و"))
+time.sleep(2.1)
+print("Sending chat...", agent2.send_chat("Arch addicted :yum:"))
+time.sleep(2.1)
 
 print_chat(agent1, 3)
 

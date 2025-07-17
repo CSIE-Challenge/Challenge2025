@@ -1,5 +1,7 @@
 extends Control
 
+@onready var setting_submenu = $Settings
+
 
 func pause():
 	get_tree().paused = true
@@ -18,6 +20,9 @@ func pause():
 
 
 func resume():
+	if setting_submenu.visible:
+		setting_submenu.close()
+		_on_settings_exit()
 	get_tree().paused = false
 	AudioManager.button_on_click.play()
 	if AudioManager.second_stage:
@@ -29,6 +34,7 @@ func resume():
 
 func _ready():
 	self.visible = false
+	setting_submenu.exit_button_pressed.connect(_on_settings_exit)
 
 
 func _process(_delta):
@@ -50,11 +56,10 @@ func _on_exit_pressed() -> void:
 func _on_settings_pressed() -> void:
 	AudioManager.button_on_click.play()
 	$PauseMenu.visible = false
-	$Settings.load_settings()
-	$Settings.visible = true
+
+	setting_submenu.open()
 
 
-func _on_back_pressed() -> void:
+func _on_settings_exit() -> void:
 	AudioManager.button_on_click.play()
 	$PauseMenu.visible = true
-	$Settings.visible = false

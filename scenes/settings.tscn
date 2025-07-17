@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=3 uid="uid://m61nhd2pj5qr"]
+
+[ext_resource type="Script" uid="uid://cv32hx3ajiafn" path="res://ui/settings.gd" id="1_r6d6q"]
+[ext_resource type="PackedScene" uid="uid://3xue1fv3fh54" path="res://ui/volume_slider.tscn" id="2_6wm04"]
+
+[node name="Settings" type="PanelContainer"]
+visible = false
+custom_minimum_size = Vector2(1000, 800)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -400.0
+offset_right = 500.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r6d6q")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_right = 150
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Volume Settings"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Master"
+
+[node name="Master" parent="MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("2_6wm04")]
+layout_mode = 2
+bus_name = "Master"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Music"
+
+[node name="Music" parent="MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("2_6wm04")]
+layout_mode = 2
+bus_name = "Music"
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer2/VBoxContainer"]
+layout_mode = 2
+text = "SFX"
+
+[node name="SFX" parent="MarginContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("2_6wm04")]
+layout_mode = 2
+bus_name = "SFX"
+
+[node name="Back" type="Button" parent="MarginContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Back"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer2/Back" to="." method="_on_back_pressed"]

@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://dn0pas1ennupu"]
 
-[ext_resource type="Script" uid="uid://bmi6xloxalyfa" path="res://scripts/towers/tower_ui.gd" id="1_gxmcb"]
+[ext_resource type="Script" path="res://scripts/towers/tower_ui.gd" id="1_gxmcb"]
 [ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="2_u174h"]
 
 [node name="TowerUI" type="VBoxContainer"]
-z_index = 200
+z_index = 150
 offset_right = 75.0
 offset_bottom = 31.0
 scale = Vector2(1.28, 1.28)

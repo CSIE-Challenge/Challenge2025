@@ -2,16 +2,21 @@ class_name Game
 extends Control
 
 signal damage_taken(damage: int)
-signal buy_tower(tower_scene: PackedScene)
+signal buy_tower(tower_scene: PackedScene)  # handler
+signal place_tower(coordinate: Vector2i, tower: Tower)  # handler
+signal demolish_tower(coordinate: Vector2i)  # handler
+signal tower_placed(coordinate: Vector2i)  # singal
+signal tower_demolished(coordinate: Vector2i)  # singal
 signal summon_enemy(unit_data: Dictionary)
 signal buy_spell(spell_data)
+signal on_manual_control_changed(value: bool)
 
 enum EnemySource { SYSTEM, OPPONENT }
 
 const TOWER_UI_SCENE := preload("res://scenes/tower_ui.tscn")
 const DEPRECIATION_RATE := 0.9
 const INTEREST_RATE := 1.02
-const WAVE_HP_INCREASE_RATE := 1.2
+const WAVE_HP_INCREASE_RATE := 1.1
 const WAVE_SPEED_INCREASE_RATE := 1.1
 
 @export var spawner: Spawner
@@ -42,6 +47,13 @@ var map: Map = null
 var frozen := true
 var current_hp_multiplier: float = 1
 var current_speed_multiplier: float = 1
+var is_manually_controlled := false:  # only used in water map
+	get:
+		return is_manually_controlled
+	set(value):
+		is_manually_controlled = value
+		self.on_manual_control_changed.emit(value)
+
 var _enemy_scene_cache = {}
 
 
@@ -59,6 +71,8 @@ func set_map(map_scene: PackedScene):
 
 func _ready() -> void:
 	buy_tower.connect(_on_buy_tower)
+	place_tower.connect(_on_place_tower)
+	demolish_tower.connect(_on_demolish_tower)
 	spawner.spawn_enemy.connect(_on_enemy_spawn)
 	summon_enemy.connect(_on_enemy_summon)
 	spawner.wave_end.connect(_on_wave_end)
@@ -84,7 +98,14 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 			(
 				previous_tower.type == tower.type
 				and (
-					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+					(
+						previous_tower.level_a > tower.level_a
+						or previous_tower.level_b > tower.level_b
+					)
+					or (
+						previous_tower.level_a == tower.level_a
+						and previous_tower.level_b == tower.level_b
+					)
 				)
 			)
 			or money + previous_tower.building_cost < tower.building_cost
@@ -109,9 +130,10 @@ func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
 		tower_ui.queue_free()
 	var cell_pos = map.global_to_cell(tower.global_position)
 	built_towers.erase(cell_pos)
+	tower_demolished.emit(cell_pos)
 
 
-func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
+func _on_place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	if not _is_buildable(tower, cell_pos):
 		return
 
@@ -129,9 +151,15 @@ func place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	self.add_child(tower)
 	tower.enable(global_pos, map)
 	tower_built += 1
+	self.tower_placed.emit(cell_pos)
 
 	money -= tower.building_cost
 	built_towers[cell_pos] = tower
+
+
+func _on_demolish_tower(cell_pos: Vector2i) -> void:
+	if built_towers.has(cell_pos):
+		_on_tower_sold(built_towers[cell_pos], null, true)
 
 
 func _on_buy_tower(tower_scene: PackedScene):
@@ -145,7 +173,7 @@ func _on_buy_tower(tower_scene: PackedScene):
 		self.remove_child(previewer)
 		previewer.free()
 	previewer = Previewer.new(tower, preview_color_callback, map, true)
-	previewer.selected.connect(self.place_tower.bind(tower))
+	previewer.selected.connect(self._on_place_tower.bind(tower))
 	self.add_child(previewer)
 
 

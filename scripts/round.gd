@@ -1,6 +1,8 @@
 class_name Round
 extends Control
 
+signal game_finished(stats: Array[EndScreen.Statistics])
+
 const GAME_DURATION = 300.0
 const FREEZE_TIME = 60.0
 const FREEZE_ANIMATION = 2.5
@@ -11,6 +13,9 @@ const FREEZE_ANIMATION = 2.5
 @export var game_2p: Game
 
 var manual_controlled: int
+
+# when turned on, pressing ESC does not pause the game or exit the game on end screen
+var system_controlled: bool = false
 
 @onready var game_timer: Timer = $GameTimer
 
@@ -37,6 +42,9 @@ func set_maps(map: PackedScene):
 
 
 func _ready() -> void:
+	if not system_controlled:
+		add_child(preload("res://scenes/pause_menu.tscn").instantiate())
+
 	game_1p.op_game = game_2p
 	game_2p.op_game = game_1p
 
@@ -55,8 +63,10 @@ func _ready() -> void:
 			chat.always_visible = true
 		1:
 			shop.start_game(game_1p, game_2p)
+			game_1p.is_manually_controlled = true
 		2:
 			shop.start_game(game_2p, game_1p)
+			game_2p.is_manually_controlled = true
 
 	# setup signals for the games
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
@@ -105,6 +115,7 @@ func _on_game_timer_timeout():
 	# load end scene
 	ApiServer.stop()
 	var end_scene: EndScreen = preload("res://scenes/end.tscn").instantiate()
+	end_scene.quit_hotkey_enabled = not system_controlled
 	end_scene.player_names = [
 		$Screen/Top/TextureRect/PlayerNameLeft.text,
 		$Screen/Top/TextureRect/PlayerNameRight.text,
@@ -132,5 +143,6 @@ func _on_game_timer_timeout():
 	]
 	AudioManager.background_game_stage2.stop()
 	AudioManager.background_menu.play()
-	get_tree().get_root().add_child(end_scene)
+	get_parent().add_child(end_scene)
 	queue_free()
+	game_finished.emit(end_scene.statistics)

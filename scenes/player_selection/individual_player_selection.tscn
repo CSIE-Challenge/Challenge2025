@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://b7jvynxasd754" path="res://scripts/player_selection/individual_player_selection.gd" id="2_t2jgp"]
 
 [node name="Panel1P" type="Panel"]
-custom_minimum_size = Vector2(448, 700)
+custom_minimum_size = Vector2(448, 750)
 offset_right = 450.0
 offset_bottom = 700.0
 theme = ExtResource("1_f28vv")
@@ -135,6 +135,35 @@ clip_text = true
 text_overrun_behavior = 3
 
 [node name="Panel7" type="Panel" parent="Options"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="AutoRestartContainer" type="HBoxContainer" parent="Options"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Options/AutoRestartContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Auto Restart"
+vertical_alignment = 1
+
+[node name="ButtonOn" type="Button" parent="Options/AutoRestartContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.313726, 0.862745, 0.313726, 1)
+text = "ON"
+flat = true
+
+[node name="ButtonOff" type="Button" parent="Options/AutoRestartContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.862745, 0.313726, 0.313726, 1)
+text = "OFF"
+flat = true
+
+[node name="Panel8" type="Panel" parent="Options"]
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
