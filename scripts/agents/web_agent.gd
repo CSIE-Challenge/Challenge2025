@@ -84,6 +84,7 @@ var _premium_commands: Dictionary = {
 	# cost of spam is dynamically calculated in `_spam()`
 	CommandType.SUPER_STAR: 2000,
 	CommandType.TURBO_ON: 3500,
+	CommandType.BOO: 1000,
 }
 
 

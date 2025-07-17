@@ -585,11 +585,11 @@ func _set_name(_name: String) -> Array:
 
 func boo() -> Array:
 	var value: int
-	if randf() < 0.95:
-		value = randi_range(-10, 0)
+	if randf() < 0.80:
+		value = randi_range(500, 1000)
 		game_self.on_boo_called(value)
 		return [StatusCode.OK, false]
-	value = randi_range(400, 440)
+	value = randi_range(5000, 5500)
 	game_self.on_boo_called(value)
 	return [StatusCode.OK, true]
 

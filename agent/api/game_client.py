@@ -574,85 +574,153 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.DISCONNECT, [], str)
-    def disconnect(self) -> str:
+    @game_command(CommandType.GET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [], int)
+    def get_the_radiant_core_of_stellar_faith(self) -> int:
+        """
+        # Get the Radiant Core of Stellar Faith
+        取得目前剩餘可用的 **燦爛星辰信仰晶核**，不需要使用 **燦爛星辰信仰晶核**。若之前沒有設定過 `set_the_radiant_core_of_stellar_faith`、或是在正式賽期間，此函數回傳 -1。
+
+        ## Parameters
+        無參數。
+
+        ## Returns
+        這個函數回傳一個整數，表示目前剩餘可用的 **燦爛星辰信仰晶核**。
+
+        ## Example
+        ```python
+        quota = agent.get_the_radiant_core_of_stellar_faith()
+        ```
+        """
         raise NotImplementedError
-    
+
+    @game_command(CommandType.SET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [int], None)
+    def set_the_radiant_core_of_stellar_faith(self, quota: int) -> None:
+        """
+        # Set the Radiant Core of Stellar Faith
+        設定目前剩餘可用的 **燦爛星辰信仰晶核**，不需要使用 **燦爛星辰信仰晶核**。在正式賽期間，此函數沒有作用。
+
+        ## Parameters
+        無參數。
+
+        ## Returns
+        - `quota` (int) : 想要設定的 **燦爛星辰信仰晶核** 量。
+
+        ## Example
+        ```python
+        agent.set_the_radiant_core_of_stellar_faith(new_quota)
+        ```
+        """
+        raise NotImplementedError
+
+    @game_command(CommandType.DISCONNECT, [], None)
+    def disconnect(self) -> None:
+        """
+        # Disconnect
+        使對手強制斷線，接下來重新連線時也會立刻強制斷線，共斷線五次，需要使用 2500 點 **燦爛星辰信仰晶核**。
+
+        ## Parameters
+        無參數
+
+        ## Returns
+        這個函數沒有回傳值。
+
+        ## Example
+        ```python
+        agent.disconnect()
+        ```
+        """
+        raise NotImplementedError
+
     @game_command(CommandType.NTU_STUDENT_ID_CARD, [], str)
     def ntu_student_id_card(self) -> str:
         """
         # NTU Student ID Card
-        使用國立臺灣大學資訊工程學系學生證以獲得商店九折優惠
-        
+        使用國立臺灣大學資訊工程學系學生證以獲得永久性的商店九折優惠，需要使用 4500 點 **燦爛星辰信仰晶核**。
+
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數回傳一個隨機生成的資訊系學號。
-        
+
         ## Example
         ```python
         print(agent.ntu_student_id_card()) # 獲得商店九折優惠並輸出一個學號
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.METAL_PIPE, [], None)
     def metal_pipe(self) -> None:
+        """
+        # Metal Pipe
+        播放動聽的精美音效，需要使用 400 點 **燦爛星辰信仰晶核**。
+
+        ## Parameters
+        無參數
+
+        ## Returns
+        這個函數沒有回傳值。
+
+        ## Example
+        ```python
+        agent.metal_pipe()
+        ```
+        """
         raise NotImplementedError
-    
+
     @game_command(CommandType.SPAM, [str, int, str], None)
     def spam(self, message: str, size: int = 48, color: str = "#ffffff") -> None:
         """
-        # spam
-        發送懸浮彈幕。
-        
+        # Spam
+        發送懸浮彈幕，需要使用的 **燦爛星辰信仰晶核** 點數是「訊息長度」乘上「字體大小」除二，向下取整數。
+
         ## Parameters
         - `message` (str) : 想要顯示的訊息
         - `size` (int) : 字體大小，預設為48
         - `color` (str) : 字體顏色，以16進制色碼傳遞，預設為白色(#ffffff)
-        
+
         ## Returns
         這個函數沒有回傳值。
-        
+
         ## Example
         ```python
-        agent.spam("I use arch btw", 48, "#ff69b4") # 發送一個字體大小為48的粉紅色的彈幕顯示"I use arch btw"
+        agent.spam("I use arch btw", 48, "#ff69b4") # 發送一個字體大小為48的粉紅色的彈幕顯示 "I use arch btw"
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.SUPER_STAR, [], None)
     def super_star(self) -> None:
         """
         # Super Star
-        5秒內無敵，敵人進塔不會受到傷害
-        
+        5 秒內無敵，敵人進塔不會受到傷害，需要使用 2000 點 **燦爛星辰信仰晶核**。
+
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數沒有回傳值。
-        
+
         ## Example
         ```python
         agent.super_star()
         ```
         """
         raise NotImplementedError
-    
+
     @game_command(CommandType.TURBO_ON, [], None)
     def turbo_on(self) -> None:
         """
         # Turbo On
-        1秒內派兵無冷卻
-        
+        1 秒內派兵無冷卻，需要使用 3500 點 **燦爛星辰信仰晶核**。
+
         ## Parameters
         無參數
-        
+
         ## Returns
         這個函數沒有回傳值。
-        
+
         ## Example
         ```python
         agent.turbo_on()
@@ -662,19 +730,11 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [], int)
-    def get_the_radiant_core_of_stellar_faith(self) -> int:
-        raise NotImplementedError
-
-    @game_command(CommandType.SET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [int], None)
-    def set_the_radiant_core_of_stellar_faith(self, quota: int) -> None:
-        raise NotImplementedError
-    
     @game_command(CommandType.BOO, [], bool)
     def boo(self) -> bool:
         """
         # Boo
-        使用害羞幽靈偷取對方金錢，期望上每次呼叫皆可幫助你創造 40 元的經濟差距。
+        使用害羞幽靈偷取對方金錢，期望上每次呼叫皆可幫助你創造 450 元的經濟差距，需要使用 1000 點 **燦爛星辰信仰晶核**。
 
         ## Parameters
         無參數。
