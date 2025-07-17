@@ -3,7 +3,7 @@ import time
 import random
 from api import GameClient, GameStatus, Vector2, TowerType, TargetStrategy, EnemyType, SpellType, TerrainType, ChatSource
 
-agent = GameClient(7749, "ac5619b1")  # Replace with your token
+agent = GameClient(7749, "05564d40")  # Replace with your token
 
 terrain = agent.get_all_terrain()
 
@@ -14,7 +14,8 @@ no_side = []
 agent.ntu_student_id_card()
 #把東西全部打九折 但不知道有沒有用
 
-
+agent.set_the_radiant_core_of_stellar_faith(3938)
+            
 for i in range (14):
     for j in range(19):
         side = 0 
@@ -109,6 +110,9 @@ while True:
         break
 order = 0
 while True :
+    #Challenge-OuO
+    if agent.get_remain_time() <= 10 and agent.get_the_radiant_core_of_stellar_faith() > 180:
+        agent.spam("掐潤吉好帥", 72, 	"#00FFFF")
     x2money_cooldown = agent.get_spell_cooldown(True, SpellType.DOUBLE_INCOME)
     poison_cooldown = agent.get_spell_cooldown(True,SpellType.POISON)
     teleport_cooldown = agent.get_spell_cooldown(True,SpellType.TELEPORT)
