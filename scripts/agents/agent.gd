@@ -21,6 +21,7 @@ enum StatusCode {
 	TOO_FREQUENT = 405,
 	NOT_STARTED = 406,
 	PAUSED = 407,
+	INSUFFICIENT_QUOTA = 408,
 	INTERNAL_ERR = 500,
 	CLIENT_ERR = 501
 }
@@ -597,7 +598,8 @@ func _metal_pipe() -> Array:
 	return [StatusCode.OK]
 
 
-func _spam(_message: String) -> Array:
+func _spam(_message: String, size: int, color: Color) -> Array:
+	game_self.send_danmaku(_message, size, color)
 	return [StatusCode.OK]
 
 
@@ -608,6 +610,21 @@ func _super_star() -> Array:
 func _turbo_on() -> Array:
 	game_other.no_cooldown = true
 	game_other.no_cooldown_timer.start()
+	return [StatusCode.OK]
+
+
+func _get_quota() -> Array:
+	return [StatusCode.OK, game_self.premium_api_quota]
+
+
+# gdlint: disable=max-line-length
+func _set_quota(_quota: int) -> Array:
+	if _quota < 0:
+		return [
+			StatusCode.ILLEGAL_ARGUMENT,
+			"Failed to set the Radiant Core of Stellar Faith.The Radiant Core of Stellar Faith cannot be negative, be faithful!"
+		]
+	game_self.premium_api_quota = _quota
 	return [StatusCode.OK]
 
 #endregion

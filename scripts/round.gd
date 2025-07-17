@@ -41,6 +41,11 @@ func set_maps(map: PackedScene):
 	game_2p.set_map(map)
 
 
+func set_api_quotas(quota_1p: int, quota_2p: int) -> void:
+	game_1p.premium_api_quota = quota_1p
+	game_2p.premium_api_quota = quota_2p
+
+
 func _ready() -> void:
 	if not system_controlled:
 		add_child(preload("res://scenes/pause_menu.tscn").instantiate())

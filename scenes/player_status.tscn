@@ -1,28 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://cdv4tuh5x2nw2"]
+[gd_scene load_steps=7 format=3 uid="uid://cdv4tuh5x2nw2"]
 
 [ext_resource type="Texture2D" uid="uid://coto12i32ybdk" path="res://assets/ui/player-status.png" id="1_j2yv7"]
 [ext_resource type="Texture2D" uid="uid://boc70jaysmgp3" path="res://assets/ui/coin.png" id="2_5cs0w"]
 [ext_resource type="Script" uid="uid://dbxhj2ra8afr3" path="res://scripts/player_status.gd" id="2_ys54m"]
 [ext_resource type="Texture2D" uid="uid://cbftnjgvulssb" path="res://assets/ui/connected.png" id="3_ys54m"]
 [ext_resource type="Texture2D" uid="uid://cgruo4e2igprj" path="res://assets/ui/disconnected.png" id="4_5cs0w"]
+[ext_resource type="Texture2D" uid="uid://dd5np3rao3t74" path="res://assets/bullet/Fist.png" id="6_2367v"]
 
 [node name="Status" type="TextureRect"]
 custom_minimum_size = Vector2(448, 80)
 size_flags_horizontal = 3
 texture = ExtResource("1_j2yv7")
 script = ExtResource("2_ys54m")
-
-[node name="Coin" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 24.0
-offset_top = -25.0
-offset_right = 67.75
-offset_bottom = 25.0
-grow_vertical = 2
-texture = ExtResource("2_5cs0w")
 
 [node name="StatusConnected" type="TextureButton" parent="."]
 visible = false
@@ -65,6 +54,18 @@ texture_disabled = ExtResource("4_5cs0w")
 texture_focused = ExtResource("4_5cs0w")
 stretch_mode = 4
 
+[node name="Coin" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = -25.0
+offset_right = 67.75
+offset_bottom = 25.0
+grow_vertical = 2
+texture = ExtResource("2_5cs0w")
+
 [node name="Money" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 4
@@ -94,4 +95,39 @@ theme_override_font_sizes/font_size = 36
 text = "+10"
 vertical_alignment = 1
 
+[node name="ApiQuotaIcon" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 24.0
+offset_top = -25.0
+offset_right = 67.75
+offset_bottom = 25.0
+grow_vertical = 2
+texture = ExtResource("6_2367v")
+
+[node name="ApiQuota" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 83.0
+offset_top = -33.0
+offset_right = 435.0
+offset_bottom = 34.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "15024"
+vertical_alignment = 1
+
+[node name="SwitchingTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[connection signal="timeout" from="SwitchingTimer" to="." method="_on_switching_timer_timeout"]
