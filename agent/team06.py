@@ -109,6 +109,9 @@ while True:
         break
 order = 0
 while True :
+    #Challenge-OuO
+    if agent.get_remain_time() <= 10 and agent.get_the_radiant_core_of_stellar_faith() > 180:
+        agent.spam("掐潤吉好帥", 72, 	"#00FFFF")
     x2money_cooldown = agent.get_spell_cooldown(True, SpellType.DOUBLE_INCOME)
     poison_cooldown = agent.get_spell_cooldown(True,SpellType.POISON)
     teleport_cooldown = agent.get_spell_cooldown(True,SpellType.TELEPORT)
