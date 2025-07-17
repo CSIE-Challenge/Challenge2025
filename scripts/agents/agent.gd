@@ -596,8 +596,8 @@ func _metal_pipe() -> Array:
 	return [StatusCode.OK]
 
 
-func _spam(_message: String, size: int) -> Array:
-	game_self.send_danmaku(_message, size)
+func _spam(_message: String, size: int, color: Color) -> Array:
+	game_self.send_danmaku(_message, size, color)
 	return [StatusCode.OK]
 
 

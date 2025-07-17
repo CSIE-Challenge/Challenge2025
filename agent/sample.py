@@ -11,7 +11,7 @@ while agent.get_game_status() != GameStatus.RUNNING:
 print("Game RUNNING!\n")
 
 for i in range(10):
-    print(agent.spam("i use arch btw", 96))
+    print(agent.spam("i use arch btw", 96, "#ff69b4"))
     time.sleep(0.5)
     print(agent.spam("i use arch btw", 48))
     time.sleep(0.5)

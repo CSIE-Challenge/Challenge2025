@@ -374,6 +374,6 @@ func send_danmaku(text: String, size := 24, color := Color.WHITE):
 	var danmaku: Label = danmaku_scene.instantiate()
 	var danmaku_layer = get_node("../../danmaku_layer")
 	danmaku.setup(text, size, color)
-	var y_position = randf_range(50, 300)
+	var y_position = randf_range(50, 1200)
 	danmaku.position = Vector2(get_viewport_rect().size.x, y_position)
 	danmaku_layer.add_child(danmaku)

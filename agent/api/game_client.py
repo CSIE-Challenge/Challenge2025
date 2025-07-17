@@ -601,8 +601,8 @@ class GameClient(GameClientBase):
     def metal_pipe(self) -> None:
         raise NotImplementedError
     
-    @game_command(CommandType.SPAM, [str, int], None)
-    def spam(self, message: str, size: int = 48) -> None:
+    @game_command(CommandType.SPAM, [str, int, str], None)
+    def spam(self, message: str, size: int = 48, color: str = "#ffffff") -> None:
         raise NotImplementedError
     
     @game_command(CommandType.SUPER_STAR, [], None)
