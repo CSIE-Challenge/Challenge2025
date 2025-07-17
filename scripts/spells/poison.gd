@@ -62,7 +62,7 @@ func _on_trigger():
 	var effect = preload("res://scenes/spells/poison_effect.tscn").instantiate()
 
 	add_child(effect)
-	effect.z_index = 8
+	effect.z_index = Util.EFFECT_LAYER
 	effect.global_position = next_effect_pos
 
 	if trigger_times > 0:

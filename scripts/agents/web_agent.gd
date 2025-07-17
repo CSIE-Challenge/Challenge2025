@@ -62,6 +62,7 @@ class CommandHandler:
 
 const MIN_COMMAND_INTERVAL_MSEC = 5
 var _ws: WebSocketConnection = null
+var _agent_identifier: String = ""
 var _last_command: float = -1
 # command id -> command handler
 var _command_handlers: Dictionary = {}
@@ -114,9 +115,15 @@ func _init() -> void:
 	_ws = ApiServer.register_connection()
 	add_child(_ws)
 	_ws.received_bytes.connect(_on_received_command)
-	_ws.client_connected.connect(func(): print("[API Server] Remote agent %s connected" % name))
+	_ws.client_connected.connect(
+		func():
+			print("[API Server] WebAgent %s: Remote agent %s connected" % [_agent_identifier, name])
+	)
 	_ws.client_disconnected.connect(
-		func(): print("[API Server] Remote agent %s disconnected" % name)
+		func():
+			print(
+				"[API Server] WebAgent %s: Remote agent %s disconnected" % [_agent_identifier, name]
+			)
 	)
 	# keep processing requests when the game is paused
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -153,15 +160,15 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 			)
 			print(
 				(
-					"[API Server] received command: %d, %d (%s)"
-					% [request_id, command_id, command_name]
+					"[API Server] WebAgent %s received command: %d, %d (%s)"
+					% [_agent_identifier, request_id, command_id, command_name]
 				)
 			)
 		elif request_id == MAX_LOGGING_REQUEST + 1:
 			print(
 				(
-					"[API Server] received more than %d requests, no further log will be printed."
-					% MAX_LOGGING_REQUEST
+					"[API Server] WebAgent %s received more than %d requests, no further log will be printed."
+					% [_agent_identifier, MAX_LOGGING_REQUEST]
 				)
 			)
 
@@ -187,8 +194,8 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 			]
 		else:
 			response = _command_handlers[command_id].handle(command)
-			response.push_front(request_id)
 			if game_self != null:
 				game_self.api_succeed += (response[0] == StatusCode.OK) as int
+			response.push_front(request_id)
 
 	_ws.send_bytes(var_to_bytes(response))

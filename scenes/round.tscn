@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=19 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
@@ -11,9 +11,39 @@
 [ext_resource type="Script" uid="uid://bhp37oru746ow" path="res://scripts/enemy/spawner.gd" id="6_b1bvr"]
 [ext_resource type="Texture2D" uid="uid://nje75xttqfkn" path="res://assets/ui/score-bar-overlay.png" id="6_h7h1o"]
 [ext_resource type="Texture2D" uid="uid://m13gswneptc" path="res://assets/ui/game-status.png" id="6_ojwvf"]
-[ext_resource type="PackedScene" uid="uid://baakrjeehjclq" path="res://scenes/pause_menu.tscn" id="7_unjed"]
 [ext_resource type="Texture2D" uid="uid://dpb6xajj515sy" path="res://assets/ui/shop.png" id="8_p5kuw"]
 [ext_resource type="Texture2D" uid="uid://btahr8i011mlt" path="res://assets/ui/chat.png" id="11_i86cr"]
+
+[sub_resource type="Gradient" id="Gradient_h7h1o"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_i86cr"]
+gradient = SubResource("Gradient_h7h1o")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dfwyv"]
+lifetime_randomness = 0.28
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(960, 80, 0)
+emission_shape = 3
+emission_box_extents = Vector3(512, 1, 1)
+angle_min = 1.07288e-05
+angle_max = 360.0
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = -1.60933e-05
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = -2.23517e-05
+gravity = Vector3(0, 98, 0)
+damping_min = 5.0
+damping_max = 5.0
+scale_min = 2.0
+scale_max = 8.0
+color_ramp = SubResource("GradientTexture1D_i86cr")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_h7h1o"]
+polygon = PackedVector2Array(0, 1080, 1920, 1080, 1691, 1392, 180, 1397)
 
 [node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar", "game_1p", "game_2p")]
 layout_mode = 3
@@ -307,11 +337,18 @@ status_panel = NodePath("../../Top/Status2P")
 script = ExtResource("6_b1bvr")
 wave_info_label = NodePath("../Screen/Bottom/Mid/GameStatus/WaveInfo")
 
-[node name="PauseMenu" parent="." instance=ExtResource("7_unjed")]
-visible = false
-layout_mode = 1
-
 [node name="StageSwitchTimer" type="Timer" parent="."]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+amount = 600
+lifetime = 60.0
+randomness = 0.14
+process_material = SubResource("ParticleProcessMaterial_dfwyv")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2(0, -4)
+occluder = SubResource("OccluderPolygon2D_h7h1o")
 
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]

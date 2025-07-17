@@ -340,7 +340,7 @@ class GameClient(GameClientBase):
         這個函數沒有返回值。如果成功的話，防禦塔的瞄準策略會被變更。
 
         ## Example
-        agent.set_strategy(Vector2(5, 10), CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
+        agent.set_strategy(Vector2(5, 10), TargetStrategy.CLOSE)  # 將 (5, 10) 的位置上的防禦塔的瞄準策略改成瞄準最近的敵人單位。
         """
         raise NotImplementedError
 
@@ -358,7 +358,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        agent.spawn_enemy(EnemyType.GOOMBA)  # 派出 GOOMBA
+        agent.spawn_unit(EnemyType.GOOMBA)  # 派出 GOOMBA
         ```
         """
         raise NotImplementedError
@@ -387,7 +387,7 @@ class GameClient(GameClientBase):
     def get_all_enemies(self, owned: bool) -> list[Enemy]:
         """
         # Get All Enemies
-        取得自己地圖上所有敵人的資訊。
+        取得自己或對手地圖上所有敵人的資訊。
 
         ## Parameters
         - `owned` (bool): 查詢自己 (True) 或對手 (False) 的敵人。
@@ -397,7 +397,7 @@ class GameClient(GameClientBase):
 
         ## Example
         ```python
-        all_enemies = agent.get_all_enemies()  # 獲取自己地圖上所有敵人的資訊
+        all_enemies = agent.get_all_enemies(True)  # 獲取自己地圖上所有敵人的資訊
         for enemy in all_enemies:
             print(enemy)
         ```

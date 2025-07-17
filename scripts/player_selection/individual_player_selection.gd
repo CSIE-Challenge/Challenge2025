@@ -18,6 +18,8 @@ var _update_paths: bool = true
 @onready var agent_script_label: Label = $Options/AgentScriptLabel
 @onready var agent_script_button: Button = $Options/AgentScriptContainer/Button
 @onready var agent_script_dialog: FileDialog = $Options/AgentScriptContainer/FileDialog
+@onready var auto_restart_on_button: Button = $Options/AutoRestartContainer/ButtonOn
+@onready var auto_restart_off_button: Button = $Options/AutoRestartContainer/ButtonOff
 @onready var process_status_container: HBoxContainer = $Options/ProcessStatusContainer
 @onready var process_status_run_button: Button = $Options/ProcessStatusContainer/ButtonRun
 @onready var process_status_kill_button: Button = $Options/ProcessStatusContainer/ButtonKill
@@ -62,6 +64,10 @@ func _ready() -> void:
 	agent_script_dialog.file_selected.connect(python_subprocess.set_python_script)
 	agent_script_dialog.file_selected.connect(func(_path: String): _update_paths = true)
 
+	# auto restart
+	auto_restart_off_button.pressed.connect(python_subprocess.set_auto_restart.bind(true))
+	auto_restart_on_button.pressed.connect(python_subprocess.set_auto_restart.bind(false))
+
 	# process status
 	process_status_run_button.pressed.connect(python_subprocess.run_subprocess)
 	process_status_kill_button.pressed.connect(python_subprocess.kill_subprocess)
@@ -103,6 +109,7 @@ func load_config(config: ConfigFile, section: String) -> void:
 	manual_control = config.get_value(section, "manual_control", false)
 	python_subprocess.set_python_interpreter(config.get_value(section, "python_interpreter", ""))
 	python_subprocess.set_python_script(config.get_value(section, "agent_script", ""))
+	python_subprocess.set_auto_restart(config.get_value(section, "auto_restart", false))
 	if config.has_section_key(section, "api_token"):
 		ApiServer.update_token(web_agent._ws, config.get_value(section, "api_token"))
 
@@ -112,6 +119,7 @@ func save_config(config: ConfigFile, section: String) -> void:
 	config.set_value(section, "manual_control", manual_control)
 	config.set_value(section, "python_interpreter", python_subprocess.python_interpreter_path)
 	config.set_value(section, "agent_script", python_subprocess.python_script_path)
+	config.set_value(section, "auto_restart", python_subprocess.auto_restart)
 	config.set_value(section, "api_token", web_agent._ws._token)
 
 
@@ -126,24 +134,6 @@ func freeze() -> void:
 	_remove_handlers(manual_control_on_button.pressed)
 
 
-func _get_string_width(content: String) -> float:
-	return (
-		get_theme_default_font()
-		. get_string_size(content, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_default_font_size())
-		. x
-	)
-
-
-func _truncate_front(content: String, max_width: float) -> String:
-	if _get_string_width(content) < max_width:
-		return content
-	for i in range(len(content)):
-		var truncated = "…" + content.substr(i)
-		if _get_string_width(truncated) < max_width:
-			return truncated
-	return ""
-
-
 func _display_fields() -> void:
 	# manual control
 	manual_control_off_button.visible = not manual_control
@@ -152,16 +142,16 @@ func _display_fields() -> void:
 	if _update_paths:
 		_update_paths = false
 		# python interpreter
-		var python_interpreter_path = _truncate_front(
-			python_subprocess.python_interpreter_path, python_interpreter_label.size.x
+		var python_interpreter_path = Util.truncate_front(
+			self, python_subprocess.python_interpreter_path, python_interpreter_label.size.x
 		)
 		if not python_interpreter_path.is_empty():
 			python_interpreter_label.text = python_interpreter_path
 		else:
 			python_interpreter_label.text = "(empty)"
 		# agent script
-		var agent_script_path = _truncate_front(
-			python_subprocess.python_script_path, agent_script_label.size.x
+		var agent_script_path = Util.truncate_front(
+			self, python_subprocess.python_script_path, agent_script_label.size.x
 		)
 		if not agent_script_path.is_empty():
 			agent_script_label.text = agent_script_path
@@ -170,6 +160,10 @@ func _display_fields() -> void:
 
 	# token
 	token_label.text = web_agent._ws._token
+
+	# auto restart
+	auto_restart_off_button.visible = not python_subprocess.auto_restart
+	auto_restart_on_button.visible = python_subprocess.auto_restart
 
 	# process status
 	process_status_run_button.visible = python_subprocess.is_runnable()
@@ -190,3 +184,6 @@ func _display_fields() -> void:
 			process_status_label.text = "Terminated (%d)" % python_subprocess.get_exit_code()
 		PythonSubprocessManager.FAILED:
 			process_status_label.text = "Failed"
+	if python_subprocess.is_restarting():
+		assert(python_subprocess.get_state() != PythonSubprocessManager.NEVER_RUN)
+		process_status_label.text += ", restarting"

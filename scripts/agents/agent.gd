@@ -277,11 +277,19 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 			(
 				previous_tower.type == tower.type
 				and (
-					previous_tower.level_a > tower.level_a or previous_tower.level_b > tower.level_b
+					(
+						previous_tower.level_a > tower.level_a
+						or previous_tower.level_b > tower.level_b
+					)
+					or (
+						previous_tower.level_a == tower.level_a
+						and previous_tower.level_b == tower.level_b
+					)
 				)
 			)
 			or game_self.money + previous_tower.building_cost < tower.building_cost
 		):
+			tower.free()
 			return [StatusCode.COMMAND_ERR, "Error: can't upgrade tower"]
 		if (
 			previous_tower.type != tower.type
@@ -290,11 +298,13 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 				< tower.building_cost
 			)
 		):
+			tower.free()
 			return [StatusCode.COMMAND_ERR, "Error: not enough money"]
 
 	if game_self.money < tower.building_cost:
+		tower.free()
 		return [StatusCode.COMMAND_ERR, "Error: not enough money"]
-	game_self.place_tower(_coord, tower)
+	game_self.place_tower.emit(_coord, tower)
 	return [StatusCode.OK]
 
 
@@ -499,8 +509,8 @@ func _get_spell_cooldown(_owned: bool, _type: SpellType) -> Array:
 
 func _get_screen_name_label() -> Label:
 	if player_id == 1:
-		return get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameLeft")
-	return get_tree().get_root().get_node("Round/Screen/Top/TextureRect/PlayerNameRight")
+		return ongoing_round.get_node("Screen/Top/TextureRect/PlayerNameLeft")
+	return ongoing_round.get_node("Screen/Top/TextureRect/PlayerNameRight")
 
 
 func _send_chat(msg: String) -> Array:

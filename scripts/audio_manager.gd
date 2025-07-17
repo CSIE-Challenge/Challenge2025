@@ -18,3 +18,6 @@ var background2_music_position: float
 @onready var macos: AudioStreamPlayer = $MacOS
 @onready var windows: AudioStreamPlayer = $Windows
 @onready var boo: AudioStreamPlayer = $Boo
+@onready var join: AudioStreamPlayer = $Join
+@onready var leave: AudioStreamPlayer = $Leave
+@onready var message: AudioStreamPlayer = $Message
