@@ -572,4 +572,34 @@ func _set_name(_name: String) -> Array:
 	game_self.player_selection.get_node("PlayerIdentifierLabel").text = name
 	return [StatusCode.OK]
 
+
+#endregion
+
+#region Premium-API
+
+
+func _disconnect() -> Array:
+	return [StatusCode.OK]
+
+
+func _ntu_student_id_card() -> Array:
+	print("10% off")
+	return [StatusCode.OK]
+
+
+func _metal_pipe() -> Array:
+	return [StatusCode.OK]
+
+
+func _spam(_message: String) -> Array:
+	return [StatusCode.OK]
+
+
+func _super_star() -> Array:
+	return [StatusCode.OK]
+
+
+func _turbo_on() -> Array:
+	return [StatusCode.OK]
+
 #endregion

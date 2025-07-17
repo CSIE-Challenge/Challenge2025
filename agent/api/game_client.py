@@ -573,3 +573,27 @@ class GameClient(GameClientBase):
         ```
         """
         raise NotImplementedError
+
+    @game_command(CommandType.DISCONNECT, [], str)
+    def disconnect(self) -> str:
+        raise NotImplementedError
+    
+    @game_command(CommandType.NTU_STUDENT_ID_CARD, [], str)
+    def ntu_student_id_card(self) -> str:
+        raise NotImplementedError
+    
+    @game_command(CommandType.METAL_PIPE, [], None)
+    def metal_pipe(self) -> None:
+        raise NotImplementedError
+    
+    @game_command(CommandType.SPAM, [str], None)
+    def spam(self, message: str) -> None:
+        raise NotImplementedError
+    
+    @game_command(CommandType.SUPER_STAR, [], None)
+    def super_star(self) -> None:
+        raise NotImplementedError
+    
+    @game_command(CommandType.TURBO_ON, [], None)
+    def turbo_on(self) -> None:
+        raise NotImplementedError
