@@ -611,4 +611,21 @@ class GameClient(GameClientBase):
     
     @game_command(CommandType.TURBO_ON, [], None)
     def turbo_on(self) -> None:
+        """
+        # Turbo On
+        1秒內派兵無冷卻
+        
+        ## Parameters
+        無參數
+        
+        ## Returns
+        這個函數沒有回傳值。
+        
+        ## Example
+        ```python
+        agent.turbo_on()
+        while True:
+            agent.spawn_unit(EnemyType.GOOMBA) # 前一秒會瘋狂派出栗寶寶，接下來恢復正常速度
+        ```
+        """
         raise NotImplementedError

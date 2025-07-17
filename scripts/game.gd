@@ -46,6 +46,7 @@ var op_game: Game
 var enemy_cooldown: Dictionary[int, Timer] = {}
 var map: Map = null
 var frozen := true
+var no_cooldown := false
 var current_hp_multiplier: float = 1
 var current_speed_multiplier: float = 1
 var is_manually_controlled := false:  # only used in water map
@@ -56,6 +57,8 @@ var is_manually_controlled := false:  # only used in water map
 		self.on_manual_control_changed.emit(value)
 
 var _enemy_scene_cache = {}
+
+@onready var no_cooldown_timer = $NoCooldownTimer
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
@@ -290,13 +293,14 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 		EnemySource.SYSTEM:
 			path = map.flying_system_path if enemy.flying else map.system_path
 		EnemySource.OPPONENT:
-			var timer = Timer.new()
-			enemy_cooldown[enemy.type] = timer
-			timer.wait_time = enemy.summon_cooldown
-			timer.one_shot = true
-			add_child(timer)
-			timer.timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
-			timer.start()
+			if not no_cooldown:
+				var timer = Timer.new()
+				enemy_cooldown[enemy.type] = timer
+				timer.wait_time = enemy.summon_cooldown
+				timer.one_shot = true
+				add_child(timer)
+				timer.timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
+				timer.start()
 			path = map.flying_opponent_path if enemy.flying else map.opponent_path
 	path.add_child(enemy.path_follow)
 
@@ -367,3 +371,7 @@ func _process(_delta) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	_handle_tower_selection(event)
+
+
+func _turbo_off() -> void:
+	no_cooldown = false

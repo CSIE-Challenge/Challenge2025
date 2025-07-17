@@ -73,6 +73,7 @@ var ongoing_round: Round = null
 var game_self: Game = null
 var game_other: Game = null
 var chat_node: Node = null
+var no_cooldown: Timer = Timer.new()
 
 var sys_paths: Array = [[], []]
 var opp_paths: Array = [[], []]
@@ -367,7 +368,7 @@ func _get_unit_dict(_type: EnemyType) -> Dictionary:
 
 func _spawn_unit(_type: EnemyType) -> Array:
 	var data = _get_unit_dict(_type)
-	if game_other.enemy_cooldown.has(_type):
+	if game_other.enemy_cooldown.has(_type) and not game_other.no_cooldown:
 		return [StatusCode.COMMAND_ERR, "cooldown hasn't finished"]
 	if game_self.spend(
 		int(data.stats.deploy_cost * game_self.shop_discount), data.stats.income_impact
@@ -605,6 +606,8 @@ func _super_star() -> Array:
 
 
 func _turbo_on() -> Array:
+	game_other.no_cooldown = true
+	game_other.no_cooldown_timer.start()
 	return [StatusCode.OK]
 
 #endregion
