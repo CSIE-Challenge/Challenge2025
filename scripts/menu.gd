@@ -29,7 +29,6 @@ func _ready() -> void:
 
 	var config: ConfigFile = ConfigFile.new()
 	var current_time = Time.get_datetime_dict_from_system()
-	config.set_value("Time", "Warning", true)
 	if current_time["month"] == 7 and current_time["day"] == 18 and current_time["hour"] in 1:
 		config.set_value("Time", "Warning", true)
 	if config.get_value("Time", "Warning", false) == true:
