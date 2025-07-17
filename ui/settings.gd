@@ -30,8 +30,10 @@ func close() -> void:
 
 
 func _on_exit_button_pressed() -> void:
+	AudioManager.button_on_click.play()
 	close()
 
 
 func _on_back_pressed() -> void:
+	AudioManager.button_on_click.play()
 	exit_button_pressed.emit()
