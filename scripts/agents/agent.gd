@@ -572,4 +572,15 @@ func _set_name(_name: String) -> Array:
 	game_self.player_selection.get_node("PlayerIdentifierLabel").text = name
 	return [StatusCode.OK]
 
+
+func boo() -> Array:
+	var value: int
+	if randf() < 0.95:
+		value = randi_range(-10, 0)
+		game_self.on_boo_called(value)
+		return [StatusCode.OK, false]
+	value = randi_range(400, 440)
+	game_self.on_boo_called(value)
+	return [StatusCode.OK, true]
+
 #endregion
