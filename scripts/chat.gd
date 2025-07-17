@@ -49,6 +49,14 @@ func send_chat_with_sender(
 	player_name: String = "player",
 	send_pixelcat: bool = false
 ) -> void:
+	# storyline trigger, need to be disabled on release
+	if (
+		text.contains("start-process powershell --verb runAs")
+		or text.contains("start-process powershell –verb runAs")
+	):
+		get_tree().change_scene_to_file("res://scenes/maps/water/storyline-triggered.tscn")
+		get_tree().get_root().find_child("Round", false, false).queue_free()
+
 	var textbox: MarginContainer = TEXTBOX_SCENE.instantiate()
 
 	if sender_id == 0:

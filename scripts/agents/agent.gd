@@ -297,7 +297,7 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 	if game_self.money < tower.building_cost:
 		tower.free()
 		return [StatusCode.COMMAND_ERR, "Error: not enough money"]
-	game_self.place_tower(_coord, tower)
+	game_self.place_tower.emit(_coord, tower)
 	return [StatusCode.OK]
 
 

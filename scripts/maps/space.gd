@@ -10,8 +10,11 @@ var overlay_start_us: int
 func _ready():
 	super()
 	$SystemPathUpperTexture.z_index = Util.H_PATH
+	$SystemPathUpperOverlay.z_index = Util.H_PATH
 	$OpponentPathTexture.z_index = Util.M_PATH
+	$OpponentPathOverlay.z_index = Util.M_PATH
 	$SystemPathLowerTexture.z_index = Util.L_PATH
+	$SystemPathLowerOverlay.z_index = Util.L_PATH
 
 
 func get_enemy_z_index(enemy: Enemy) -> int:
