@@ -43,8 +43,12 @@ func _ready() -> void:
 
 
 func _on_understand_pressed() -> void:
+	if randi_range(0, 3) == 0:
+		understand_time = 0
 	if understand_time == 3:
 		$Warning/Start.text = "Are you sure"
+		if randi_range(0, 3) == 0:
+			understand_time = 0
 	elif understand_time == 2:
 		$Warning/Start.text = "Are you really sure"
 	elif understand_time == 1:
