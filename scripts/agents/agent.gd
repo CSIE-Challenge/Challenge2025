@@ -592,6 +592,7 @@ func _ntu_student_id_card() -> Array:
 
 
 func _metal_pipe() -> Array:
+	AudioManager.play_metal_pipe()
 	return [StatusCode.OK]
 
 

@@ -588,7 +588,7 @@ class GameClient(GameClientBase):
         無參數
         
         ## Returns
-        這個函數回傳一個隨機生成的B14級資訊系學號。
+        這個函數回傳一個隨機生成的資訊系學號。
         
         ## Example
         ```python
