@@ -3,6 +3,7 @@ extends Control
 var screen_size := Vector2.ZERO
 var velocity := Vector2(400, 300)
 var match_score: int = 0
+var understand_time: int = 3
 
 @onready var logo := $Subtitle
 @onready var distros := [
@@ -26,11 +27,31 @@ func _ready() -> void:
 		randf_range(0, screen_size.y - logo.get_minimum_size().y)
 	)
 
+	var config: ConfigFile = ConfigFile.new()
+	var current_time = Time.get_datetime_dict_from_system()
+	config.set_value("Time", "Warning", true)
+	if current_time["month"] == 7 and current_time["day"] == 18 and current_time["hour"] in 1:
+		config.set_value("Time", "Warning", true)
+	if config.get_value("Time", "Warning", false) == true:
+		$Warning.visible = true
+
 	if not AudioManager.background_menu.has_stream_playback():
 		AudioManager.background_menu.play()
 	$VersionMargin/Version/Version.text = (
 		"v%s" % [ProjectSettings.get_setting("application/config/version")]
 	)
+
+
+func _on_understand_pressed() -> void:
+	if understand_time == 3:
+		$Warning/Start.text = "Are you sure"
+	elif understand_time == 2:
+		$Warning/Start.text = "Are you really sure"
+	elif understand_time == 1:
+		$Warning/Start.text = "Are you really really sure"
+	elif understand_time == 0:
+		$Warning.visible = false
+	understand_time -= 1
 
 
 func _on_start_pressed() -> void:
