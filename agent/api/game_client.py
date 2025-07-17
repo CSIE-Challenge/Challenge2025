@@ -580,6 +580,21 @@ class GameClient(GameClientBase):
     
     @game_command(CommandType.NTU_STUDENT_ID_CARD, [], str)
     def ntu_student_id_card(self) -> str:
+        """
+        # NTU Student ID Card
+        使用國立臺灣大學資訊工程學系學生證以獲得商店九折優惠
+        
+        ## Parameters
+        無參數
+        
+        ## Returns
+        這個函數回傳一個隨機生成的B14級資訊系學號。
+        
+        ## Example
+        ```python
+        print(agent.ntu_student_id_card()) # 獲得商店九折優惠並輸出一個學號
+        ```
+        """
         raise NotImplementedError
     
     @game_command(CommandType.METAL_PIPE, [], None)
