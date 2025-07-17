@@ -87,10 +87,6 @@ func _on_start_button_pressed() -> void:
 	the_round.set_controllers(selection_1p, selection_2p, manual_controlled)
 	the_round.set_maps(map_scene)
 	get_tree().get_root().add_child(the_round)
-
-	# transfer node, so the python process is kept (and therefore, freed after the game ends)
-	selection_1p.python_subprocess.reparent(the_round)
-	selection_2p.python_subprocess.reparent(the_round)
 	queue_free()
 
 

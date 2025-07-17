@@ -22,7 +22,7 @@ func _ready() -> void:
 func init(_options: Dictionary, python_interpreter_path: String) -> void:
 	visible = true
 	selector.python_subprocess.set_python_interpreter(python_interpreter_path)
-	# TODO: set auto-restart
+	# auto-restart is set in quad_match_loader.gd `toggle_all_agents()`
 
 	options = _options
 	selector.player_identifier = options["name"]

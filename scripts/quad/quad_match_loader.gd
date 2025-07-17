@@ -92,8 +92,6 @@ func start_game() -> void:
 		the_round.system_controlled = true
 		the_round.set_controllers(selection_1p, selection_2p, 0)
 		the_round.set_maps(map_scene)
-		selection_1p.python_subprocess.reparent(the_round)
-		selection_2p.python_subprocess.reparent(the_round)
 		the_rounds.push_back(the_round)
 	var the_quad = preload("res://scenes/quad/quad_match.tscn").instantiate()
 	the_quad.init(config_path, match_config, the_rounds)
