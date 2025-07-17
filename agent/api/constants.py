@@ -199,6 +199,9 @@ class StatusCode(IntEnum):
 	PAUSED = 407
 	"""遊戲暫停中。"""
 
+	INSUFFICIENT_QUOTA = 408
+	"""呼叫 Premium API 時 Quota 不足"""
+
 	INTERNAL_ERR = 500
 	"""Godot server 端出現問題（請向開發組反映，對不起！！！）。"""
 
