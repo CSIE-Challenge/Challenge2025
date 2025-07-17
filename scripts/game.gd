@@ -232,8 +232,12 @@ func _handle_tower_selection(event: InputEvent) -> void:
 #region Income
 
 
+func get_modified_income_per_second() -> int:
+	return (income_rate * income_per_second) as int
+
+
 func _on_constant_income_timer_timeout() -> void:
-	var next_money = (money + income_rate * income_per_second) as int
+	var next_money = money + get_modified_income_per_second()
 	money_earned += next_money - money
 	money = next_money
 	if not during_boo:
@@ -416,7 +420,7 @@ func _process(_delta) -> void:
 	if !frozen:
 		display_score = score
 	status_panel.find_child("Money").text = "%d" % money
-	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
+	status_panel.find_child("Income").text = "+%d" % get_modified_income_per_second()
 	if income_rate > 1:
 		status_panel.find_child("Income").text += " ×%d" % income_rate
 	status_panel.find_child("KillReward").text = _get_signed_string_number(display_kill_reward)

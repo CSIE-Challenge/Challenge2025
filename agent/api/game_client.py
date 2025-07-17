@@ -643,8 +643,8 @@ class GameClient(GameClientBase):
         """
         raise NotImplementedError
 
-    @game_command(CommandType.GET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [], None)
-    def get_the_radiant_core_of_stellar_faith(self) -> None:
+    @game_command(CommandType.GET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [], int)
+    def get_the_radiant_core_of_stellar_faith(self) -> int:
         raise NotImplementedError
 
     @game_command(CommandType.SET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [int], None)

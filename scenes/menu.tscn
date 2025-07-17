@@ -264,11 +264,6 @@ autostart = true
 z_index = 1000
 layout_mode = 1
 
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
-
 [node name="Hahayoufoundit" type="Label" parent="."]
 visible = false
 layout_mode = 0
