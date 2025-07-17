@@ -18,7 +18,7 @@ var manual_controlled: int
 # when turned on, pressing ESC does not pause the game or exit the game on end screen
 var system_controlled: bool = false
 
-var reveal_cutscene: bool = true
+var reveal_cutscene: bool = false
 var cutscene_timers = []
 
 @onready var game_timer: Timer = $GameTimer
@@ -102,7 +102,7 @@ func _ready() -> void:
 					0
 				)
 		)
-		create_timer.call(15, _start)
+		create_timer.call(14, _start)
 	else:
 		cutscene.process_mode = Node.PROCESS_MODE_DISABLED
 		cutscene.visible = false
@@ -110,7 +110,18 @@ func _ready() -> void:
 		_start()
 
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
+		$Cutscene.visible = false
+		_start()
+
+
 func _start() -> void:
+	if !game_timer.is_stopped():
+		return
+	# start game timer
+	game_timer.start()
+
 	game_1p.start()
 	game_2p.start()
 	spawner.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -124,9 +135,6 @@ func _start() -> void:
 	game_1p.op_game = game_2p
 	game_2p.op_game = game_1p
 	$GPUParticles2D.visible = false
-
-	# start game timer
-	game_timer.start()
 
 	# setup signals for the games
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
