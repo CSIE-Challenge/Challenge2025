@@ -23,7 +23,7 @@ func explode():
 			var cell_pos = map.global_to_cell(e.global_position)
 			map.game.demolish_tower.emit(cell_pos)
 		else:
-			e.queue_free()
+			e.take_damage(1000000)
 	
 	for i in range(10):
 		var boom = boom_scene.instantiate()

@@ -1,7 +1,8 @@
 extends Map
 
 func _ready():
-	Engine.time_scale = 3
+	pass
+	#Engine.time_scale = 3
 
 
 func _on_area_2d_area_entered(enemy: Area2D) -> void:
