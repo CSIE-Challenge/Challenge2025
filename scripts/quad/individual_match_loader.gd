@@ -8,6 +8,7 @@ extends Panel
 
 var selector: IndividualPlayerSelection = null
 var options: Dictionary = {}
+var api_quota: int
 
 
 func _ready() -> void:
@@ -29,7 +30,7 @@ func init(_options: Dictionary, python_interpreter_path: String) -> void:
 	selector.web_agent._agent_identifier = options["name"]
 	var token = options["token"]
 	ApiServer.update_token(selector.web_agent._ws, token)
-	# TODO: pass API quota to the game
+	api_quota = options["api-quota"]
 	var agent_script = options["agent-script"]
 	selector.python_subprocess.set_python_script(agent_script)
 
