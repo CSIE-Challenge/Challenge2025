@@ -602,7 +602,7 @@ class GameClient(GameClientBase):
         raise NotImplementedError
     
     @game_command(CommandType.SPAM, [str, int], None)
-    def spam(self, message: str, size: int) -> None:
+    def spam(self, message: str, size: int = 48) -> None:
         raise NotImplementedError
     
     @game_command(CommandType.SUPER_STAR, [], None)
