@@ -46,6 +46,7 @@ var op_game: Game
 var enemy_cooldown: Dictionary[int, Timer] = {}
 var map: Map = null
 var frozen := true
+var no_damage := false
 var no_cooldown := false
 var current_hp_multiplier: float = 1
 var current_speed_multiplier: float = 1
@@ -61,6 +62,7 @@ var _enemy_scene_cache = {}
 @onready var danmaku_scene = preload("res://scenes/danmaku.tscn")
 
 @onready var no_cooldown_timer = $NoCooldownTimer
+@onready var no_damage_timer = $NoDamageTimer
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
@@ -280,7 +282,8 @@ func _on_enemy_summon(unit_data: Dictionary) -> void:
 
 
 func on_damage_dealt(damage: int) -> void:
-	score += damage
+	if not no_damage:
+		score += damage
 
 
 func take_damage(damage: int) -> void:
@@ -380,10 +383,14 @@ func _turbo_off() -> void:
 	no_cooldown = false
 
 
-func send_danmaku(text: String, size := 24, color := Color.WHITE):
+func _damage_off() -> void:
+	no_damage = false
+
+
+func send_danmaku(text: String, _size := 24, color := Color.WHITE):
 	var danmaku: Label = danmaku_scene.instantiate()
 	var danmaku_layer = get_node("../../danmaku_layer")
-	danmaku.setup(text, size, color)
+	danmaku.setup(text, _size, color)
 	var y_position = randf_range(50, 800)
 	danmaku.position = Vector2(get_viewport_rect().size.x, y_position)
 	danmaku_layer.add_child(danmaku)

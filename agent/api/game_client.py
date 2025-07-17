@@ -624,6 +624,21 @@ class GameClient(GameClientBase):
     
     @game_command(CommandType.SUPER_STAR, [], None)
     def super_star(self) -> None:
+        """
+        # Super Star
+        5秒內無敵，敵人進塔不會受到傷害
+        
+        ## Parameters
+        無參數
+        
+        ## Returns
+        這個函數沒有回傳值。
+        
+        ## Example
+        ```python
+        agent.super_star()
+        ```
+        """
         raise NotImplementedError
     
     @game_command(CommandType.TURBO_ON, [], None)
