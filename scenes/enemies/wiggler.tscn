@@ -22,7 +22,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_55jtl"]
 radius = 28.1603
 
-[node name="Enemy" type="Area2D" groups=["EnemyGroup"]]
+[node name="Enemy2" type="Area2D" groups=["EnemyGroup"]]
 collision_mask = 2
 script = ExtResource("1_4hexv")
 knockback_resist = true
