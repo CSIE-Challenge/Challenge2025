@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Challenge2025"
-config/version="1.3.0"
+config/version="1.3.1"
 run/main_scene="uid://cdex8rnl6lny2"
 config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/image="uid://brtpt72a50fg0"
