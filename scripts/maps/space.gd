@@ -9,24 +9,37 @@ var overlay_start_us: int
 
 func _ready():
 	super()
+	$SystemPathUpperTexture.z_index = Util.H_PATH
+	$SystemPathUpperOverlay.z_index = Util.H_PATH
+	$OpponentPathTexture.z_index = Util.M_PATH
+	$OpponentPathOverlay.z_index = Util.M_PATH
+	$SystemPathLowerTexture.z_index = Util.L_PATH
+	$SystemPathLowerOverlay.z_index = Util.L_PATH
 
 
 func get_enemy_z_index(enemy: Enemy) -> int:
 	if enemy.path_follow.get_parent() == $OpponentPath:
-		return 12  # orange is 11
+		enemy.health_bar.z_index = 0
+		return Util.M_ENEMY
 	if (
 		enemy.path_follow.get_parent() == $FlyingOpponentPath
 		or enemy.path_follow.get_parent() == $FlyingSystemPath
 	):
-		return 14  # three paths are 0, 11, 13
+		enemy.health_bar.z_index = Util.TOWER_LAYER  # Set back to default
+		return Util.FLYING_LAYER
 
 	if enemy.path_follow.progress_ratio < 0.35:  # lower path
-		return 10
+		enemy.health_bar.z_index = 0
+		return Util.L_ENEMY
 	if enemy.path_follow.progress_ratio < 0.7:  # upper path
-		return 14
+		enemy.health_bar.z_index = Util.TOWER_LAYER  # Set back to default
+		return Util.ENEMY_LAYER
 	if enemy.path_follow.progress_ratio < 0.825:  # lower path
-		return 10
-	return 14  # upper path
+		enemy.health_bar.z_index = 0
+		return Util.L_ENEMY
+	# upper path
+	enemy.health_bar.z_index = 0
+	return Util.ENEMY_LAYER
 
 
 func _process(_delta):

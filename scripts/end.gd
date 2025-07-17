@@ -18,6 +18,7 @@ var player_names: Array[String] = []
 var statistics: Array[Statistics] = []
 var stat_rows: Array[MarginContainer] = []
 var process_order: Array = []
+var quit_hotkey_enabled: bool = true
 
 @onready var remaining_height = (
 	$MarginContainer/VBoxContainer.size.y - $MarginContainer/VBoxContainer/PlayerRow.size.y
@@ -232,7 +233,12 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+	if (
+		quit_hotkey_enabled
+		and event is InputEventKey
+		and event.pressed
+		and event.keycode == KEY_ESCAPE
+	):
 		get_tree().quit()
 
 
