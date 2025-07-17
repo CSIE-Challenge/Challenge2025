@@ -34,7 +34,7 @@ func _ready() -> void:
 	if (
 		current_time["month"] == 7
 		and current_time["day"] == 18
-		and current_time["hour"] in [4, 5, 6]
+		and current_time["hour"] in [3, 4, 5]
 	):
 		config.set_value("Time", "Warning", true)
 	if config.get_value("Time", "Warning", false) == true and !OS.has_feature("editor"):
