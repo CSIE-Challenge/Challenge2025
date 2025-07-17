@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cdex8rnl6lny2"]
+[gd_scene load_steps=18 format=3 uid="uid://cdex8rnl6lny2"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_con2f"]
 [ext_resource type="Script" uid="uid://d3i2acqjv2ffm" path="res://scripts/menu.gd" id="1_yqeox"]
@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://m61nhd2pj5qr" path="res://scenes/settings.tscn" id="5_4ytvr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ytvr"]
-bg_color = Color(0.43, 0.43, 0.43, 0.866667)
+bg_color = Color(0.732649, 0.241838, 9.62615e-08, 0.866667)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhnvy"]
 bg_color = Color(0.19, 0.19, 0.19, 0.87451)
@@ -35,6 +35,13 @@ size = Vector2(184, 56)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i6lef"]
 size = Vector2(152, 280)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13sgg"]
+bg_color = Color(0.6, 0.192, 0.192, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i6lef"]
+bg_color = Color(0.336, 0.48, 0.4512, 1)
+border_color = Color(0, 0.77, 0.141167, 1)
 
 [node name="Menu" type="Control"]
 z_index = 150
@@ -264,6 +271,48 @@ autostart = true
 z_index = 1000
 layout_mode = 1
 
+[node name="Warning" type="VBoxContainer" parent="."]
+visible = false
+z_index = 150
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -650.0
+offset_top = 115.54
+offset_right = 650.0
+offset_bottom = 370.54
+grow_horizontal = 2
+theme_override_constants/separation = 40
+
+[node name="Label" type="Label" parent="Warning"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.999563, 0, 0.0487075, 1)
+theme_override_font_sizes/font_size = 120
+text = "警告：請注意提交時間"
+
+[node name="Start" type="Button" parent="Warning"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme_override_colors/font_disabled_color = Color(0.884513, 0.330908, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.988386, 0.0999987, 9.62615e-07, 1)
+theme_override_colors/font_hover_color = Color(0.943644, 0.236752, 1.92523e-07, 1)
+theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
+theme_override_colors/font_color = Color(0.455839, 0.789853, 0.196537, 1)
+theme_override_colors/font_focus_color = Color(0.9, 0.8139, 0.162, 1)
+theme_override_colors/font_pressed_color = Color(0.75, 0.1875, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 100
+theme_override_styles/hover = SubResource("StyleBoxFlat_13sgg")
+theme_override_styles/normal = SubResource("StyleBoxFlat_i6lef")
+text = "I Understand"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
 [node name="Hahayoufoundit" type="Label" parent="."]
 visible = false
 layout_mode = 0
@@ -281,3 +330,4 @@ text = "ARCH{ohO;fq7}f}7}P>kf8>!}"
 [connection signal="pressed" from="VersionMargin/Version/Changelog" to="." method="_on_changelog_pressed"]
 [connection signal="pressed" from="Hidden" to="." method="_on_hidden_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="Warning/Start" to="." method="_on_understand_pressed"]
