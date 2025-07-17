@@ -134,24 +134,6 @@ func freeze() -> void:
 	_remove_handlers(manual_control_on_button.pressed)
 
 
-func _get_string_width(content: String) -> float:
-	return (
-		get_theme_default_font()
-		. get_string_size(content, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_default_font_size())
-		. x
-	)
-
-
-func _truncate_front(content: String, max_width: float) -> String:
-	if _get_string_width(content) < max_width:
-		return content
-	for i in range(len(content)):
-		var truncated = "…" + content.substr(i)
-		if _get_string_width(truncated) < max_width:
-			return truncated
-	return ""
-
-
 func _display_fields() -> void:
 	# manual control
 	manual_control_off_button.visible = not manual_control
@@ -160,16 +142,16 @@ func _display_fields() -> void:
 	if _update_paths:
 		_update_paths = false
 		# python interpreter
-		var python_interpreter_path = _truncate_front(
-			python_subprocess.python_interpreter_path, python_interpreter_label.size.x
+		var python_interpreter_path = Util.truncate_front(
+			self, python_subprocess.python_interpreter_path, python_interpreter_label.size.x
 		)
 		if not python_interpreter_path.is_empty():
 			python_interpreter_label.text = python_interpreter_path
 		else:
 			python_interpreter_label.text = "(empty)"
 		# agent script
-		var agent_script_path = _truncate_front(
-			python_subprocess.python_script_path, agent_script_label.size.x
+		var agent_script_path = Util.truncate_front(
+			self, python_subprocess.python_script_path, agent_script_label.size.x
 		)
 		if not agent_script_path.is_empty():
 			agent_script_label.text = agent_script_path
