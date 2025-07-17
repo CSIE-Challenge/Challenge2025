@@ -37,6 +37,7 @@ var player_selection: IndividualPlayerSelection = null
 var money: int = 300
 var income_per_second = 50
 var income_rate: int = 1
+var shop_discount: float = 1.0
 var chat_name_color: String = "ffffff"
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
@@ -108,22 +109,30 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 					)
 				)
 			)
-			or money + previous_tower.building_cost < tower.building_cost
+			or (
+				money + previous_tower.building_cost * shop_discount
+				< tower.building_cost * shop_discount
+			)
 		):
 			return false
 		if (
 			previous_tower.type != tower.type
-			and money + (previous_tower.building_cost * DEPRECIATION_RATE) < tower.building_cost
+			and (
+				money + (previous_tower.building_cost * shop_discount * DEPRECIATION_RATE)
+				< tower.building_cost * shop_discount
+			)
 		):
 			return false
-	if money < tower.building_cost:
+	if money < tower.building_cost * shop_discount:
 		return false
 	return map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
 	money += (
-		(tower.building_cost * DEPRECIATION_RATE) as int if depreciation else tower.building_cost
+		(tower.building_cost * shop_discount * DEPRECIATION_RATE) as int
+		if depreciation
+		else int(tower.building_cost * shop_discount)
 	)
 	tower.queue_free()
 	if is_instance_valid(tower_ui):
@@ -153,7 +162,7 @@ func _on_place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	tower_built += 1
 	self.tower_placed.emit(cell_pos)
 
-	money -= tower.building_cost
+	money -= int(tower.building_cost * shop_discount)
 	built_towers[cell_pos] = tower
 
 

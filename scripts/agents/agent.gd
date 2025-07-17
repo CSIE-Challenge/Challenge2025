@@ -369,7 +369,9 @@ func _spawn_unit(_type: EnemyType) -> Array:
 	var data = _get_unit_dict(_type)
 	if game_other.enemy_cooldown.has(_type):
 		return [StatusCode.COMMAND_ERR, "cooldown hasn't finished"]
-	if game_self.spend(data.stats.deploy_cost, data.stats.income_impact):
+	if game_self.spend(
+		int(data.stats.deploy_cost * game_self.shop_discount), data.stats.income_impact
+	):
 		game_other.summon_enemy.emit(data)
 	else:
 		return [StatusCode.COMMAND_ERR, "doesn't have enough money"]
@@ -583,8 +585,10 @@ func _disconnect() -> Array:
 
 
 func _ntu_student_id_card() -> Array:
-	print("10% off")
-	return [StatusCode.OK]
+	game_self.shop_discount = 0.9
+	var num: int = (randi() % 800) + 200
+	var id: String = "B14902%d" % num
+	return [StatusCode.OK, id]
 
 
 func _metal_pipe() -> Array:
