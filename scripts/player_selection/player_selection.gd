@@ -9,7 +9,12 @@ const MAP_LIST = [
 	["沒有香菜的世界", preload("res://assets/maps/Map1.png"), preload("res://scenes/maps/map1.tscn")],
 	["小村探秘", preload("res://assets/maps/map2/preview.png"), preload("res://scenes/maps/map2.tscn")],
 	["椰林大道", preload("res://assets/maps/Map3.png"), preload("res://scenes/maps/map3.tscn")],
-	[" ", preload("res://assets/maps/space/preview.png"), preload("res://scenes/maps/space.tscn")]
+	[" ", preload("res://assets/maps/space/preview.png"), preload("res://scenes/maps/space.tscn")],
+	[
+		"沙河模擬",
+		preload("res://assets/maps/water/preview.png"),
+		preload("res://scenes/maps/water/water.tscn")
+	]
 ]
 
 var selected_map_idx: int
