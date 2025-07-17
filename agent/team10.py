@@ -13,7 +13,7 @@ agent = GameClient(7749, "0008e6c9")  # Replace with your token
 agent.set_the_radiant_core_of_stellar_faith(100)
 
 get_total = agent.get_the_radiant_core_of_stellar_faith()
-print(get_total)
+
 # 貴賓卡api判斷
 
 while get_total >= 400:
