@@ -1,13 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cvjdabq2ffoy7"]
+[gd_scene load_steps=4 format=3 uid="uid://cvjdabq2ffoy7"]
 
 [ext_resource type="Texture2D" uid="uid://b5phndtmcwrbs" path="res://assets/distro/debian.png" id="1_nlxvw"]
 [ext_resource type="Script" uid="uid://cftqym8vwuoq5" path="res://ui/distro/distro.gd" id="1_uy1a8"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_nlxvw"]
-radius = 82.0061
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_uy1a8"]
-radius = 51.0882
+radius = 99.0202
 
 [node name="Debian" type="RigidBody2D"]
 script = ExtResource("1_uy1a8")
@@ -24,9 +21,11 @@ polygon = PackedVector2Array(1, 13, 10, -6, 7, -12, -3, -13, -8, -10, -10, -2, -
 [node name="Match" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Match"]
-shape = SubResource("CircleShape2D_nlxvw")
+position = Vector2(6, -1)
+shape = SubResource("CircleShape2D_uy1a8")
 
 [node name="Click" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Click"]
-shape = SubResource("CircleShape2D_uy1a8")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Click"]
+scale = Vector2(4, 4)
+polygon = PackedVector2Array(1, 13, 10, -6, 7, -12, -3, -13, -8, -10, -10, -2, -6, 7)

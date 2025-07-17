@@ -9,7 +9,12 @@ const MAP_LIST = [
 	["沒有香菜的世界", preload("res://assets/maps/Map1.png"), preload("res://scenes/maps/map1.tscn")],
 	["小村探秘", preload("res://assets/maps/map2/preview.png"), preload("res://scenes/maps/map2.tscn")],
 	["椰林大道", preload("res://assets/maps/Map3.png"), preload("res://scenes/maps/map3.tscn")],
-	[" ", preload("res://assets/maps/space/preview.png"), preload("res://scenes/maps/space.tscn")]
+	[" ", preload("res://assets/maps/space/preview.png"), preload("res://scenes/maps/space.tscn")],
+	[
+		"沙河模擬",
+		preload("res://assets/maps/water/preview.png"),
+		preload("res://scenes/maps/water/water.tscn")
+	]
 ]
 
 var selected_map_idx: int
@@ -87,10 +92,6 @@ func _on_start_button_pressed() -> void:
 	the_round.set_controllers(selection_1p, selection_2p, manual_controlled)
 	the_round.set_maps(map_scene)
 	get_tree().get_root().add_child(the_round)
-
-	# transfer node, so the python process is kept (and therefore, freed after the game ends)
-	selection_1p.python_subprocess.reparent(the_round)
-	selection_2p.python_subprocess.reparent(the_round)
 	queue_free()
 
 

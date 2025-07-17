@@ -15,3 +15,8 @@ var background2_music_position: float
 @onready var tower_shoot: AudioStreamPlayer = $TowerShoot
 @onready var bullet_explode: AudioStreamPlayer = $BulletExplode
 @onready var match_sound: AudioStreamPlayer = $Match
+@onready var macos: AudioStreamPlayer = $MacOS
+@onready var windows: AudioStreamPlayer = $Windows
+@onready var join: AudioStreamPlayer = $Join
+@onready var leave: AudioStreamPlayer = $Leave
+@onready var message: AudioStreamPlayer = $Message

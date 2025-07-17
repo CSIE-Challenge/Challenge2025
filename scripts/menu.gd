@@ -28,12 +28,19 @@ func _ready() -> void:
 
 	if not AudioManager.background_menu.has_stream_playback():
 		AudioManager.background_menu.play()
-	$Version.text = "v%s" % [ProjectSettings.get_setting("application/config/version")]
+	$VersionMargin/Version/Version.text = (
+		"v%s" % [ProjectSettings.get_setting("application/config/version")]
+	)
 
 
 func _on_start_pressed() -> void:
 	AudioManager.button_on_click.play()
 	get_tree().change_scene_to_file("res://scenes/player_selection/player_selection.tscn")
+
+
+func _on_quad_pressed() -> void:
+	AudioManager.button_on_click.play()
+	get_tree().change_scene_to_file("res://scenes/quad/quad_match_loader.tscn")
 
 
 func _on_about_pressed() -> void:
@@ -43,6 +50,14 @@ func _on_about_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_settings_pressed() -> void:
+	$Settings.open()
+
+
+func _on_changelog_pressed() -> void:
+	OS.shell_open("https://github.com/CSIE-Challenge/Challenge2025/releases")
 
 
 func _process(delta):
@@ -61,7 +76,10 @@ func _process(delta):
 		_change_color()
 
 	if match_score > 0:
-		$MatchScore.text = "Minigame Score: %d" % match_score
+		var hundred: int = floori(match_score / 100.0)
+		var ten: int = floori((match_score % 100) / 10.0)
+		var one: int = match_score % 10
+		$VersionMargin/Version/Version.text = "v%d.%d.%d" % [hundred, ten, one]
 	if match_score >= 256:
 		get_tree().change_scene_to_file("res://scenes/distro_intro.tscn")
 

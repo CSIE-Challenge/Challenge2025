@@ -1,15 +1,22 @@
-[gd_scene load_steps=13 format=3 uid="uid://cdex8rnl6lny2"]
+[gd_scene load_steps=16 format=3 uid="uid://cdex8rnl6lny2"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_con2f"]
 [ext_resource type="Script" uid="uid://d3i2acqjv2ffm" path="res://scripts/menu.gd" id="1_yqeox"]
 [ext_resource type="Texture2D" uid="uid://chktdkl6cqvho" path="res://assets/background.png" id="3_mhnvy"]
 [ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="4_mhnvy"]
+[ext_resource type="PackedScene" uid="uid://m61nhd2pj5qr" path="res://scenes/settings.tscn" id="5_4ytvr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ytvr"]
 bg_color = Color(0.43, 0.43, 0.43, 0.866667)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mhnvy"]
 bg_color = Color(0.19, 0.19, 0.19, 0.87451)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3eks"]
+bg_color = Color(0.278431, 0.376471, 0.764706, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v86rl"]
+bg_color = Color(0.278431, 0.376471, 0.764706, 0.827451)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4ytvr"]
 size = Vector2(1920, 136)
@@ -30,7 +37,7 @@ size = Vector2(184, 56)
 size = Vector2(152, 280)
 
 [node name="Menu" type="Control"]
-z_index = 10
+z_index = 150
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,56 +58,78 @@ grow_vertical = 2
 texture = ExtResource("3_mhnvy")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-z_index = 10
-custom_minimum_size = Vector2(250, 0)
+z_index = 150
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -125.0
-offset_top = -81.0
-offset_right = 125.0
-offset_bottom = 335.0
+offset_left = -200.0
+offset_top = -240.0
+offset_right = 200.0
+offset_bottom = 295.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 40
 
 [node name="Start" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
-theme_override_font_sizes/font_size = 56
+theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 48
 theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
 text = "Start"
 
 [node name="Quad" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
-theme_override_font_sizes/font_size = 56
+theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 48
 theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
-disabled = true
 text = "Quad"
 
-[node name="About" type="Button" parent="VBoxContainer"]
+[node name="Settings" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
-theme_override_font_sizes/font_size = 56
+theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 48
+theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
+text = "Settings
+"
+
+[node name="About" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 48
 theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
 text = "About"
 
 [node name="Quit" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Start")
-theme_override_font_sizes/font_size = 56
+theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 48
 theme_override_styles/hover = SubResource("StyleBoxFlat_4ytvr")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mhnvy")
 text = "Quit"
 
 [node name="Title" type="RichTextLabel" parent="."]
-z_index = 10
+z_index = 150
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -120,7 +149,7 @@ text = "超解碼農兄弟"
 horizontal_alignment = 1
 
 [node name="MatchScore" type="Label" parent="."]
-z_index = 10
+z_index = 150
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -136,25 +165,45 @@ theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 48
 horizontal_alignment = 1
 
-[node name="Version" type="Label" parent="."]
-z_index = 10
+[node name="VersionMargin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -145.0
-offset_top = 16.0
-offset_right = -17.0
-offset_bottom = 72.0
+offset_left = -404.0
+offset_bottom = 56.0
 grow_horizontal = 0
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+
+[node name="Version" type="HBoxContainer" parent="VersionMargin"]
+z_index = 150
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="Version" type="Label" parent="VersionMargin/Version"]
+layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 32
 text = "v1.0.0"
 horizontal_alignment = 1
 
+[node name="Changelog" type="Button" parent="VersionMargin/Version"]
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../../VBoxContainer/Quit")
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/hover = SubResource("StyleBoxFlat_g3eks")
+theme_override_styles/normal = SubResource("StyleBoxFlat_v86rl")
+text = "What's New?
+"
+
 [node name="Subtitle" type="Label" parent="."]
-z_index = 10
+z_index = 150
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -203,7 +252,14 @@ shape = SubResource("RectangleShape2D_i6lef")
 wait_time = 0.2
 autostart = true
 
+[node name="Settings" parent="." instance=ExtResource("5_4ytvr")]
+z_index = 1000
+layout_mode = 1
+
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quad" to="." method="_on_quad_pressed"]
+[connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/About" to="." method="_on_about_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="VersionMargin/Version/Changelog" to="." method="_on_changelog_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

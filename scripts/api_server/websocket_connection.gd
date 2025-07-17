@@ -19,6 +19,7 @@ func _init(token: String) -> void:
 
 func connect_to_socket(socket: WebSocketPeer) -> void:
 	_socket = socket
+	AudioManager.join.play()
 	client_connected.emit()
 
 
@@ -29,6 +30,7 @@ func disconnect_from_socket() -> void:
 			_socket.close()
 		if state == WebSocketPeer.STATE_CLOSED:
 			_socket = null
+			AudioManager.leave.play()
 			client_disconnected.emit()
 
 

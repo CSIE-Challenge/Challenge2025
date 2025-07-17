@@ -27,8 +27,16 @@ theme_override_constants/margin_bottom = 18
 
 [node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 1
 theme_override_constants/line_separation = 8
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "PixelCat is so cute <3 hahaha this is a test message"
 fit_content = true
+
+[node name="LinkButton" type="LinkButton" parent="MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 1
+
+[connection signal="pressed" from="MarginContainer/LinkButton" to="." method="_on_link_button_pressed"]

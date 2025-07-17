@@ -30,12 +30,12 @@ var bullet_effect: String  # only used in to_dict
 func _ready():
 	add_to_group("towers")
 	enabled = false
+	self.z_index = Util.TOWER_LAYER
 	reload_timer = Timer.new()
 	wait_for_animation_timer = Timer.new()
 	self.add_child(reload_timer)
 	self.add_child(wait_for_animation_timer)
 	reload_timer.timeout.connect(self._on_reload_timer_timeout)
-	self.z_index = 10  # For effect to be on the ground
 	bullet_effect = bullet_scene.instantiate().get_effect_name()
 
 

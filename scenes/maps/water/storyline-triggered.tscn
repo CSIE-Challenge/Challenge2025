@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://b3rraug7dskmf"]
+
+[ext_resource type="Script" uid="uid://cuqa8lggg7co7" path="res://scripts/maps/water/storyline-triggered.gd" id="1_ph8ny"]
+[ext_resource type="FontFile" uid="uid://djv6pwn1gdome" path="res://assets/font/Cubic_11.ttf" id="1_sdw44"]
+
+[sub_resource type="SystemFont" id="SystemFont_aleiu"]
+fallbacks = Array[Font]([ExtResource("1_sdw44")])
+font_names = PackedStringArray("Monospace")
+
+[sub_resource type="Animation" id="Animation_o4b5c"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_u0c1o"]
+resource_name = "text-reveal"
+length = 12.0
+step = 30.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Centering/RichTextLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h3c2p"]
+_data = {
+&"RESET": SubResource("Animation_o4b5c"),
+&"text-reveal": SubResource("Animation_u0c1o")
+}
+
+[node name="StorylineTriggered" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ph8ny")
+
+[node name="Background" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.06, 0.06, 0.06, 1)
+
+[node name="Centering" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_right = 1925.0
+offset_bottom = 1075.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Centering"]
+custom_minimum_size = Vector2(1800, 1040)
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 1, 0, 1)
+theme_override_fonts/normal_font = SubResource("SystemFont_aleiu")
+theme_override_font_sizes/normal_font_size = 24
+scroll_active = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_h3c2p")
+}
+
+[node name="BGMTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="BGMTimer" to="." method="_on_bgm_timer_timeout"]
