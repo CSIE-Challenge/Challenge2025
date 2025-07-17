@@ -364,6 +364,7 @@ func _process(_delta) -> void:
 		display_score = score
 	status_panel.find_child("Money").text = "%d" % money
 	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
+	status_panel.find_child("ApiQuota").text = "%d" % premium_api_quota
 
 
 func _unhandled_input(event: InputEvent) -> void:
