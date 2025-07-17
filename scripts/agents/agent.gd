@@ -173,18 +173,18 @@ func _get_time_until_next_wave() -> Array:
 func _get_money(_owned: bool) -> Array:
 	var result: int
 	if _owned == true:
-		result = int(game_self.status_panel.find_child("Money").text)
+		result = game_self.money
 	else:
-		result = int(game_other.status_panel.find_child("Money").text)
+		result = game_other.money
 	return [StatusCode.OK, result]
 
 
 func _get_income(_owned: bool) -> Array:
 	var income: int
 	if _owned == true:
-		income = int(game_self.status_panel.find_child("Income").text)
+		income = game_self.get_modified_income_per_second()
 	else:
-		income = int(game_other.status_panel.find_child("Income").text)
+		income = game_other.get_modified_income_per_second()
 	return [StatusCode.OK, income]
 
 
