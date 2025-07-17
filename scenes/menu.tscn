@@ -77,7 +77,7 @@ theme_override_constants/separation = 40
 [node name="Start" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
-focus_neighbor_top = NodePath("../Quit")
+focus_neighbor_top = NodePath("../../VersionMargin/Version/Changelog")
 theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 48
@@ -88,7 +88,6 @@ text = "Start"
 [node name="Quad" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
-focus_neighbor_top = NodePath("../Quit")
 theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 48
@@ -120,7 +119,7 @@ text = "About"
 [node name="Quit" type="Button" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 75)
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../Start")
+focus_neighbor_bottom = NodePath("../../VersionMargin/Version/Changelog")
 theme_override_colors/font_outline_color = Color(0.870588, 0.870588, 0.870588, 1)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 48
@@ -193,7 +192,7 @@ horizontal_alignment = 1
 [node name="Changelog" type="Button" parent="VersionMargin/Version"]
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
-focus_neighbor_top = NodePath("../../../VBoxContainer/Quit")
+focus_neighbor_bottom = NodePath("../../../Hidden")
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 2
 theme_override_font_sizes/font_size = 32
@@ -221,6 +220,15 @@ theme_override_font_sizes/font_size = 32
 text = "轉生到蘑菇王國後發現這裡的怪物會排隊進攻，
 所以我決定開發塔防戰術統治這個世界～ "
 horizontal_alignment = 1
+
+[node name="Hidden" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+offset_left = 1896.0
+offset_top = 16.0
+offset_right = 1904.0
+offset_bottom = 80.0
+focus_neighbor_bottom = NodePath("../VBoxContainer/Start")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
@@ -256,10 +264,25 @@ autostart = true
 z_index = 1000
 layout_mode = 1
 
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Hahayoufoundit" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 31.0
+offset_top = 1033.0
+offset_right = 451.0
+offset_bottom = 1067.0
+text = "ARCH{ohO;fq7}f}7}P>kf8>!}"
+
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quad" to="." method="_on_quad_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="VBoxContainer/About" to="." method="_on_about_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="VersionMargin/Version/Changelog" to="." method="_on_changelog_pressed"]
+[connection signal="pressed" from="Hidden" to="." method="_on_hidden_pressed"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
