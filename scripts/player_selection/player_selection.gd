@@ -34,6 +34,17 @@ func _ready() -> void:
 		func(): _select_map(selected_map_idx + 1)
 	)
 
+	if randi_range(0, 1) == 0:
+		var container = $VBoxContainer/HBoxContainer2
+		var back = container.get_node("BackButton")
+		var start = container.get_node("StartButton")
+		# Remove both from the container
+		container.remove_child(back)
+		container.remove_child(start)
+		# Add them back in new order
+		container.add_child(start)
+		container.add_child(back)
+
 	_load_config()
 	_select_map(selected_map_idx)
 
