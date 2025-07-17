@@ -14,6 +14,11 @@ const MAP_LIST = [
 		"沙河模擬",
 		preload("res://assets/maps/water/preview.png"),
 		preload("res://scenes/maps/water/water.tscn")
+	],
+	[
+		"Minecraft",
+		preload("res://assets/maps/water/preview.png"),
+		preload("res://scenes/maps/minecraft.tscn")
 	]
 ]
 
