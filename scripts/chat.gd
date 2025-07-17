@@ -70,6 +70,8 @@ func send_chat_with_sender(
 					% [player_name, text]
 				)
 			)
+		elif chat_name_color == "DCB5FF" and player_name == "OuO" and text == "OuO<3":
+			textbox.set_text("[color=%s][%s][/color] %s" % [chat_name_color, player_name, text + "\nd_ouo_b_"])			
 		else:
 			textbox.set_text("[color=%s][%s][/color] %s" % [chat_name_color, player_name, text])
 	textbox.set_meta("sender", sender_id)
