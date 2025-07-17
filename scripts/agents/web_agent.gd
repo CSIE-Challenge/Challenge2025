@@ -110,7 +110,7 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.DISCONNECT, [], _disconnect),
 		CommandHandler.new(CommandType.NTU_STUDENT_ID_CARD, [], _ntu_student_id_card),
 		CommandHandler.new(CommandType.METAL_PIPE, [], _metal_pipe),
-		CommandHandler.new(CommandType.SPAM, [TYPE_STRING], _spam),
+		CommandHandler.new(CommandType.SPAM, [TYPE_STRING, TYPE_INT], _spam),
 		CommandHandler.new(CommandType.SUPER_STAR, [], _super_star),
 		CommandHandler.new(CommandType.TURBO_ON, [], _turbo_on),
 	]

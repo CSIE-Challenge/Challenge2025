@@ -56,6 +56,7 @@ var is_manually_controlled := false:  # only used in water map
 		self.on_manual_control_changed.emit(value)
 
 var _enemy_scene_cache = {}
+@onready var danmaku_scene = preload("res://scenes/danmaku.tscn")
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
@@ -367,3 +368,12 @@ func _process(_delta) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	_handle_tower_selection(event)
+
+
+func send_danmaku(text: String, size := 24, color := Color.WHITE):
+	var danmaku: Label = danmaku_scene.instantiate()
+	var danmaku_layer = get_node("../../danmaku_layer")
+	danmaku.setup(text, size, color)
+	var y_position = randf_range(50, 300)
+	danmaku.position = Vector2(get_viewport_rect().size.x, y_position)
+	danmaku_layer.add_child(danmaku)

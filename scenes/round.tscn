@@ -300,6 +300,8 @@ layout_mode = 2
 spawner = NodePath("../../../Spawner")
 status_panel = NodePath("../../Top/Status2P")
 
+[node name="danmaku_layer" type="CanvasLayer" parent="Screen"]
+
 [node name="GameTimer" type="Timer" parent="."]
 
 [node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("wave_info_label")]
