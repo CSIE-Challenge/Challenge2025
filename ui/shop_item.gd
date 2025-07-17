@@ -30,7 +30,8 @@ func _process(_delta):
 
 
 func _on_button_press() -> void:
-	callback.call()
+	if is_valid.call():
+		callback.call()
 
 
 func _on_texture_button_mouse_entered() -> void:
