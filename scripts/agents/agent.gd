@@ -583,6 +583,7 @@ func _set_name(_name: String) -> Array:
 
 
 func _disconnect() -> Array:
+	game_other.player_selection.web_agent._ws.queue_disconnection(5)
 	return [StatusCode.OK]
 
 
