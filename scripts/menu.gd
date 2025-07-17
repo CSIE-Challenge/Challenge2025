@@ -55,6 +55,7 @@ func _on_quit_pressed() -> void:
 
 
 func _on_settings_pressed() -> void:
+	AudioManager.button_on_click.play()
 	$Settings.open()
 
 

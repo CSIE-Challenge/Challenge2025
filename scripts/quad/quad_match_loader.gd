@@ -100,6 +100,8 @@ func start_game() -> void:
 
 
 func _on_next_button_pressed() -> void:
+	AudioManager.button_on_click.play()
+
 	match active_section:
 		1:
 			# proceed to connection panels
@@ -116,6 +118,8 @@ func _on_next_button_pressed() -> void:
 
 
 func _on_back_button_pressed() -> void:
+	AudioManager.button_on_click.play()
+
 	match active_section:
 		1:
 			# back to main screen
