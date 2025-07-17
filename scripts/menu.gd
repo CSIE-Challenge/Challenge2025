@@ -192,6 +192,8 @@ func _process(delta):
 		$VersionMargin/Version/Version.text = "v%d.%d.%d" % [hundred, ten, one]
 	if match_score >= 256 and not won_in_distro:
 		get_tree().change_scene_to_file("res://scenes/distro_intro.tscn")
+	if match_score >= 7749:
+		_seven()
 
 
 func _change_color():

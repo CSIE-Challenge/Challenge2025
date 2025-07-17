@@ -40,7 +40,7 @@ func _on_input_event(_viewport, event: InputEvent, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if surrounded_distro.size() >= 2:
 			_play_match_sound()
-			if surrounded_distro.size() >= 3:
+			if surrounded_distro.size() >= 7:
 				get_parent()._seven()
 			get_parent().match_score += pow(surrounded_distro.size(), 2)
 			for distro in surrounded_distro:
