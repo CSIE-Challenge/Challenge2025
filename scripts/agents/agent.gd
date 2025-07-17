@@ -600,12 +600,22 @@ func _metal_pipe() -> Array:
 
 
 func _spam(_message: String, size: int, color: Color) -> Array:
+	var cost: int = floori(len(_message) * size / 2.0)
+	if game_self.premium_api_quota < cost:
+		return [
+			StatusCode.INSUFFICIENT_QUOTA,
+			(
+				"[Receive Command] Error: insufficient premium API quota. Required %d, but %d left"
+				% [cost, game_self.premium_api_quota]
+			)
+		]
+	game_self.premium_api_quota -= cost
 	game_self.send_danmaku(_message, size, color)
 	return [StatusCode.OK]
 
 
 func _super_star() -> Array:
-	return [StatusCode.OK]
+	return [StatusCode.NOT_FOUND]
 
 
 func _turbo_on() -> Array:

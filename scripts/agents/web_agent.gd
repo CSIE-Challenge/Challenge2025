@@ -77,12 +77,12 @@ var _command_handlers: Dictionary = {}
 var _general_commands: Dictionary = {CommandType.GET_GAME_STATUS: null}
 # the API quota reduction of each premium API
 var _premium_commands: Dictionary = {
-	CommandType.DISCONNECT: 1,
-	CommandType.NTU_STUDENT_ID_CARD: 1,
-	CommandType.METAL_PIPE: 1,
-	CommandType.SPAM: 1,
-	CommandType.SUPER_STAR: 1,
-	CommandType.TURBO_ON: 1,
+	CommandType.DISCONNECT: 2500,
+	CommandType.NTU_STUDENT_ID_CARD: 4500,
+	CommandType.METAL_PIPE: 400,
+	# cost of spam is dynamically calculated in `_spam()`
+	CommandType.SUPER_STAR: 2000,
+	CommandType.TURBO_ON: 3500,
 }
 
 
