@@ -3,7 +3,7 @@ extends Control
 var screen_size := Vector2.ZERO
 var velocity := Vector2(400, 300)
 var match_score: int = 0
-var understand_time: int = 3
+var understand_time = 4
 
 @onready var logo := $Subtitle
 @onready var distros := [
@@ -31,9 +31,13 @@ func _ready() -> void:
 
 	var config: ConfigFile = ConfigFile.new()
 	var current_time = Time.get_datetime_dict_from_system()
-	if current_time["month"] == 7 and current_time["day"] == 18 and current_time["hour"] in 1:
+	if (
+		current_time["month"] == 7
+		and current_time["day"] == 18
+		and current_time["hour"] in [4, 5, 6]
+	):
 		config.set_value("Time", "Warning", true)
-	if config.get_value("Time", "Warning", false) == true:
+	if config.get_value("Time", "Warning", false) == true and !OS.has_feature("editor"):
 		$Warning.visible = true
 
 	if not AudioManager.background_menu.has_stream_playback():
@@ -46,14 +50,17 @@ func _ready() -> void:
 func _on_understand_pressed() -> void:
 	if randi_range(0, 3) == 0:
 		understand_time = 0
-	if understand_time == 3:
-		$Warning/Start.text = "Are you sure"
+
+	if understand_time == 4:
+		$Warning/Start.text = "Are you sure?"
 		if randi_range(0, 3) == 0:
 			understand_time = 0
+	elif understand_time == 3:
+		$Warning/Start.text = "Are you really sure?"
 	elif understand_time == 2:
-		$Warning/Start.text = "Are you really sure"
+		$Warning/Start.text = "Are you really really sure?"
 	elif understand_time == 1:
-		$Warning/Start.text = "Are you really really sure"
+		$Warning/Start.text = "Are you genuinely sure?"
 	elif understand_time == 0:
 		$Warning.visible = false
 	understand_time -= 1

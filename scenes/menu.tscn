@@ -293,7 +293,7 @@ theme_override_font_sizes/font_size = 120
 text = "警告：請注意提交時間"
 
 [node name="Start" type="Button" parent="Warning"]
-custom_minimum_size = Vector2(0, 75)
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 theme_override_colors/font_disabled_color = Color(0.884513, 0.330908, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.988386, 0.0999987, 9.62615e-07, 1)
