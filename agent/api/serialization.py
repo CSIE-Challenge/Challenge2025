@@ -208,9 +208,9 @@ def bytes_to_var(serialized: bytes) -> Any:
                 if header & HEADER_DATA_FLAG_64 != 0:
                     hi = popInt32()
                     lo = hi * (2**32) + lo
-                    lo = lo if lo < (2**63) else (lo - 2**63)
+                    lo = lo if lo < (2**63) else (lo - 2**64)
                 else:
-                    lo = lo if lo < (2**31) else (lo - 2**31)
+                    lo = lo if lo < (2**31) else (lo - 2**32)
                 return lo
 
             case TypeCode.FLOAT_TYPE:

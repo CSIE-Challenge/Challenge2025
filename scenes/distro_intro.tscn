@@ -199,7 +199,7 @@ dev_name = "說明：擁有最好看的說明文件"
 
 [node name="Entry2" parent="ScrollContainer/VBoxContainer/Section3/Grid" instance=ExtResource("4_t3vmu")]
 layout_mode = 2
-dev_name = "User(s): 李尚哲"
+dev_name = "User(s): 李尚哲、林文繡、卓育安"
 
 [node name="Section4" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -392,5 +392,11 @@ dev_name = "說明：目前的遊戲支援度最好"
 [node name="Entry2" parent="ScrollContainer/VBoxContainer/Section9/Grid" instance=ExtResource("4_t3vmu")]
 layout_mode = 2
 dev_name = "User(s): 麻瓜"
+
+[node name="gg" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "ARCH{dISTroINTro}"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

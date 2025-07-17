@@ -28,6 +28,9 @@ autostart = true
 wait_time = 5.0
 autostart = true
 
+[node name="NoCooldownTimer" type="Timer" parent="."]
+one_shot = true
+
 [node name="SpellManager" type="Node2D" parent="."]
 script = ExtResource("3_p57ef")
 
@@ -40,5 +43,11 @@ visible = false
 [node name="Teleport" parent="SpellManager" instance=ExtResource("5_u5sy4")]
 visible = false
 
+[node name="NoDamageTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="timeout" from="ConstantIncomeTimer" to="." method="_on_constant_income_timer_timeout"]
 [connection signal="timeout" from="InterestTimer" to="." method="_on_interest_timer_timeout"]
+[connection signal="timeout" from="NoCooldownTimer" to="." method="_turbo_off"]
+[connection signal="timeout" from="NoDamageTimer" to="." method="_damage_off"]
