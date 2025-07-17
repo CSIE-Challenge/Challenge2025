@@ -617,7 +617,7 @@ func _spam(_message: String, size: int, color: Color) -> Array:
 
 func _super_star() -> Array:
 	game_other.no_damage = true
-	game_other.no_cooldown_timer.start()
+	game_other.no_damage_timer.start()
 	return [StatusCode.OK]
 
 
