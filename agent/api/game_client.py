@@ -603,6 +603,23 @@ class GameClient(GameClientBase):
     
     @game_command(CommandType.SPAM, [str, int, str], None)
     def spam(self, message: str, size: int = 48, color: str = "#ffffff") -> None:
+        """
+        # spam
+        發送懸浮彈幕。
+        
+        ## Parameters
+        - `message` (str) : 想要顯示的訊息
+        - `size` (int) : 字體大小，預設為48
+        - `color` (str) : 字體顏色，以16進制色碼傳遞，預設為白色(#ffffff)
+        
+        ## Returns
+        這個函數沒有回傳值。
+        
+        ## Example
+        ```python
+        agent.spam("I use arch btw", 48, "#ff69b4") # 發送一個字體大小為48的粉紅色的彈幕顯示"I use arch btw"
+        ```
+        """
         raise NotImplementedError
     
     @game_command(CommandType.SUPER_STAR, [], None)
