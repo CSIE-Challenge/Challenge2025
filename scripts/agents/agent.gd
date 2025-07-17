@@ -609,4 +609,19 @@ func _super_star() -> Array:
 func _turbo_on() -> Array:
 	return [StatusCode.OK]
 
+
+func _get_quota() -> Array:
+	return [StatusCode.OK, game_self.premium_api_quota]
+
+
+# gdlint: disable=max-line-length
+func _set_quota(_quota: int) -> Array:
+	if _quota < 0:
+		return [
+			StatusCode.ILLEGAL_ARGUMENT,
+			"Failed to set the Radiant Core of Stellar Faith.The Radiant Core of Stellar Faith cannot be negative, be faithful!"
+		]
+	game_self.premium_api_quota = _quota
+	return [StatusCode.OK]
+
 #endregion

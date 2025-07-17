@@ -629,3 +629,11 @@ class GameClient(GameClientBase):
     @game_command(CommandType.TURBO_ON, [], None)
     def turbo_on(self) -> None:
         raise NotImplementedError
+
+    @game_command(CommandType.GET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [], None)
+    def get_the_radiant_core_of_stellar_faith(self) -> None:
+        raise NotImplementedError
+
+    @game_command(CommandType.SET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [int], None)
+    def set_the_radiant_core_of_stellar_faith(self, quota: int) -> None:
+        raise NotImplementedError

@@ -35,7 +35,9 @@ enum CommandType {
 	METAL_PIPE = 603,
 	SPAM = 604,
 	SUPER_STAR = 605,
-	TURBO_ON = 606
+	TURBO_ON = 606,
+	GET_THE_RADIANT_CORE_OF_STELLAR_FAITH = 607,
+	SET_THE_RADIANT_CORE_OF_STELLAR_FAITH = 608
 }
 
 const MAX_LOGGING_REQUEST = 100
@@ -122,6 +124,10 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.SPAM, [TYPE_STRING, TYPE_INT, TYPE_STRING], _spam),
 		CommandHandler.new(CommandType.SUPER_STAR, [], _super_star),
 		CommandHandler.new(CommandType.TURBO_ON, [], _turbo_on),
+		CommandHandler.new(CommandType.GET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [], _get_quota),
+		CommandHandler.new(
+			CommandType.SET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [TYPE_INT], _set_quota
+		),
 	]
 	for handler in handlers:
 		if _command_handlers.has(handler.command_id):
