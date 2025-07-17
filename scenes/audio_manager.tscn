@@ -82,11 +82,14 @@ bus = &"SFX"
 [node name="Join" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_8igv3")
 volume_db = 4.0
+bus = &"SFX"
 
 [node name="Leave" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_2y2jw")
 volume_db = 10.0
+bus = &"SFX"
 
 [node name="Message" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("13_2y5yn")
 volume_db = -8.0
+bus = &"SFX"
