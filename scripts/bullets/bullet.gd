@@ -82,7 +82,7 @@ func _process(delta):
 
 	var traverse_distance = global_position.distance_to(start_position)
 	if traverse_distance >= 10.0 and not exploding:
-		self.z_index = 20
+		self.z_index = Util.BULLET_LAYER
 
 	# delete if bullet is out of screen
 	if position.x < -100 or position.x > 750 + 100 or position.y < -100 or position.y > 1000 + 100:
@@ -111,7 +111,7 @@ func destroy() -> void:
 # Increase size (explode), may become a lasting effect later
 func _explode() -> void:
 	exploding = true
-	self.z_index = 0
+	self.z_index = Util.EFFECT_LAYER
 	var tween = create_tween()
 	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	tween.set_ease(Tween.EASE_OUT)

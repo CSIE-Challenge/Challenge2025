@@ -1,0 +1,88 @@
+{
+    "title": "至尊終身特選極享體驗限量貴賓卡友\n全域通行頂級榮耀特選尊貴專屬大使巔峰挑戰賽",
+    "python-interpreter": "/path/to/.venv/bin/python3",
+    "nw": {
+        "player-left": {
+            "id": "1",
+            "name": "Team 1",
+            "token": "00000000",
+            "api-quota": 0,
+            "agent-script": "/path/to/sample_0.py"
+        },
+        "player-right": {
+            "id": "2",
+            "name": "Team 2",
+            "token": "11111111",
+            "api-quota": 0,
+            "agent-script": "/path/to/sample_1.py"
+        },
+        "map": {
+            "name": "小村探秘",
+            "preview": "res://assets/maps/map2/preview.png",
+            "scene-path": "res://scenes/maps/map2.tscn"
+        }
+    },
+    "ne": {
+        "player-left": {
+            "id": "3",
+            "name": "Team 3",
+            "token": "22222222",
+            "api-quota": 0,
+            "agent-script": "/path/to/sample_2.py"
+        },
+        "player-right": {
+            "id": "4",
+            "name": "Team 4",
+            "token": "33333333",
+            "api-quota": 0,
+            "agent-script": "/path/to/sample_3.py"
+        },
+        "map": {
+            "name": "沒有香菜的世界",
+            "preview": "res://assets/maps/Map1.png",
+            "scene-path": "res://scenes/maps/map1.tscn"
+        }
+    },
+    "sw": {
+        "player-left": {
+            "id": "5",
+            "name": "Team 8",
+            "token": "44444444",
+            "api-quota": 48763,
+            "agent-script": "/path/to/sample_4.py"
+        },
+        "player-right": {
+            "id": "6",
+            "name": "Team A",
+            "token": "55555555",
+            "api-quota": 0,
+            "agent-script": "/path/to/sample_5.py"
+        },
+        "map": {
+            "name": "椰林大道",
+            "preview": "res://assets/maps/Map3.png",
+            "scene-path": "res://scenes/maps/map3.tscn"
+        }
+    },
+    "se": {
+        "player-left": {
+            "id": "7",
+            "name": "Team 1",
+            "token": "66666666",
+            "api-quota": 0,
+            "agent-script": "/path/to/sample_6.py"
+        },
+        "player-right": {
+            "id": "8",
+            "name": "Team 2",
+            "token": "77777777",
+            "api-quota": 0,
+            "agent-script": "/path/to/sample_7.py"
+        },
+        "map": {
+            "name": " ",
+            "preview": "res://assets/maps/space/preview.png",
+            "scene-path": "res://scenes/maps/space.tscn"
+        }
+    }
+}

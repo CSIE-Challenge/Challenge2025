@@ -1,11 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfsklvy34ockr"]
+[gd_scene load_steps=6 format=3 uid="uid://cfsklvy34ockr"]
 
 [ext_resource type="Texture2D" uid="uid://c2a1ashdq5tf2" path="res://assets/distro/ubuntu.png" id="1_bwc75"]
+[ext_resource type="Script" uid="uid://cftqym8vwuoq5" path="res://ui/distro/distro.gd" id="2_wtc63"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wtc63"]
 radius = 15.0
 
-[node name="Arch" type="RigidBody2D"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_3eee7"]
+radius = 95.021
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bwc75"]
+radius = 61.0737
+
+[node name="Ubuntu" type="RigidBody2D"]
+script = ExtResource("2_wtc63")
+distro_type = 7
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(4, 4)
@@ -14,3 +23,13 @@ texture = ExtResource("1_bwc75")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(4, 4)
 shape = SubResource("CircleShape2D_wtc63")
+
+[node name="Match" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Match"]
+shape = SubResource("CircleShape2D_3eee7")
+
+[node name="Click" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Click"]
+shape = SubResource("CircleShape2D_bwc75")

@@ -17,6 +17,6 @@ func _process(delta):
 
 	# The bullet must be above the tower after it is fired
 	if traverse_distance >= 10.0 and not exploding:
-		self.z_index = 20
+		self.z_index = Util.BULLET_LAYER
 	if traverse_distance <= 10.0 and movement_speed < 0:
 		self.destroy()

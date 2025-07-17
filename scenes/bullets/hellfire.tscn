@@ -1,9 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://den22sw68w24"]
 
 [ext_resource type="Script" uid="uid://0n1dvlg0ia8t" path="res://scripts/bullets/bullet.gd" id="1_338pr"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n5hp2"]
-load_path = "res://.godot/imported/tile_0046.png-019ce6fc01555f3e15a7572b11db357c.ctex"
+[ext_resource type="Texture2D" uid="uid://c6gsnv1b77kvl" path="res://assets/boom/boom.png" id="2_338pr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v66ou"]
 radius = 4.0
@@ -25,7 +23,7 @@ effect_interval = 0.15
 [node name="Body" type="Sprite2D" parent="."]
 rotation = -1.5708
 scale = Vector2(0.5, 0.5)
-texture = SubResource("CompressedTexture2D_n5hp2")
+texture = ExtResource("2_338pr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708
