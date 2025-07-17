@@ -1,8 +1,8 @@
 extends Map
 
 func _ready():
-	pass
-	#Engine.time_scale = 3
+	#pass
+	Engine.time_scale = 4
 
 
 func _on_area_2d_area_entered(enemy: Area2D) -> void:
@@ -20,4 +20,4 @@ func _on_regen_timer_timeout() -> void:
 func _on_minecart_timer_timeout() -> void:
 	$TntMinecart.position = Vector2(-77, 300)
 	$TntMinecart.visible = true
-	$TntMinecart.end = randf_range(200, 800)
+	$TntMinecart.end = randf_range(200, 700)

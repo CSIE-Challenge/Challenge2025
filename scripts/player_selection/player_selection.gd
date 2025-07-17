@@ -17,7 +17,7 @@ const MAP_LIST = [
 	],
 	[
 		"Minecraft",
-		preload("res://assets/maps/water/preview.png"),
+		preload("res://assets/maps/minecraft/preview.png"),
 		preload("res://scenes/maps/minecraft.tscn")
 	]
 ]
