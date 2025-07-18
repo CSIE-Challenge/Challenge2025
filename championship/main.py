@@ -32,6 +32,7 @@ round_names = [
     "round-2-5.json",
     "round-3-1.json",
     "round-3-2.json",
+    "round-4-1.json",
 ]
 
 
@@ -43,7 +44,7 @@ ranks_history = [[i for i in range(10)]]
 last_game = None
 
 round_id = 0
-while round_id < 11:
+while round_id < 12:
     result_path = os.path.join(
         script_dir, "match-data", f"result-{round_names[round_id]}"
     )
@@ -117,6 +118,13 @@ elif round_id == 11:
     match_config["nw"]["player-left"] = config["players"][team1]
     match_config["nw"]["player-right"] = config["players"][team2]
     match_config["nw"]["map"] = config["tie_breaker_map"]
+    match_config.pop("ne")
+    match_config.pop("sw")
+    match_config.pop("se")
+elif round_id == 12:
+    match_config["nw"]["player-left"] = config["players"][1]
+    match_config["nw"]["player-right"] = config["boss"]
+    match_config["nw"]["map"] = config["boss_map"]
     match_config.pop("ne")
     match_config.pop("sw")
     match_config.pop("se")

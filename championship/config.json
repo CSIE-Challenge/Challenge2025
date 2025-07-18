@@ -30,9 +30,21 @@
         }
     ],
     "tie_breaker_map": {
-        "name": "沙河模擬",
+        "name": "？？？",
         "preview": "res://assets/maps/unknown.png",
         "scene-path": "res://scenes/maps/water/water.tscn"
+    },
+    "boss_map": {
+        "name": "？？？",
+        "preview": "res://assets/maps/unknown.png",
+        "scene-path": "res://scenes/maps/graph.tscn"
+    },
+    "boss": {
+        "id": "0",
+        "name": "Victor",
+        "token": "ffffffff",
+        "api-quota": 0,
+        "agent-script": "victor.py"
     },
     "players": [
         {

@@ -4,7 +4,7 @@ import time, copy, numpy
 from api import GameClient, GameStatus, Vector2, TowerType, TargetStrategy, EnemyType, SpellType, TerrainType, ChatSource
 
 
-agent = GameClient(7749, "50ef3715")  # Replace with your token
+agent = GameClient(7749, "ffffffff")  # Replace with your token
 
 print("Waiting for game to RUNNING...")
 while agent.get_game_status() != GameStatus.RUNNING:
