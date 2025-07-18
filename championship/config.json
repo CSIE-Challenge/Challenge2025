@@ -29,6 +29,11 @@
             "scene-path": "res://scenes/maps/water/water.tscn"
         }
     ],
+    "tie_breaker_map": {
+        "name": "沙河模擬",
+        "preview": "res://assets/maps/unknown.png",
+        "scene-path": "res://scenes/maps/water/water.tscn"
+    },
     "players": [
         {
             "id": "1",

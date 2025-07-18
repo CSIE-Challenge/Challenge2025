@@ -31,7 +31,10 @@ round_names = [
     "round-2-4.json",
     "round-2-5.json",
     "round-3-1.json",
+    "round-3-2.json",
 ]
+
+
 
 # wins, loses, score diff, team id
 total_scores = [[0, 0, 0, i] for i in range(10)]
@@ -39,7 +42,7 @@ scores_history = [total_scores]
 ranks_history = [[i for i in range(10)]]
 
 round_id = 0
-while round_id < 10:
+while round_id < 11:
     result_path = os.path.join(
         script_dir, "match-data", f"result-{round_names[round_id]}"
     )
@@ -100,6 +103,14 @@ if round_id == 10:
 
         match_config[key]["map"] = maps[0]
         maps = maps[1:]
+elif round_id == 11:
+    team1, team2 = ranks_history[9][0], ranks_history[9][1]
+    match_config["nw"]["player-left"] = config["players"][team1]
+    match_config["nw"]["player-right"] = config["players"][team2]
+    match_config["nw"]["map"] = config["tie_breaker_map"]
+    match_config.pop("ne")
+    match_config.pop("sw")
+    match_config.pop("se")
 else:
     # get omitted teams
     if round_id < 5:

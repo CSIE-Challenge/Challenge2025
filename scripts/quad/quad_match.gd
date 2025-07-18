@@ -24,7 +24,15 @@ func init(config_path: String, _config: Dictionary, _the_rounds: Array[Round]) -
 
 
 func _ready() -> void:
-	for i in range(4):
+	if len(the_rounds) == 1:
+		$SubViewportContainerNw.scale = Vector2(1, 1)
+		# $SubViewportContainerNw.anchor_right = 1
+		# $SubViewportContainerNw.anchor_bottom = 1
+		$SubViewportContainerNe.visible = false
+		$SubViewportContainerSw.visible = false
+		$SubViewportContainerSe.visible = false
+		the_rounds[0].reveal_cutscene = true
+	for i in range(len(the_rounds)):
 		the_rounds[i].game_finished.connect(collect_result.bind(i))
 		subviewports[i].add_child(the_rounds[i])
 	add_child(preload("res://scenes/pause_menu.tscn").instantiate())
