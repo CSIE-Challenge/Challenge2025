@@ -11,9 +11,8 @@ func _on_area_2d_area_entered(enemy: Area2D) -> void:
 		enemy.max_speed *= 2
 
 
-func _on_area_2d_area_exited(enemy: Area2D) -> void:
-	if "max_speed" in enemy:
-		enemy.max_speed /= 2
+func _on_area_2d_area_exited(_enemy: Area2D) -> void:
+	pass
 
 
 func _on_regen_timer_timeout() -> void:
