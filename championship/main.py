@@ -40,6 +40,7 @@ round_names = [
 total_scores = [[0, 0, 0, i] for i in range(10)]
 scores_history = [total_scores]
 ranks_history = [[i for i in range(10)]]
+last_game = None
 
 round_id = 0
 while round_id < 11:
@@ -49,6 +50,7 @@ while round_id < 11:
     if not os.path.exists(result_path):
         break
     scores = [[j for j in i] for i in total_scores]
+    last_game = [[0, 0, 0] for _ in range(10)]
     with open(result_path) as f:
         result_dict = json.loads(f.read())
         for i in result_dict:
@@ -56,12 +58,19 @@ while round_id < 11:
             scores[team_id][0] -= result_dict[i]["win"]
             scores[team_id][1] += result_dict[i]["lose"]
             scores[team_id][2] -= result_dict[i]["score_diff"]
+            last_game[team_id][0] += result_dict[i]["win"]
+            last_game[team_id][1] += result_dict[i]["lose"]
+            last_game[team_id][2] += result_dict[i]["Score"]
     total_scores = scores
     scores_history.append([[j for j in i] for i in total_scores])
     scores = sorted(total_scores)
     ranks_history.append([i[3] for i in scores])
     round_id += 1
 
+if last_game is not None:
+    for i in range(10):
+        print("\t".join([str(j) for j in last_game[i]]))
+print([i + 1 for i in ranks_history[-1]])
 
 def inject_token(orig_path, prefix, old_token, new_token) -> str:
     directory = os.path.dirname(orig_path)
