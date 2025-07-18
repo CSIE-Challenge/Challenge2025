@@ -17,7 +17,7 @@ func _on_reload_timer_timeout() -> void:
 	reload_timer.start(reload_seconds)
 	if not anime.is_playing():
 		anime.play("default")
-	var attack_scene = sprite.sprite_frames.get_frame_count(sprite.animation) - 1
+	var attack_scene = sprite.sprite_frames.get_frame_count(sprite.animation) - 2
 	wait_for_animation_timer.start(ANIMATION_FRAME_DURATION * attack_scene)
 
 
