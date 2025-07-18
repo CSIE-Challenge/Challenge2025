@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dox1c8u154ql4" path="res://assets/tower/DonkeyKongPrepare.png" id="4_3nf7w"]
 [ext_resource type="Texture2D" uid="uid://cbgtn5dajnqp7" path="res://assets/tower/DonkeyKongSlam.png" id="4_opdar"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_opdar"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_3nf7w"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -46,15 +46,17 @@ building_cost = 1200
 auto_aim = false
 bullet_scene = ExtResource("2_1a38i")
 reload_seconds = 1.5
-aim_range = 300.0
+aim_range = 225.0
 damage = 60
 
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_opdar")
+position = Vector2(0, -8.96288)
+sprite_frames = SubResource("SpriteFrames_3nf7w")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
+position = Vector2(0, -8.96288)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

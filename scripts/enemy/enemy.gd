@@ -87,7 +87,7 @@ func _on_area_entered(bullet: Bullet) -> void:
 
 
 func knockback(far: bool):
-	if knockback_invincibility or ((not knockback_resist) and (not far)):
+	if knockback_invincibility or (knockback_resist and (not far)):
 		return
 	knockback_invincibility = true
 	if far:

@@ -39,7 +39,7 @@
 	  "max_speed": 50,
 	  "damage": 3000,
 	  "flying": true,
-	  "knockback_resist": true,
+	  "knockback_resist": false,
 	  "kill_reward": 300,
 	  "cooldown": 20
 	}
@@ -99,7 +99,7 @@
 	  "max_speed": 50,
 	  "damage": 500,
 	  "flying": false,
-	  "knockback_resist": false,
+	  "knockback_resist": true,
 	  "kill_reward": 50,
 	  "cooldown": 6
 	}
