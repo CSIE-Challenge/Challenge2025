@@ -68,7 +68,9 @@ func _ready() -> void:
 			game_2p.is_manually_controlled = true
 
 	var cutscene = $Cutscene
-	var cutscene_full_screen = $Cutscene/ColorRect
+	var cutscene_rect = $Cutscene/ColorRect
+	var cutscene_title = $Cutscene/ColorRect/TextureRect
+	var cutscene_slogan = $Cutscene/ColorRect/Slogan
 	if reveal_cutscene:
 		cutscene.visible = true
 		var create_timer = func(time: float, callback: Callable):
@@ -79,13 +81,12 @@ func _ready() -> void:
 			timer.timeout.connect(callback)
 			timer.start()
 
-		cutscene_full_screen.modulate = Color(1, 1, 1, 0)
+		cutscene_rect.modulate = Color(0, 1, 0, 0)
+		cutscene_slogan.modulate = Color(0, 1, 0, 0)
+		cutscene_title.modulate = Color(1, 1, 1, 0)
 		create_timer.call(
 			5,
-			func():
-				create_tween().tween_property(cutscene_full_screen, "modulate:a", 1.0, 3).set_delay(
-					0
-				)
+			func(): create_tween().tween_property(cutscene_rect, "modulate:a", 1.0, 3).set_delay(0)
 		)
 		create_timer.call(
 			8,
@@ -94,15 +95,22 @@ func _ready() -> void:
 				$Cutscene/MapRevealRight.visible = false
 				$Cutscene/MapRevealLeft.clear_square()
 				$Cutscene/MapRevealRight.clear_square()
+				create_tween().tween_property(cutscene_rect, "modulate:r", 1.0, 2).set_delay(0)
+				create_tween().tween_property(cutscene_rect, "modulate:b", 1.0, 2).set_delay(0)
 		)
 		create_timer.call(
-			9,
-			func():
-				create_tween().tween_property(cutscene_full_screen, "modulate:a", 0.0, 3).set_delay(
-					0
-				)
+			10,
+			func(): create_tween().tween_property(cutscene_title, "modulate:a", 1.0, 2).set_delay(0)
 		)
-		create_timer.call(14, _start)
+		create_timer.call(
+			11,
+			func():
+				create_tween().tween_property(cutscene_slogan, "modulate:a", 1.0, 2).set_delay(0)
+		)
+		create_timer.call(
+			14, func(): create_tween().tween_property(cutscene, "modulate:a", 0.0, 3).set_delay(0)
+		)
+		create_timer.call(18, _start)
 	else:
 		cutscene.process_mode = Node.PROCESS_MODE_DISABLED
 		cutscene.visible = false
@@ -141,6 +149,7 @@ func _start() -> void:
 	game_2p.damage_taken.connect(game_1p.on_damage_dealt)
 
 	var chat = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
+	chat.start()
 	var agent_1p = game_1p.player_selection.web_agent
 	var agent_2p = game_2p.player_selection.web_agent
 	agent_1p.chat_node = chat

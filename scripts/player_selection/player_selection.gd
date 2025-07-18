@@ -31,12 +31,12 @@ const MAP_LIST = [
 		preload("res://scenes/maps/water/water.tscn"),
 		false
 	],
-	#[
-	#"???",
-	#preload("res://assets/maps/unknown.png"),
-	#preload("res://scenes/maps/???.tscn"),
-	#true
-	#]
+	# [
+	# 	"???",
+	# 	preload("res://assets/maps/unknown.png"),
+	# 	preload("res://scenes/maps/water/water.tscn"),
+	# 	true
+	# ]
 ]
 
 var selected_map_idx: int
