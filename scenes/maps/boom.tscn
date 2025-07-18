@@ -1,0 +1,84 @@
+[gd_scene load_steps=19 format=3 uid="uid://cjta0frknwrxy"]
+
+[ext_resource type="Texture2D" uid="uid://c21ii3vl4vhsu" path="res://assets/maps/minecraft/explode/explosion_0.png" id="1_2dqwl"]
+[ext_resource type="Texture2D" uid="uid://wbxjjfkx17ru" path="res://assets/maps/minecraft/explode/explosion_1.png" id="2_g7vax"]
+[ext_resource type="Texture2D" uid="uid://xpogjcwwx5kn" path="res://assets/maps/minecraft/explode/explosion_2.png" id="3_liutf"]
+[ext_resource type="Texture2D" uid="uid://djiul45bxaswa" path="res://assets/maps/minecraft/explode/explosion_3.png" id="4_4n5gv"]
+[ext_resource type="Texture2D" uid="uid://crdbsejks8ur" path="res://assets/maps/minecraft/explode/explosion_4.png" id="5_wly3c"]
+[ext_resource type="Texture2D" uid="uid://d0kjuy0rvx3f7" path="res://assets/maps/minecraft/explode/explosion_5.png" id="6_1mb5m"]
+[ext_resource type="Texture2D" uid="uid://cqj0de43aiya1" path="res://assets/maps/minecraft/explode/explosion_6.png" id="7_xkbr8"]
+[ext_resource type="Texture2D" uid="uid://dygh4ffnoyqq4" path="res://assets/maps/minecraft/explode/explosion_7.png" id="8_p4l2o"]
+[ext_resource type="Texture2D" uid="uid://bcgjyol7ieest" path="res://assets/maps/minecraft/explode/explosion_8.png" id="9_iqy4w"]
+[ext_resource type="Texture2D" uid="uid://dp0214hl7ofyv" path="res://assets/maps/minecraft/explode/explosion_9.png" id="10_a055e"]
+[ext_resource type="Texture2D" uid="uid://dc4lbm5o5gt0o" path="res://assets/maps/minecraft/explode/explosion_10.png" id="11_jmwu8"]
+[ext_resource type="Texture2D" uid="uid://b28aehb6r7i2j" path="res://assets/maps/minecraft/explode/explosion_11.png" id="12_kecp5"]
+[ext_resource type="Texture2D" uid="uid://dttbk2vvf46bg" path="res://assets/maps/minecraft/explode/explosion_12.png" id="13_vubcq"]
+[ext_resource type="Texture2D" uid="uid://by1lv0yrjcgqf" path="res://assets/maps/minecraft/explode/explosion_13.png" id="14_1fk8f"]
+[ext_resource type="Texture2D" uid="uid://x4ijmhqkgat6" path="res://assets/maps/minecraft/explode/explosion_14.png" id="15_hf0ig"]
+[ext_resource type="Texture2D" uid="uid://b1a077bcgteaf" path="res://assets/maps/minecraft/explode/explosion_15.png" id="16_odu6j"]
+[ext_resource type="Script" uid="uid://kwd70ry80px" path="res://scenes/maps/boom.gd" id="17_g7vax"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3yvhn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_2dqwl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_g7vax")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_liutf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_4n5gv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wly3c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_1mb5m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_xkbr8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_p4l2o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_iqy4w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_a055e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_jmwu8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_kecp5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_vubcq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_1fk8f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_hf0ig")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_odu6j")
+}],
+"loop": false,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="Boom" type="AnimatedSprite2D"]
+scale = Vector2(3.12, 3.12)
+sprite_frames = SubResource("SpriteFrames_3yvhn")
+frame = 10
+frame_progress = 0.0926672
+script = ExtResource("17_g7vax")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

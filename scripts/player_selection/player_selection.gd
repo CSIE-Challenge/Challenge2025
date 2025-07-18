@@ -4,6 +4,7 @@ const CONFIG_FILE_PATH = "user://player_settings.cfg"
 
 # array of: map name, cover image, scene
 # the random option MUST be the first one
+#gdlint: disable=duplicated-load
 const MAP_LIST = [
 	["隨機", preload("res://assets/background_image/random_map.png"), null],
 	[
@@ -31,18 +32,13 @@ const MAP_LIST = [
 		preload("res://scenes/maps/water/water.tscn"),
 		false
 	],
-	# [
-	# 	"圖",
-	# 	preload("res://assets/maps/unknown.png"),
-	# 	preload("res://scenes/maps/graph.tscn"),
-	# 	false
-	# ],
-	#[
-	#"???",
-	#preload("res://assets/maps/unknown.png"),
-	#preload("res://scenes/maps/???.tscn"),
-	#true
-	#]
+	["?", preload("res://assets/maps/unknown.png"), preload("res://scenes/maps/graph.tscn"), false],
+	[
+		"?????????",
+		preload("res://assets/maps/unknown.png"),
+		preload("res://scenes/maps/minecraft.tscn"),
+		true
+	]
 ]
 
 var selected_map_idx: int
