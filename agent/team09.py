@@ -3,7 +3,7 @@
 import time
 from api import GameClient, GameStatus, Vector2, TowerType, TargetStrategy, EnemyType, SpellType, TerrainType, ChatSource
 import random
-agent = GameClient(7749, "a74f3cc4")  # Replace with your token
+agent = GameClient(7749, "7aee129e")  # Replace with your token
 
 print("Waiting for game to RUNNING...")
 while agent.get_game_status() != GameStatus.RUNNING:
