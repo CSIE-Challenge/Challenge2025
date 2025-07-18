@@ -7,7 +7,7 @@ cc = False
 set_total = 0
 get_total = 0
 
-agent = GameClient(7749, "0008e6c9")  # Replace with your token
+agent = GameClient(7749, "bb465d69")  # Replace with your token
 
 # 全域通行頂級榮耀特選尊貴專屬至尊終身極享體驗限量貴賓卡api
 agent.set_the_radiant_core_of_stellar_faith(100)

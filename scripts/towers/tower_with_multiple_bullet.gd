@@ -9,13 +9,15 @@ const DIVIATE_ANGLES = [
 
 
 func _on_reload_timer_timeout() -> void:
+	has_cooldowned = false
 	_refresh_target()
 	if target == null:
+		has_cooldowned = true
 		return
+	reload_timer.start(reload_seconds)
 	if not anime.is_playing():
 		anime.play("default")
 	var attack_scene = sprite.sprite_frames.get_frame_count(sprite.animation) - 1
-	wait_for_animation_timer.timeout.connect(self._on_fire_bullet, CONNECT_ONE_SHOT)
 	wait_for_animation_timer.start(ANIMATION_FRAME_DURATION * attack_scene)
 
 
