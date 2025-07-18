@@ -13,7 +13,7 @@ var color: String = "7fffd4"
 @onready var scrollbar = $MarginContainer/ScrollContainer
 
 
-func _ready() -> void:
+func start() -> void:
 	system_timer.start()
 	system_timer.set_wait_time(randf_range(15, 20))
 
