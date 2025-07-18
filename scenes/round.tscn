@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=20 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dpb6xajj515sy" path="res://assets/ui/shop.png" id="8_p5kuw"]
 [ext_resource type="Texture2D" uid="uid://btahr8i011mlt" path="res://assets/ui/chat.png" id="11_i86cr"]
 [ext_resource type="PackedScene" uid="uid://chfhbrul06tvl" path="res://scenes/map_reveal.tscn" id="14_h7h1o"]
+[ext_resource type="Texture2D" uid="uid://x2aqjm16uqir" path="res://assets/ui/SoDeactivate.png" id="14_i86cr"]
 
 [sub_resource type="Gradient" id="Gradient_h7h1o"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -355,7 +356,6 @@ process_material = SubResource("ParticleProcessMaterial_dfwyv")
 occluder = SubResource("OccluderPolygon2D_h7h1o")
 
 [node name="Cutscene" type="Control" parent="."]
-visible = false
 anchors_preset = 0
 offset_top = 80.0
 offset_right = 40.0
@@ -369,7 +369,37 @@ offset_top = -80.0
 offset_right = 1920.0
 offset_bottom = 1000.0
 mouse_filter = 2
-color = Color(0, 1, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Cutscene/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -248.0
+offset_top = -183.5
+offset_right = 248.0
+offset_bottom = 183.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_i86cr")
+
+[node name="Slogan" type="Label" parent="Cutscene/ColorRect"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 112.0
+offset_top = -88.0
+offset_right = 1770.0
+offset_bottom = -54.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "抵制不良遊戲，拒絕盜版遊戲。注意自我保護，謹防受騙上當。適度遊戲益腦，沉迷遊戲傷身。合理安排時間，享受健康生活。"
 
 [node name="MapRevealLeft" parent="Cutscene" instance=ExtResource("14_h7h1o")]
 
