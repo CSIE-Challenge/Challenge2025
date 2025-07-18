@@ -30,14 +30,14 @@
         }
     ],
     "tie_breaker_map": {
-        "name": "？？？",
-        "preview": "res://assets/maps/unknown.png",
-        "scene-path": "res://scenes/maps/water/water.tscn"
-    },
-    "boss_map": {
-        "name": "？？？",
+        "name": "？",
         "preview": "res://assets/maps/unknown.png",
         "scene-path": "res://scenes/maps/graph.tscn"
+    },
+    "boss_map": {
+        "name": "？？？？？",
+        "preview": "res://assets/maps/unknown.png",
+        "scene-path": "res://scenes/maps/minecraft.tscn"
     },
     "boss": {
         "id": "0",

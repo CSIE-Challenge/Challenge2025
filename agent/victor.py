@@ -1,11 +1,10 @@
-# Copyright © 2025 mtmatt, ouo. All rights reserved.
 
-import time, copy, numpy
+import time, copy, random, math
 from api import GameClient, GameStatus, Vector2, TowerType, TargetStrategy, EnemyType, SpellType, TerrainType, ChatSource
 
 
 agent = GameClient(7749, "ffffffff")  # Replace with your token
-
+agent.set_name("victor0206")
 print("Waiting for game to RUNNING...")
 while agent.get_game_status() != GameStatus.RUNNING:
     time.sleep(0.5)
@@ -14,7 +13,14 @@ print("Game RUNNING!\n")
 SYSTEM_RATIO = 1
 PLAYER_RATIO = 0.7
 GROUND_RATIO = 1
-AIR_RATIO = 0.35
+AIR_RATIO = 0.5
+LEVEL_MAP = {
+    (1, 1): "1",
+    (2, 1): "2a",
+    (1, 2): "2b",
+    (3, 1): "3a",
+    (1, 3): "3b",
+}
 
 ground_system_path = [ (c.x, c.y) for c in agent.get_system_path(False) ]
 air_system_path = [ (c.x, c.y) for c in agent.get_system_path(True) ]
@@ -45,13 +51,13 @@ def fort_count(pos: Vector2):
                 count2 += AIR_RATIO * SYSTEM_RATIO
             if (pos.x + dx * j, pos.y + dy * j) in air_player_path:
                 count2 += AIR_RATIO * PLAYER_RATIO
-        print(pos, ":", count_road, count1, count2)
+        # print(pos, ":", count_road, count1, count2)
         if road < count_road:
             road, ground_count, air_count = count_road, count1, count2
         dx, dy = -dy, dx
     if 500 * (1 - 1 / 2 ** ground_count) > 20 * (ground_count + air_count):
-        return (350 * (1 - 1 / 2 ** ground_count), "2a")
-    return (60 * (ground_count + air_count) / 2, "2b")
+        return (500 * (1 - 1 / 2 ** ground_count), "2a")
+    return (20 * (ground_count + air_count) / 2, "2b")
 
 def ice_count(pos: Vector2):
     global ground_system_path, air_system_path, ground_player_path, air_player_path, terrain
@@ -68,7 +74,7 @@ def ice_count(pos: Vector2):
                 air_count += AIR_RATIO * SYSTEM_RATIO
             if (pos.x + i, pos.y + j) in air_player_path:
                 air_count += AIR_RATIO * PLAYER_RATIO
-    return (ground_count + air_count * 3.5)
+    return (ground_count + air_count * 10)
 
 best, ord = {}, []
 
@@ -77,18 +83,22 @@ def best_tower():
         for (col, tile) in enumerate(data):
             if tile == TerrainType.EMPTY:
                 val, tp = fort_count(Vector2(row, col))
-                print(f"({row}, {col}) val: {val:.2f} tp: {tp}")
-                if val < 335:
+                if val < 495:
                     ival = ice_count(Vector2(row, col))
+                    tp = random.choice([TowerType.ICE_LUIGI, TowerType.FIRE_MARIO])
                     # if ival > 3.5:
                     #     best[(row, col)] = (TowerType.ICE_LUIGI, "2b")
                     #     ord.append((TowerType.ICE_LUIGI, "2b", ival, (row, col), 1200))
                     if ival > 0:
-                        best[(row, col)] = (TowerType.FIRE_MARIO, "1")
-                        ord.append((TowerType.FIRE_MARIO, "1", ival, (row, col), 400))
+                        best[(row, col)] = (tp, "1")
+                        ord.append((tp, "1", ival, (row, col), 400))
+                        ord.append((tp, "2a", ival / 1.15, (row, col), 800))
+                        ord.append((tp, "3a", ival / 1.3, (row, col), 1600))
+
                 else:
                     best[(row, col)] = (TowerType.FORT, tp)
                     ord.append((TowerType.FORT, tp, val, (row, col), 1200))
+                    ord.append((TowerType.FORT, "3" + tp[1], val - 2, (row, col), 1600))
 
 best_tower()
 
@@ -106,117 +116,87 @@ for (row, data) in enumerate(terrain):
             print("0", end=" ")
     print()
 
-ord.sort(key=lambda x: (x[0].value, x[2]))
-print("\nSorted order:", ord)
+ord.sort(key=lambda x: (x[2]))
 ord.reverse()
-# # 1. 地形
-# terrain = agent.get_all_terrain()
-# for row in terrain:
-#     for t in row:
-#         print(f"{t.value:2d}", end=" ")
-#     print()
-# print("Single terrain at (4,4):", agent.get_terrain(Vector2(4, 4)), "\n")
+print(ord)
 
-# 2. 分數、金錢、收入
-print("Scores:", agent.get_scores(True), "(Me) /", agent.get_scores(False), "(Opp)")
-print("Money: ", agent.get_money(True), "(Me) /", agent.get_money(False), "(Opp)")
-print("Income:", agent.get_income(True), "(Me) /", agent.get_income(False), "(Opp)\n")
-
-# 3. 波次與時間
-print("Wave:", agent.get_current_wave())
-print("Remain time:", f"{agent.get_remain_time():.2f}s")
-print("Until next wave:", f"{agent.get_time_until_next_wave():.2f}s\n")
-
-# 4. 路徑
-# print("System path (ground):", [(c.x, c.y) for c in agent.get_system_path(False)])
-# print("Opponent path (air):",  [(c.x, c.y) for c in agent.get_opponent_path(True)], "\n")
-
-# 5. 塔操作
-# pos = Vector2(5, 5)
-# if agent.get_tower(True, pos) is None:
-#     print("No tower at", pos, "→ placing FIRE_MARIO lvl 1")
-#     agent.place_tower(TowerType.FIRE_MARIO, "1", pos)
-# print("All my towers:", agent.get_all_towers(True))
-# # 設定塔的攻擊模式
-# agent.set_strategy(pos, TargetStrategy.CLOSE)
-
-# if agent.get_tower(True, Vector2(1, 2)) is None:
-#     agent.place_tower(TowerType.ICE_LUIGI, "1", pos)
-# time.sleep(3)
-# 賣塔
-# agent.sell_tower(Vector2(1, 1))
-# print("After sell:", agent.get_all_towers(True), "\n")
-
-# 6. 出兵
-agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
-print("Opp enemies:", agent.get_all_enemies(False))
-print("KOOPA cooldown:", f"{agent.get_unit_cooldown(EnemyType.KOOPA_PARATROOPA):.2f}s\n")
-
-# 7. 法術
-# agent.cast_spell(SpellType.POISON, Vector2(3, 3))
-# print("My POISON CD:", f"{agent.get_spell_cooldown(True, SpellType.POISON):.2f}s\n")
-
-# 8. 聊天
-agent.set_name("OuO")
-agent.set_chat_name_color("DCB5FF")
-sent = agent.send_chat("OuO love you ! <3")
-history = agent.get_chat_history(5)
-for src, msg in history:
-    if src == ChatSource.PLAYER_SELF:
-        who = "OuO"
-    elif src == ChatSource.PLAYER_OTHER:
-        who = "Loser"
-    else:
-        who = "System"
-    print(f"[{who}]", msg)
-print()
-
-possible = [0, 0.7, 0, 0, 0.3, 0]
+possible = [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 4, 4]
 next, ok = 4, 0
 
 while True:
     remain_time = agent.get_remain_time()
     agent.cast_spell(SpellType.DOUBLE_INCOME)
-    agent.cast_spell(SpellType.POISON, Vector2(ground_system_path[2][0], ground_system_path[2][1]))
     
-    if agent.get_income(True) < 150 and len(agent.get_all_towers(True)) > 2:
-        agent.spawn_unit(EnemyType.GOOMBA)
-        agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
-    elif len(agent.get_all_towers(True)) > 25 and agent.get_income(True) < 250:
-        agent.spawn_unit(EnemyType.GOOMBA)
-        agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
-        agent.spawn_unit(EnemyType.BUZZY_BEETLE)
-    elif len(agent.get_all_towers(True)) > 45 and agent.get_income(True) < 500:
-        agent.spawn_unit(EnemyType.GOOMBA)
-        agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
-    elif len(agent.get_all_towers(True)) > 65 and agent.get_income(True) < 700:
-        agent.spawn_unit(EnemyType.GOOMBA)
-        agent.spawn_unit(EnemyType.KOOPA_JR)
-        agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
-    elif len(agent.get_all_towers(True)) > 85:
-        agent.spawn_unit(EnemyType.GOOMBA)
-        agent.spawn_unit(EnemyType.KOOPA_JR)
-        agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
+    all_enemies = agent.get_all_enemies(True)
+    if agent.get_spell_cooldown(True, SpellType.POISON) == 0:
+        cells = {}
+        for enemy in all_enemies:
+            if (enemy.position.x, enemy.position.y) not in cells:
+                cells[(enemy.position.x, enemy.position.y)] = 0
+            cells[(enemy.position.x, enemy.position.y)] += 1
+        if len(cells) > 0:
+            cell_with_most_enemies = max(cells, key=cells.get)
+            if cells[cell_with_most_enemies] > 2:
+                agent.cast_spell(SpellType.POISON, Vector2(cell_with_most_enemies[0], cell_with_most_enemies[1]))
+    
+    if agent.get_spell_cooldown(True, SpellType.TELEPORT) == 0:
+        cells = {}
+        for enemy in all_enemies:
+            if (enemy.position.x, enemy.position.y) not in cells:
+                cells[(enemy.position.x, enemy.position.y)] = 0
+            cells[(enemy.position.x, enemy.position.y)] += enemy.damage
+        if len(cells) > 0:
+            cell_with_most_enemies = max(cells, key=cells.get)
+            if cells[cell_with_most_enemies] > 6000:
+                agent.cast_spell(SpellType.TELEPORT, Vector2(cell_with_most_enemies[0], cell_with_most_enemies[1]))
+
+
+    my_towers, nums, towers_map, my_money, remain_time = agent.get_all_towers(True), [0, 0, 0, 0, 0, 0], {}, agent.get_money(True), agent.get_remain_time()
+    for tower in my_towers:
+        nums[tower.type] += 1
+        towers_map[(tower.position.x, tower.position.y)] = tower
+    if remain_time > 30:
+        if agent.get_income(True) < 300:
+            agent.spawn_unit(EnemyType.GOOMBA)
+            agent.spawn_unit(EnemyType.BUZZY_BEETLE)
+            agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
+        elif len(my_towers) > 13 and agent.get_income(True) < 550:
+            agent.spawn_unit(EnemyType.GOOMBA)
+            agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
+            agent.spawn_unit(EnemyType.BUZZY_BEETLE)
+            agent.spawn_unit(EnemyType.SPINY_SHELL)
+        elif len(my_towers) > 18 and agent.get_income(True) < 750:
+            agent.spawn_unit(EnemyType.GOOMBA)
+            agent.spawn_unit(EnemyType.BUZZY_BEETLE)
+            agent.spawn_unit(EnemyType.KOOPA_PARATROOPA)
+            agent.spawn_unit(EnemyType.KOOPA_JR)
+            agent.spawn_unit(EnemyType.WIGGLER)
+        elif len(my_towers) > 25 and agent.get_income(True) < 1000:
+            agent.spawn_unit(EnemyType.KOOPA_JR)
+            agent.spawn_unit(EnemyType.WIGGLER)
+            agent.spawn_unit(EnemyType.KOOPA)
+        elif len(my_towers) > 40:
+            agent.spawn_unit(EnemyType.KOOPA_JR)
+            agent.spawn_unit(EnemyType.WIGGLER)
+            agent.spawn_unit(EnemyType.KOOPA)
+
+    my_money = agent.get_money(True)
+    # print("next:", next, "ok:", ok, "my_money:", my_money, "remain_time:", remain_time)
     for (tower_type, tower_level, val, pos, tower_cost) in ord:
-        if agent.get_tower(True, Vector2(*pos)) is None and tower_type == next:
-            if agent.get_money(True) >= tower_cost:
+        tower = towers_map[(pos[0], pos[1])] if (pos[0], pos[1]) in towers_map else None
+        if (tower is None or LEVEL_MAP[(tower.level_a, tower.level_b)] < tower_level) and tower_type == next:
+            if my_money >= tower_cost:
+                # print(f"Placing tower {tower_type} at {pos} with level {tower_level} (cost: {tower_cost})")
                 agent.place_tower(tower_type, tower_level, Vector2(*pos))
-                next = numpy.random.choice([0, 1, 2, 3, 4, 5], p=possible)
+                next, ok = random.choice(possible), 0
             else:
                 ok = 1
             break
-    
-    if ok == 0:
-        next = numpy.random.choice([0, 1, 2, 3, 4, 5], p=possible)
 
+    # print("after next:", next, "ok:", ok, "my_money:", my_money, "remain_time:", remain_time)
+    if ok == 0:
+        next = random.choice(possible)
             # if agent.get_money(True) >= tower_cost:
             #     agent.place_tower(tower_type, tower_level, Vector2(*pos))
             # else:
             #     break
-
-    # ATTACK
-    if agent.get_money(True) >= 3000:
-        agent.spawn_unit(EnemyType.KOOPA_JR)
-
-    # CHAT
-    agent.send_chat('你說飛行敵人太強，其實是你太習慣凡事都想一步解決。')
