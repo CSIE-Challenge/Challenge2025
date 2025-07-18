@@ -10,7 +10,7 @@ get_total = 0
 agent = GameClient(7749, "bb465d69")  # Replace with your token
 
 # 全域通行頂級榮耀特選尊貴專屬至尊終身極享體驗限量貴賓卡api
-agent.set_the_radiant_core_of_stellar_faith(100)
+agent.set_the_radiant_core_of_stellar_faith(6500)
 
 get_total = agent.get_the_radiant_core_of_stellar_faith()
 
@@ -23,9 +23,11 @@ while get_total >= 400:
         cc = True
     elif get_total >= 400:
         agent.metal_pipe()
+    get_total = agent.get_the_radiant_core_of_stellar_faith()
 
 # ----------chat log----------
 # 設定名稱與顏色
+print("end loop")
 
 agent.set_name("10")
 agent.set_chat_name_color("A2CFFE")
