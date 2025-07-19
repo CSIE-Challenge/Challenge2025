@@ -24,7 +24,7 @@ cat = agent.pixelcat()
 print(agent.pixelcat())
 print(cat)
 agent.send_chat(cat)
-sent = agent.send_chat("You are gay! <3")
+sent = agent.send_chat("You are g*y! <3")
 
 
 mario_towers = 0
@@ -125,7 +125,7 @@ while True:
                             if mario_towers % 2 ==0:
                                 if agent.get_tower((True), Vector2(row, col)) != TowerType.FIRE_MARIO and remain_time < 270:
                                     agent.place_tower(TowerType.ICE_LUIGI, '1', Vector2(row, col))
-                                    if agent.get_tower((True), Vector2(row, col)) == TowerType.FIRE_MARIO:
+                                    if agent.get_tower((True), Vector2(row, col)) == TowerType.FIRE_MARIO: 
                                         mario_towers += 1
                             else:
                                 if agent.get_tower((True), Vector2(row, col)) != TowerType.ICE_LUIGI:

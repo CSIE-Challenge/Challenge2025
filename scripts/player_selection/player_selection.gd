@@ -6,15 +6,37 @@ const CONFIG_FILE_PATH = "user://player_settings.cfg"
 # the random option MUST be the first one
 const MAP_LIST = [
 	["隨機", preload("res://assets/background_image/random_map.png"), null],
-	["沒有香菜的世界", preload("res://assets/maps/Map1.png"), preload("res://scenes/maps/map1.tscn")],
-	["小村探秘", preload("res://assets/maps/map2/preview.png"), preload("res://scenes/maps/map2.tscn")],
-	["椰林大道", preload("res://assets/maps/Map3.png"), preload("res://scenes/maps/map3.tscn")],
-	[" ", preload("res://assets/maps/space/preview.png"), preload("res://scenes/maps/space.tscn")],
+	[
+		"沒有香菜的世界",
+		preload("res://assets/maps/Map1.png"),
+		preload("res://scenes/maps/map1.tscn"),
+		false
+	],
+	[
+		"小村探秘",
+		preload("res://assets/maps/map2/preview.png"),
+		preload("res://scenes/maps/map2.tscn"),
+		false
+	],
+	["椰林大道", preload("res://assets/maps/Map3.png"), preload("res://scenes/maps/map3.tscn"), false],
+	[
+		" ",
+		preload("res://assets/maps/space/preview.png"),
+		preload("res://scenes/maps/space.tscn"),
+		false
+	],
 	[
 		"沙河模擬",
 		preload("res://assets/maps/water/preview.png"),
-		preload("res://scenes/maps/water/water.tscn")
-	]
+		preload("res://scenes/maps/water/water.tscn"),
+		false
+	],
+	# [
+	# 	"???",
+	# 	preload("res://assets/maps/unknown.png"),
+	# 	preload("res://scenes/maps/water/water.tscn"),
+	# 	true
+	# ]
 ]
 
 var selected_map_idx: int
@@ -89,6 +111,7 @@ func _on_start_button_pressed() -> void:
 	var map_scene = MAP_LIST[selected_map_idx][2]
 
 	var the_round = preload("res://scenes/round.tscn").instantiate()
+	the_round.reveal_cutscene = MAP_LIST[selected_map_idx][3]
 	the_round.set_controllers(selection_1p, selection_2p, manual_controlled)
 	the_round.set_maps(map_scene)
 	get_tree().get_root().add_child(the_round)

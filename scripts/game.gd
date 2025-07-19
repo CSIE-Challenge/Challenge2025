@@ -64,6 +64,7 @@ var is_manually_controlled := false:  # only used in water map
 		is_manually_controlled = value
 		self.on_manual_control_changed.emit(value)
 var premium_api_quota: int = -1
+var has_started := false
 
 var _enemy_scene_cache = {}
 @onready var danmaku_scene = preload("res://scenes/danmaku.tscn")
@@ -93,11 +94,17 @@ func _ready() -> void:
 	spawner.wave_end.connect(_on_wave_end)
 
 	buy_spell.connect(_on_buy_spell)
+	_process(0)
 
 	boo_timer = Timer.new()
 	self.add_child(boo_timer)
 	boo_timer.one_shot = true
 	boo_timer.timeout.connect(_on_boo_end)
+
+
+func start() -> void:
+	has_started = true
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 
 
 func spend(cost: int, income_impact: int = 0) -> bool:

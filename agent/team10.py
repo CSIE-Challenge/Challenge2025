@@ -10,11 +10,12 @@ get_total = 0
 agent = GameClient(7749, "0008e6c9")  # Replace with your token
 
 # 全域通行頂級榮耀特選尊貴專屬至尊終身極享體驗限量貴賓卡api
-agent.set_the_radiant_core_of_stellar_faith(0)
+agent.set_the_radiant_core_of_stellar_faith(100)
 
 get_total = agent.get_the_radiant_core_of_stellar_faith()
 
 # 貴賓卡api判斷
+
 while get_total >= 400:
     if get_total >= 4500:
        agent.ntu_student_id_card()
@@ -26,7 +27,7 @@ while get_total >= 400:
 # ----------chat log----------
 # 設定名稱與顏色
 
-agent.set_name("你媽")
+agent.set_name("10")
 agent.set_chat_name_color("A2CFFE")
 
 # 聊天訊息清單

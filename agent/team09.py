@@ -110,7 +110,7 @@ def map_type():
     print()
     for i in range(len(terrain)):
         for j in range(len(terrain[0])):
-            print(str(terrain[i][j].value)+' ',end='')
+            print(str(terrain[i][j])+' ',end='')
         print()
     print()
     
@@ -461,7 +461,7 @@ while True:
     if map_name == 'gen' and gen_init == 4:
         rx = random.randint(1, 14)
         ry = random.randint(1, 19)
-        if agent.get_tower(Vector2(rx, ry)) == None and agent.get_terrain(Vector2(rx, ry) == TerrainType.EMPTY):
+        if agent.get_tower(True, Vector2(rx, ry)) == None and agent.get_terrain(Vector2(rx, ry)) == TerrainType.EMPTY:
             agent.place_tower(TowerType.FIRE_MARIO, "3a", Vector2(rx, ry))
     #get_time
     remain_time = agent.get_remain_time()

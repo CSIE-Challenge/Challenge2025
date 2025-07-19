@@ -1,11 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://drf20segxekcu"]
+[gd_scene load_steps=12 format=3 uid="uid://drf20segxekcu"]
 
 [ext_resource type="Script" uid="uid://4flf2v47sqet" path="res://scripts/towers/fort.gd" id="1_ffd5a"]
 [ext_resource type="PackedScene" uid="uid://cjexhbj8340to" path="res://scenes/bullets/bullet_2b.tscn" id="2_ffd5a"]
 [ext_resource type="Texture2D" uid="uid://canivpyowvvak" path="res://assets/tower/BombPipe.png" id="3_ffd5a"]
 [ext_resource type="Texture2D" uid="uid://bf3wmagq6lvk2" path="res://assets/tower/BombPipeFire.png" id="4_16dov"]
+[ext_resource type="Texture2D" uid="uid://carmco8yh3v40" path="res://assets/tower/BombPipeBack.png" id="5_iqe4t"]
+[ext_resource type="Texture2D" uid="uid://brf7v1i5ufqxs" path="res://assets/tower/BombPipeBackFire.png" id="6_cphaa"]
+[ext_resource type="Texture2D" uid="uid://br5eh7mmfwq" path="res://assets/tower/BombPipeFront.png" id="7_0poj3"]
+[ext_resource type="Texture2D" uid="uid://dj70pnfy2ntpa" path="res://assets/tower/BombPipeFrontFire.png" id="8_amroy"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_ffd5a"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_dxxqw"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -23,19 +27,31 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_ffd5a")
+"texture": ExtResource("5_iqe4t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_cphaa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_iqe4t")
 }],
 "loop": false,
 "name": &"Lower",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_ffd5a")
+"texture": ExtResource("7_0poj3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_amroy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_0poj3")
 }],
 "loop": false,
 "name": &"Upper",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ktxwe"]
@@ -50,18 +66,20 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_ffd5a")
 type = 4
+level_a = null
 level_b = 2
 building_cost = 1200
 auto_aim = false
 anti_air = true
 bullet_scene = ExtResource("2_ffd5a")
 reload_seconds = 3.0
+aim_range = null
 damage = 60
 
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
-sprite_frames = SubResource("SpriteFrames_ffd5a")
+sprite_frames = SubResource("SpriteFrames_dxxqw")
 animation = &"Upper"
 
 [node name="LeftRightMarker" type="Marker2D" parent="Tower"]

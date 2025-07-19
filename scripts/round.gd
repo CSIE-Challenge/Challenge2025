@@ -11,11 +11,15 @@ const FREEZE_ANIMATION = 2.5
 @export var score_bar: ScoreBar
 @export var game_1p: Game
 @export var game_2p: Game
+@export var spawner: Spawner
 
 var manual_controlled: int
 
 # when turned on, pressing ESC does not pause the game or exit the game on end screen
 var system_controlled: bool = false
+
+var reveal_cutscene: bool = false
+var cutscene_timers = []
 
 @onready var game_timer: Timer = $GameTimer
 
@@ -31,10 +35,6 @@ func set_controllers(
 	$Screen/Top/TextureRect/PlayerNameLeft.text = player_selection_1p.player_identifier
 	$Screen/Top/TextureRect/PlayerNameRight.text = player_selection_2p.player_identifier
 
-	# notify web agents
-	player_selection_1p.web_agent.start_game(self, game_1p, game_2p)
-	player_selection_2p.web_agent.start_game(self, game_2p, game_1p)
-
 
 func set_maps(map: PackedScene):
 	game_1p.set_map(map)
@@ -47,17 +47,15 @@ func set_api_quotas(quota_1p: int, quota_2p: int) -> void:
 
 
 func _ready() -> void:
+	game_1p.process_mode = Node.PROCESS_MODE_DISABLED
+	game_2p.process_mode = Node.PROCESS_MODE_DISABLED
+	spawner.process_mode = Node.PROCESS_MODE_DISABLED
 	if not system_controlled:
 		add_child(preload("res://scenes/pause_menu.tscn").instantiate())
 
-	game_1p.op_game = game_2p
-	game_2p.op_game = game_1p
-	$GPUParticles2D.visible = false
-
-	# start game timer
+	# init game timer
 	game_timer.wait_time = GAME_DURATION
 	game_timer.one_shot = true
-	game_timer.start()
 
 	# notify the shop and the chat
 	var shop = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop
@@ -74,10 +72,89 @@ func _ready() -> void:
 			shop.start_game(game_2p, game_1p)
 			game_2p.is_manually_controlled = true
 
+	var cutscene = $Cutscene
+	var cutscene_rect = $Cutscene/ColorRect
+	var cutscene_title = $Cutscene/ColorRect/TextureRect
+	var cutscene_slogan = $Cutscene/ColorRect/Slogan
+	if reveal_cutscene:
+		cutscene.visible = true
+		var create_timer = func(time: float, callback: Callable):
+			var timer = Timer.new()
+			add_child(timer)
+			timer.wait_time = time
+			timer.one_shot = true
+			timer.timeout.connect(callback)
+			timer.start()
+
+		cutscene_rect.modulate = Color(0, 1, 0, 0)
+		cutscene_slogan.modulate = Color(0, 1, 0, 0)
+		cutscene_title.modulate = Color(1, 1, 1, 0)
+		create_timer.call(
+			5,
+			func(): create_tween().tween_property(cutscene_rect, "modulate:a", 1.0, 3).set_delay(0)
+		)
+		create_timer.call(
+			8,
+			func():
+				$Cutscene/MapRevealLeft.visible = false
+				$Cutscene/MapRevealRight.visible = false
+				$Cutscene/MapRevealLeft.clear_square()
+				$Cutscene/MapRevealRight.clear_square()
+				create_tween().tween_property(cutscene_rect, "modulate:r", 1.0, 2).set_delay(0)
+				create_tween().tween_property(cutscene_rect, "modulate:b", 1.0, 2).set_delay(0)
+		)
+		create_timer.call(
+			10,
+			func(): create_tween().tween_property(cutscene_title, "modulate:a", 1.0, 2).set_delay(0)
+		)
+		create_timer.call(
+			11,
+			func():
+				create_tween().tween_property(cutscene_slogan, "modulate:a", 1.0, 2).set_delay(0)
+		)
+		create_timer.call(
+			14, func(): create_tween().tween_property(cutscene, "modulate:a", 0.0, 3).set_delay(0)
+		)
+		create_timer.call(18, _start)
+	else:
+		cutscene.process_mode = Node.PROCESS_MODE_DISABLED
+		cutscene.visible = false
+
+		_start()
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and event.keycode == KEY_SPACE:
+		$Cutscene.visible = false
+		_start()
+
+
+func _start() -> void:
+	if !game_timer.is_stopped():
+		return
+	# start game timer
+	game_timer.start()
+
+	game_1p.start()
+	game_2p.start()
+	spawner.process_mode = Node.PROCESS_MODE_PAUSABLE
+	$Screen/Bottom/Mid/ShopAndChat.mouse_filter = MOUSE_FILTER_IGNORE
+
+	spawner.start()
+	# notify web agents
+	game_1p.player_selection.web_agent.start_game(self, game_1p, game_2p)
+	game_2p.player_selection.web_agent.start_game(self, game_2p, game_1p)
+
+	game_1p.op_game = game_2p
+	game_2p.op_game = game_1p
+	$GPUParticles2D.visible = false
+
 	# setup signals for the games
 	game_1p.damage_taken.connect(game_2p.on_damage_dealt)
 	game_2p.damage_taken.connect(game_1p.on_damage_dealt)
 
+	var chat = $Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat
+	chat.start()
 	var agent_1p = game_1p.player_selection.web_agent
 	var agent_2p = game_2p.player_selection.web_agent
 	agent_1p.chat_node = chat
@@ -86,9 +163,12 @@ func _ready() -> void:
 	agent_2p.player_id = 2
 	AudioManager.background_game_stage1.play()
 
+	for timer in cutscene_timers:
+		timer.queue_free()
+
 
 func get_formatted_time() -> String:
-	var time_left = $GameTimer.time_left
+	var time_left = GAME_DURATION if game_timer.is_stopped() else game_timer.time_left
 	var minutes = int(time_left / 60)
 	var seconds = int(time_left) % 60
 	return "%02d:%02d" % [minutes, seconds]
@@ -99,21 +179,26 @@ func _process(_delta: float) -> void:
 	score_bar.left_score = game_1p.score
 	score_bar.right_score = game_2p.score
 
-	if ($GameTimer.time_left < GAME_DURATION * 0.3) and not AudioManager.second_stage:
+	if (
+		!game_timer.is_stopped()
+		and game_timer.time_left < GAME_DURATION * 0.3
+		and not AudioManager.second_stage
+	):
 		AudioManager.second_stage = true
 		AudioManager.background_game_stage1.stop()
 		AudioManager.background_game_stage2.play()
 
-	var time_after_freeze = FREEZE_TIME - $GameTimer.time_left
-	if time_after_freeze >= 0:
-		var frozen_overlay = $Screen/Top/TextureRect/FrozenOverlay
-		frozen_overlay.visible = true
-		frozen_overlay.modulate = Color(1, 1, 1, min(1.0, time_after_freeze / FREEZE_ANIMATION))
+	if !game_timer.is_stopped():
+		var time_after_freeze = FREEZE_TIME - game_timer.time_left
+		if time_after_freeze >= 0:
+			var frozen_overlay = $Screen/Top/TextureRect/FrozenOverlay
+			frozen_overlay.visible = true
+			frozen_overlay.modulate = Color(1, 1, 1, min(1.0, time_after_freeze / FREEZE_ANIMATION))
 
-		$GPUParticles2D.visible = true
-		game_1p.freeze()
-		game_2p.freeze()
-		$Screen/Top/TextureRect/Score.freeze()
+			$GPUParticles2D.visible = true
+			game_1p.freeze()
+			game_2p.freeze()
+			$Screen/Top/TextureRect/Score.freeze()
 
 
 func _on_game_timer_timeout():

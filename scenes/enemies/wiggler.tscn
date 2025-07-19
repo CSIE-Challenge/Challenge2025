@@ -25,6 +25,7 @@ radius = 28.1603
 [node name="Enemy" type="Area2D" groups=["EnemyGroup"]]
 collision_mask = 2
 script = ExtResource("1_4hexv")
+knockback_resist = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_772r1")

@@ -3,6 +3,12 @@ import random
 import time
 
 agent = api.GameClient(7749, 'beb8b3a7')
+
+print("Waiting for game to RUNNING...")
+while agent.get_game_status() != api.GameStatus.RUNNING:
+    time.sleep(0.5)
+print("Game RUNNING!\n")
+
 agent.set_name("chipichipichapachapadubidubidabadaba")
 agent.set_chat_name_color("DCB5FF")
 def type1_settings(terrain):
