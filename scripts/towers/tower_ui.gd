@@ -2,6 +2,12 @@ class_name TowerUi
 extends Control
 
 signal sold
+var range_circle = null
+
+
+func initialize(t: Tower):
+	range_circle = TowerPreviewRange.new(t.aim_range / 2)
+	add_child(range_circle)
 
 
 # the tower's UI intercepts input events before GUI (because it is impossible to trigger both)

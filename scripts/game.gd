@@ -214,6 +214,7 @@ func _on_buy_tower(tower_scene: PackedScene):
 
 func _select_tower(tower: Tower, left: bool, up: bool):
 	var tower_ui: TowerUi = TOWER_UI_SCENE.instantiate()
+	tower_ui.initialize(tower)
 	tower.add_child(tower_ui)
 	tower_ui.global_position = tower.global_position
 	await get_tree().process_frame

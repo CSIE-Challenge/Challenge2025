@@ -9,6 +9,7 @@ enum PreviewMode {
 	FAIL,
 }
 
+var range_circle = null
 var _previewed_node: Node
 
 # this is called every frame for updating the color of previewed object
@@ -42,6 +43,8 @@ func _init(previewed_node: Node, mode_callback: Callable, map: Map, snap_to_cell
 	_mode_callback = mode_callback
 	_map = map
 	_snap_to_cells = snap_to_cells
+	range_circle = TowerPreviewRange.new(_previewed_node.aim_range / 2)
+	_previewed_node.add_child(range_circle)
 	self.add_child(previewed_node)
 
 
@@ -56,6 +59,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if _map.get_local_terrain(mouse_pos) == Map.CellTerrain.OUT_OF_BOUNDS:
 			selected.emit(null)
 		else:
+			_previewed_node.remove_child(range_circle)
 			self.remove_child(_previewed_node)
 			selected.emit(mouse_pos)
 		get_viewport().set_input_as_handled()
@@ -71,6 +75,7 @@ func _input(event: InputEvent) -> void:
 		and event.button_index == MOUSE_BUTTON_RIGHT
 	):
 		get_viewport().set_input_as_handled()
+		_previewed_node.queue_free()
 		self.queue_free()
 
 
@@ -80,7 +85,7 @@ func _process(_delta: float) -> void:
 	var mode: PreviewMode = _mode_callback.call(_previewed_node, _get_selected_position())
 	match mode:
 		PreviewMode.DEFAULT:
-			modulate = Color(1, 1, 1, 0.5)
+			modulate = Color(1, 1, 1, 0.2)
 		PreviewMode.SUCCESS:
 			modulate = Color(0, 1, 0, 0.5)
 		PreviewMode.FAIL:
