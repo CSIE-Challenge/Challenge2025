@@ -1,4 +1,4 @@
-extends Node
+extends Enemy
 
 
 func _ready() -> void:
