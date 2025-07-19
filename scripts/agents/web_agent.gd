@@ -29,7 +29,16 @@ enum CommandType {
 	SET_CHAT_NAME_COLOR = 403,
 	PIXELCAT = 501,
 	GET_DEVS = 502,
-	SET_NAME = 503
+	SET_NAME = 503,
+	DISCONNECT = 601,
+	NTU_STUDENT_ID_CARD = 602,
+	METAL_PIPE = 603,
+	SPAM = 604,
+	SUPER_STAR = 605,
+	TURBO_ON = 606,
+	GET_THE_RADIANT_CORE_OF_STELLAR_FAITH = 607,
+	SET_THE_RADIANT_CORE_OF_STELLAR_FAITH = 608,
+	BOO = 609
 }
 
 const MAX_LOGGING_REQUEST = 100
@@ -67,6 +76,16 @@ var _last_command: float = -1
 var _command_handlers: Dictionary = {}
 # the set of command types that may be called when the game is not running
 var _general_commands: Dictionary = {CommandType.GET_GAME_STATUS: null}
+# the API quota reduction of each premium API
+var _premium_commands: Dictionary = {
+	CommandType.DISCONNECT: 2500,
+	CommandType.NTU_STUDENT_ID_CARD: 4500,
+	CommandType.METAL_PIPE: 400,
+	# cost of spam is dynamically calculated in `_spam()`
+	CommandType.SUPER_STAR: 2000,
+	CommandType.TURBO_ON: 3500,
+	CommandType.BOO: 1000,
+}
 
 
 func _register_command_handlers() -> void:
@@ -101,6 +120,17 @@ func _register_command_handlers() -> void:
 		CommandHandler.new(CommandType.SET_CHAT_NAME_COLOR, [TYPE_STRING], _set_chat_name_color),
 		CommandHandler.new(CommandType.SET_NAME, [TYPE_STRING], _set_name),
 		CommandHandler.new(CommandType.PIXELCAT, [], _pixel_cat),
+		CommandHandler.new(CommandType.BOO, [], boo),
+		CommandHandler.new(CommandType.DISCONNECT, [], _disconnect),
+		CommandHandler.new(CommandType.NTU_STUDENT_ID_CARD, [], _ntu_student_id_card),
+		CommandHandler.new(CommandType.METAL_PIPE, [], _metal_pipe),
+		CommandHandler.new(CommandType.SPAM, [TYPE_STRING, TYPE_INT, TYPE_STRING], _spam),
+		CommandHandler.new(CommandType.SUPER_STAR, [], _super_star),
+		CommandHandler.new(CommandType.TURBO_ON, [], _turbo_on),
+		CommandHandler.new(CommandType.GET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [], _get_quota),
+		CommandHandler.new(
+			CommandType.SET_THE_RADIANT_CORE_OF_STELLAR_FAITH, [TYPE_INT], _set_quota
+		),
 	]
 	for handler in handlers:
 		if _command_handlers.has(handler.command_id):
@@ -190,7 +220,21 @@ func _on_received_command(command_bytes: PackedByteArray) -> void:
 			response = [
 				request_id, StatusCode.PAUSED, "[Receive Command] Error: the game is paused"
 			]
+		elif (
+			_premium_commands.has(command_id)
+			and game_self.premium_api_quota < _premium_commands[command_id]
+		):
+			response = [
+				request_id,
+				StatusCode.INSUFFICIENT_QUOTA,
+				(
+					"[Receive Command] Error: insufficient premium API quota. Required %d, but %d left"
+					% [_premium_commands[command_id], game_self.premium_api_quota]
+				)
+			]
 		else:
+			if _premium_commands.has(command_id):
+				game_self.premium_api_quota -= _premium_commands[command_id]
 			response = _command_handlers[command_id].handle(command)
 			if game_self != null:
 				game_self.api_succeed += (response[0] == StatusCode.OK) as int

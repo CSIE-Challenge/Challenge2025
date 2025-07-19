@@ -58,6 +58,10 @@ func take_damage(amount: int):
 		if source == Game.EnemySource.SYSTEM:
 			game.score += kill_reward  # == 0.1 * damage
 			game.money += kill_reward
+			game.money_earned += kill_reward
+			if not game.during_boo:
+				game.display_kill_reward += kill_reward
+			game.kill_reward_within_second += kill_reward
 		_on_killed()
 
 
@@ -83,7 +87,7 @@ func _on_area_entered(bullet: Bullet) -> void:
 
 
 func knockback(far: bool):
-	if knockback_invincibility or ((not knockback_resist) and (not far)):
+	if knockback_invincibility or (knockback_resist and (not far)):
 		return
 	knockback_invincibility = true
 	if far:

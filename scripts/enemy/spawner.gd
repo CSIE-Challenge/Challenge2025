@@ -26,6 +26,8 @@ func _ready():
 	add_child(next_wave_timer)
 	next_wave_timer.connect("timeout", _on_next_wave_timer_timeout)
 
+
+func start():
 	start_next_wave()
 
 

@@ -92,6 +92,9 @@ func start_game() -> void:
 		the_round.system_controlled = true
 		the_round.set_controllers(selection_1p, selection_2p, 0)
 		the_round.set_maps(map_scene)
+		the_round.set_api_quotas(
+			connection_panels[i][0].api_quota, connection_panels[i][1].api_quota
+		)
 		the_rounds.push_back(the_round)
 	var the_quad = preload("res://scenes/quad/quad_match.tscn").instantiate()
 	the_quad.init(config_path, match_config, the_rounds)

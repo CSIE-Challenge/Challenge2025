@@ -13,6 +13,7 @@ script = ExtResource("1_gwy7n")
 is_tracking = false
 is_anti_air = true
 is_penetrating = true
+movement_speed = 600.0
 spanning_speed = 1.047
 
 [node name="Body" type="Sprite2D" parent="."]

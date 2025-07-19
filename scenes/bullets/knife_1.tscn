@@ -12,6 +12,7 @@ collision_mask = 0
 script = ExtResource("1_jnnmc")
 is_tracking = false
 is_anti_air = true
+movement_speed = 600.0
 lifespan_seconds = 0.5
 spanning_speed = 1.047
 

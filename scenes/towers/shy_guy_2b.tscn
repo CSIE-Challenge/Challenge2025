@@ -40,6 +40,7 @@ script = ExtResource("1_mx8jr")
 type = 5
 level_b = 2
 building_cost = 1200
+auto_aim = null
 anti_air = true
 bullet_scene = ExtResource("2_7fpqp")
 reload_seconds = 1.5
@@ -49,10 +50,11 @@ damage = 20
 [node name="Tower" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower"]
+position = Vector2(0, -7.68246)
 sprite_frames = SubResource("SpriteFrames_mx8jr")
 
 [node name="Marker2D" type="Marker2D" parent="Tower"]
-position = Vector2(17.9257, -20.4866)
+position = Vector2(17.9257, -28.1691)
 
 [node name="Body" type="CollisionShape2D" parent="."]
 visible = false

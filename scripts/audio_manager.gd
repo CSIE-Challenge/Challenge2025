@@ -17,6 +17,20 @@ var background2_music_position: float
 @onready var match_sound: AudioStreamPlayer = $Match
 @onready var macos: AudioStreamPlayer = $MacOS
 @onready var windows: AudioStreamPlayer = $Windows
+@onready var boo: AudioStreamPlayer = $Boo
 @onready var join: AudioStreamPlayer = $Join
 @onready var leave: AudioStreamPlayer = $Leave
 @onready var message: AudioStreamPlayer = $Message
+
+@onready var metal_pipe_source: AudioStream = preload("res://assets/audio/metal_pipe.mp3")
+
+
+func play_metal_pipe() -> void:
+	if metal_pipe_source:
+		var audio_player: AudioStreamPlayer = AudioStreamPlayer.new()
+		audio_player.stream = metal_pipe_source
+		add_child(audio_player)
+		audio_player.play()
+		audio_player.connect("finished", audio_player.queue_free)
+	else:
+		push_error("Metal pipe sound source is not set.")

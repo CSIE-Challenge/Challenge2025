@@ -18,6 +18,9 @@ const DEPRECIATION_RATE := 0.9
 const INTEREST_RATE := 1.02
 const WAVE_HP_INCREASE_RATE := 1.1
 const WAVE_SPEED_INCREASE_RATE := 1.1
+const YELLOW := Color("#e2dd77")
+const RED := Color("#cf0404")
+const BOO_DURATION := 2
 
 @export var spawner: Spawner
 @export var status_panel: TextureRect
@@ -36,7 +39,10 @@ var chat_total_length := 0
 var player_selection: IndividualPlayerSelection = null
 var money: int = 300
 var income_per_second = 50
+var kill_reward_within_second = 0
+var display_kill_reward = 0
 var income_rate: int = 1
+var shop_discount: float = 1.0
 var chat_name_color: String = "ffffff"
 var built_towers: Dictionary = {}
 var previewer: Previewer = null
@@ -45,6 +51,10 @@ var op_game: Game
 var enemy_cooldown: Dictionary[int, Timer] = {}
 var map: Map = null
 var frozen := true
+var during_boo := false
+var boo_timer: Timer
+var no_damage := false
+var no_cooldown := false
 var current_hp_multiplier: float = 1
 var current_speed_multiplier: float = 1
 var is_manually_controlled := false:  # only used in water map
@@ -53,8 +63,14 @@ var is_manually_controlled := false:  # only used in water map
 	set(value):
 		is_manually_controlled = value
 		self.on_manual_control_changed.emit(value)
+var premium_api_quota: int = -1
+var has_started := false
 
 var _enemy_scene_cache = {}
+@onready var danmaku_scene = preload("res://scenes/danmaku.tscn")
+
+@onready var no_cooldown_timer = $NoCooldownTimer
+@onready var no_damage_timer = $NoDamageTimer
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
@@ -78,6 +94,17 @@ func _ready() -> void:
 	spawner.wave_end.connect(_on_wave_end)
 
 	buy_spell.connect(_on_buy_spell)
+	_process(0)
+
+	boo_timer = Timer.new()
+	self.add_child(boo_timer)
+	boo_timer.one_shot = true
+	boo_timer.timeout.connect(_on_boo_end)
+
+
+func start() -> void:
+	has_started = true
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 
 
 func spend(cost: int, income_impact: int = 0) -> bool:
@@ -108,22 +135,30 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 					)
 				)
 			)
-			or money + previous_tower.building_cost < tower.building_cost
+			or (
+				money + previous_tower.building_cost * shop_discount
+				< tower.building_cost * shop_discount
+			)
 		):
 			return false
 		if (
 			previous_tower.type != tower.type
-			and money + (previous_tower.building_cost * DEPRECIATION_RATE) < tower.building_cost
+			and (
+				money + (previous_tower.building_cost * shop_discount * DEPRECIATION_RATE)
+				< tower.building_cost * shop_discount
+			)
 		):
 			return false
-	if money < tower.building_cost:
+	if money < tower.building_cost * shop_discount:
 		return false
 	return map.get_cell_terrain(cell_pos) == Map.CellTerrain.EMPTY
 
 
 func _on_tower_sold(tower: Tower, tower_ui: TowerUi, depreciation: bool):
 	money += (
-		(tower.building_cost * DEPRECIATION_RATE) as int if depreciation else tower.building_cost
+		(tower.building_cost * shop_discount * DEPRECIATION_RATE) as int
+		if depreciation
+		else int(tower.building_cost * shop_discount)
 	)
 	tower.queue_free()
 	if is_instance_valid(tower_ui):
@@ -153,7 +188,7 @@ func _on_place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	tower_built += 1
 	self.tower_placed.emit(cell_pos)
 
-	money -= tower.building_cost
+	money -= int(tower.building_cost * shop_discount)
 	built_towers[cell_pos] = tower
 
 
@@ -207,16 +242,50 @@ func _handle_tower_selection(event: InputEvent) -> void:
 #region Income
 
 
+func get_modified_income_per_second() -> int:
+	return (income_rate * income_per_second) as int
+
+
 func _on_constant_income_timer_timeout() -> void:
-	var next_money = (money + income_rate * income_per_second) as int
+	var next_money = money + get_modified_income_per_second()
 	money_earned += next_money - money
 	money = next_money
+	if not during_boo:
+		display_kill_reward = kill_reward_within_second
+	kill_reward_within_second = 0
 
 
 func _on_interest_timer_timeout() -> void:
 	var next_money = (money * INTEREST_RATE) as int
 	money_earned += next_money - money
 	money = next_money
+
+
+func on_boo_called(value: int) -> void:
+	during_boo = true
+	op_game.during_boo = true
+	# Not regarded as money_earned
+	money += value
+	op_game.money -= value
+	display_kill_reward = value
+	op_game.display_kill_reward = -value
+	status_panel.find_child("KillReward").add_theme_color_override("font_color", RED)
+	op_game.status_panel.find_child("KillReward").add_theme_color_override("font_color", RED)
+	boo_timer.start(BOO_DURATION)
+	AudioManager.boo.play()
+
+
+func _on_boo_end() -> void:
+	display_kill_reward = kill_reward_within_second
+	op_game.display_kill_reward = op_game.kill_reward_within_second
+	status_panel.find_child("KillReward").text = _get_signed_string_number(display_kill_reward)
+	op_game.status_panel.find_child("KillReward").text = _get_signed_string_number(
+		op_game.display_kill_reward
+	)
+	status_panel.find_child("KillReward").add_theme_color_override("font_color", YELLOW)
+	op_game.status_panel.find_child("KillReward").add_theme_color_override("font_color", YELLOW)
+	during_boo = false
+	op_game.during_boo = false
 
 
 #endregion
@@ -267,7 +336,8 @@ func _on_enemy_summon(unit_data: Dictionary) -> void:
 
 
 func on_damage_dealt(damage: int) -> void:
-	score += damage
+	if not no_damage:
+		score += damage
 
 
 func take_damage(damage: int) -> void:
@@ -282,13 +352,14 @@ func _deploy_enemy(enemy: Enemy, source: EnemySource) -> void:
 		EnemySource.SYSTEM:
 			path = map.flying_system_path if enemy.flying else map.system_path
 		EnemySource.OPPONENT:
-			var timer = Timer.new()
-			enemy_cooldown[enemy.type] = timer
-			timer.wait_time = enemy.summon_cooldown
-			timer.one_shot = true
-			add_child(timer)
-			timer.timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
-			timer.start()
+			if not no_cooldown:
+				var timer = Timer.new()
+				enemy_cooldown[enemy.type] = timer
+				timer.wait_time = enemy.summon_cooldown
+				timer.one_shot = true
+				add_child(timer)
+				timer.timeout.connect(_enemy_cooldown_ended.bind(enemy.type))
+				timer.start()
 			path = map.flying_opponent_path if enemy.flying else map.opponent_path
 	path.add_child(enemy.path_follow)
 
@@ -350,12 +421,39 @@ func freeze() -> void:
 	frozen = true
 
 
+func _get_signed_string_number(value: int) -> String:
+	if value == 0:
+		return ""
+	return "+%d" % value if value > 0 else "%d" % value
+
+
 func _process(_delta) -> void:
 	if !frozen:
 		display_score = score
 	status_panel.find_child("Money").text = "%d" % money
-	status_panel.find_child("Income").text = "+%d" % [income_per_second * income_rate]
+	status_panel.find_child("Income").text = "+%d" % get_modified_income_per_second()
+	if income_rate > 1:
+		status_panel.find_child("Income").text += " ×%d" % income_rate
+	status_panel.find_child("KillReward").text = _get_signed_string_number(display_kill_reward)
+	status_panel.find_child("ApiQuota").text = "%d" % max(0, premium_api_quota)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	_handle_tower_selection(event)
+
+
+func _turbo_off() -> void:
+	no_cooldown = false
+
+
+func _damage_off() -> void:
+	no_damage = false
+
+
+func send_danmaku(text: String, _size := 24, color := Color.WHITE):
+	var danmaku: Label = danmaku_scene.instantiate()
+	var danmaku_layer = get_node("../../danmaku_layer")
+	danmaku.setup(text, _size, color)
+	var y_position = randf_range(50, 800)
+	danmaku.position = Vector2(get_viewport_rect().size.x, y_position)
+	danmaku_layer.add_child(danmaku)

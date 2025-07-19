@@ -9,12 +9,14 @@ signal client_disconnected
 var id: int
 var _socket: WebSocketPeer
 var _token: String
+var _queued_disconnection: int
 
 
 func _init(token: String) -> void:
 	_token = token
 	_socket = null
 	add_to_group("websocket_connections")
+	_queued_disconnection = 0
 
 
 func connect_to_socket(socket: WebSocketPeer) -> void:
@@ -34,8 +36,12 @@ func disconnect_from_socket() -> void:
 			client_disconnected.emit()
 
 
+func queue_disconnection(count: int) -> void:
+	_queued_disconnection += count
+
+
 func is_client_connected() -> bool:
-	return _socket != null
+	return _socket != null and _socket.get_ready_state() == WebSocketPeer.STATE_OPEN
 
 
 func send_text(msg: String) -> Error:
@@ -82,3 +88,6 @@ func _poll() -> void:
 
 func _process(_delta: float) -> void:
 	_poll()
+	if is_client_connected() and _queued_disconnection > 0:
+		_queued_disconnection -= 1
+		disconnect_from_socket()
