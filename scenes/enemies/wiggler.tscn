@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dwdw7rtb2b76h"]
+[gd_scene load_steps=8 format=3 uid="uid://dwdw7rtb2b76h"]
 
-[ext_resource type="Script" uid="uid://bmfv7333bad4c" path="res://scripts/enemy/enemy.gd" id="1_4hexv"]
+[ext_resource type="Script" uid="uid://hn8wwa0ehen5" path="res://scripts/enemy/wiggler.gd" id="1_4hexv"]
 [ext_resource type="Texture2D" uid="uid://c6mrj7cfrsa6h" path="res://assets/enemy/Wiggler2.png" id="2_agxef"]
 [ext_resource type="Texture2D" uid="uid://ckwccl062wvx5" path="res://assets/enemy/Wiggler1.png" id="3_4hexv"]
 [ext_resource type="PackedScene" uid="uid://d020isqlfgktk" path="res://ui/health_bar.tscn" id="4_4hexv"]
+[ext_resource type="Texture2D" uid="uid://ddh37crxb7n2p" path="res://assets/enemy/Wigglewigglewiggle.png" id="4_cqm80"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_772r1"]
 animations = [{
@@ -17,6 +18,14 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_cqm80")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_55jtl"]
@@ -29,7 +38,6 @@ knockback_resist = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_772r1")
-frame_progress = 0.670469
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 2)
