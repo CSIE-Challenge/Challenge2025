@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cjayw2pm0713u"]
+[gd_scene load_steps=20 format=3 uid="uid://cjayw2pm0713u"]
 
 [ext_resource type="Theme" uid="uid://dvunoh38j5ne6" path="res://ui/base_theme.tres" id="1_vfk7k"]
 [ext_resource type="Script" uid="uid://yxitrvfmqvll" path="res://scripts/round.gd" id="2_b0w8h"]
@@ -13,6 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://m13gswneptc" path="res://assets/ui/game-status.png" id="6_ojwvf"]
 [ext_resource type="Texture2D" uid="uid://dpb6xajj515sy" path="res://assets/ui/shop.png" id="8_p5kuw"]
 [ext_resource type="Texture2D" uid="uid://btahr8i011mlt" path="res://assets/ui/chat.png" id="11_i86cr"]
+[ext_resource type="PackedScene" uid="uid://chfhbrul06tvl" path="res://scenes/map_reveal.tscn" id="14_h7h1o"]
+[ext_resource type="Texture2D" uid="uid://x2aqjm16uqir" path="res://assets/ui/SoDeactivate.png" id="14_i86cr"]
 
 [sub_resource type="Gradient" id="Gradient_h7h1o"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -45,7 +47,7 @@ collision_bounce = 0.0
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_h7h1o"]
 polygon = PackedVector2Array(0, 1080, 1920, 1080, 1691, 1392, 180, 1397)
 
-[node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar", "game_1p", "game_2p")]
+[node name="Round" type="Control" node_paths=PackedStringArray("game_timer_label", "score_bar", "game_1p", "game_2p", "spawner")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,6 +61,7 @@ game_timer_label = NodePath("Screen/Bottom/Mid/GameStatus/Countdown")
 score_bar = NodePath("Screen/Top/TextureRect/Score")
 game_1p = NodePath("Screen/Bottom/Game1P")
 game_2p = NodePath("Screen/Bottom/Game2P")
+spawner = NodePath("Spawner")
 
 [node name="Screen" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -138,6 +141,7 @@ status_panel = NodePath("../../Top/Status1P")
 [node name="Mid" type="VBoxContainer" parent="Screen/Bottom"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="GameStatus" type="TextureRect" parent="Screen/Bottom/Mid"]
 custom_minimum_size = Vector2(0, 152)
@@ -162,7 +166,7 @@ offset_right = 420.0
 offset_bottom = 154.0
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 24
-text = "Wave 10          00:24"
+text = "Wave 0          00:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -349,8 +353,59 @@ randomness = 0.14
 process_material = SubResource("ParticleProcessMaterial_dfwyv")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-position = Vector2(0, -4)
 occluder = SubResource("OccluderPolygon2D_h7h1o")
+
+[node name="Cutscene" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 80.0
+offset_right = 40.0
+offset_bottom = 120.0
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="Cutscene"]
+z_index = 100
+layout_mode = 0
+offset_top = -80.0
+offset_right = 1920.0
+offset_bottom = 1000.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Cutscene/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -248.0
+offset_top = -183.5
+offset_right = 248.0
+offset_bottom = 183.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_i86cr")
+
+[node name="Slogan" type="Label" parent="Cutscene/ColorRect"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 112.0
+offset_top = -88.0
+offset_right = 1770.0
+offset_bottom = -54.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "抵制不良遊戲，拒絕盜版遊戲。注意自我保護，謹防受騙上當。適度遊戲益腦，沉迷遊戲傷身。合理安排時間，享受健康生活。"
+
+[node name="MapRevealLeft" parent="Cutscene" instance=ExtResource("14_h7h1o")]
+
+[node name="MapRevealRight" parent="Cutscene" instance=ExtResource("14_h7h1o")]
+offset_left = 1170.0
+offset_right = 1920.0
 
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Shop" method="_on_switch_pressed"]
 [connection signal="pressed" from="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat/Switch" to="Screen/Bottom/Mid/ShopAndChat/TabContainer/Chat" method="_on_switch_pressed"]

@@ -53,6 +53,7 @@ var map: Map = null
 var frozen := true
 var during_boo := false
 var boo_timer: Timer
+var no_damage := false
 var no_cooldown := false
 var current_hp_multiplier: float = 1
 var current_speed_multiplier: float = 1
@@ -63,11 +64,13 @@ var is_manually_controlled := false:  # only used in water map
 		is_manually_controlled = value
 		self.on_manual_control_changed.emit(value)
 var premium_api_quota: int = -1
+var has_started := false
 
 var _enemy_scene_cache = {}
 @onready var danmaku_scene = preload("res://scenes/danmaku.tscn")
 
 @onready var no_cooldown_timer = $NoCooldownTimer
+@onready var no_damage_timer = $NoDamageTimer
 
 
 func set_controller(_player_selection: IndividualPlayerSelection) -> void:
@@ -91,11 +94,17 @@ func _ready() -> void:
 	spawner.wave_end.connect(_on_wave_end)
 
 	buy_spell.connect(_on_buy_spell)
+	_process(0)
 
 	boo_timer = Timer.new()
 	self.add_child(boo_timer)
 	boo_timer.one_shot = true
 	boo_timer.timeout.connect(_on_boo_end)
+
+
+func start() -> void:
+	has_started = true
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 
 
 func spend(cost: int, income_impact: int = 0) -> bool:
@@ -326,7 +335,8 @@ func _on_enemy_summon(unit_data: Dictionary) -> void:
 
 
 func on_damage_dealt(damage: int) -> void:
-	score += damage
+	if not no_damage:
+		score += damage
 
 
 func take_damage(damage: int) -> void:
@@ -435,10 +445,14 @@ func _turbo_off() -> void:
 	no_cooldown = false
 
 
-func send_danmaku(text: String, size := 24, color := Color.WHITE):
+func _damage_off() -> void:
+	no_damage = false
+
+
+func send_danmaku(text: String, _size := 24, color := Color.WHITE):
 	var danmaku: Label = danmaku_scene.instantiate()
 	var danmaku_layer = get_node("../../danmaku_layer")
-	danmaku.setup(text, size, color)
+	danmaku.setup(text, _size, color)
 	var y_position = randf_range(50, 800)
 	danmaku.position = Vector2(get_viewport_rect().size.x, y_position)
 	danmaku_layer.add_child(danmaku)

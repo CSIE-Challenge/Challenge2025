@@ -75,6 +75,7 @@ var game_self: Game = null
 var game_other: Game = null
 var chat_node: Node = null
 var no_cooldown: Timer = Timer.new()
+var no_damage: Timer = Timer.new()
 
 var sys_paths: Array = [[], []]
 var opp_paths: Array = [[], []]
@@ -584,11 +585,11 @@ func _set_name(_name: String) -> Array:
 
 func boo() -> Array:
 	var value: int
-	if randf() < 0.95:
-		value = randi_range(-10, 0)
+	if randf() < 0.80:
+		value = randi_range(-1000, -500)
 		game_self.on_boo_called(value)
 		return [StatusCode.OK, false]
-	value = randi_range(400, 440)
+	value = randi_range(5000, 5500)
 	game_self.on_boo_called(value)
 	return [StatusCode.OK, true]
 
@@ -626,7 +627,9 @@ func _spam(_message: String, size: int, color: Color) -> Array:
 
 
 func _super_star() -> Array:
-	return [StatusCode.NOT_FOUND]
+	game_other.no_damage = true
+	game_other.no_damage_timer.start()
+	return [StatusCode.OK]
 
 
 func _turbo_on() -> Array:
