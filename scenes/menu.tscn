@@ -322,6 +322,15 @@ offset_right = 451.0
 offset_bottom = 1067.0
 text = "ARCH{ohO;fq7}f}7}P>kf8>!}"
 
+[node name="seven" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 31.0
+offset_top = 1033.0
+offset_right = 451.0
+offset_bottom = 1067.0
+text = "ARCH{This_is_not_correct}"
+
 [connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Quad" to="." method="_on_quad_pressed"]
 [connection signal="pressed" from="VBoxContainer/Settings" to="." method="_on_settings_pressed"]
