@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <cctype>
+#include <cerrno>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -358,14 +359,15 @@ int GameClient::get_scores(bool owned) {
         std::vector<uint8_t> response = send_command(CommandType::GET_SCORES, owned_data);
         
         if (response.empty()) {
-            return 0;
+            throw std::runtime_error("Failed to get scores: empty response");
         }
         
         size_t offset = 0;
         auto variant = GodotVariant::deserialize(response, offset);
         return variant->getValue<int>();
-    } catch (const std::exception&) {
-        return 0;
+    } catch (const std::exception &e) {
+        std::cerr << "Error deserializing scores: " << e.what() << std::endl;
+        return -1;
     }
 }
 
@@ -459,7 +461,7 @@ std::vector<Vector2> GameClient::get_system_path(bool flying) {
         std::vector<uint8_t> response = send_command(CommandType::GET_SYSTEM_PATH, flying_data);
         
         if (response.empty()) {
-            return std::vector<Vector2>();
+            throw std::runtime_error("Failed to get system path: empty response");
         }
         
         size_t offset = 0;
@@ -468,7 +470,7 @@ std::vector<Vector2> GameClient::get_system_path(bool flying) {
         // The response should be an array of Vector2 positions
         auto *array_ptr = dynamic_cast<const GodotArray*>(variant.get());
         if (!array_ptr) {
-            return std::vector<Vector2>();
+            throw std::runtime_error("Invalid response format: expected array of Vector2 positions");
         }
         
         std::vector<Vector2> path;
@@ -484,7 +486,8 @@ std::vector<Vector2> GameClient::get_system_path(bool flying) {
         }
         
         return path;
-    } catch (const std::exception&) {
+    } catch (const std::exception &e) {
+        std::cerr << "Error retrieving system path: " << e.what() << std::endl;
         return std::vector<Vector2>();
     }
 }
@@ -997,17 +1000,11 @@ float GameClient::get_unit_cooldown(EnemyType enemy_type) {
 
 std::vector<Enemy> GameClient::get_all_enemies(bool owned) {
     try {
-        std::cout << "DEBUG: Starting get_all_enemies with owned=" << owned << std::endl;
-        
         // Serialize owned parameter
         auto owned_data = GodotSerializer::serialize(owned);
-        std::cout << "DEBUG: Sending GET_ALL_ENEMIES command..." << std::endl;
         std::vector<uint8_t> response = send_command(CommandType::GET_ALL_ENEMIES, owned_data);
-        
-        std::cout << "DEBUG: Received response of size " << response.size() << " bytes" << std::endl;
-        
+
         if (response.empty()) {
-            std::cout << "DEBUG: Empty response, returning empty vector" << std::endl;
             return std::vector<Enemy>();
         }
         
@@ -1017,28 +1014,21 @@ std::vector<Enemy> GameClient::get_all_enemies(bool owned) {
         // The response should be an array of enemy objects
         auto *array_ptr = dynamic_cast<const GodotArray*>(variant.get());
         if (!array_ptr) {
-            std::cout << "DEBUG: Response is not an array, returning empty vector" << std::endl;
             return std::vector<Enemy>();
         }
-        
-        std::cout << "DEBUG: Got array with " << array_ptr->size() << " enemies" << std::endl;
         
         std::vector<Enemy> enemies;
         enemies.reserve(array_ptr->size());
         
         for (size_t i = 0; i < array_ptr->size(); i++) {
-            std::cout << "DEBUG: Parsing enemy " << i << std::endl;
             // Each enemy should be a dictionary/object with fields
             auto* enemy_dict_ptr = dynamic_cast<const GodotDictionary*>(&array_ptr->at(i));
             if (enemy_dict_ptr) {
                 enemies.push_back(parse_enemy_from_dictionary(enemy_dict_ptr));
-                std::cout << "DEBUG: Successfully parsed enemy " << i << std::endl;
             } else {
                 throw std::runtime_error("Invalid enemy format in response");
             }
         }
-        
-        std::cout << "DEBUG: Successfully parsed all " << enemies.size() << " enemies" << std::endl;
         return enemies;
     } catch (const std::exception& e) {
         std::cerr << "DEBUG: Exception in get_all_enemies: " << e.what() << std::endl;
@@ -1405,78 +1395,97 @@ std::vector<uint8_t> GameClient::receive_websocket_frame() {
         throw std::runtime_error("Not connected to server");
     }
     
-    // Set socket timeout
-    struct timeval timeout;
-    timeout.tv_sec = 5;  // 5 second timeout
-    timeout.tv_usec = 0;
-    
-    if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0) {
-        std::cerr << "Warning: Could not set socket timeout" << std::endl;
-    }
-    
-    char header[2];
-    ssize_t recv_result = recv(socket_fd, header, 2, 0);
-    if (recv_result != 2) {
-        if (recv_result == 0) {
-            throw std::runtime_error("Server closed connection");
-        } else if (recv_result < 0) {
-            throw std::runtime_error("Failed to receive WebSocket frame header (timeout or network error)");
-        } else {
-            throw std::runtime_error("Incomplete WebSocket frame header received");
-        }
-    }
-    
-    // Parse WebSocket frame header (currently unused but part of protocol)
-    bool fin __attribute__((unused)) = (header[0] & 0x80) != 0;
-    uint8_t opcode __attribute__((unused)) = header[0] & 0x0F;
-    bool masked = (header[1] & 0x80) != 0;
-    uint64_t payload_len = header[1] & 0x7F;
-    
-    if (payload_len == 126) {
-        char len_bytes[2];
-        if (recv(socket_fd, len_bytes, 2, 0) != 2) {
-            throw std::runtime_error("Failed to receive extended payload length");
-        }
-        payload_len = (static_cast<uint16_t>(len_bytes[0]) << 8) | 
-                      static_cast<uint16_t>(len_bytes[1]);
-    } else if (payload_len == 127) {
-        char len_bytes[8];
-        if (recv(socket_fd, len_bytes, 8, 0) != 8) {
-            throw std::runtime_error("Failed to receive extended payload length");
-        }
-        payload_len = 0;
-        for (int i = 0; i < 8; i++) {
-            payload_len = (payload_len << 8) | static_cast<uint8_t>(len_bytes[i]);
-        }
-    }
-    
-    uint8_t mask[4] = {0};
-    if (masked) {
-        if (recv(socket_fd, mask, 4, 0) != 4) {
-            throw std::runtime_error("Failed to receive masking key");
-        }
-    }
-    
-    std::vector<uint8_t> payload(payload_len);
-    if (payload_len > 0) {
-        ssize_t total_received = 0;
-        while (total_received < static_cast<ssize_t>(payload_len)) {
-            ssize_t received = recv(socket_fd, payload.data() + total_received, 
-                                  payload_len - total_received, 0);
-            if (received <= 0) {
-                throw std::runtime_error("Failed to receive WebSocket payload");
+    // Helper function to receive exact number of bytes with retry logic
+    auto recv_exact = [this](void* buffer, size_t len) -> bool {
+        char* buf = static_cast<char*>(buffer);
+        size_t total_received = 0;
+        
+        while (total_received < len) {
+            ssize_t received = recv(socket_fd, buf + total_received, len - total_received, 0);
+            
+            if (received > 0) {
+                total_received += received;
+            } else if (received == 0) {
+                throw std::runtime_error("Server closed connection");
+            } else {
+                // Check for temporary errors that we can retry
+                if (errno == EINTR || errno == EAGAIN || errno == EWOULDBLOCK) {
+                    // Temporary error, continue trying
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    continue;
+                } else {
+                    throw std::runtime_error("Network error during receive: " + std::string(strerror(errno)));
+                }
             }
-            total_received += received;
+        }
+        return true;
+    };
+    
+    try {
+        // Set socket timeout to prevent hanging
+        struct timeval timeout;
+        timeout.tv_sec = 10; // Increased timeout
+        timeout.tv_usec = 0;
+        
+        if (setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0) {
+            std::cerr << "Warning: Could not set socket timeout" << std::endl;
         }
         
-        if (masked) {
-            for (size_t i = 0; i < payload_len; i++) {
-                payload[i] ^= mask[i % 4];
+        // Read WebSocket frame header (2 bytes minimum)
+        char header[2];
+        recv_exact(header, 2);
+        
+        // Parse WebSocket frame header
+        bool fin __attribute__((unused)) = (header[0] & 0x80) != 0;
+        uint8_t opcode __attribute__((unused)) = header[0] & 0x0F;
+        bool masked = (header[1] & 0x80) != 0;
+        uint64_t payload_len = header[1] & 0x7F;
+        
+        // Handle extended payload length
+        if (payload_len == 126) {
+            uint8_t len_bytes[2];
+            recv_exact(len_bytes, 2);
+            payload_len = (static_cast<uint16_t>(len_bytes[0]) << 8) | 
+                          static_cast<uint16_t>(len_bytes[1]);
+        } else if (payload_len == 127) {
+            uint8_t len_bytes[8];
+            recv_exact(len_bytes, 8);
+            payload_len = 0;
+            for (int i = 0; i < 8; i++) {
+                payload_len = (payload_len << 8) | static_cast<uint64_t>(len_bytes[i]);
             }
         }
+        
+        // Sanity check on payload length
+        if (payload_len > 10 * 1024 * 1024) { // 10MB limit
+            throw std::runtime_error("Payload too large: " + std::to_string(payload_len) + " bytes");
+        }
+        
+        // Read masking key if present
+        uint8_t mask[4] = {0};
+        if (masked) {
+            recv_exact(mask, 4);
+        }
+        
+        // Read payload
+        std::vector<uint8_t> payload(payload_len);
+        if (payload_len > 0) {
+            recv_exact(payload.data(), payload_len);
+            
+            // Unmask payload if needed
+            if (masked) {
+                for (size_t i = 0; i < payload_len; i++) {
+                    payload[i] ^= mask[i % 4];
+                }
+            }
+        }
+        
+        return payload;
+        
+    } catch (const std::runtime_error& e) {
+        std::cerr << "WebSocket receive error: " << e.what() << std::endl;
+        throw;
     }
-    
-    return payload;
 }
 
 } // namespace GameAPI
