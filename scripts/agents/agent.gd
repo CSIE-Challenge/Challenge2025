@@ -143,7 +143,7 @@ func _get_scores(_owned: bool) -> Array:
 	if _owned == true:
 		result = game_self.score
 	else:
-		result = game_other.display_score
+		result = game_other.score
 	return [StatusCode.OK, result]
 
 
@@ -644,6 +644,7 @@ func _get_quota() -> Array:
 
 # gdlint: disable=max-line-length
 func _set_quota(_quota: int) -> Array:
+	return [StatusCode.OK]
 	if _quota < 0:
 		return [
 			StatusCode.ILLEGAL_ARGUMENT,

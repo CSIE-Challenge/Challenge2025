@@ -1,0 +1,121 @@
+{
+    "title": "至尊終身特選極享體驗限量貴賓卡友\n全域通行頂級榮耀特選尊貴專屬大使巔峰挑戰賽",
+    "python_interpreter_path": "/path/to/python",
+    "agent_dir_path": "/path/to/agent/",
+    "maps": [
+        {
+            "name": "沒有香菜的世界",
+            "preview": "res://assets/maps/Map1.png",
+            "scene-path": "res://scenes/maps/map1.tscn"
+        },
+        {
+            "name": "小村探秘",
+            "preview": "res://assets/maps/map2/preview.png",
+            "scene-path": "res://scenes/maps/map2.tscn"
+        },
+        {
+            "name": "椰林大道",
+            "preview": "res://assets/maps/Map3.png",
+            "scene-path": "res://scenes/maps/map3.tscn"
+        },
+        {
+            "name": " ",
+            "preview": "res://assets/maps/space/preview.png",
+            "scene-path": "res://scenes/maps/space.tscn"
+        },
+        {
+            "name": "沙河模擬",
+            "preview": "res://assets/maps/water/preview.png",
+            "scene-path": "res://scenes/maps/water/water.tscn"
+        }
+    ],
+    "tie_breaker_map": {
+        "name": "？",
+        "preview": "res://assets/maps/unknown.png",
+        "scene-path": "res://scenes/maps/graph.tscn"
+    },
+    "boss_map": {
+        "name": "？？？？？",
+        "preview": "res://assets/maps/unknown.png",
+        "scene-path": "res://scenes/maps/minecraft.tscn"
+    },
+    "boss": {
+        "id": "0",
+        "name": "Victor",
+        "token": "ffffffff",
+        "api-quota": 0,
+        "agent-script": "victor.py"
+    },
+    "players": [
+        {
+            "id": "1",
+            "name": "Team 1",
+            "token": "f6ca504b",
+            "api-quota": 3037,
+            "agent-script": "team01.py"
+        },
+        {
+            "id": "2",
+            "name": "Team 2",
+            "token": "c487fe19",
+            "api-quota": 7785,
+            "agent-script": "team02.py"
+        },
+        {
+            "id": "3",
+            "name": "Team 3",
+            "token": "0028f21c",
+            "api-quota": 5767,
+            "agent-script": "team03.py"
+        },
+        {
+            "id": "4",
+            "name": "Team 4",
+            "token": "361b9eda",
+            "api-quota": 3795,
+            "agent-script": "team04.py"
+        },
+        {
+            "id": "5",
+            "name": "Team 5",
+            "token": "b558a928",
+            "api-quota": 3938,
+            "agent-script": "team05.py"
+        },
+        {
+            "id": "6",
+            "name": "Team 6",
+            "token": "ac5619b1",
+            "api-quota": 4965,
+            "agent-script": "team06.py"
+        },
+        {
+            "id": "7",
+            "name": "Team 7",
+            "token": "beb8b3a7",
+            "api-quota": 3079,
+            "agent-script": "team07.py"
+        },
+        {
+            "id": "8",
+            "name": "Team 8",
+            "token": "d3b9a23f",
+            "api-quota": 6715,
+            "agent-script": "team08.py"
+        },
+        {
+            "id": "9",
+            "name": "Team 9",
+            "token": "7aee129e",
+            "api-quota": 5820,
+            "agent-script": "team09.py"
+        },
+        {
+            "id": "10",
+            "name": "Team 10",
+            "token": "0008e6c9",
+            "api-quota": 5657,
+            "agent-script": "team10.py"
+        }
+    ]
+}
