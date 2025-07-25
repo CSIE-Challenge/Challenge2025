@@ -1,27 +1,1028 @@
-#include "game_client.h"
-#include "constants.h"
-#include "varient.h"
-#include <cstdint>
-#include <exception>
+#pragma once
+
 #include <iostream>
+#include <vector>
+#include <string>
+#include <utility>
+#include <unordered_map>
+#include <memory>
+#include <variant>
+#include <exception>
 #include <thread>
-#include <chrono>
 #include <regex>
+#include <chrono>
 #include <stdexcept>
 #include <algorithm>
+#include <cstdint>
 #include <cctype>
 #include <cerrno>
+#include <cstring>
+
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__) || defined (__MACH__)
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <netdb.h>
-#include <cstring>
+#elif defined(_WIN32) || defined(_WIN64)
+// TODO
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <windows.h>
+#pragma comment(lib, "ws2_32.lib")
+#else
+#error "Unsupported platform"
+#endif
 
-// Note: This is a basic implementation framework
-// You'll need to integrate with a WebSocket library like libwebsockets or similar
-
+// ****************************************************************************
+// *                                                                          *
+// *                         Constants and Enums                              *
+// *                                                                          *
+// ****************************************************************************
 namespace GameAPI {
+
+enum class CommandType {
+    GET_ALL_TERRAIN = 1,
+    GET_SCORES = 2,
+    GET_CURRENT_WAVE = 3,
+    GET_REMAIN_TIME = 4,
+    GET_TIME_UNTIL_NEXT_WAVE = 5,
+    GET_MONEY = 6,
+    GET_INCOME = 7,
+    GET_GAME_STATUS = 8,
+    GET_TERRAIN = 9,
+    GET_SYSTEM_PATH = 10,
+    GET_OPPONENT_PATH = 11,
+    PLACE_TOWER = 101,
+    GET_ALL_TOWERS = 102,
+    GET_TOWER = 103,
+    SELL_TOWER = 104,
+    SET_STRATEGY = 105,
+    SPAWN_UNIT = 201,
+    GET_UNIT_COOLDOWN = 202,
+    GET_ALL_ENEMIES = 203,
+    CAST_SPELL = 301,
+    GET_SPELL_COOLDOWN = 302,
+    SEND_CHAT = 401,
+    GET_CHAT_HISTORY = 402,
+    SET_CHAT_NAME_COLOR = 403,
+    PIXELCAT = 501,
+    GET_DEVS = 502,
+    SET_NAME = 503,
+    DISCONNECT = 601,
+    NTU_STUDENT_ID_CARD = 602,
+    METAL_PIPE = 603,
+    SPAM = 604,
+    SUPER_STAR = 605,
+    TURBO_ON = 606,
+    GET_THE_RADIANT_CORE_OF_STELLAR_FAITH = 607,
+    SET_THE_RADIANT_CORE_OF_STELLAR_FAITH = 608,
+    BOO = 609
+};
+
+enum class GameStatus {
+    PREPARING = 0,
+    RUNNING = 1,
+    PAUSED = 2
+};
+
+enum class TerrainType {
+    OUT_OF_BOUNDS = 0,
+    EMPTY = 1,
+    ROAD = 2,
+    OBSTACLE = 3
+};
+
+enum class TowerType {
+    FIRE_MARIO = 1,
+    ICE_LUIGI = 2,
+    DONKEY_KONG = 3,
+    FORT = 4,
+    SHY_GUY = 5
+};
+
+enum class EnemyType {
+    BUZZY_BEETLE = 0,
+    GOOMBA = 1,
+    KOOPA_JR = 2,
+    KOOPA_PARATROOPA = 3,
+    KOOPA = 4,
+    SPINY_SHELL = 5,
+    WIGGLER = 6
+};
+
+enum class StatusCode : int {
+    OK = 200,
+    ILLFORMED_COMMAND = 400,
+    AUTH_FAIL = 401,
+    ILLEGAL_ARGUMENT = 402,
+    COMMAND_ERR = 403,
+    NOT_FOUND = 404,
+    TOO_FREQUENT = 405,
+    NOT_STARTED = 406,
+    PAUSED = 407,
+    INSUFFICIENT_QUOTA = 408,
+    INTERNAL_ERR = 500,
+    CLIENT_ERR = 501
+};
+
+const std::unordered_map<int, std::string> STATUS_CODE_TO_STRING = {
+    {static_cast<int>(StatusCode::OK), "OK"},
+    {static_cast<int>(StatusCode::ILLFORMED_COMMAND), "Ill-formed command"},
+    {static_cast<int>(StatusCode::AUTH_FAIL), "Authentication failed"},
+    {static_cast<int>(StatusCode::ILLEGAL_ARGUMENT), "Illegal argument"},
+    {static_cast<int>(StatusCode::COMMAND_ERR), "Command error"},
+    {static_cast<int>(StatusCode::NOT_FOUND), "Not found"},
+    {static_cast<int>(StatusCode::TOO_FREQUENT), "Too frequent requests"},
+    {static_cast<int>(StatusCode::NOT_STARTED), "Game not started"},
+    {static_cast<int>(StatusCode::PAUSED), "Game paused"},
+    {static_cast<int>(StatusCode::INSUFFICIENT_QUOTA), "Insufficient quota"},
+    {static_cast<int>(StatusCode::INTERNAL_ERR), "Internal error"},
+    {static_cast<int>(StatusCode::CLIENT_ERR), "Client error"}
+};
+
+enum class ChatSource {
+    SYSTEM = 0,
+    PLAYER = 1,
+    OPPONENT = 2
+};
+
+enum class SpellType {
+    POISON = 0,
+    DOUBLE_INCOME = 1,
+    TELEPORT = 2
+};
+
+enum class TargetStrategy {
+    FIRST = 0,
+    LAST = 1,
+    CLOSEST = 2
+};
+
+}
+
+// ****************************************************************************
+// *                                                                          *
+// *                       Structures and Classes                             *
+// *                                                                          *
+// ****************************************************************************
+namespace GameAPI {
+
+/**
+ * @brief Two-dimensional vector with integer coordinates
+ */
+struct Vector2 {
+    int x;
+    int y;
+
+    Vector2() : x(0), y(0) {}
+    Vector2(int x, int y) : x(x), y(y) {}
+    
+    std::string toString() const {
+        return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+    }
+    
+    bool operator==(const Vector2& other) const {
+        return x == other.x && y == other.y;
+    }
+    
+    bool operator!=(const Vector2& other) const {
+        return !(*this == other);
+    }
+};
+
+/**
+ * @brief Exception thrown when API call fails
+ */
+class ApiException : public std::exception {
+private:
+    CommandType source_fn;
+    StatusCode code;
+    std::string message;
+    std::string what_message;
+
+public:
+    ApiException(CommandType source_fn, StatusCode code, const std::string& what)
+        : source_fn(source_fn), code(code), message(what) {
+        what_message = "API call " + std::to_string(static_cast<int>(source_fn)) + 
+                      " fails with status code " + std::to_string(static_cast<int>(code)) + 
+                      ": " + what;
+    }
+
+    const char* what() const noexcept {
+        return what_message.c_str();
+    }
+
+    CommandType getSourceFunction() const { return source_fn; }
+    StatusCode getStatusCode() const { return code; }
+    const std::string& getMessage() const { return message; }
+};
+
+/**
+ * @brief Information about a tower
+ */
+struct Tower {
+    TowerType type;
+    Vector2 position;
+    int level_a;
+    int level_b;
+    bool aim;
+    bool anti_air;
+    int reload;
+    int range;
+    int damage;
+    std::string bullet_effect;
+
+    Tower() : type(TowerType::FIRE_MARIO), position(0, 0), level_a(1), level_b(1),
+              aim(false), anti_air(false), reload(0), range(0), damage(0),
+              bullet_effect("none") {}
+
+    Tower(TowerType type, const Vector2& position, int level_a, int level_b,
+          bool aim, bool anti_air, int reload, int range, int damage,
+          const std::string& bullet_effect)
+        : type(type), position(position), level_a(level_a), level_b(level_b),
+          aim(aim), anti_air(anti_air), reload(reload), range(range),
+          damage(damage), bullet_effect(bullet_effect) {}
+};
+
+/**
+ * @brief Information about an enemy unit
+ */
+struct Enemy {
+    EnemyType type;
+    Vector2 position;
+    double progress_ratio;
+    int income_impact;
+    int health;
+    int max_health;
+    int damage;
+    int max_speed;
+    bool flying;
+    double knockback_resist;
+    int kill_reward;
+    
+    // Constructor matching Python API fields
+    Enemy(EnemyType type, const Vector2& position, double progress_ratio, int income_impact, int health, int max_health, int damage, int max_speed, bool flying, double knockback_resist, int kill_reward)
+        : type(type), position(position), progress_ratio(progress_ratio), income_impact(income_impact), health(health), max_health(max_health), damage(damage), max_speed(max_speed), flying(flying), knockback_resist(knockback_resist), kill_reward(kill_reward) {}
+};
+
+/**
+ * @brief Chat message structure
+ */
+struct ChatMessage {
+    ChatSource source;
+    std::string sender_name;
+    std::string content;
+    std::string color;
+
+    ChatMessage() : source(ChatSource::SYSTEM), sender_name(""), content(""), color("") {}
+
+    ChatMessage(ChatSource source, const std::string& sender_name,
+                const std::string& content, const std::string& color)
+        : source(source), sender_name(sender_name), content(content), color(color) {}
+};
+
+}
+
+
+// ****************************************************************************
+// *                                                                          *
+// *                         Serialization Utilities                          *
+// *                                                                          *
+// ****************************************************************************
+namespace GameAPI {
+
+enum class ContainerTypeKind : int {
+    NONE = 0b00,
+    BUILTIN = 0b01,
+    CLASS_NAME = 0b10,
+    SCRIPT = 0b11
+};
+
+/**
+ * @brief Godot-compatible serialization utilities
+ * Based on Godot Engine's marshalls.cpp
+ */
+class GodotSerializer {
+public:
+    // Encoding functions (little-endian)
+    static void encode_uint32(uint32_t value, uint8_t* buffer) {
+        buffer[0] = value & 0xFF;
+        buffer[1] = (value >> 8) & 0xFF;
+        buffer[2] = (value >> 16) & 0xFF;
+        buffer[3] = (value >> 24) & 0xFF;
+    }
+    
+    static void encode_uint64(uint64_t value, uint8_t* buffer) {
+        encode_uint32(value & 0xFFFFFFFF, buffer);
+        encode_uint32(value >> 32, buffer + 4);
+    }
+    
+    static void encode_float(float value, uint8_t* buffer) {
+        union { float f; uint32_t i; } u;
+        u.f = value;
+        encode_uint32(u.i, buffer);
+    }
+    
+    static void encode_double(double value, uint8_t* buffer) {
+        union { double d; uint64_t i; } u;
+        u.d = value;
+        encode_uint64(u.i, buffer);
+    }
+    
+    // Decoding functions (little-endian)
+    static uint32_t decode_uint32(const uint8_t* buffer) {
+        return buffer[0] | (buffer[1] << 8) | (buffer[2] << 16) | (buffer[3] << 24);
+    }
+    
+    static uint64_t decode_uint64(const uint8_t* buffer) {
+        uint32_t low = decode_uint32(buffer);
+        uint32_t high = decode_uint32(buffer + 4);
+        return static_cast<uint64_t>(low) | (static_cast<uint64_t>(high) << 32);
+    }
+    
+    static float decode_float(const uint8_t* buffer) {
+        union { float f; uint32_t i; } u;
+        u.i = decode_uint32(buffer);
+        return u.f;
+    }
+    
+    static double decode_double(const uint8_t* buffer) {
+        union { double d; uint64_t i; } u;
+        u.i = decode_uint64(buffer);
+        return u.d;
+    }
+    
+    // Helper functions for buffer operations
+    static void push_int32(std::vector<uint8_t>& buffer, int32_t value) {
+        size_t old_size = buffer.size();
+        buffer.resize(old_size + 4);
+        encode_uint32(static_cast<uint32_t>(value), &buffer[old_size]);
+    }
+    
+    static void push_int64(std::vector<uint8_t>& buffer, int64_t value) {
+        size_t old_size = buffer.size();
+        buffer.resize(old_size + 8);
+        encode_uint64(static_cast<uint64_t>(value), &buffer[old_size]);
+    }
+    
+    static void push_float(std::vector<uint8_t>& buffer, float value) {
+        size_t old_size = buffer.size();
+        buffer.resize(old_size + 4);
+        encode_float(value, &buffer[old_size]);
+    }
+    
+    static void push_double(std::vector<uint8_t>& buffer, double value) {
+        size_t old_size = buffer.size();
+        buffer.resize(old_size + 8);
+        encode_double(value, &buffer[old_size]);
+    }
+    
+    // String encoding (following Godot's format)
+    static void push_string(std::vector<uint8_t>& buffer, const std::string& str) {
+        // Push string length
+        push_int32(buffer, static_cast<int32_t>(str.size()));
+        
+        // Push string data
+        buffer.insert(buffer.end(), str.begin(), str.end());
+        
+        // Add padding to align to 4-byte boundary
+        while (buffer.size() % 4 != 0) {
+            buffer.push_back(0);
+        }
+    }
+    
+    // Reading functions with offset management
+    static int32_t read_int32(const std::vector<uint8_t>& data, size_t& offset) {
+        if (offset + 4 > data.size()) {
+            throw std::runtime_error("Not enough data to read int32");
+        }
+        int32_t value = static_cast<int32_t>(decode_uint32(&data[offset]));
+        offset += 4;
+        return value;
+    }
+    
+    static int64_t read_int64(const std::vector<uint8_t>& data, size_t& offset) {
+        if (offset + 8 > data.size()) {
+            throw std::runtime_error("Not enough data to read int64");
+        }
+        int64_t value = static_cast<int64_t>(decode_uint64(&data[offset]));
+        offset += 8;
+        return value;
+    }
+    
+    static float read_float(const std::vector<uint8_t>& data, size_t& offset) {
+        if (offset + 4 > data.size()) {
+            throw std::runtime_error("Not enough data to read float");
+        }
+        float value = decode_float(&data[offset]);
+        offset += 4;
+        return value;
+    }
+    
+    static double read_double(const std::vector<uint8_t>& data, size_t& offset) {
+        if (offset + 8 > data.size()) {
+            throw std::runtime_error("Not enough data to read double");
+        }
+        double value = decode_double(&data[offset]);
+        offset += 8;
+        return value;
+    }
+    
+    static std::string read_string(const std::vector<uint8_t>& data, size_t& offset) {
+        int32_t length = read_int32(data, offset);
+        
+        if (offset + length > data.size()) {
+            throw std::runtime_error("Not enough data to read string");
+        }
+        
+        std::string result(reinterpret_cast<const char*>(&data[offset]), length);
+        offset += length;
+        
+        // Skip padding
+        while (offset % 4 != 0 && offset < data.size()) {
+            offset++;
+        }
+        
+        return result;
+    }
+
+    static void read_container_type(int container_type_kind, size_t &offset) {
+        switch (static_cast<ContainerTypeKind>(container_type_kind)) {
+            case ContainerTypeKind::NONE:
+                break;
+            case ContainerTypeKind::BUILTIN:
+                offset += 4;
+                break;
+            default:
+                throw std::runtime_error("Unable to deserialize: unsupported container type: " + std::to_string(container_type_kind));
+        }
+    }
+    
+    // High-level serialization functions
+    static std::vector<uint8_t> serialize(bool value) {
+        std::vector<uint8_t> result;
+        push_int32(result, 1); // BOOL type
+        push_int32(result, value ? 1 : 0);
+        return result;
+    }
+    
+    static std::vector<uint8_t> serialize(int32_t value) {
+        std::vector<uint8_t> result;
+        push_int32(result, 2); // INT type
+        push_int32(result, value);
+        return result;
+    }
+    
+    static std::vector<uint8_t> serialize(int64_t value) {
+        std::vector<uint8_t> result;
+        if (value > INT32_MAX || value < INT32_MIN) {
+            push_int32(result, 2 | (1 << 16)); // INT type with 64-bit flag
+            push_int64(result, value);
+        } else {
+            push_int32(result, 2); // INT type
+            push_int32(result, static_cast<int32_t>(value));
+        }
+        return result;
+    }
+    
+    static std::vector<uint8_t> serialize(float value) {
+        std::vector<uint8_t> result;
+        push_int32(result, 3); // FLOAT type
+        push_float(result, value);
+        return result;
+    }
+    
+    static std::vector<uint8_t> serialize(double value) {
+        std::vector<uint8_t> result;
+        float f = static_cast<float>(value);
+        if (static_cast<double>(f) != value) {
+            push_int32(result, 3 | (1 << 16)); // FLOAT type with 64-bit flag
+            push_double(result, value);
+        } else {
+            push_int32(result, 3); // FLOAT type
+            push_float(result, f);
+        }
+        return result;
+    }
+    
+    static std::vector<uint8_t> serialize(const std::string& value) {
+        std::vector<uint8_t> result;
+        push_int32(result, 4); // STRING type
+        push_string(result, value);
+        return result;
+    }
+    
+    static std::vector<uint8_t> serialize(const Vector2& value) {
+        std::vector<uint8_t> result;
+        push_int32(result, 6); // VECTOR2I type
+        push_int32(result, value.x);
+        push_int32(result, value.y);
+        return result;
+    }
+    
+    // Deserialization functions for backwards compatibility
+    static int deserialize_int(const std::vector<uint8_t>& data, size_t& offset) {
+        return read_int32(data, offset);
+    }
+    
+    static std::string deserialize_string(const std::vector<uint8_t>& data, size_t& offset) {
+        return read_string(data, offset);
+    }
+};
+
+}
+
+// ****************************************************************************
+// *                                                                          *
+// *                         Godot Variant Classes                            *
+// *                                                                          *
+// ****************************************************************************
+namespace GameAPI {
+
+constexpr uint64_t HEADER_TYPE_MASK = 0xFF;
+constexpr uint64_t HEADER_DATA_FLAG_64 = 1 << 16;
+constexpr uint64_t HEADER_DATA_FIELD_TYPED_ARRAY_MASK = 0b11 << 16;
+constexpr uint64_t HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT = 16;
+constexpr uint64_t HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_MASK = 0b11 << 16;
+constexpr uint64_t HEADER_DATA_FIELD_TYPED_DICTIONARY_KEY_SHIFT = 16;
+constexpr uint64_t HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_MASK = 0b11 << 18;
+constexpr uint64_t HEADER_DATA_FIELD_TYPED_DICTIONARY_VALUE_SHIFT = 18;
+
+class GodotArray;
+class GodotDictionary;
+using GodotVariant = std::variant<int64_t, double, std::string, Vector2, GodotArray, GodotDictionary>;
+
+enum class TypeCode : uint8_t {
+    NULL_TYPE = 0,
+    BOOL_TYPE = 1,
+    INT_TYPE = 2,
+    FLOAT_TYPE = 3,
+    STRING_TYPE = 4,
+    VECTOR2I_TYPE = 6,
+    DICTIONARY_TYPE = 27,
+    ARRAY_TYPE = 28
+};
+
+class GodotVector2 {
+public:
+    GodotVector2(const Vector2& v) : value(v) {}
+    GodotVector2(int x, int y) : value(x, y) {}
+    
+    std::vector<uint8_t> serialize() const {
+        std::vector<uint8_t> result;
+        GodotSerializer::push_int32(result, static_cast<int32_t>(TypeCode::VECTOR2I_TYPE));
+        GodotSerializer::push_int32(result, value.x);
+        GodotSerializer::push_int32(result, value.y);
+        return result;
+    }
+    
+    TypeCode getType() const { return TypeCode::VECTOR2I_TYPE; }
+    const Vector2& getValue() const { return value; }
+    
+private:
+    Vector2 value;
+};
+
+class GodotArray {
+public:
+    GodotArray() {}
+    GodotArray(const GodotArray &other) {
+        value = other.value;
+    }
+    GodotArray(const std::vector<GodotVariant>& elements) {
+        for (const auto &elem : elements) {
+            value.push_back(elem);
+        }
+    }
+    
+    std::vector<uint8_t> serialize() const {
+        std::vector<uint8_t> result;
+        GodotSerializer::push_int32(result, static_cast<int32_t>(TypeCode::ARRAY_TYPE));
+        GodotSerializer::push_int32(result, static_cast<int32_t>(value.size()));
+        
+        for (const auto& elem : value) {
+            auto elem_data = elem->serialize();
+            result.insert(result.end(), elem_data.begin(), elem_data.end());
+        }
+        
+        return result;
+    }
+    
+    TypeCode getType() const { return TypeCode::ARRAY_TYPE; }
+    
+    void push_back(std::unique_ptr<GodotVariant> variant) {
+        value.push_back(std::move(variant));
+    }
+    
+    size_t size() const { return value.size(); }
+    const GodotVariant& at(size_t index) const { return *value.at(index); }
+    const std::vector<std::unique_ptr<GodotVariant>>& getValue() const { return value; }
+    
+private:
+    std::vector<GodotVariant> value;
+};
+
+class GodotDictionary {
+public:
+    GodotDictionary() {}
+    
+    std::vector<uint8_t> serialize() const {
+        std::vector<uint8_t> result;
+        GodotSerializer::push_int32(result, static_cast<int32_t>(TypeCode::DICTIONARY_TYPE));
+        GodotSerializer::push_int32(result, static_cast<int32_t>(value.size()));
+        
+        for (const auto& pair : value) {
+            auto key_data = pair.first->serialize();
+            auto val_data = pair.second->serialize();
+            result.insert(result.end(), key_data.begin(), key_data.end());
+            result.insert(result.end(), val_data.begin(), val_data.end());
+        }
+        
+        return result;
+    }
+    
+    TypeCode getType() const { return TypeCode::DICTIONARY_TYPE; }
+    
+    void insert(GodotVariant key, GodotVariant val) {
+        value.emplace_back(std::move(key), std::move(val));
+    }
+    
+    size_t size() const { return value.size(); }
+    const std::vector<std::pair<GodotVariant, GodotVariant>>& getValue() const {
+        return value;
+    }
+    
+private:
+    std::vector<std::pair<GodotVariant, GodotVariant>> value;
+};
+
+GodotVariant deserialize(const std::vector<uint8_t> &data, size_t &offset) {
+    if (offset + 4 > data.size()) {
+        throw std::runtime_error("Not enough data to read variant header");
+    }
+    
+    int32_t header = GodotSerializer::read_int32(data, offset);
+    TypeCode typecode = static_cast<TypeCode>(header & HEADER_TYPE_MASK);
+    
+    switch (typecode) {
+        case TypeCode::NULL_TYPE:
+            return std::make_unique<GodotNull>();
+            
+        case TypeCode::BOOL_TYPE: {
+            int32_t value = GodotSerializer::read_int32(data, offset);
+            return std::make_unique<GodotBool>(value == 1);
+        }
+        
+        case TypeCode::INT_TYPE: {
+            int32_t value = GodotSerializer::read_int32(data, offset);
+            if (header & HEADER_DATA_FLAG_64) {
+                int32_t hi = GodotSerializer::read_int32(data, offset);
+                int64_t full_value = (static_cast<int64_t>(hi) << 32) | static_cast<uint32_t>(value);
+                return std::make_unique<GodotInt>(full_value);
+            } else {
+                return std::make_unique<GodotInt>(value);
+            }
+        }
+        
+        case TypeCode::FLOAT_TYPE: {
+            if (header & HEADER_DATA_FLAG_64) {
+                uint64_t ieee_integer = 0;
+                for (int i = 0; i < 8; i++) {
+                    if (offset >= data.size()) throw std::runtime_error("Not enough data for float64");
+                    ieee_integer = ieee_integer * 256 + data[offset + 7 - i];
+                }
+                offset += 8;
+                union { double d; uint64_t i; } u;
+                u.i = ieee_integer;
+                return std::make_unique<GodotFloat>(u.d);
+            } else {
+                int32_t raw_value = GodotSerializer::read_int32(data, offset);
+                union { float f; uint32_t i; } u;
+                u.i = static_cast<uint32_t>(raw_value);
+                return std::make_unique<GodotFloat>(u.f);
+            }
+        }
+        
+        case TypeCode::STRING_TYPE: {
+            std::string value = GodotSerializer::read_string(data, offset);
+            return std::make_unique<GodotString>(value);
+        }
+        
+        case TypeCode::VECTOR2I_TYPE: {
+            int32_t x = GodotSerializer::read_int32(data, offset);
+            int32_t y = GodotSerializer::read_int32(data, offset);
+            return std::make_unique<GodotVector2>(Vector2(x, y));
+        }
+        
+        case TypeCode::ARRAY_TYPE: {
+            int container_type_kind = (header & HEADER_DATA_FIELD_TYPED_ARRAY_MASK)
+                    >> HEADER_DATA_FIELD_TYPED_ARRAY_SHIFT;
+            GodotSerializer::read_container_type(container_type_kind, offset);
+            
+            int32_t count = GodotSerializer::read_int32(data, offset) & 0x7FFFFFFF;
+            auto array = std::make_unique<GodotArray>();
+            
+            for (int32_t i = 0; i < count; i++) {
+                array->push_back(deserialize(data, offset));
+            }
+            
+            return array;
+        }
+        
+        case TypeCode::DICTIONARY_TYPE: {
+            // Skip container type info
+            int key_type_kind = (header >> 16) & 0x3;
+            int value_type_kind = (header >> 18) & 0x3;
+            GodotSerializer::read_container_type(key_type_kind, offset);
+            GodotSerializer::read_container_type(value_type_kind, offset);
+            
+            int32_t count = GodotSerializer::read_int32(data, offset) & 0x7FFFFFFF;
+            auto dict = std::make_unique<GodotDictionary>();
+            
+            for (int32_t i = 0; i < count; i++) {
+                auto key = deserialize(data, offset);
+                auto value = deserialize(data, offset);
+                dict->insert(std::move(key), std::move(value));
+            }
+            
+            return dict;
+        }
+        
+        default:
+            throw std::runtime_error("Unsupported type code: " + std::to_string(static_cast<int>(typecode)));
+    }
+}
+
+std::vector<uint8_t> serialize(const GodotVariant &variant) {
+    // TODO
+}
+
+}
+
+// ****************************************************************************
+// *                                                                          *
+// *                         Game Client API                                  *
+// *                                                                          *
+// ****************************************************************************
+namespace GameAPI {
+/**
+ * @brief WebSocket-based game client for interacting with the game server
+ */
+class GameClient {
+public:
+    /**
+     * @brief Construct a new Game Client object
+     * 
+     * @param port Server port number
+     * @param token Authentication token (8-digit hex string)
+     * @param server_domain Server domain (default: "localhost")
+     * @param command_timeout_msec Command timeout in milliseconds (default: 1000)
+     * @param retry_count Number of retries for failed commands (default: 3)
+     */
+    GameClient(int port, const std::string& token, 
+               const std::string& server_domain = "localhost",
+               int command_timeout_msec = 1000, int retry_count = 3);
+    
+    /**
+     * @brief Destroy the Game Client object
+     */
+    ~GameClient();
+
+    // Game Status and Information
+    /**
+     * @brief Get current game status
+     * @return GameStatus Current game status
+     */
+    GameStatus get_game_status();
+
+    /**
+     * @brief Get all terrain types on the map
+     * @return std::vector<std::vector<TerrainType>> 2D grid of terrain types
+     */
+    std::vector<std::vector<TerrainType>> get_all_terrain();
+
+    /**
+     * @brief Get terrain type at specific position
+     * @param position Position to check
+     * @return TerrainType Terrain type at the position
+     */
+    TerrainType get_terrain(const Vector2& position);
+
+    /**
+     * @brief Get player or opponent score
+     * @param owned true for player score, false for opponent score
+     * @return int Score value
+     */
+    int get_scores(bool owned);
+
+    /**
+     * @brief Get current wave number
+     * @return int Current wave number
+     */
+    int get_current_wave();
+
+    /**
+     * @brief Get remaining time in current wave
+     * @return float Remaining time in seconds
+     */
+    float get_remain_time();
+
+    /**
+     * @brief Get time until next wave starts
+     * @return float Time until next wave in seconds
+     */
+    float get_time_until_next_wave();
+
+    /**
+     * @brief Get current money amount
+     * @param owned True for player's money, false for opponent's money
+     * @return int Current money
+     */
+    int get_money(bool owned = true);
+
+    /**
+     * @brief Get player or opponent income per second
+     * @param owned true for player income, false for opponent income
+     * @return int Income per second
+     */
+    int get_income(bool owned);
+
+    /**
+     * @brief Get system path for units
+     * @param flying Whether to get path for flying units
+     * @return std::vector<Vector2> List of positions forming the path
+     */
+    std::vector<Vector2> get_system_path(bool flying = false);
+
+    /**
+     * @brief Get opponent's path for units
+     * @param flying Whether to get path for flying units
+     * @return std::vector<Vector2> List of positions forming the path
+     */
+    std::vector<Vector2> get_opponent_path(bool flying = false);
+
+    // Tower Management
+    /**
+     * @brief Place a tower at specified position
+     * @param tower_type Type of tower to place
+     * @param level Tower level ("1", "2a", "2b", "3a", "3b")
+     * @param position Position to place the tower
+     */
+    void place_tower(TowerType tower_type, const std::string& level, const Vector2& position);
+
+    /**
+     * @brief Get all towers on player or opponent map
+     * @param owned true for player towers, false for opponent towers
+     * @return std::vector<Tower> List of all towers
+     */
+    std::vector<Tower> get_all_towers(bool owned);
+
+    /**
+     * @brief Get tower at specific position
+     * @param owned true for player tower, false for opponent tower
+     * @param position Position to check
+     * @return Tower Tower at the position (throws ApiException if no tower exists)
+     */
+    Tower get_tower(bool owned, const Vector2& position);
+
+    /**
+     * @brief Sell tower at specified position
+     * @param position Position of tower to sell
+     */
+    void sell_tower(const Vector2& position);
+
+    /**
+     * @brief Set targeting strategy for tower
+     * @param position Position of the tower
+     * @param strategy Target strategy to set
+     */
+    void set_strategy(const Vector2& position, TargetStrategy strategy);
+
+    // Enemy and Unit Management
+    /**
+     * @brief Spawn a unit
+     * @param enemy_type Type of enemy unit to spawn
+     */
+    void spawn_unit(EnemyType enemy_type);
+
+    /**
+     * @brief Get cooldown time for unit spawning
+     * @param enemy_type Type of enemy unit
+     * @return float Cooldown time in seconds
+     */
+    float get_unit_cooldown(EnemyType enemy_type);
+
+    /**
+     * @brief Get all enemy units currently on player or opponent map
+     * @param owned true for player enemies, false for opponent enemies
+     * @return std::vector<Enemy> List of all enemies
+     */
+    std::vector<Enemy> get_all_enemies(bool owned);
+
+    // Spell System
+    /**
+     * @brief Cast a spell at specified position
+     * @param spell_type Type of spell to cast
+     * @param position Target position for the spell
+     */
+    void cast_spell(SpellType spell_type, const Vector2& position);
+
+    /**
+     * @brief Get cooldown time for spell casting
+     * @param owned true for player cooldown, false for opponent cooldown
+     * @param spell_type Type of spell
+     * @return float Cooldown time in seconds
+     */
+    float get_spell_cooldown(bool owned, SpellType spell_type);
+
+    // Chat System
+    /**
+     * @brief Send a chat message
+     * @param message Message content to send
+     */
+    void send_chat(const std::string& message);
+
+    /**
+     * @brief Get chat message history
+     * @param num Number of messages to retrieve (default 15)
+     * @return std::vector<ChatMessage> List of chat messages
+     */
+    std::vector<ChatMessage> get_chat_history(int num = 15);
+
+    /**
+     * @brief Set chat name color
+     * @param color Hex color string (e.g., "ff0000" for red)
+     */
+    void set_chat_name_color(const std::string& color);
+
+    /**
+     * @brief Set player name
+     * @param name Player name to set
+     */
+    void set_name(const std::string& name);
+
+    // Special Commands
+    /**
+     * @brief Disconnect from the server
+     */
+    void disconnect();
+
+    /**
+     * @brief Get list of developers
+     * @return std::vector<std::string> List of developer names
+     */
+    std::vector<std::string> get_devs();
+
+    
+    std::string pixelcat();
+    std::string ntu_student_id_card();
+    void metal_pipe();
+    void spam(const std::string& message, int size = 48, const std::string& color = "#ffffff");
+    void super_star();
+    void turbo_on();
+    int get_the_radiant_core_of_stellar_faith();
+    void set_the_radiant_core_of_stellar_faith(int value);
+    bool boo();
+private:
+    std::string server_url;
+    std::string server_domain;
+    std::string token;
+    int port;
+    int sent_command_count;
+    long long last_command;
+    
+    static const int COMMAND_RATE_LIMIT_MSEC = 10;
+    
+    // Socket connection
+    int socket_fd;
+    bool connected;
+    
+    // Internal helper methods
+    void ws_connect();
+    bool ws_authenticate();
+    void ws_send_data(const std::vector<uint8_t>& data);
+    std::vector<uint8_t> ws_recv_data();
+    void wait_for_next_command();
+    std::vector<uint8_t> serialize_command(CommandType cmd, const std::vector<uint8_t>& args);
+    std::vector<uint8_t> deserialize_response(const std::vector<uint8_t>& response, CommandType cmd);
+    
+    // Helper functions
+    Tower parse_tower_from_dictionary(const GodotDictionary* tower_dict_ptr);
+    Enemy parse_enemy_from_dictionary(const GodotDictionary* enemy_dict_ptr);
+    
+    // Command sending
+    std::vector<uint8_t> send_command(CommandType cmd);
+    std::vector<uint8_t> send_command(CommandType cmd, const std::vector<uint8_t>& args);
+    
+    // WebSocket helpers
+    std::string create_websocket_handshake();
+    bool validate_websocket_response(const std::string& response);
+    void send_websocket_frame(const std::vector<uint8_t>& payload);
+    void send_websocket_text_frame(const std::string& text);
+    std::vector<uint8_t> receive_websocket_frame();
+
+};
 
 GameClient::GameClient(int port, const std::string& token, 
                       const std::string& server_domain,
@@ -1488,4 +2489,5 @@ std::vector<uint8_t> GameClient::receive_websocket_frame() {
     }
 }
 
-} // namespace GameAPI
+}
+

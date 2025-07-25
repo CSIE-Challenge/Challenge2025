@@ -1,4 +1,4 @@
-#include "game_client.h"
+#include "api.hpp"
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -13,7 +13,7 @@ int main() {
         GameClient client(7749, "50ef3715"); // Replace with your actual token
         
         std::cout << "\n--- Connection & Authentication ---" << std::endl;
-        std::cout << "✓ Connected to game server successfully!" << std::endl;
+        std::cout << "[Example] Connected to game server successfully!" << std::endl;
         
         // Wait for game to start
         std::cout << "\n--- Game Status ---" << std::endl;
@@ -21,7 +21,7 @@ int main() {
         while (client.get_game_status() != GameStatus::RUNNING) {
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
         }
-        std::cout << "✓ Game is now RUNNING!" << std::endl;
+        std::cout << "[Example] Game is now RUNNING!" << std::endl;
         
         // Test basic info APIs
         std::cout << "\n--- Game Information APIs ---" << std::endl;
@@ -65,8 +65,8 @@ int main() {
         auto opp_path = client.get_opponent_path(false);
         auto opp_air_path = client.get_opponent_path(true);
         
-        std::cout << "My ground path length: " << my_path.size() << std::endl;
-        std::cout << "My air path length: " << my_air_path.size() << std::endl;
+        std::cout << "System ground path length: " << my_path.size() << std::endl;
+        std::cout << "System air path length: " << my_air_path.size() << std::endl;
         std::cout << "Opponent ground path length: " << opp_path.size() << std::endl;
         std::cout << "Opponent air path length: " << opp_air_path.size() << std::endl;
         
@@ -81,7 +81,7 @@ int main() {
             try {
                 Vector2 tower_pos(6, 6);
                 client.place_tower(TowerType::FIRE_MARIO, "1", tower_pos);
-                std::cout << "✓ Successfully placed tower at (6,6)" << std::endl;
+                std::cout << "[Example] Successfully placed tower at (6,6)" << std::endl;
                 
                 // Test getting specific tower info
                 Tower placed_tower = client.get_tower(true, tower_pos);
@@ -89,7 +89,7 @@ int main() {
                 
                 // Test tower strategy setting
                 client.set_strategy(tower_pos, TargetStrategy::FIRST);
-                std::cout << "✓ Set tower strategy to FIRST" << std::endl;
+                std::cout << "[Example] Set tower strategy to FIRST" << std::endl;
                 
             } catch (const ApiException& e) {
                 std::cout << "✗ Tower placement failed: " << e.what() << std::endl;
@@ -123,7 +123,7 @@ int main() {
         if (koopa_cooldown <= 0.1f) {
             try {
                 client.spawn_unit(EnemyType::KOOPA);
-                std::cout << "✓ Successfully spawned KOOPA" << std::endl;
+                std::cout << "[Example] Successfully spawned KOOPA" << std::endl;
             } catch (const ApiException& e) {
                 std::cout << "✗ KOOPA spawn failed: " << e.what() << std::endl;
             }
@@ -146,7 +146,7 @@ int main() {
             try {
                 Vector2 target_pos = opp_enemies[0].position;
                 client.cast_spell(SpellType::POISON, target_pos);
-                std::cout << "✓ Successfully cast POISON at (" << target_pos.x << "," << target_pos.y << ")" << std::endl;
+                std::cout << "[Example] Successfully cast POISON at (" << target_pos.x << "," << target_pos.y << ")" << std::endl;
             } catch (const ApiException& e) {
                 std::cout << "✗ POISON cast failed: " << e.what() << std::endl;
             }
@@ -159,7 +159,7 @@ int main() {
         client.set_name("CppTestBot");
         client.set_chat_name_color("ff6600"); // Orange color
         client.send_chat("C++ API test completed successfully!");
-        std::cout << "✓ Sent chat message" << std::endl;
+        std::cout << "[Example] Sent chat message" << std::endl;
         
         // Get chat history
         auto chat_history = client.get_chat_history(5);
@@ -191,20 +191,12 @@ int main() {
             std::cout << "Boo failed: " << e.what() << std::endl;
         }
         
-        std::cout << "\n--- Test Summary ---" << std::endl;
-        std::cout << "✓ All major API categories tested!" << std::endl;
-        std::cout << "✓ Connection and authentication working" << std::endl;
-        std::cout << "✓ Game state information retrieval working" << std::endl;
-        std::cout << "✓ Enemy parsing fix successful" << std::endl;
-        std::cout << "✓ Tower management APIs functional" << std::endl;
-        std::cout << "✓ Unit and spell systems accessible" << std::endl;
-
-        // Disconnect gracefully
+        
         client.disconnect();
-        std::cout << "\n✓ Disconnected from game server." << std::endl;
+        std::cout << "\n[Example] Disconnected from game server." << std::endl;
         
     } catch (const std::exception& e) {
-        std::cerr << "✗ Error: " << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
         return 1;
     }
     
