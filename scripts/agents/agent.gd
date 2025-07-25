@@ -143,7 +143,7 @@ func _get_scores(_owned: bool) -> Array:
 	if _owned == true:
 		result = game_self.score
 	else:
-		result = game_other.display_score
+		result = game_other.score
 	return [StatusCode.OK, result]
 
 
