@@ -48,6 +48,7 @@
 - 張聲元 LightningFarter
 - 李尚哲 Matt
 - 蔡瑜恩 Jaime
+- 高嘉泓 victor0206
 
 ### Special Thanks
 
