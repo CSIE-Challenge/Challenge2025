@@ -259,6 +259,10 @@ dev_name = "李尚哲 Matt"
 layout_mode = 2
 dev_name = "蔡瑜恩 Jaime"
 
+[node name="Entry4" parent="ScrollContainer/VBoxContainer/Section5/Grid" instance=ExtResource("4_lloox")]
+layout_mode = 2
+dev_name = "高嘉泓 victor0206"
+
 [node name="Section6" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 16

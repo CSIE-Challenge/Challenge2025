@@ -1,11 +1,6 @@
 extends Map
 
 
-func _ready():
-	#pass
-	Engine.time_scale = 4
-
-
 func _on_area_2d_area_entered(enemy: Area2D) -> void:
 	if "max_speed" in enemy:
 		enemy.max_speed *= 2
