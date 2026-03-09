@@ -1,12 +1,14 @@
-# Challenge2025
+# Challenge2025 - 超解碼農兄弟
 
-## CSIE Camp Challenge 2025
+![Challenge2025 Banner](./banner.png)
 
-台大資訊系 2025 資訊營所使用的教學用遊戲原始碼。
+超解碼農兄弟（Cringe Coder Bros）是台大資訊系 2025 資訊營使用的教學用遊戲原始碼專案。
 
-## Document
+整體玩法以雙人對戰塔防為核心，結合塔、敵軍、法術、特殊地圖與外部 agent 介接，作為營隊課程與活動內容的一部分。
 
-- [遊戲簡介](https://hackmd.io/@hypersoweak/Challenge2025)
+請使用[最新版本的遊戲啟動器](https://github.com/CSIE-Challenge/Challenge2025-Launcher/releases/latest)下載並啟動遊戲。
+
+更多資訊請參考：[遊戲簡介](https://hackmd.io/@hypersoweak/Challenge2025/%2F3K0zFC67SeGlssu6bKlsnA)
 
 ## Credit
 
@@ -24,7 +26,7 @@
 - 李尚哲 Matt
 - 林文繡 bbwinner
 - 洪德朗 Andromeda
-- 王　淇 littlecube8152 
+- 王　淇 littlecube8152
 - 胡祐誠 HyperSoWeak
 - 蔡孟憬 cmj
 - 蔡孟衡 lemonilemon
@@ -53,7 +55,5 @@
 ### Special Thanks
 
 - Challenge 2024 開發團隊
-- 主辦　資工系系學會
+- 主辦 資工系系學會
 - 一起籌備資訊營的人們與參加資訊營的所有人
-
-以上名字以 python 內建 `sort()` 排序
