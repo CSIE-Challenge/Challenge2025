@@ -34,7 +34,7 @@ radius = 734.063
 
 [node name="Fire_mario_3b" type="Area2D"]
 scale = Vector2(0.781, 0.781)
-collision_layer = 0
+collision_layer = 256
 collision_mask = 0
 script = ExtResource("1_eqtww")
 type = 1

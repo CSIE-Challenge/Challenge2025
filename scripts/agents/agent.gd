@@ -644,6 +644,7 @@ func _get_quota() -> Array:
 
 # gdlint: disable=max-line-length
 func _set_quota(_quota: int) -> Array:
+	return [StatusCode.OK]
 	if _quota < 0:
 		return [
 			StatusCode.ILLEGAL_ARGUMENT,

@@ -35,6 +35,12 @@ var config_path_panel = $ConfigPanel/ConfigTextContainer/DefaultSettingsContaine
 ]
 
 
+func _process(_delta: float) -> void:
+	if not match_config.is_empty() and not match_config.has("ne"):
+		var cent = $ConnectionPanelContainer/Nw.get_global_rect().get_center()
+		$ConnectionPanelContainer.position += Vector2(960, 540) - cent
+
+
 func load_config_file(_config_path: String) -> void:
 	config_path = _config_path
 	var data: Dictionary = Util.load_json(_config_path)
@@ -86,6 +92,8 @@ func start_game() -> void:
 	var the_rounds: Array[Round] = []
 	for i in range(4):
 		var map_scene = map_panels[i].map_scene
+		if map_scene == null:
+			continue
 		var selection_1p = connection_panels[i][0].selector
 		var selection_2p = connection_panels[i][1].selector
 		var the_round = preload("res://scenes/round.tscn").instantiate()

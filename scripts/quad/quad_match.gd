@@ -8,6 +8,7 @@ var the_rounds: Array[Round]
 # "draw", "score_diff", and every entry in end_scene.statistics
 var round_results: Dictionary = {}
 var result_path: String
+var result_to_collect: int
 
 @onready var subviewports: Array[SubViewport] = [
 	$SubViewportContainerNw/SubViewport,
@@ -24,7 +25,16 @@ func init(config_path: String, _config: Dictionary, _the_rounds: Array[Round]) -
 
 
 func _ready() -> void:
-	for i in range(4):
+	if len(the_rounds) == 1:
+		$SubViewportContainerNw.scale = Vector2(1, 1)
+		# $SubViewportContainerNw.anchor_right = 1
+		# $SubViewportContainerNw.anchor_bottom = 1
+		$SubViewportContainerNe.visible = false
+		$SubViewportContainerSw.visible = false
+		$SubViewportContainerSe.visible = false
+		the_rounds[0].reveal_cutscene = true
+	result_to_collect = len(the_rounds)
+	for i in range(len(the_rounds)):
 		the_rounds[i].game_finished.connect(collect_result.bind(i))
 		subviewports[i].add_child(the_rounds[i])
 	add_child(preload("res://scenes/pause_menu.tscn").instantiate())
@@ -68,10 +78,19 @@ func collect_result(stats: Array[EndScreen.Statistics], round_id: int) -> void:
 	var key = ["nw", "ne", "sw", "se"][round_id]
 	var pid_left = config[key]["player-left"]["id"]
 	var pid_right = config[key]["player-right"]["id"]
-	round_results.set(pid_left, stat_left)
-	round_results.set(pid_right, stat_right)
+	if not round_results.has(pid_left):
+		round_results.set(pid_left, stat_left)
+	else:
+		for k in stat_left.keys():
+			round_results[pid_left][k] += stat_left[k]
+	if not round_results.has(pid_right):
+		round_results.set(pid_right, stat_right)
+	else:
+		for k in stat_right.keys():
+			round_results[pid_right][k] += stat_right[k]
 
-	if round_results.size() == 8:
+	result_to_collect -= 1
+	if result_to_collect == 0:
 		Util.save_json(result_path, round_results)
 
 # TODO: focus one game

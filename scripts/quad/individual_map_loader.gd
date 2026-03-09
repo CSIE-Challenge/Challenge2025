@@ -1,6 +1,6 @@
 extends HBoxContainer
 
-var map_scene: PackedScene
+var map_scene: PackedScene = null
 
 
 func _ready() -> void:

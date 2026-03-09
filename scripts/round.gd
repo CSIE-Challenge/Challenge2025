@@ -47,6 +47,7 @@ func set_api_quotas(quota_1p: int, quota_2p: int) -> void:
 
 
 func _ready() -> void:
+	# Engine.time_scale = 5  # to comment
 	game_1p.process_mode = Node.PROCESS_MODE_DISABLED
 	game_2p.process_mode = Node.PROCESS_MODE_DISABLED
 	spawner.process_mode = Node.PROCESS_MODE_DISABLED

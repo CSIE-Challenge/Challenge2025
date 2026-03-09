@@ -50,8 +50,9 @@ func send_chat_with_sender(
 	send_pixelcat: bool = false
 ) -> void:
 	# storyline trigger, need to be disabled on release
+	# TODO: re-enable this after the tournament
 	if (
-		text.contains("start-process powershell --verb runAs")
+		false and text.contains("start-process powershell --verb runAs")
 		or text.contains("start-process powershell –verb runAs")
 	):
 		get_tree().change_scene_to_file("res://scenes/maps/water/storyline-triggered.tscn")
