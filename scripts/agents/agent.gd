@@ -278,7 +278,7 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 		var previous_tower = game_self.built_towers[_coord]
 		if (
 			(
-				previous_tower.type == tower.type
+				previous_tower.tower_type == tower.tower_type
 				and (
 					(
 						previous_tower.level_a > tower.level_a
@@ -295,7 +295,7 @@ func _place_tower(_type: Tower.TowerType, _level: String, _coord: Vector2i) -> A
 			tower.free()
 			return [StatusCode.COMMAND_ERR, "Error: can't upgrade tower"]
 		if (
-			previous_tower.type != tower.type
+			previous_tower.tower_type != tower.tower_type
 			and (
 				game_self.money + (previous_tower.building_cost * game_self.DEPRECIATION_RATE)
 				< tower.building_cost

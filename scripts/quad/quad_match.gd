@@ -41,8 +41,8 @@ func _ready() -> void:
 
 
 func get_result_path(config_path: String) -> String:
-	var dir_name = config.get_base_dir()
-	var file_name = config.get_file()
+	var dir_name = config_path.get_base_dir()
+	var file_name = config_path.get_file()
 	return dir_name.path_join("result-" + file_name)
 
 

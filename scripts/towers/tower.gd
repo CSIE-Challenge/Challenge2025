@@ -7,7 +7,7 @@ enum TowerType { NONE, FIRE_MARIO, ICE_LUIGI, DONEKEY_KONG, FORT, SHY_GUY }
 
 const ANIMATION_FRAME_DURATION := 0.1
 
-@export var type: TowerType = TowerType.NONE
+@export var tower_type: TowerType = TowerType.NONE
 @export var level_a: int = 1
 @export var level_b: int = 1
 @export var building_cost: int = 5
@@ -135,7 +135,7 @@ func _on_fire_bullet() -> void:
 
 func to_dict(coord: Vector2i) -> Dictionary:
 	var dict: Dictionary = {}
-	dict["type"] = type
+	dict["type"] = tower_type
 	dict["position"] = {"x": coord[0], "y": coord[1]}
 	dict["level_a"] = level_a
 	dict["level_b"] = level_b

@@ -123,7 +123,7 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 		var previous_tower = built_towers[cell_pos]
 		if (
 			(
-				previous_tower.type == tower.type
+				previous_tower.tower_type == tower.tower_type
 				and (
 					(
 						previous_tower.level_a > tower.level_a
@@ -142,7 +142,7 @@ func _is_buildable(tower: Tower, cell_pos: Vector2i) -> bool:
 		):
 			return false
 		if (
-			previous_tower.type != tower.type
+			previous_tower.tower_type != tower.tower_type
 			and (
 				money + (previous_tower.building_cost * shop_discount * DEPRECIATION_RATE)
 				< tower.building_cost * shop_discount
@@ -175,7 +175,7 @@ func _on_place_tower(cell_pos: Vector2i, tower: Tower) -> void:
 	if built_towers.has(cell_pos):
 		var previous_tower = built_towers[cell_pos]
 		var depreciation = (
-			previous_tower.type != tower.type
+			previous_tower.tower_type != tower.tower_type
 			or previous_tower.level_a > tower.level_a
 			or previous_tower.level_b > tower.level_b
 		)
