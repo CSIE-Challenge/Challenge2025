@@ -57,3 +57,7 @@
 - Challenge 2024 開發團隊
 - 主辦 資工系系學會
 - 一起籌備資訊營的人們與參加資訊營的所有人
+
+## License
+
+This project is licensed under the [GNU General Public License v3.0 (GPL-3.0)](LICENSE).
