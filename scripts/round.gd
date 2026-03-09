@@ -115,7 +115,13 @@ func _ready() -> void:
 		create_timer.call(
 			14, func(): create_tween().tween_property(cutscene, "modulate:a", 0.0, 3).set_delay(0)
 		)
-		create_timer.call(18, _start)
+		create_timer.call(
+			18,
+			func():
+				cutscene.process_mode = Node.PROCESS_MODE_DISABLED
+				cutscene.visible = false
+				_start()
+		)
 	else:
 		cutscene.process_mode = Node.PROCESS_MODE_DISABLED
 		cutscene.visible = false
