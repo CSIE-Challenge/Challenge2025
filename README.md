@@ -8,7 +8,7 @@
 
 請使用[最新版本的遊戲啟動器](https://github.com/CSIE-Challenge/Challenge2025-Launcher/releases/latest)下載並啟動遊戲。
 
-更多資訊請參考：[遊戲簡介](https://hackmd.io/@hypersoweak/Challenge2025/%2F3K0zFC67SeGlssu6bKlsnA)
+更多資訊請參考：[遊戲 Wiki](https://github.com/CSIE-Challenge/Challenge2025/wiki)
 
 ## Credit
 
