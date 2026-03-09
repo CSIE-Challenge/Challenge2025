@@ -41,11 +41,9 @@ func _ready() -> void:
 
 
 func get_result_path(config_path: String) -> String:
-	var length = config_path.length()
-	var it: int = length - 1
-	while config_path[it - 1] != "/":
-		it -= 1
-	return "%sresult-%s" % [config_path.substr(0, it), config_path.substr(it, length - it)]
+	var dir_name = config.get_base_dir()
+	var file_name = config.get_file()
+	return dir_name.path_join("result-" + file_name)
 
 
 func collect_result(stats: Array[EndScreen.Statistics], round_id: int) -> void:

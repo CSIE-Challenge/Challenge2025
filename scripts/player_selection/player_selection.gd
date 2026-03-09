@@ -32,6 +32,7 @@ const MAP_LIST = [
 		preload("res://scenes/maps/water/water.tscn"),
 		false
 	],
+	# TODO: replace with the actual name and preview image
 	["?", preload("res://assets/maps/unknown.png"), preload("res://scenes/maps/graph.tscn"), false],
 	[
 		"?????????",
